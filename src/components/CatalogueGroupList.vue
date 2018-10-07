@@ -5,13 +5,15 @@
   .list-group-item(
   v-for="parent in parents" :key="parent.id"
   @click.prevent="parentClick(parent)"
+  :class="value && value.id === parent.id && 'active'"
   )
     i.el-icon-arrow-left
     span {{ parent.name }}
 
   .list-group-item(
   v-for="item in items" :key="item.id"
-  @click.prevent="$emit('input', item)"
+  @click.prevent="parentClick(item)"
+  :class="value && value.id === item.id && 'active'"
   )
     span {{ item.name }}
 
@@ -26,7 +28,8 @@ export default {
 
   methods: {
     parentClick(parent) {
-      this.$emit('input', parent.id === this.value.id ? parent.parent : parent);
+      const { value } = this;
+      this.$emit('input', (value && parent.id === value.id) ? parent.parent : parent);
     },
   },
 

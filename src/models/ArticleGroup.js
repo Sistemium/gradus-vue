@@ -11,6 +11,12 @@ export default new Model({
         localKey: 'articleGroupId',
       },
     },
+    hasMany: {
+      ArticleGroup: {
+        localField: 'children',
+        foreignKey: 'articleGroupId',
+      },
+    },
   },
 
   methods: {

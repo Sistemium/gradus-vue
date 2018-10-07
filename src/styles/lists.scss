@@ -5,6 +5,7 @@
   font-size: 14px;
   border-radius: $border-radius;
   border: $list-cell-borders;
+  overflow: hidden;
 
   .list-group-item {
 
@@ -17,6 +18,11 @@
 
     & + .list-group-item {
       border-top: $list-cell-borders;
+    }
+
+    &.active {
+      background: $primary-color;
+      color: $white;
     }
 
     > i {

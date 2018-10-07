@@ -60,20 +60,25 @@ export default {
   methods: {
 
     bindCurrent() {
-      const { id: articleGroupId = null } = this.currentArticleGroup || {};
+      const { id: articleGroupId = null, children = [] } = this.currentArticleGroup || {};
       const filter = {
         articleGroupId,
         orderBy: 'name',
       };
 
-      ArticleGroup.bindAll(this, filter, 'articleGroups');
+      if (children.length || !articleGroupId) {
+        ArticleGroup.bindAll(this, filter, 'articleGroups');
+      }
+
       Article.bindAll(this, filter, 'articles');
 
       if (articleGroupId) {
-        this.currentArticleGroupParents = [
-          ...this.currentArticleGroup.parents(),
-          this.currentArticleGroup,
-        ];
+        if (children.length) {
+          this.currentArticleGroupParents = [
+            ...this.currentArticleGroup.parents(),
+            this.currentArticleGroup,
+          ];
+        }
       } else {
         this.currentArticleGroupParents = [];
       }
