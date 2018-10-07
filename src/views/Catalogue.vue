@@ -20,14 +20,20 @@ el-container.catalogue
       :parents="currentArticleGroupParents"
       v-model="currentArticleGroup"
       )
-    el-main
+    el-main.articles
+      catalogue-article-list(
+      :items="articles"
+      v-model="currentArticle"
+      )
 
 </template>
 <script>
 
 import ArticleGroup from '@/models/ArticleGroup';
+import Article from '@/models/Article';
 
 import CatalogueGroupList from '@/components/CatalogueGroupList.vue';
+import CatalogueArticleList from '@/components/CatalogueArticleList.vue';
 
 export default {
 
@@ -35,7 +41,9 @@ export default {
 
   data() {
     return {
+      articles: [],
       articleGroups: [],
+      currentArticle: null,
       currentArticleGroup: null,
       currentArticleGroupParents: [],
     };
@@ -46,16 +54,21 @@ export default {
   async created() {
     this.$watch('currentArticleGroup', this.bindCurrent, { immediate: true });
     await ArticleGroup.findAll({ limit: 10000 });
+    await Article.findAll({ limit: 20000 });
   },
 
   methods: {
+
     bindCurrent() {
       const { id: articleGroupId = null } = this.currentArticleGroup || {};
       const filter = {
         articleGroupId,
         orderBy: 'name',
       };
+
       ArticleGroup.bindAll(this, filter, 'articleGroups');
+      Article.bindAll(this, filter, 'articles');
+
       if (articleGroupId) {
         this.currentArticleGroupParents = [
           ...this.currentArticleGroup.parents(),
@@ -65,9 +78,18 @@ export default {
         this.currentArticleGroupParents = [];
       }
     },
+
   },
 
-  components: { CatalogueGroupList },
+  components: {
+    CatalogueGroupList,
+    CatalogueArticleList,
+  },
+
+  beforeDestroy() {
+    ArticleGroup.unbindAll(this);
+    Article.unbindAll(this);
+  },
 
 };
 
@@ -75,5 +97,10 @@ export default {
 <style scoped lang="scss">
 
 @import "../styles/variables";
+
+.articles {
+  padding: 0;
+  margin-left: $margin-right * 2;
+}
 
 </style>
