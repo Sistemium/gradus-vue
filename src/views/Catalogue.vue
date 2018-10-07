@@ -1,13 +1,26 @@
 <template lang="pug">
 
 el-container.catalogue
-  el-aside.filters
-    catalogue-group-list(
-    :items="articleGroups"
-    :parents="currentArticleGroupParents"
-    v-model="currentArticleGroup"
-    )
-  el-main
+
+  el-header(height="34px")
+    el-breadcrumb(separator-class="el-icon-arrow-right")
+      el-breadcrumb-item
+        a(@click.prevent="currentArticleGroup = null") Все товары
+      el-breadcrumb-item(
+      v-for="parent in currentArticleGroupParents"
+      :key="parent.id"
+      )
+        a(@click.prevent="currentArticleGroup = parent") {{ parent.name }}
+
+  el-container
+
+    el-aside.filters
+      catalogue-group-list(
+      :items="articleGroups"
+      :parents="currentArticleGroupParents"
+      v-model="currentArticleGroup"
+      )
+    el-main
 
 </template>
 <script>
