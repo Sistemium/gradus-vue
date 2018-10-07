@@ -1,0 +1,28 @@
+@import "variables";
+
+.list-group {
+
+  font-size: 14px;
+  border-radius: $border-radius;
+  border: $list-cell-borders;
+
+  .list-group-item {
+
+    padding: $margin-top;
+    cursor: pointer;
+
+    &:hover {
+      background: $gray-background;
+    }
+
+    & + .list-group-item {
+      border-top: $list-cell-borders;
+    }
+
+    > i {
+      padding: 0 $padding;
+    }
+
+  }
+
+}

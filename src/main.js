@@ -2,6 +2,8 @@ import Vue from 'vue';
 import '@/lib/element-ui';
 import '@/lib/sistemium';
 
+import './index.scss';
+
 import App from './App.vue';
 import router from './router';
 import store from './store';
