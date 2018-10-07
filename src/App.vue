@@ -1,15 +1,22 @@
 <template lang="pug">
 
 #app
-
-  #nav
-    router-link(to="/") Home
-    router-link(to="/about") About
-
-  router-view
+  el-container
+    el-header
+      app-menu
+    el-main
+      router-view
 
 </template>
+<script>
 
+import AppMenu from '@/components/AppMenu.vue';
+
+export default {
+  components: { AppMenu },
+};
+
+</script>
 <style lang="scss">
 
 @import "styles/variables";
@@ -25,27 +32,5 @@ body {
   text-align: center;
   color: $black;
 }
-
-#nav {
-
-  > * + * {
-    margin-left: $margin-right;
-  }
-
-  padding: 30px;
-
-  a {
-
-    font-weight: bold;
-    color: $primary-color;
-
-    &.router-link-exact-active {
-      color: $dark-gray;
-    }
-
-  }
-
-}
-
 
 </style>
