@@ -53,8 +53,10 @@ export default {
 
   async created() {
     this.$watch('currentArticleGroup', this.bindCurrent, { immediate: true });
+    const loading = this.$loading.show();
     await ArticleGroup.findAll({ limit: 10000 });
     await Article.findAll({ limit: 20000 });
+    loading.hide();
   },
 
   methods: {
