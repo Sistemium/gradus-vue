@@ -3,6 +3,9 @@
 el-menu(:default-active="$route.path" mode="horizontal" :router="true")
   el-menu-item(index="/")
     img(src="../assets/icons8-home.svg")
+  el-menu-item(index="/catalogue")
+    img(src="../assets/icons8-moleskine.svg")
+    span Каталог
   el-menu-item(index="/about")
     img(src="../assets/icons8-info.svg")
     span О проекте
