@@ -11,7 +11,7 @@
     "element-ui": "^2.4.8",
     "lodash": "^4.17.11",
     "sistemium-telegram": "^1.2.5",
-    "sistemium-vue": "^1.0.0",
+    "sistemium-vue": "^1.0.1",
     "vue": "^2.5.17",
     "vue-loading-overlay": "^3.0.0",
     "vue-router": "^3.0.1",
@@ -36,7 +36,20 @@
       "plugin:vue/essential",
       "@vue/airbnb"
     ],
-    "rules": {},
+    "rules": {
+      "no-use-before-define": [
+        "error",
+        {
+          "functions": false,
+          "classes": true
+        }
+      ],
+      "padded-blocks": "off",
+      "arrow-parens": [
+        "error",
+        "as-needed"
+      ]
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }
@@ -45,20 +58,6 @@
     "plugins": {
       "autoprefixer": {}
     }
-  },
-  "rules": {
-    "no-use-before-define": [
-      "error",
-      {
-        "functions": false,
-        "classes": true
-      }
-    ],
-    "padded-blocks": "off",
-    "arrow-parens": [
-      "error",
-      "as-needed"
-    ]
   },
   "browserslist": [
     "> 1%",
