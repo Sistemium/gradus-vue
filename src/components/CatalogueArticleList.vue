@@ -8,6 +8,7 @@ resize.list-group.catalogue-article-list(v-if="items.length" padding="30")
   :class="value && value.id === article.id && 'active'"
   )
     span {{ article.name }}
+    span {{ article.extraLabel }}
 
 </template>
 <script>
@@ -21,5 +22,11 @@ export default {
 <style scoped lang="scss">
 
 @import "../styles/variables";
+
+.list-group-item {
+  > * + * {
+    margin-left: $margin-right;
+  }
+}
 
 </style>

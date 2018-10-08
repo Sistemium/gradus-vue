@@ -42,6 +42,8 @@ el-container.catalogue
 import ArticleGroup from '@/models/ArticleGroup';
 import Article from '@/models/Article';
 
+import * as svc from '@/services/catalogue';
+
 import CatalogueGroupList from '@/components/CatalogueGroupList.vue';
 import CatalogueArticleList from '@/components/CatalogueArticleList.vue';
 
@@ -64,11 +66,7 @@ export default {
 
   async created() {
     const loading = this.$loading.show();
-    await ArticleGroup.findAll({ limit: 10000 });
-    await Article.findAll({
-      limit: 20000,
-      'x-offset:': '*',
-    });
+    await svc.loadData();
     loading.hide();
     this.$watch('currentArticleGroup', this.bindCurrent, { immediate: true });
   },
