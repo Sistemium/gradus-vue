@@ -1,10 +1,11 @@
 <template lang="pug">
 
-.list-group.catalogue-article-list(v-if="items.length")
+resize.list-group.catalogue-article-list(v-if="items.length" padding="30")
 
   .list-group-item(
   v-for="article in items" :key="article.id"
   @click.prevent="$emit('input', article)"
+  :class="value && value.id === article.id && 'active'"
   )
     span {{ article.name }}
 

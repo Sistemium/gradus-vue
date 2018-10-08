@@ -16,12 +16,21 @@ export default new Model({
         localField: 'children',
         foreignKey: 'articleGroupId',
       },
+      Article: {
+        localField: 'articles',
+        foreignKey: 'articleGroupId',
+      },
     },
   },
 
   methods: {
     parents() {
-      return this.parent ? [this.parent] : [];
+      const { parent } = this;
+      const res = [];
+      if (parent) {
+        res.push(...parent.parents(), parent);
+      }
+      return res;
     },
   },
 

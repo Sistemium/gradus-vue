@@ -2,19 +2,29 @@
 
 el-container.catalogue
 
-  el-header(height="34px")
+  el-header.catalogue-header
+
     el-breadcrumb(separator-class="el-icon-arrow-right")
+
       el-breadcrumb-item
         a(@click.prevent="currentArticleGroup = null") Все товары
+
       el-breadcrumb-item(
       v-for="parent in currentArticleGroupParents"
       :key="parent.id"
       )
         a(@click.prevent="currentArticleGroup = parent") {{ parent.name }}
 
+    el-input.searcher(
+    prefix-icon="el-icon-search"
+    v-model="searchText"
+    debounce="750"
+    placeholder="поиск"
+    )
+
   el-container
 
-    el-aside.filters
+    el-aside
       catalogue-group-list(
       :items="articleGroups"
       :parents="currentArticleGroupParents"
@@ -46,17 +56,21 @@ export default {
       currentArticle: null,
       currentArticleGroup: null,
       currentArticleGroupParents: [],
+      searchText: '',
     };
   },
 
   computed: {},
 
   async created() {
-    this.$watch('currentArticleGroup', this.bindCurrent, { immediate: true });
     const loading = this.$loading.show();
     await ArticleGroup.findAll({ limit: 10000 });
-    await Article.findAll({ limit: 20000 });
+    await Article.findAll({
+      limit: 20000,
+      'x-offset:': '*',
+    });
     loading.hide();
+    this.$watch('currentArticleGroup', this.bindCurrent, { immediate: true });
   },
 
   methods: {
@@ -108,6 +122,23 @@ export default {
 .articles {
   padding: 0;
   margin-left: $margin-right * 2;
+}
+
+.filters {
+  /*width: 300px;*/
+}
+
+.catalogue-header {
+  margin-top: -20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /*padding-left: 0;*/
+  padding-right: 0;
+}
+
+.searcher {
+  max-width: 200px;
 }
 
 </style>

@@ -1,7 +1,7 @@
 <template lang="pug">
 
 .home
-  img(alt="VR logo" src="../assets/3colors180.png")
+  img(alt="VR logo" src="../assets/3colors144.png")
   hello-world(msg="Sistemium ")
 
 </template>
@@ -21,6 +21,7 @@ export default {
 
 .home {
   text-align: center;
+  padding-top: 20px;
 }
 
 </style>
