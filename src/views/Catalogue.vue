@@ -35,9 +35,14 @@ el-container.catalogue
       )
     el-main.articles
       catalogue-article-list(
+      v-if="articles.length"
       :items="articles"
       v-model="currentArticle"
       )
+      .empty(
+      v-else
+      )
+        p Подходящие товары не найдены
 
 </template>
 <script>
@@ -100,9 +105,7 @@ export default {
         debug('bindCurrent', this.articleGroups.length, articleGroupId, children.length);
       }
 
-      this.articles = articleGroupId ?
-        svc.articlesByGroupID(this.currentArticleGroup, this.searchText) :
-        [];
+      this.articles = svc.articlesByGroupID(this.currentArticleGroup, this.searchText);
 
       if (articleGroupId) {
         if (children.length) {
@@ -160,6 +163,11 @@ export default {
 
 .searcher {
   max-width: 200px;
+}
+
+.empty {
+  text-align: center;
+  font-size: 150%;
 }
 
 </style>

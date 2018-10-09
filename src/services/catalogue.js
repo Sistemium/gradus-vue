@@ -49,12 +49,18 @@ export async function loadData() {
 }
 
 export function articlesByGroupID(articleGroup, search) {
+
+  if (!articleGroup) {
+    return searchArticles(Article.filter(), search);
+  }
+
   const ids = keyBy(flatten(filter(map(articleGroup.descendants(), 'children'))), 'id');
   ids[articleGroup.id] = articleGroup;
   return searchArticles(
     filter(Article.filter(), ({ articleGroupId }) => ids[articleGroupId]),
     search,
   );
+
 }
 
 export function articleGroupsBySearch(search) {
