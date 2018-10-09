@@ -1,6 +1,6 @@
 <template lang="pug">
 
-resize.list-group.catalogue-groups-list.filters(padding="30")
+resize.list-group.catalogue-groups-list.filters(v-if="items.length" padding="30")
 
   .list-group-item.parent(
   v-for="parent in parents" :key="parent.id"

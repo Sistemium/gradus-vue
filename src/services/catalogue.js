@@ -29,19 +29,22 @@ export async function loadData() {
   debug('groupsWithArticlesIDs', groupsWithArticlesIDs.length);
 
   const groupsWithArticles = filter(groupsWithArticlesIDs.map(id => ArticleGroup.get(id)));
-  debug('groupsWithArticles', groupsWithArticles.length);
-
   const parents = groupsWithArticles.map(item => [item.id, ...map(item.parents(), 'id')]);
 
   const parentsWithArticlesIDs = uniq(flatten(parents));
   debug('parentsWithArticlesIDs', parentsWithArticlesIDs.length);
 
+  let removedCount = 0;
+
   ArticleGroup.filter()
     .forEach(ag => {
       if (parentsWithArticlesIDs.indexOf(ag.id) === -1) {
         ArticleGroup.remove(ag);
+        removedCount += 1;
       }
     });
+
+  debug('removedCount', removedCount);
 
 }
 
