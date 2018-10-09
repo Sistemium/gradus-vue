@@ -29,8 +29,7 @@ export async function loadData() {
   debug('groupsWithArticlesIDs', groupsWithArticlesIDs.length);
 
   const groupsWithArticles = filter(groupsWithArticlesIDs.map(id => ArticleGroup.get(id)));
-  const parents = groupsWithArticles.map(item => [item.id, ...map(item.parents(), 'id')]);
-
+  const parents = groupsWithArticles.map(item => map(item.ancestors(), 'id'));
   const parentsWithArticlesIDs = uniq(flatten(parents));
   debug('parentsWithArticlesIDs', parentsWithArticlesIDs.length);
 
@@ -48,6 +47,8 @@ export async function loadData() {
 
 }
 
-export function articlesGroupByID() {
-
+export function articlesByGroupID(articleGroup) {
+  const ids = keyBy(flatten(filter(map(articleGroup.descendants(), 'children'))), 'id');
+  ids[articleGroup.id] = articleGroup;
+  return filter(Article.filter(), ({ articleGroupId }) => ids[articleGroupId]);
 }

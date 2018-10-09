@@ -1,4 +1,5 @@
 import Model from 'sistemium-vue/jsdata/Model';
+import forEach from 'lodash/forEach';
 
 export default new Model({
 
@@ -24,6 +25,7 @@ export default new Model({
   },
 
   methods: {
+
     parents() {
       const { parent } = this;
       const res = [];
@@ -32,6 +34,25 @@ export default new Model({
       }
       return res;
     },
+
+    descendants() {
+      const { children } = this;
+      const res = [this];
+      forEach(children, child => {
+        res.push(...child.descendants());
+      });
+      return res;
+    },
+
+    ancestors() {
+      const { parent } = this;
+      const res = [this];
+      if (parent) {
+        res.push(...parent.ancestors());
+      }
+      return res;
+    },
+
   },
 
 });

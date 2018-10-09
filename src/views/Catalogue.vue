@@ -84,7 +84,8 @@ export default {
         ArticleGroup.bindAll(this, filter, 'articleGroups');
       }
 
-      Article.bindAll(this, filter, 'articles');
+      // Article.bindAll(this, filter, 'articles');
+      this.articles = articleGroupId ? svc.articlesByGroupID(this.currentArticleGroup) : [];
 
       if (articleGroupId) {
         if (children.length) {
