@@ -3,6 +3,7 @@ import keyBy from 'lodash/keyBy';
 import flatten from 'lodash/flatten';
 import uniq from 'lodash/uniq';
 import map from 'lodash/map';
+import escapeRegExp from 'lodash/escapeRegExp';
 
 import ArticleGroup from '@/models/ArticleGroup';
 import Article from '@/models/Article';
@@ -47,8 +48,40 @@ export async function loadData() {
 
 }
 
-export function articlesByGroupID(articleGroup) {
+export function articlesByGroupID(articleGroup, search) {
   const ids = keyBy(flatten(filter(map(articleGroup.descendants(), 'children'))), 'id');
   ids[articleGroup.id] = articleGroup;
-  return filter(Article.filter(), ({ articleGroupId }) => ids[articleGroupId]);
+  return searchArticles(
+    filter(Article.filter(), ({ articleGroupId }) => ids[articleGroupId]),
+    search,
+  );
+}
+
+export function articleGroupsBySearch(search) {
+
+  const articles = searchArticles(Article.filter(), search);
+  debug('articleGroupsBySearch:articles', articles.length);
+
+  const groupIds = uniq(map(articles, 'articleGroupId'));
+  const groupsWithArticles = filter(groupIds.map(id => ArticleGroup.get(id)));
+
+  const parents = groupsWithArticles.map(item => map(item.ancestors(), 'id'));
+  const parentsWithArticlesIDs = uniq(flatten(parents));
+
+  debug('articleGroupsBySearch', search, parentsWithArticlesIDs.length);
+
+  return parentsWithArticlesIDs.map(id => ArticleGroup.get(id));
+
+}
+
+
+function searchArticles(articles, search) {
+
+  if (!search) {
+    return articles;
+  }
+
+  const re = new RegExp(escapeRegExp(search), 'i');
+  return filter(articles, a => re.test(a.name));
+
 }

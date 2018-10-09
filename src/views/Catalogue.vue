@@ -2,7 +2,7 @@
 
 el-container.catalogue
 
-  el-header.catalogue-header
+  el-header.catalogue-header(height="")
 
     el-breadcrumb(separator-class="el-icon-arrow-right")
 
@@ -18,11 +18,14 @@ el-container.catalogue
     el-input.searcher(
     prefix-icon="el-icon-search"
     v-model="searchText"
-    debounce="750"
+    :clearable="true"
     placeholder="поиск"
     )
 
-  el-container
+  el-container.catalogue-main(
+  v-loading="loading"
+  element-loading-text="Загрузка данных ..."
+  )
 
     el-aside
       catalogue-group-list(
@@ -39,6 +42,8 @@ el-container.catalogue
 </template>
 <script>
 
+import filter from 'lodash/filter';
+import debounce from 'lodash/debounce';
 import ArticleGroup from '@/models/ArticleGroup';
 import Article from '@/models/Article';
 
@@ -46,6 +51,10 @@ import * as svc from '@/services/catalogue';
 
 import CatalogueGroupList from '@/components/CatalogueGroupList.vue';
 import CatalogueArticleList from '@/components/CatalogueArticleList.vue';
+
+import log from 'sistemium-telegram/services/log';
+
+const { debug } = log('catalogue');
 
 export default {
 
@@ -59,33 +68,41 @@ export default {
       currentArticleGroup: null,
       currentArticleGroupParents: [],
       searchText: '',
+      loading: false,
+      filteredGroups: [],
     };
   },
 
   computed: {},
 
   async created() {
-    const loading = this.$loading.show();
+    this.loading = true;
     await svc.loadData();
-    loading.hide();
-    this.$watch('currentArticleGroup', this.bindCurrent, { immediate: true });
+    this.loading = false;
+    this.$watch('currentArticleGroup', this.bindCurrent);
+    this.$watch('searchText', debounce(this.bindArticles, 750));
+    this.bindArticles();
   },
 
   methods: {
 
+    bindArticles() {
+
+      this.filteredGroups = svc.articleGroupsBySearch(this.searchText);
+      this.bindCurrent();
+    },
+
     bindCurrent() {
       const { id: articleGroupId = null, children = [] } = this.currentArticleGroup || {};
-      const filter = {
-        articleGroupId,
-        orderBy: 'name',
-      };
 
       if (children.length || !articleGroupId) {
-        ArticleGroup.bindAll(this, filter, 'articleGroups');
+        this.articleGroups = filter(this.filteredGroups, g => g.articleGroupId === articleGroupId);
+        debug('bindCurrent', this.articleGroups.length, articleGroupId, children.length);
       }
 
-      // Article.bindAll(this, filter, 'articles');
-      this.articles = articleGroupId ? svc.articlesByGroupID(this.currentArticleGroup) : [];
+      this.articles = articleGroupId ?
+        svc.articlesByGroupID(this.currentArticleGroup, this.searchText) :
+        [];
 
       if (articleGroupId) {
         if (children.length) {
@@ -128,12 +145,17 @@ export default {
 }
 
 .catalogue-header {
+  height: 70px;
   margin-top: -20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   /*padding-left: 0;*/
   padding-right: 0;
+}
+
+.catalogue-main {
+  min-height: 300px;
 }
 
 .searcher {
