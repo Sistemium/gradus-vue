@@ -1,6 +1,7 @@
 import Model from 'sistemium-vue/jsdata/Model';
 
 import './ArticleGroup';
+import './ArticlePicture';
 
 export default new Model({
 
@@ -11,6 +12,10 @@ export default new Model({
       ArticleGroup: {
         localField: 'parent',
         localKey: 'articleGroupId',
+      },
+      ArticlePicture: {
+        localField: 'avatarPicture',
+        localKey: 'avatarPictureId',
       },
     },
   },

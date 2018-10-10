@@ -1,0 +1,8 @@
+.el-dialog-gallery {
+  display: flex;
+  flex-direction: column;
+  > .el-dialog__body {
+    flex: 1;
+    min-height: 0;
+  }
+}

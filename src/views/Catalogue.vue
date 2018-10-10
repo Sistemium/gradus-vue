@@ -4,7 +4,7 @@ el-container.catalogue
 
   el-header.catalogue-header(height="")
 
-    el-breadcrumb(separator-class="el-icon-arrow-right")
+    el-breadcrumb.crumbs(separator-class="el-icon-arrow-right")
 
       el-breadcrumb-item
         a(@click.prevent="currentArticleGroup = null") Все товары
@@ -14,6 +14,10 @@ el-container.catalogue
       :key="parent.id"
       )
         a(@click.prevent="currentArticleGroup = parent") {{ parent.name }}
+
+    .stats
+      span Товаров:
+      strong {{ articles.length }}
 
     el-input.searcher(
     prefix-icon="el-icon-search"
@@ -38,11 +42,26 @@ el-container.catalogue
       v-if="articles.length"
       :items="articles"
       v-model="currentArticle"
+      :avatar-click="onArticleAvatarClick"
       )
       .empty(
       v-else
       )
         p Подходящие товары не найдены
+
+  el-dialog(
+  :title="currentArticle && currentArticle.name"
+  :fullscreen="true"
+  :show-close="true"
+  :visible.sync="showGallery"
+  custom-class="el-dialog-gallery"
+  center
+  )
+    .gallery(v-if="showGallery")
+      img(
+      :src="currentArticle && currentArticle.avatarPicture.largeSrc"
+      @click="showGallery = false"
+      )
 
 </template>
 <script>
@@ -56,6 +75,7 @@ import * as svc from '@/services/catalogue';
 
 import CatalogueGroupList from '@/components/CatalogueGroupList.vue';
 import CatalogueArticleList from '@/components/CatalogueArticleList.vue';
+import PictureGallery from '@/components/PictureGallery.vue';
 
 import log from 'sistemium-telegram/services/log';
 
@@ -75,6 +95,7 @@ export default {
       searchText: '',
       loading: false,
       filteredGroups: [],
+      showGallery: false,
     };
   },
 
@@ -119,9 +140,16 @@ export default {
       }
     },
 
+    onArticleAvatarClick(article) {
+      debug('onArticleAvatarClick', article);
+      this.showGallery = true;
+      this.currentArticle = article;
+    },
+
   },
 
   components: {
+    PictureGallery,
     CatalogueGroupList,
     CatalogueArticleList,
   },
@@ -152,9 +180,22 @@ export default {
   margin-top: -20px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  /*padding-left: 0;*/
   padding-right: 0;
+
+  /*justify-content: space-between;*/
+  /*padding-left: 0;*/
+
+  .crumbs {
+    flex: 1;
+  }
+
+  .stats {
+    margin: auto $margin-top;
+    strong {
+      margin-left: $margin-right;
+    }
+  }
+
 }
 
 .catalogue-main {
@@ -168,6 +209,16 @@ export default {
 .empty {
   text-align: center;
   font-size: 150%;
+}
+
+.gallery {
+  text-align: center;
+  height: 100%;
+  img {
+    cursor: zoom-out;
+    object-fit: contain;
+    max-height: 100%;
+  }
 }
 
 </style>

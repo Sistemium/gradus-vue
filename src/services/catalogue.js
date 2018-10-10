@@ -4,9 +4,11 @@ import flatten from 'lodash/flatten';
 import uniq from 'lodash/uniq';
 import map from 'lodash/map';
 import escapeRegExp from 'lodash/escapeRegExp';
+import orderBy from 'lodash/orderBy';
 
 import ArticleGroup from '@/models/ArticleGroup';
 import Article from '@/models/Article';
+import ArticlePicture from '@/models/ArticlePicture';
 
 import log from 'sistemium-telegram/services/log';
 
@@ -18,9 +20,14 @@ export async function loadData() {
     limit: 10000,
   });
 
-  await Article.findAll({
+  await ArticlePicture.findAll({
     limit: 20000,
-    'x-offset:': '*',
+    // 'x-offset:': '*',
+  });
+
+  await Article.findAll({
+    limit: 1000,
+    // 'x-offset:': '*',
   });
 
   const articles = Article.filter({});
@@ -57,7 +64,7 @@ export function articlesByGroupID(articleGroup, search) {
   const ids = keyBy(flatten(filter(map(articleGroup.descendants(), 'children'))), 'id');
   ids[articleGroup.id] = articleGroup;
   return searchArticles(
-    filter(Article.filter(), ({ articleGroupId }) => ids[articleGroupId]),
+    orderBy(filter(Article.filter(), ({ articleGroupId }) => ids[articleGroupId]), 'name'),
     search,
   );
 
@@ -76,7 +83,7 @@ export function articleGroupsBySearch(search) {
 
   debug('articleGroupsBySearch', search, parentsWithArticlesIDs.length);
 
-  return parentsWithArticlesIDs.map(id => ArticleGroup.get(id));
+  return orderBy(parentsWithArticlesIDs.map(id => ArticleGroup.get(id)), 'name');
 
 }
 
