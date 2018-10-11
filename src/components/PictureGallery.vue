@@ -1,7 +1,7 @@
 <template lang="pug">
 
 .picture-gallery
-  .gallery-image(@click.prevent="onClick()")
+  .gallery-image(@click.prevent="$emit('image-click')")
 
     img(
     v-if="src"
@@ -22,7 +22,6 @@ export default {
 
   props: {
     image: Object,
-    onClick: Function,
   },
 
   computed: {

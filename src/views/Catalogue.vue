@@ -37,13 +37,16 @@ el-container.catalogue
       :parents="currentArticleGroupParents"
       v-model="currentArticleGroup"
       )
+
     el-main.articles(v-if="!loading")
+
       catalogue-article-list(
       v-if="articles.length"
       :items="articles"
       v-model="currentArticle"
-      :avatar-click="onArticleAvatarClick"
+      @avatar-click="onArticleAvatarClick"
       )
+
       .empty(
       v-else
       )
@@ -59,7 +62,7 @@ el-container.catalogue
   )
     picture-gallery(
     v-if="showGallery"
-    :on-click="closeGallery"
+    @image-click="closeGallery"
     :image="currentArticle && currentArticle.avatarPicture"
     )
 

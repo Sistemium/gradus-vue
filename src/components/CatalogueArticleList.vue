@@ -7,7 +7,7 @@ resize.list-group.catalogue-article-list(v-if="items.length" padding="35")
   @click.prevent="$emit('input', article)"
   :class="value && value.id === article.id && 'active'"
   )
-    span.avatar(@click.prevent.stop="avatarClick(article)")
+    span.avatar(@click.prevent.stop="$emit('avatar-click', article)")
       img.placeholder(v-if="!thumbnailSrc(article)" src="../assets/placeholder.png")
       img(:src="thumbnailSrc(article)" v-else)
     span {{ article.name }}
@@ -23,7 +23,6 @@ export default {
   props: {
     items: Array,
     value: Object,
-    avatarClick: Function,
   },
 
   methods: {
