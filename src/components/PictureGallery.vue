@@ -1,14 +1,17 @@
 <template lang="pug">
 
 .picture-gallery
+  .gallery-image(@click.prevent="onClick()")
 
-  el-dialog(
-  :title="title"
-  :fullscreen="true"
-  :show-close="true"
-  center
-  )
-    img(:src="src")
+    img(
+    v-if="src"
+    :src="src"
+    )
+
+    img(
+    v-else
+    src="../assets/placeholder.png"
+    )
 
 </template>
 <script>
@@ -18,13 +21,13 @@ export default {
   name: 'PictureGallery',
 
   props: {
-    title: String,
     image: Object,
+    onClick: Function,
   },
 
   computed: {
     src() {
-      const { largeSrc } = this.image;
+      const { image: { largeSrc } = {} } = this;
       return largeSrc;
     },
   },
@@ -36,9 +39,21 @@ export default {
 
 @import "../styles/variables";
 
-img {
-  max-height: 500px;
-  max-width: 500px;
+.picture-gallery {
+
+  text-align: center;
+  height: 100%;
+
+  .gallery-image {
+    height: 100%;
+  }
+
+  img {
+    cursor: zoom-out;
+    object-fit: contain;
+    max-height: 100%;
+  }
+
 }
 
 </style>

@@ -8,8 +8,8 @@ resize.list-group.catalogue-article-list(v-if="items.length" padding="35")
   :class="value && value.id === article.id && 'active'"
   )
     span.avatar(@click.prevent.stop="avatarClick(article)")
-      .img-placeholder(v-if="!article.avatarPicture")
-      img(:src="article.avatarPicture.thumbnailSrc" v-else)
+      img.placeholder(v-if="!thumbnailSrc(article)" src="../assets/placeholder.png")
+      img(:src="thumbnailSrc(article)" v-else)
     span {{ article.name }}
     span {{ article.extraLabel }}
 
@@ -17,12 +17,21 @@ resize.list-group.catalogue-article-list(v-if="items.length" padding="35")
 <script>
 
 export default {
+
   name: 'CatalogueArticleList',
+
   props: {
     items: Array,
     value: Object,
     avatarClick: Function,
   },
+
+  methods: {
+    thumbnailSrc(article) {
+      return article.avatarPicture && article.avatarPicture.thumbnailSrc;
+    },
+  },
+
 };
 
 </script>
@@ -32,20 +41,23 @@ export default {
 
 .list-group-item {
   display: flex;
+  padding: $margin-right;
   > * + * {
     margin-left: $margin-right;
   }
 }
 
+$avatar-size: 50px;
+
 .avatar {
   cursor: zoom-in;
-  min-width: 40px;
-  min-height: 40px;
+  min-width: $avatar-size;
+  min-height: $avatar-size;
   text-align: center;
   margin-right: $margin-right;
   img {
-    max-width: 40px;
-    max-height: 40px;
+    max-width: $avatar-size;
+    max-height: $avatar-size;
   }
 }
 

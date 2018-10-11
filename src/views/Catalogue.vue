@@ -31,13 +31,13 @@ el-container.catalogue
   element-loading-text="Загрузка данных ..."
   )
 
-    el-aside
+    el-aside(v-if="!loading")
       catalogue-group-list(
       :items="articleGroups"
       :parents="currentArticleGroupParents"
       v-model="currentArticleGroup"
       )
-    el-main.articles
+    el-main.articles(v-if="!loading")
       catalogue-article-list(
       v-if="articles.length"
       :items="articles"
@@ -57,11 +57,12 @@ el-container.catalogue
   custom-class="el-dialog-gallery"
   center
   )
-    .gallery(v-if="showGallery")
-      img(
-      :src="currentArticle && currentArticle.avatarPicture.largeSrc"
-      @click="showGallery = false"
-      )
+    picture-gallery(
+    v-if="showGallery"
+    :on-click="closeGallery"
+    :image="currentArticle && currentArticle.avatarPicture"
+    )
+
 
 </template>
 <script>
@@ -146,6 +147,10 @@ export default {
       this.currentArticle = article;
     },
 
+    closeGallery() {
+      this.showGallery = false;
+    },
+
   },
 
   components: {
@@ -171,19 +176,13 @@ export default {
   margin-left: $margin-right * 2;
 }
 
-.filters {
-  /*width: 300px;*/
-}
-
 .catalogue-header {
+
   height: 70px;
   margin-top: -20px;
   display: flex;
   align-items: center;
   padding-right: 0;
-
-  /*justify-content: space-between;*/
-  /*padding-left: 0;*/
 
   .crumbs {
     flex: 1;
@@ -209,16 +208,6 @@ export default {
 .empty {
   text-align: center;
   font-size: 150%;
-}
-
-.gallery {
-  text-align: center;
-  height: 100%;
-  img {
-    cursor: zoom-out;
-    object-fit: contain;
-    max-height: 100%;
-  }
 }
 
 </style>
