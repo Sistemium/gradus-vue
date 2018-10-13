@@ -1,8 +1,7 @@
 <template lang="pug">
 
 .home
-  img(alt="VR logo" src="../assets/3colors144.png")
-  hello-world(msg="Sistemium ")
+  hello-world(msg="Sistemium")
 
 </template>
 

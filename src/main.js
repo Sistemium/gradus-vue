@@ -1,7 +1,9 @@
 import Vue from 'vue';
 
 import '@/lib/element-ui';
-import '@/lib/sistemium';
+// import '@/lib/sistemium';
+
+import { AUTH_INIT } from 'sistemium-vue/store/auth/actions';
 
 import Resize from '@/lib/Resize.vue';
 
@@ -18,4 +20,7 @@ new Vue({
   router,
   store,
   render: h => h(App),
+  created() {
+    return store.dispatch(`auth/${AUTH_INIT}`);
+  },
 }).$mount('#app');

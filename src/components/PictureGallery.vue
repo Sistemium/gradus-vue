@@ -99,6 +99,7 @@ export default {
   }
 
   .take-photo-button {
+    margin-top: $margin-top * 2;
     display: inline-block;
   }
 
