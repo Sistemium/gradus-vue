@@ -13,15 +13,33 @@
     src="../assets/placeholder.png"
     )
 
+  take-photo-button(
+  @done="onUpload"
+  @error="unUploadError"
+  entity-name="ArticlePicture"
+  )
+
 </template>
 <script>
 
+import TakePhotoButton from '@/components/TakePhotoButton.vue';
+import log from 'sistemium-telegram/services/log';
+
+const name = 'PictureGallery';
+const { debug } = log(name);
+
 export default {
 
-  name: 'PictureGallery',
+  name,
 
   props: {
     image: Object,
+  },
+
+  data() {
+    return {
+      newImage: null,
+    };
   },
 
   computed: {
@@ -29,6 +47,28 @@ export default {
       const { image: { largeSrc } = {} } = this;
       return largeSrc;
     },
+  },
+
+  components: {
+    TakePhotoButton,
+  },
+
+  methods: {
+
+    unUploadError(err) {
+      const { message = JSON.stringify(err) } = err;
+      debug('unUploadError', message);
+      this.$message({
+        message,
+        type: 'warning',
+        showClose: true,
+      });
+    },
+
+    onUpload(image) {
+      debug('onUpload', JSON.stringify(image));
+    },
+
   },
 
 };
@@ -43,14 +83,23 @@ export default {
   text-align: center;
   height: 100%;
 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   .gallery-image {
-    height: 100%;
+    flex: 1;
+    min-height: 0;
   }
 
   img {
     cursor: zoom-out;
     object-fit: contain;
     max-height: 100%;
+  }
+
+  .take-photo-button {
+    display: inline-block;
   }
 
 }

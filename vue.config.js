@@ -8,6 +8,13 @@ module.exports = {
         //   '^/api/vr': '/api',
         // },
       },
+      '/ims': {
+        target: 'https://api.sistemium.com/ims/dr50',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/ims': '',
+        },
+      },
     },
   },
 };
