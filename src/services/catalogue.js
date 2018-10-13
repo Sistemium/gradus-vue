@@ -98,7 +98,7 @@ export function catalogueData(currentArticleGroup, searchText, filteredGroups) {
     groups = filter(filteredGroups, g => g.articleGroupId === articleGroupId);
     // debug('bindCurrent', groups.length, articleGroupId, children.length);
   } else {
-    groups = currentArticleGroup.parent.children;
+    groups = orderBy(currentArticleGroup.parent.children, 'name');
   }
 
   const articles = articlesByGroupID(currentArticleGroup, searchText) || [];
