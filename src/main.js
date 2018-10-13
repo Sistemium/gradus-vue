@@ -2,7 +2,6 @@ import Vue from 'vue';
 
 import '@/lib/element-ui';
 import '@/lib/sistemium';
-import '@/lib/loading';
 
 import Resize from '@/lib/Resize.vue';
 
