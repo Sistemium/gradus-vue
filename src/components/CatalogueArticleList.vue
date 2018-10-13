@@ -2,19 +2,19 @@
 
 resize.list-group.catalogue-article-list(v-if="items.length" padding="35")
 
-  .list-group-item(
-  v-for="article in items" :key="article.id"
-  @click.prevent="$emit('input', article)"
+  catalogue-article.list-group-item(
+  v-for="article in items"
+  :key="article.id"
   :class="value && value.id === article.id && 'active'"
+  :article="article"
+  @avatar-click="$emit('avatar-click', article)"
+  @input="$emit('input', article)"
   )
-    span.avatar(@click.prevent.stop="$emit('avatar-click', article)")
-      img.placeholder(v-if="!thumbnailSrc(article)" src="../assets/placeholder.png")
-      img(:src="thumbnailSrc(article)" v-else)
-    span {{ article.name }}
-    span {{ article.extraLabel }}
 
 </template>
 <script>
+
+import CatalogueArticle from './CatalogueArticle.vue';
 
 export default {
 
@@ -25,10 +25,8 @@ export default {
     value: Object,
   },
 
-  methods: {
-    thumbnailSrc(article) {
-      return article.avatarPicture && article.avatarPicture.thumbnailSrc;
-    },
+  components: {
+    CatalogueArticle,
   },
 
 };
@@ -41,23 +39,6 @@ export default {
 .list-group-item {
   display: flex;
   padding: $margin-right;
-  > * + * {
-    margin-left: $margin-right;
-  }
-}
-
-$avatar-size: 50px;
-
-.avatar {
-  cursor: zoom-in;
-  min-width: $avatar-size;
-  min-height: $avatar-size;
-  text-align: center;
-  margin-right: $margin-right;
-  img {
-    max-width: $avatar-size;
-    max-height: $avatar-size;
-  }
 }
 
 </style>
