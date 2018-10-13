@@ -1,0 +1,103 @@
+<template lang="pug">
+
+.take-photo-button
+
+  vue-core-image-upload.browser(
+  :crop="false"
+  @imageuploaded="imageUploaded"
+  @errorhandle="onError"
+  :data="imageData"
+  :max-file-size="5242880"
+  :headers="uploadHeaders"
+  :url="imsUrl()"
+  )
+    el-button.trigger(type="primary") {{ buttonText }}
+
+</template>
+<script>
+
+import { mapState } from 'vuex';
+// eslint-disable-next-line
+import VueCoreImageUpload from 'vue-core-image-upload';
+
+import { serverDateFormat } from 'sistemium-telegram/services/moments';
+import log from 'sistemium-telegram/services/log';
+// import { isNative, takePhoto } from '@/services/native';
+
+const NAME = 'TakePhotoButton';
+const { debug } = log(NAME);
+
+export default {
+
+  name: NAME,
+
+  props: {
+    entityName: String,
+    buttonText: {
+      type: String,
+      default: 'Добавить фото',
+    },
+  },
+
+  components: { VueCoreImageUpload },
+
+  data() {
+    return {
+      imageData: null,
+    };
+  },
+
+  computed: {
+    ...mapState('auth', { token: 'id' }),
+    // isNative,
+    uploadHeaders() {
+      return { authorization: this.token };
+    },
+  },
+
+  methods: {
+
+    imsUrl() {
+      return `/ims?folder=${this.entityName}/${serverDateFormat()}`;
+    },
+
+    // nativeTriggerClick() {
+    //   takePhoto(this.entityName, {})
+    //     .then(this.done);
+    // },
+
+    imageUploaded(res) {
+      debug('imageUploaded', res);
+      const { pictures: picturesInfo } = res;
+      if (!picturesInfo) {
+        this.$emit('error', res);
+        return;
+      }
+      this.$emit('done', { picturesInfo });
+    },
+
+    onError(params) {
+      this.$emit('error', params);
+    },
+
+  },
+
+};
+
+</script>
+<style scoped lang="scss">
+
+@import "../styles/variables";
+
+.take-photo-button {
+  border: solid 1px $gray-border-color;
+  border-radius: 4px;
+}
+
+.trigger {
+  box-shadow: none;
+  border: none;
+  width: 100%;
+}
+
+</style>
