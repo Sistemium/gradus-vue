@@ -70,7 +70,6 @@ el-container.catalogue
 </template>
 <script>
 
-import filter from 'lodash/filter';
 import debounce from 'lodash/debounce';
 import ArticleGroup from '@/models/ArticleGroup';
 import Article from '@/models/Article';
@@ -123,25 +122,17 @@ export default {
     },
 
     bindCurrent() {
-      const { id: articleGroupId = null, children = [] } = this.currentArticleGroup || {};
 
-      if (children.length || !articleGroupId) {
-        this.articleGroups = filter(this.filteredGroups, g => g.articleGroupId === articleGroupId);
-        debug('bindCurrent', this.articleGroups.length, articleGroupId, children.length);
-      }
+      const data = svc.catalogueData(
+        this.currentArticleGroup,
+        this.searchText,
+        this.filteredGroups,
+      );
 
-      this.articles = svc.articlesByGroupID(this.currentArticleGroup, this.searchText);
+      this.currentArticleGroupParents = data.parents;
+      this.articles = data.articles;
+      this.articleGroups = data.groups;
 
-      if (articleGroupId) {
-        if (children.length) {
-          this.currentArticleGroupParents = [
-            ...this.currentArticleGroup.parents(),
-            this.currentArticleGroup,
-          ];
-        }
-      } else {
-        this.currentArticleGroupParents = [];
-      }
     },
 
     onArticleAvatarClick(article) {

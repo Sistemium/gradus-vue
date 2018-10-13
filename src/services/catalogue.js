@@ -88,6 +88,42 @@ export function articleGroupsBySearch(search) {
 }
 
 
+export function catalogueData(currentArticleGroup, searchText, filteredGroups) {
+
+  const { id: articleGroupId = null, children = [] } = currentArticleGroup || {};
+
+  let groups = null;
+
+  if (children.length || !articleGroupId) {
+    groups = filter(filteredGroups, g => g.articleGroupId === articleGroupId);
+    // debug('bindCurrent', groups.length, articleGroupId, children.length);
+  } else {
+    groups = currentArticleGroup.parent.children;
+  }
+
+  const articles = articlesByGroupID(currentArticleGroup, searchText) || [];
+
+  let parents = [];
+
+  if (articleGroupId) {
+    if (children.length) {
+      parents = [
+        ...currentArticleGroup.parents(),
+        currentArticleGroup,
+      ];
+    } else {
+      parents = currentArticleGroup.parents();
+    }
+  }
+
+  return {
+    parents,
+    articles,
+    groups,
+  };
+
+}
+
 function searchArticles(articles, search) {
 
   if (!search) {
