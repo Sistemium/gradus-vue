@@ -7,9 +7,21 @@
   .title
     span {{ article.name }}
     span {{ article.extraLabel }}
+  .buttons
+    el-button(
+    circle
+    size="mini"
+    :icon="isSelectedToShare ? 'el-icon-circle-check' : 'el-icon-share'"
+    @click.prevent.stop="toggleShare(article)"
+    )
 
 </template>
 <script>
+
+import { mapGetters, mapMutations } from 'vuex';
+
+import { TOGGLE_ARTICLE_SHARE } from '@/vuex/catalogue/mutations';
+import { SHARED_ARTICLES } from '@/vuex/catalogue/getters';
 
 export default {
 
@@ -24,10 +36,19 @@ export default {
     article: Object,
   },
 
+  computed: {
+    ...mapGetters('catalogue', { sharedArticles: SHARED_ARTICLES }),
+    isSelectedToShare() {
+      const { sharedArticles, article } = this;
+      return sharedArticles && sharedArticles.indexOf(article.id) !== -1;
+    },
+  },
+
   methods: {
     thumbnailSrc(article) {
       return article.avatarPicture && article.avatarPicture.thumbnailSrc;
     },
+    ...mapMutations('catalogue', { toggleShare: TOGGLE_ARTICLE_SHARE }),
   },
 
 };
@@ -54,8 +75,15 @@ $avatar-size: 50px;
 
 }
 
-.title > * + * {
-  margin-left: $margin-right;
+.title {
+
+  flex: 1;
+
+  > * + * {
+    margin-left: $margin-right;
+  }
+
 }
+
 
 </style>

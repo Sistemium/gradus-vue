@@ -7,8 +7,8 @@ resize.list-group.catalogue-article-list(v-if="items.length" padding="35")
   :key="article.id"
   :class="value && value.id === article.id && 'active'"
   :article="article"
-  @avatar-click="$emit('avatar-click', article)"
   @input="$emit('input', article)"
+  @avatar-click="$emit('avatar-click', article)"
   )
 
 </template>
@@ -23,6 +23,7 @@ export default {
   props: {
     items: Array,
     value: Object,
+    shareItems: Object,
   },
 
   components: {
