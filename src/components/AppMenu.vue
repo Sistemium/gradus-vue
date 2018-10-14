@@ -43,17 +43,19 @@ export default {
 };
 
 </script>
-<style scoped lang="scss">
+<style lang="scss">
 
 @import "../styles/variables";
 
 $img-size: 30px;
 
-img {
-  height: $img-size;
-  width: $img-size;
-  & + * {
-    margin-left: $margin-right;
+.el-menu-item {
+  img {
+    height: $img-size;
+    width: $img-size;
+    & + * {
+      margin-left: $margin-right;
+    }
   }
 }
 
