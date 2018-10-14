@@ -12,7 +12,7 @@ import ArticlePicture from '@/models/ArticlePicture';
 
 import log from 'sistemium-telegram/services/log';
 
-const { debug } = log('catalogue');
+const { debug, error } = log('catalogue');
 
 export async function loadData() {
 
@@ -121,6 +121,27 @@ export function catalogueData(currentArticleGroup, searchText, filteredGroups) {
     articles,
     groups,
   };
+
+}
+
+/**
+ * Links articles to each other
+ * @param {Object} article
+ * @param {Array} sameArticles
+ */
+
+export function setSameArticle(article, sameArticles) {
+
+  const { id: articleSameId } = article;
+
+  sameArticles.forEach(id => {
+    const sameArticle = Article.get(id);
+    if (!sameArticle) {
+      error('Not found same article', id);
+      return;
+    }
+    sameArticle.articleSameId = articleSameId;
+  });
 
 }
 

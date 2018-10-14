@@ -4,24 +4,29 @@
   .avatar(@click.prevent.stop="$emit('avatar-click')")
     img.placeholder(v-if="!thumbnailSrc(article)" src="../assets/placeholder.png")
     img(:src="thumbnailSrc(article)" v-else)
-  .title
-    span {{ article.name }}
-    span {{ article.extraLabel }}
+  .main
+    .title
+      span {{ article.name }}
+      span {{ article.extraLabel }}
+    .operations(v-if="operations")
+      a.article-operation(@click.prevent.stop="shareWithArticle(article)") Объединить
   .buttons
     el-button(
     circle
     size="mini"
     :icon="isSelectedToShare ? 'el-icon-circle-check' : 'el-icon-share'"
+    :type="isSelectedToShare ? 'success' : 'default'"
     @click.prevent.stop="toggleShare(article)"
     )
 
 </template>
 <script>
 
-import { mapGetters, mapMutations } from 'vuex';
+import * as vuex from 'vuex';
 
 import { TOGGLE_ARTICLE_SHARE } from '@/vuex/catalogue/mutations';
 import { SHARED_ARTICLES } from '@/vuex/catalogue/getters';
+import { SHARE_WITH_ARTICLE } from '@/vuex/catalogue/actions';
 
 export default {
 
@@ -37,18 +42,30 @@ export default {
   },
 
   computed: {
-    ...mapGetters('catalogue', { sharedArticles: SHARED_ARTICLES }),
+
+    ...vuex.mapGetters('catalogue', { sharedArticles: SHARED_ARTICLES }),
+
     isSelectedToShare() {
       const { sharedArticles, article } = this;
       return sharedArticles && sharedArticles.indexOf(article.id) !== -1;
     },
+
+    operations() {
+      const { sharedArticles, isSelectedToShare } = this;
+      return !isSelectedToShare && sharedArticles.length && sharedArticles;
+    },
+
   },
 
   methods: {
+
+    ...vuex.mapMutations('catalogue', { toggleShare: TOGGLE_ARTICLE_SHARE }),
+    ...vuex.mapActions('catalogue', { shareWithArticle: SHARE_WITH_ARTICLE }),
+
     thumbnailSrc(article) {
       return article.avatarPicture && article.avatarPicture.thumbnailSrc;
     },
-    ...mapMutations('catalogue', { toggleShare: TOGGLE_ARTICLE_SHARE }),
+
   },
 
 };
@@ -75,12 +92,23 @@ $avatar-size: 50px;
 
 }
 
-.title {
+.main {
 
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
-  > * + * {
-    margin-left: $margin-right;
+  .title {
+
+    > * + * {
+      margin-left: $margin-right;
+    }
+
+  }
+
+  .operations {
+    font-size: 80%;
   }
 
 }
