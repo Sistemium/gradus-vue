@@ -1,7 +1,7 @@
 <template lang="pug">
 
-.catalogue-article(@click="$emit('input', article)")
-  .avatar(@click.prevent.stop="$emit('avatar-click', article)")
+.catalogue-article(@click="$emit('input')")
+  .avatar(@click.prevent.stop="$emit('avatar-click')")
     img.placeholder(v-if="!thumbnailSrc(article)" src="../assets/placeholder.png")
     img(:src="thumbnailSrc(article)" v-else)
   .title

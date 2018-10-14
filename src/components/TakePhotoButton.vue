@@ -11,7 +11,7 @@
   :headers="uploadHeaders"
   :url="imsUrl()"
   )
-    el-button.trigger(type="primary") {{ buttonText }}
+    el-button.trigger(plain type="primary") {{ buttonText }}
 
 </template>
 <script>
