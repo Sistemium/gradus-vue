@@ -1,6 +1,7 @@
 <template lang="pug">
 
 el-menu(:default-active="$route.path" mode="horizontal" :router="true")
+
   el-menu-item(index="/")
     img(src="../assets/icons8-home.svg")
     span Начало
@@ -11,16 +12,34 @@ el-menu(:default-active="$route.path" mode="horizontal" :router="true")
     img(src="../assets/icons8-info.svg")
     span О проекте
 
+  account-menu#account-menu(
+  v-if="account"
+  :account="account"
+  index="/account"
+  )
+
 </template>
 <script>
 
+import { mapState } from 'vuex';
+import AccountMenu from '@/components/AccountMenu.vue';
+
 export default {
+
   name: 'AppMenu',
+
   data() {
     return {
       // activeIndex: '/',
     };
   },
+
+  computed: {
+    ...mapState('auth', { account: 'account' }),
+  },
+
+  components: { AccountMenu },
+
 };
 
 </script>
@@ -36,6 +55,10 @@ img {
   & + * {
     margin-left: $margin-right;
   }
+}
+
+#account-menu {
+  float: right;
 }
 
 </style>
