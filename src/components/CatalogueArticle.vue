@@ -1,17 +1,34 @@
 <template lang="pug">
 
-.catalogue-article(@click="$emit('input')")
+.catalogue-article(
+@click="toggleSelected(article)"
+:class="{active: isSelected, 'has-same': sameArticles.length}"
+)
+
   .avatar(@click.prevent.stop="$emit('avatar-click')")
     img.placeholder(v-if="!thumbnailSrc(article)" src="../assets/placeholder.png")
     img(:src="thumbnailSrc(article)" v-else)
+
   .main
     .title
       span {{ article.name }}
       span {{ article.extraLabel }}
-    .operations(v-if="operations")
-      a.article-operation(@click.prevent.stop="shareWithArticle(article)") Объединить
+    .sub-title
+      small.same-articles(v-if="sameArticles.length") +{{ sameArticles.length }}
+
   .buttons
+
     el-button(
+    v-if="isSelected && sharedArticles.length && !isSelectedToShare"
+    circle
+    size="mini"
+    icon="el-icon-circle-plus-outline"
+    type="warning"
+    @click.prevent.stop="shareWithArticle(article)"
+    )
+
+    el-button(
+    v-if="!isSelected && !sameArticles.length"
     circle
     size="mini"
     :icon="isSelectedToShare ? 'el-icon-circle-check' : 'el-icon-share'"
@@ -24,18 +41,21 @@
 
 import * as vuex from 'vuex';
 
-import { TOGGLE_ARTICLE_SHARE } from '@/vuex/catalogue/mutations';
-import { SHARED_ARTICLES } from '@/vuex/catalogue/getters';
+import { TOGGLE_ARTICLE_SHARE, TOGGLE_ARTICLE_SELECTED } from '@/vuex/catalogue/mutations';
+import { SHARED_ARTICLES, SELECTED_ARTICLE } from '@/vuex/catalogue/getters';
 import { SHARE_WITH_ARTICLE } from '@/vuex/catalogue/actions';
 
 export default {
 
   name: 'CatalogueArticle',
 
+
   props: {
     /**
      * @property {String} article.name
+     * @property {String} article.id
      * @property {String} article.extraLabel
+     * @property {Array} article.sameArticles
      * @property {Object} article.avatarPicture.thumbnailSrc
      */
     article: Object,
@@ -43,23 +63,35 @@ export default {
 
   computed: {
 
-    ...vuex.mapGetters('catalogue', { sharedArticles: SHARED_ARTICLES }),
+    ...vuex.mapState('catalogue', {
+      isSelected(state) {
+        const selected = state[SELECTED_ARTICLE] || {};
+        return selected.id === this.article.id;
+      },
+      sharedArticles: SHARED_ARTICLES,
+    }),
+
+    // ...vuex.mapGetters('catalogue', {
+    // }),
 
     isSelectedToShare() {
       const { sharedArticles, article } = this;
       return sharedArticles && sharedArticles.indexOf(article.id) !== -1;
     },
 
-    operations() {
-      const { sharedArticles, isSelectedToShare } = this;
-      return !isSelectedToShare && sharedArticles.length && sharedArticles;
+    sameArticles() {
+      const { article } = this;
+      return article.sameArticles;
     },
 
   },
 
   methods: {
 
-    ...vuex.mapMutations('catalogue', { toggleShare: TOGGLE_ARTICLE_SHARE }),
+    ...vuex.mapMutations('catalogue', {
+      toggleShare: TOGGLE_ARTICLE_SHARE,
+      toggleSelected: TOGGLE_ARTICLE_SELECTED,
+    }),
     ...vuex.mapActions('catalogue', { shareWithArticle: SHARE_WITH_ARTICLE }),
 
     thumbnailSrc(article) {
@@ -92,6 +124,10 @@ $avatar-size: 50px;
 
 }
 
+.has-same {
+  background-color: $gray-background;
+}
+
 .main {
 
   flex: 1;
@@ -100,6 +136,8 @@ $avatar-size: 50px;
   justify-content: space-between;
 
   .title {
+
+    margin-right: $margin-right;
 
     > * + * {
       margin-left: $margin-right;

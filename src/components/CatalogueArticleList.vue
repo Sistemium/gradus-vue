@@ -3,17 +3,17 @@
 resize.list-group.catalogue-article-list(v-if="items.length" padding="35")
 
   catalogue-article.list-group-item(
-  v-for="article in items"
+  v-for="article in groupedItems()"
   :key="article.id"
-  :class="value && value.id === article.id && 'active'"
   :article="article"
-  @input="$emit('input', article)"
   @avatar-click="$emit('avatar-click', article)"
   )
 
 </template>
 <script>
 
+import Article from '@/models/Article';
+import { groupedArticles } from '@/services/catalogue';
 import CatalogueArticle from './CatalogueArticle.vue';
 
 export default {
@@ -22,8 +22,20 @@ export default {
 
   props: {
     items: Array,
-    value: Object,
-    shareItems: Object,
+  },
+
+  methods: {
+    groupedItems() {
+      return groupedArticles(this.items);
+    },
+  },
+
+  created() {
+    Article.bind(this);
+  },
+
+  beforeDestroy() {
+    Article.unbindAll(this);
   },
 
   components: {

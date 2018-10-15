@@ -15,6 +15,16 @@ el-container.catalogue
       )
         a(@click.prevent="currentArticleGroup = parent") {{ parent.name }}
 
+    el-dropdown.selected(v-if="sharedArticles.length")
+      a.el-dropdown-link
+        span Выбрано:
+        strong {{ sharedArticles.length }}
+        i.el-icon-arrow-down.el-icon--right
+      el-dropdown-menu(slot="dropdown")
+        el-dropdown-item(
+        v-for="article in selectedArticles" :key="article.id"
+        ) {{ article.name }}
+
     .stats
       span Товаров:
       strong {{ articles.length }}
@@ -43,7 +53,6 @@ el-container.catalogue
       catalogue-article-list(
       v-if="articles.length"
       :items="articles"
-      v-model="currentArticle"
       @avatar-click="onArticleAvatarClick"
       )
 
@@ -71,7 +80,13 @@ el-container.catalogue
 <script>
 
 import debounce from 'lodash/debounce';
-import ArticleGroup from '@/models/ArticleGroup';
+import * as vuex from 'vuex';
+import map from 'lodash/map';
+
+// import { TOGGLE_ARTICLE_SHARE } from '@/vuex/catalogue/mutations';
+import { SHARED_ARTICLES } from '@/vuex/catalogue/getters';
+
+// import ArticleGroup from '@/models/ArticleGroup';
 import Article from '@/models/Article';
 
 import * as svc from '@/services/catalogue';
@@ -102,7 +117,12 @@ export default {
     };
   },
 
-  computed: {},
+  computed: {
+    ...vuex.mapGetters('catalogue', { sharedArticles: SHARED_ARTICLES }),
+    selectedArticles() {
+      return map(this.sharedArticles, id => Article.get(id));
+    },
+  },
 
   async created() {
     this.loading = true;
@@ -154,8 +174,8 @@ export default {
   },
 
   beforeDestroy() {
-    ArticleGroup.unbindAll(this);
-    Article.unbindAll(this);
+    // ArticleGroup.unbindAll(this);
+    // Article.unbindAll(this);
   },
 
 };
@@ -182,7 +202,7 @@ export default {
     flex: 1;
   }
 
-  .stats {
+  .stats, .selected {
     margin: auto $margin-top;
     strong {
       margin-left: $margin-right;
@@ -204,4 +224,10 @@ export default {
   font-size: 150%;
 }
 
+.el-popper {
+  max-width: 500px;
+  li {
+    font-size: 85%;
+  }
+}
 </style>

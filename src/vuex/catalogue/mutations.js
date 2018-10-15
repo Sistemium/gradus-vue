@@ -1,5 +1,6 @@
 export const TOGGLE_ARTICLE_SHARE = 'TOGGLE_ARTICLE_SHARE';
 export const RESET_SHARED_ARTICLES = 'RESET_SHARED_ARTICLES';
+export const TOGGLE_ARTICLE_SELECTED = 'TOGGLE_ARTICLE_SELECTED';
 
 export default {
 
@@ -18,6 +19,12 @@ export default {
     } else {
       selectedToShare.push(article.id);
     }
+
+  },
+
+  [TOGGLE_ARTICLE_SELECTED](state, article) {
+
+    state.selectedArticle = state.selectedArticle === article ? null : article;
 
   },
 

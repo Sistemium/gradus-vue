@@ -134,15 +134,27 @@ export function setSameArticle(article, sameArticles) {
 
   const { id: articleSameId } = article;
 
-  sameArticles.forEach(id => {
+  const saving = sameArticles.map(id => {
     const sameArticle = Article.get(id);
     if (!sameArticle) {
       error('Not found same article', id);
-      return;
+      return false;
     }
     sameArticle.articleSameId = articleSameId;
+    return Article.safeSave(sameArticle);
   });
 
+  return Promise.all(saving);
+
+}
+
+/**
+ * Only articles not linked with same
+ * @param {Array} articles
+ */
+
+export function groupedArticles(articles) {
+  return filter(articles, a => !a.articleSameId);
 }
 
 function searchArticles(articles, search) {

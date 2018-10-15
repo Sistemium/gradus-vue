@@ -5,8 +5,8 @@ export const SHARE_WITH_ARTICLE = 'SHARE_WITH_ARTICLE';
 
 export default {
 
-  [SHARE_WITH_ARTICLE]({ commit, state: { selectedToShare } }, article) {
-    setSameArticle(article, selectedToShare);
+  async [SHARE_WITH_ARTICLE]({ commit, state: { selectedToShare } }, article) {
+    await setSameArticle(article, selectedToShare);
     commit(RESET_SHARED_ARTICLES);
   },
 
