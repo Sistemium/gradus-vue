@@ -10,8 +10,8 @@
   "dependencies": {
     "element-ui": "^2.4.8",
     "lodash": "^4.17.11",
-    "sistemium-telegram": "^1.2.5",
-    "sistemium-vue": "^1.0.1",
+    "sistemium-telegram": "^1.2.7",
+    "sistemium-vue": "^1.0.2",
     "vue": "^2.5.17",
     "vue-core-image-upload": "^2.4.11",
     "vue-router": "^3.0.1",
@@ -22,6 +22,7 @@
     "@vue/cli-plugin-eslint": "^3.0.4",
     "@vue/cli-service": "^3.0.4",
     "@vue/eslint-config-airbnb": "^3.0.4",
+    "eslint-plugin-jest": "^21.25.0",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",
     "vue-cli-plugin-pug": "^1.0.7",
@@ -48,6 +49,17 @@
       "arrow-parens": [
         "error",
         "as-needed"
+      ],
+      "no-param-reassign": [
+        "error",
+        {
+          "props": true,
+          "ignorePropertyModificationsFor": [
+            "state",
+            "acc",
+            "e"
+          ]
+        }
       ]
     },
     "parserOptions": {
