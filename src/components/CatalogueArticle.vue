@@ -5,7 +5,7 @@
 :class="{active: isSelected, 'has-same': sameArticles.length}"
 )
 
-  .avatar(@click.prevent.stop="$emit('avatar-click')")
+  .avatar(@click.prevent.stop="avatarClick(article)")
     img.placeholder(v-if="!thumbnailSrc(article)" src="../assets/placeholder.png")
     img(:src="thumbnailSrc(article)" v-else)
 
@@ -43,7 +43,7 @@ import { createNamespacedHelpers } from 'vuex';
 
 import { TOGGLE_ARTICLE_SHARE, TOGGLE_ARTICLE_SELECTED } from '@/vuex/catalogue/mutations';
 import { SHARED_ARTICLES, SELECTED_ARTICLE } from '@/vuex/catalogue/getters';
-import { SHARE_WITH_ARTICLE } from '@/vuex/catalogue/actions';
+import { SHARE_WITH_ARTICLE, ARTICLE_AVATAR_CLICK } from '@/vuex/catalogue/actions';
 
 const vuex = createNamespacedHelpers('catalogue');
 
@@ -95,7 +95,10 @@ export default {
       toggleShare: TOGGLE_ARTICLE_SHARE,
       toggleSelected: TOGGLE_ARTICLE_SELECTED,
     }),
-    ...vuex.mapActions({ shareWithArticle: SHARE_WITH_ARTICLE }),
+    ...vuex.mapActions({
+      shareWithArticle: SHARE_WITH_ARTICLE,
+      avatarClick: ARTICLE_AVATAR_CLICK,
+    }),
 
     thumbnailSrc(article) {
       return article.avatarPicture && article.avatarPicture.thumbnailSrc;
