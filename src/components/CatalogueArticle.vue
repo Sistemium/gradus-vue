@@ -39,34 +39,37 @@
 </template>
 <script>
 
-import * as vuex from 'vuex';
+import { createNamespacedHelpers } from 'vuex';
 
 import { TOGGLE_ARTICLE_SHARE, TOGGLE_ARTICLE_SELECTED } from '@/vuex/catalogue/mutations';
 import { SHARED_ARTICLES, SELECTED_ARTICLE } from '@/vuex/catalogue/getters';
 import { SHARE_WITH_ARTICLE } from '@/vuex/catalogue/actions';
 
+const vuex = createNamespacedHelpers('catalogue');
+
+/**
+ * @property {String} article.name
+ * @property {String} article.id
+ * @property {String} article.extraLabel
+ * @property {Array} article.sameArticles
+ * @property {Object} article.avatarPicture.thumbnailSrc
+ */
+
 export default {
 
   name: 'CatalogueArticle',
 
-
   props: {
-    /**
-     * @property {String} article.name
-     * @property {String} article.id
-     * @property {String} article.extraLabel
-     * @property {Array} article.sameArticles
-     * @property {Object} article.avatarPicture.thumbnailSrc
-     */
     article: Object,
   },
 
   computed: {
 
-    ...vuex.mapState('catalogue', {
+    ...vuex.mapState({
       isSelected(state) {
+        const { article } = this;
         const selected = state[SELECTED_ARTICLE] || {};
-        return selected.id === this.article.id;
+        return selected.id === article.id;
       },
       sharedArticles: SHARED_ARTICLES,
     }),
@@ -88,11 +91,11 @@ export default {
 
   methods: {
 
-    ...vuex.mapMutations('catalogue', {
+    ...vuex.mapMutations({
       toggleShare: TOGGLE_ARTICLE_SHARE,
       toggleSelected: TOGGLE_ARTICLE_SELECTED,
     }),
-    ...vuex.mapActions('catalogue', { shareWithArticle: SHARE_WITH_ARTICLE }),
+    ...vuex.mapActions({ shareWithArticle: SHARE_WITH_ARTICLE }),
 
     thumbnailSrc(article) {
       return article.avatarPicture && article.avatarPicture.thumbnailSrc;
