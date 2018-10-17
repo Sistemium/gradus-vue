@@ -6,7 +6,7 @@
 )
 
   .avatar(@click.prevent.stop="avatarClick(article)")
-    img.placeholder(v-if="!thumbnailSrc(article)" src="../assets/placeholder.png")
+    img.placeholder(v-if="!thumbnailSrc(article)" src="/images/placeholder.png")
     img(:src="thumbnailSrc(article)" v-else)
 
   .main
@@ -74,9 +74,6 @@ export default {
       sharedArticles: SHARED_ARTICLES,
     }),
 
-    // ...vuex.mapGetters('catalogue', {
-    // }),
-
     isSelectedToShare() {
       const { sharedArticles, article } = this;
       return sharedArticles && sharedArticles.indexOf(article.id) !== -1;
@@ -95,6 +92,7 @@ export default {
       toggleShare: TOGGLE_ARTICLE_SHARE,
       toggleSelected: TOGGLE_ARTICLE_SELECTED,
     }),
+
     ...vuex.mapActions({
       shareWithArticle: SHARE_WITH_ARTICLE,
       avatarClick: ARTICLE_AVATAR_CLICK,

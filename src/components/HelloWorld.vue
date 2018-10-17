@@ -1,7 +1,7 @@
 <template lang="pug">
 
 .hello
-  img(alt="VR logo" src="../assets/3colors144.png")
+  img(alt="VR logo" src="/images/3colors144.png")
   h1 {{ msg }}
   p The project it just initialized and no functionality is implemented yet
 

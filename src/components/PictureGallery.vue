@@ -10,7 +10,7 @@
 
     img(
     v-else
-    src="../assets/placeholder.png"
+    src="/images/placeholder.png"
     )
 
   take-photo-button(
