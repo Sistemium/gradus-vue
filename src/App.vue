@@ -20,7 +20,7 @@
 
         p.buttons(v-if="!authorizing")
           router-link(to="/sign-in" tag="div")
-             el-button(type="primary") Вход для клиентов
+            el-button(type="primary") Вход для клиентов
 
 </template>
 <script>

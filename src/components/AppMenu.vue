@@ -1,16 +1,18 @@
 <template lang="pug">
 
-el-menu(:default-active="$route.path" mode="horizontal" :router="true")
+#app-menu
 
-  el-menu-item(index="/")
-    img(src="../assets/icons8-home.svg")
-    span Начало
-  el-menu-item(index="/catalogue")
-    img(src="../assets/icons8-moleskine.svg")
-    span Каталог
-  el-menu-item(index="/about")
-    img(src="../assets/icons8-info.svg")
-    span О проекте
+  el-menu#main-menu(:default-active="$route.path" mode="horizontal" :router="true")
+
+    el-menu-item(index="/")
+      img(src="../assets/icons8-home.svg")
+      span Начало
+    el-menu-item(index="/catalogue")
+      img(src="../assets/icons8-moleskine.svg")
+      span Каталог
+    el-menu-item(index="/about")
+      img(src="../assets/icons8-info.svg")
+      span О проекте
 
   account-menu#account-menu(
   v-if="account"
@@ -49,6 +51,20 @@ export default {
 
 $img-size: 30px;
 
+#app-menu {
+
+  display: flex;
+
+  #main-menu {
+    flex: 1;
+  }
+
+  #account-menu {
+    /*float: right;*/
+  }
+
+}
+
 .el-menu-item {
   img {
     height: $img-size;
@@ -57,10 +73,6 @@ $img-size: 30px;
       margin-left: $margin-right;
     }
   }
-}
-
-#account-menu {
-  float: right;
 }
 
 </style>

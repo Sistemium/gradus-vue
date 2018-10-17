@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
+import SignIn from './views/SignIn.vue';
 
 Vue.use(Router);
 
@@ -30,6 +31,14 @@ export default new Router({
       component: () => import(/* webpackChunkName: "catalogue" */ './views/Catalogue.vue'),
       meta: {
         label: 'Каталог',
+      },
+    },
+    {
+      path: '/sign-in',
+      name: 'signIn',
+      component: SignIn,
+      meta: {
+        label: 'Авторизация',
       },
     },
   ],

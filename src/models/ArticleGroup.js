@@ -1,7 +1,7 @@
-import Model from 'sistemium-vue/jsdata/Model';
+import VueManagedModel from 'sistemium-vue/jsdata/Model';
 import forEach from 'lodash/forEach';
 
-export default new Model({
+export default new VueManagedModel({
 
   name: 'ArticleGroup',
 
