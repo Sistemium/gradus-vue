@@ -4,6 +4,7 @@ export const SHARED_ARTICLES = 'selectedToShare';
 export const SELECTED_ARTICLE = 'selectedArticle';
 export const AVATAR_ARTICLE = 'avatarArticle';
 export const ARTICLE_GROUP = 'articleGroup';
+export const SEARCH_TEXT = 'searchText';
 
 
 export default {
@@ -24,6 +25,10 @@ export default {
   [ARTICLE_GROUP](state) {
     const id = state[ARTICLE_GROUP];
     return id ? catalogue.getArticleGroup(id) : null;
+  },
+
+  [SEARCH_TEXT](state) {
+    return state[SEARCH_TEXT];
   },
 
 };

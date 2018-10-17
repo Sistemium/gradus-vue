@@ -69,16 +69,13 @@ el-container.catalogue
 </template>
 <script>
 
-import debounce from 'lodash/debounce';
 import { createNamespacedHelpers } from 'vuex';
 
 import map from 'lodash/map';
 
-// import { TOGGLE_ARTICLE_SHARE } from '@/vuex/catalogue/mutations';
 import * as getters from '@/vuex/catalogue/getters';
 import * as actions from '@/vuex/catalogue/actions';
 
-// import ArticleGroup from '@/models/ArticleGroup';
 import Article from '@/models/Article';
 
 import * as svc from '@/services/catalogue';
@@ -87,9 +84,6 @@ import CatalogueGroupList from '@/components/CatalogueGroupList.vue';
 import CatalogueArticleList from '@/components/CatalogueArticleList.vue';
 import CatalogueArticleDialog from '@/components/CatalogueArticleDialog.vue';
 
-// import log from 'sistemium-telegram/services/log';
-//
-// const { debug } = log('catalogue');
 const { mapActions, mapGetters } = createNamespacedHelpers('catalogue');
 
 export default {
@@ -101,7 +95,6 @@ export default {
       articles: [],
       articleGroups: [],
       currentArticleGroupParents: [],
-      searchText: '',
       loading: false,
       filteredGroups: [],
     };
@@ -112,6 +105,10 @@ export default {
       sharedArticles: getters.SHARED_ARTICLES,
       fullScreenArticle: getters.AVATAR_ARTICLE,
     }),
+    searchText: {
+      ...mapGetters({ get: getters.SEARCH_TEXT }),
+      ...mapActions({ set: actions.SEARCH_TEXT_CHANGE }),
+    },
     currentArticleGroup: {
       ...mapGetters({ get: getters.ARTICLE_GROUP }),
       ...mapActions({ set: actions.ARTICLE_GROUP_CLICK }),
@@ -126,8 +123,7 @@ export default {
     await svc.loadData();
     this.loading = false;
     this.$watch('currentArticleGroup', this.bindCurrent);
-    this.$watch('searchText', debounce(this.bindArticles, 750));
-    this.bindArticles();
+    this.$watch('searchText', this.bindArticles, { immediate: true });
   },
 
   methods: {
