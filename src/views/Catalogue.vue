@@ -71,12 +71,8 @@ el-container.catalogue
 
 import { createNamespacedHelpers } from 'vuex';
 
-import map from 'lodash/map';
-
 import * as getters from '@/vuex/catalogue/getters';
 import * as actions from '@/vuex/catalogue/actions';
-
-import Article from '@/models/Article';
 
 import * as svc from '@/services/catalogue';
 
@@ -114,7 +110,7 @@ export default {
       ...mapActions({ set: actions.ARTICLE_GROUP_CLICK }),
     },
     selectedArticles() {
-      return map(this.sharedArticles, id => Article.get(id));
+      return svc.getArticles(this.sharedArticles);
     },
   },
 
@@ -156,11 +152,6 @@ export default {
     CatalogueArticleDialog,
     CatalogueGroupList,
     CatalogueArticleList,
-  },
-
-  beforeDestroy() {
-    // ArticleGroup.unbindAll(this);
-    // Article.unbindAll(this);
   },
 
 };
@@ -215,4 +206,5 @@ export default {
     font-size: 85%;
   }
 }
+
 </style>

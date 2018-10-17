@@ -60,6 +60,10 @@ export function getArticle(id) {
   return Article.get(id);
 }
 
+export function getArticles(ids) {
+  return Article.getMany(ids);
+}
+
 
 export function getArticleGroup(id) {
   return ArticleGroup.get(id);
