@@ -55,9 +55,16 @@ export async function loadData() {
 
 }
 
+
 export function getArticle(id) {
   return Article.get(id);
 }
+
+
+export function getArticleGroup(id) {
+  return ArticleGroup.get(id);
+}
+
 
 export function articlesByGroupID(articleGroup, search) {
 

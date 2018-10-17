@@ -4,11 +4,16 @@ export const TOGGLE_ARTICLE_SHARE = 'TOGGLE_ARTICLE_SHARE';
 export const RESET_SHARED_ARTICLES = 'RESET_SHARED_ARTICLES';
 export const TOGGLE_ARTICLE_SELECTED = 'TOGGLE_ARTICLE_SELECTED';
 export const SET_AVATAR_ARTICLE = `SET_${g.AVATAR_ARTICLE}`;
+export const SET_ARTICLE_GROUP = `SET_${g.ARTICLE_GROUP}`;
 
 export default {
 
   [SET_AVATAR_ARTICLE](state, article) {
     state[g.AVATAR_ARTICLE] = article ? article.id : null;
+  },
+
+  [SET_ARTICLE_GROUP](state, articleGroup = {}) {
+    state[g.ARTICLE_GROUP] = articleGroup.id || null;
   },
 
   [RESET_SHARED_ARTICLES]({ selectedToShare }) {
@@ -30,9 +35,7 @@ export default {
   },
 
   [TOGGLE_ARTICLE_SELECTED](state, article) {
-
     state.selectedArticle = state.selectedArticle === article ? null : article;
-
   },
 
 };

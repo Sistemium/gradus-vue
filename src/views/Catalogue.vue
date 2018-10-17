@@ -70,12 +70,13 @@ el-container.catalogue
 <script>
 
 import debounce from 'lodash/debounce';
-import * as vuex from 'vuex';
+import { createNamespacedHelpers } from 'vuex';
+
 import map from 'lodash/map';
 
 // import { TOGGLE_ARTICLE_SHARE } from '@/vuex/catalogue/mutations';
-import { SHARED_ARTICLES, AVATAR_ARTICLE } from '@/vuex/catalogue/getters';
-import { ARTICLE_AVATAR_CLICK } from '@/vuex/catalogue/actions';
+import * as getters from '@/vuex/catalogue/getters';
+import * as actions from '@/vuex/catalogue/actions';
 
 // import ArticleGroup from '@/models/ArticleGroup';
 import Article from '@/models/Article';
@@ -89,6 +90,7 @@ import CatalogueArticleDialog from '@/components/CatalogueArticleDialog.vue';
 // import log from 'sistemium-telegram/services/log';
 //
 // const { debug } = log('catalogue');
+const { mapActions, mapGetters } = createNamespacedHelpers('catalogue');
 
 export default {
 
@@ -98,7 +100,6 @@ export default {
     return {
       articles: [],
       articleGroups: [],
-      currentArticleGroup: null,
       currentArticleGroupParents: [],
       searchText: '',
       loading: false,
@@ -107,10 +108,14 @@ export default {
   },
 
   computed: {
-    ...vuex.mapGetters('catalogue', {
-      sharedArticles: SHARED_ARTICLES,
-      fullScreenArticle: AVATAR_ARTICLE,
+    ...mapGetters({
+      sharedArticles: getters.SHARED_ARTICLES,
+      fullScreenArticle: getters.AVATAR_ARTICLE,
     }),
+    currentArticleGroup: {
+      ...mapGetters({ get: getters.ARTICLE_GROUP }),
+      ...mapActions({ set: actions.ARTICLE_GROUP_CLICK }),
+    },
     selectedArticles() {
       return map(this.sharedArticles, id => Article.get(id));
     },
@@ -127,7 +132,7 @@ export default {
 
   methods: {
 
-    ...vuex.mapActions('catalogue', { closeGallery: ARTICLE_AVATAR_CLICK }),
+    ...mapActions({ closeGallery: actions.ARTICLE_AVATAR_CLICK }),
 
     bindArticles() {
 

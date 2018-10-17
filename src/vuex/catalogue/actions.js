@@ -3,6 +3,7 @@ import * as m from '@/vuex/catalogue/mutations';
 
 export const SHARE_WITH_ARTICLE = 'SHARE_WITH_ARTICLE';
 export const ARTICLE_AVATAR_CLICK = 'ARTICLE_AVATAR_CLICK';
+export const ARTICLE_GROUP_CLICK = 'ARTICLE_GROUP_CLICK';
 
 export default {
 
@@ -13,6 +14,10 @@ export default {
 
   [ARTICLE_AVATAR_CLICK]({ commit }, article) {
     commit(m.SET_AVATAR_ARTICLE, article || null);
+  },
+
+  [ARTICLE_GROUP_CLICK]({ commit }, articleGroup) {
+    commit(m.SET_ARTICLE_GROUP, articleGroup);
   },
 
 };

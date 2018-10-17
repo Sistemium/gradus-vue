@@ -7,7 +7,7 @@ padding="35"
 
   .list-group-item.parent(
   v-for="parent in parents" :key="parent.id"
-  @click.prevent="parentClick(parent)"
+  @click.prevent="itemClick(parent)"
   :class="value && value.id === parent.id && 'active'"
   )
     i.el-icon-arrow-left
@@ -15,7 +15,7 @@ padding="35"
 
   .list-group-item.item(
   v-for="item in items" :key="item.id"
-  @click.prevent="parentClick(item)"
+  @click.prevent="itemClick(item)"
   v-if="notEmpty(item)"
   :class="value && value.id === item.id && 'active'"
   )
@@ -35,9 +35,9 @@ export default {
 
   methods: {
 
-    parentClick(parent) {
+    itemClick(item) {
       const { value } = this;
-      this.$emit('input', (value && parent.id === value.id) ? parent.parent : parent);
+      this.$emit('input', (value && item.id === value.id) ? item.parent : item);
     },
 
     notEmpty(item) {
