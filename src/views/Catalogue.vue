@@ -2,6 +2,12 @@
 
 el-container.catalogue
 
+  catalogue-article-dialog(
+  v-if="fullScreenArticle"
+  :article="fullScreenArticle"
+  @closed="closeGallery()"
+  )
+
   el-header.catalogue-header(height="")
 
     el-breadcrumb.crumbs(separator-class="el-icon-arrow-right")
@@ -53,7 +59,6 @@ el-container.catalogue
       catalogue-article-list(
       v-if="articles.length"
       :items="articles"
-      @avatar-click="onArticleAvatarClick"
       )
 
       .empty(
@@ -61,43 +66,21 @@ el-container.catalogue
       )
         p Подходящие товары не найдены
 
-  el-dialog(
-  :title="currentArticle && currentArticle.name"
-  :fullscreen="true"
-  :show-close="true"
-  :visible.sync="showGallery"
-  custom-class="el-dialog-gallery"
-  center
-  )
-    picture-gallery(
-    v-if="showGallery"
-    @image-click="closeGallery"
-    :image="currentArticle && currentArticle.avatarPicture"
-    )
-
-
 </template>
 <script>
 
-import debounce from 'lodash/debounce';
-import * as vuex from 'vuex';
-import map from 'lodash/map';
+import { createNamespacedHelpers } from 'vuex';
 
-// import { TOGGLE_ARTICLE_SHARE } from '@/vuex/catalogue/mutations';
-import { SHARED_ARTICLES } from '@/vuex/catalogue/getters';
-
-// import ArticleGroup from '@/models/ArticleGroup';
-import Article from '@/models/Article';
+import * as getters from '@/vuex/catalogue/getters';
+import * as actions from '@/vuex/catalogue/actions';
 
 import * as svc from '@/services/catalogue';
 
 import CatalogueGroupList from '@/components/CatalogueGroupList.vue';
 import CatalogueArticleList from '@/components/CatalogueArticleList.vue';
-import PictureGallery from '@/components/PictureGallery.vue';
+import CatalogueArticleDialog from '@/components/CatalogueArticleDialog.vue';
 
-import log from 'sistemium-telegram/services/log';
-
-const { debug } = log('catalogue');
+const { mapActions, mapGetters } = createNamespacedHelpers('catalogue');
 
 export default {
 
@@ -107,20 +90,27 @@ export default {
     return {
       articles: [],
       articleGroups: [],
-      currentArticle: null,
-      currentArticleGroup: null,
       currentArticleGroupParents: [],
-      searchText: '',
       loading: false,
       filteredGroups: [],
-      showGallery: false,
     };
   },
 
   computed: {
-    ...vuex.mapGetters('catalogue', { sharedArticles: SHARED_ARTICLES }),
+    ...mapGetters({
+      sharedArticles: getters.SHARED_ARTICLES,
+      fullScreenArticle: getters.AVATAR_ARTICLE,
+    }),
+    searchText: {
+      ...mapGetters({ get: getters.SEARCH_TEXT }),
+      ...mapActions({ set: actions.SEARCH_TEXT_CHANGE }),
+    },
+    currentArticleGroup: {
+      ...mapGetters({ get: getters.ARTICLE_GROUP }),
+      ...mapActions({ set: actions.ARTICLE_GROUP_CLICK }),
+    },
     selectedArticles() {
-      return map(this.sharedArticles, id => Article.get(id));
+      return svc.getArticles(this.sharedArticles);
     },
   },
 
@@ -129,11 +119,12 @@ export default {
     await svc.loadData();
     this.loading = false;
     this.$watch('currentArticleGroup', this.bindCurrent);
-    this.$watch('searchText', debounce(this.bindArticles, 750));
-    this.bindArticles();
+    this.$watch('searchText', this.bindArticles, { immediate: true });
   },
 
   methods: {
+
+    ...mapActions({ closeGallery: actions.ARTICLE_AVATAR_CLICK }),
 
     bindArticles() {
 
@@ -155,27 +146,12 @@ export default {
 
     },
 
-    onArticleAvatarClick(article) {
-      debug('onArticleAvatarClick', article);
-      this.showGallery = true;
-      this.currentArticle = article;
-    },
-
-    closeGallery() {
-      this.showGallery = false;
-    },
-
   },
 
   components: {
-    PictureGallery,
+    CatalogueArticleDialog,
     CatalogueGroupList,
     CatalogueArticleList,
-  },
-
-  beforeDestroy() {
-    // ArticleGroup.unbindAll(this);
-    // Article.unbindAll(this);
   },
 
 };
@@ -230,4 +206,5 @@ export default {
     font-size: 85%;
   }
 }
+
 </style>

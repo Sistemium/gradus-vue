@@ -10,6 +10,9 @@ export default {
   state: {
     [states.SHARED_ARTICLES]: [],
     [states.SELECTED_ARTICLE]: null,
+    [states.AVATAR_ARTICLE]: null,
+    [states.ARTICLE_GROUP]: null,
+    [states.SEARCH_TEXT]: '',
   },
 
   mutations,
