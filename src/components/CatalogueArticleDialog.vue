@@ -10,6 +10,8 @@ custom-class="el-dialog-gallery"
 center
 )
   picture-gallery(
+  v-loading="busy"
+  element-loading-text="Обработка изображения ..."
   @image-click="closeDialog()"
   :image="image"
   :model="ArticlePicture"
@@ -21,9 +23,16 @@ center
 <script>
 
 import pick from 'lodash/pick';
+import log from 'sistemium-telegram/services/log';
+
+import ManagedComponent from '@/lib/ManagedComponent';
+
 import ArticlePicture from '@/models/ArticlePicture';
 import Article from '@/models/Article';
+
 import PictureGallery from './PictureGallery.vue';
+
+const { debug } = log('CatalogueArticleDialog.vue');
 
 export default {
 
@@ -33,18 +42,18 @@ export default {
     article: Object,
   },
 
+  models: [Article, ArticlePicture],
+
   data() {
     return {
+      busy: false,
+      image: undefined,
       visible: true,
       ArticlePicture,
     };
   },
 
   computed: {
-    image() {
-      const { avatarPicture } = this.article;
-      return avatarPicture;
-    },
     newImageProperties() {
       return pick(this.article, ['name']);
     },
@@ -56,14 +65,31 @@ export default {
       this.$emit('closed');
     },
     async onUpload(articlePicture) {
-      this.article.avatarPictureId = articlePicture.id;
+      this.busy = true;
+      this.$set(this.article, 'avatarPictureId', articlePicture.id);
       await Article.safeSave(this.article, true);
+      this.updateImage(articlePicture.id);
+      this.busy = false;
     },
+    updateImage(avatarPictureId) {
+      debug('watch', avatarPictureId);
+      if (!avatarPictureId) {
+        this.image = undefined;
+        return;
+      }
+      ArticlePicture.bindOne(this, avatarPictureId, 'image');
+    },
+  },
+
+  created() {
+    this.$watch('article.avatarPictureId', this.updateImage, { immediate: true });
   },
 
   components: {
     PictureGallery,
   },
+
+  mixins: [ManagedComponent],
 
 };
 

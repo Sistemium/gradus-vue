@@ -13,8 +13,8 @@ export default {
     state[g.AVATAR_ARTICLE] = article ? article.id : null;
   },
 
-  [SET_ARTICLE_GROUP](state, articleGroup = {}) {
-    state[g.ARTICLE_GROUP] = articleGroup.id || null;
+  [SET_ARTICLE_GROUP](state, articleGroup) {
+    state[g.ARTICLE_GROUP] = articleGroup ? articleGroup.id : null;
   },
 
   [SET_SEARCH_TEXT](state, text) {

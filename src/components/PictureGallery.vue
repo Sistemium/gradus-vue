@@ -1,6 +1,9 @@
 <template lang="pug">
 
-.picture-gallery
+.picture-gallery(
+v-loading="busy"
+element-loading-text="Загрузка изображения ..."
+)
   .gallery-image(@click.prevent="$emit('image-click')")
 
     img(
@@ -16,6 +19,7 @@
   take-photo-button(
   @done="onUpload"
   @error="unUploadError"
+  @imageuploading="busy = true"
   :entity-name="model.name"
   )
 
@@ -34,11 +38,13 @@ export default {
 
   name,
 
+  /**
+   * @property {Model} model
+   * @property {String} image.largeSrc
+   */
+
   props: {
     image: Object,
-    /**
-     * @property {Model} model
-     */
     model: {
       type: Object,
       required: true,
@@ -51,14 +57,15 @@ export default {
 
   data() {
     return {
+      busy: false,
       newImage: null,
     };
   },
 
   computed: {
     src() {
-      const { image: { largeSrc } = {} } = this;
-      return largeSrc;
+      const { image } = this;
+      return image ? image.largeSrc : null;
     },
   },
 
@@ -69,6 +76,7 @@ export default {
   methods: {
 
     unUploadError(err) {
+      this.busy = false;
       const { message = JSON.stringify(err) } = err;
       debug('unUploadError', message);
       this.$message({
@@ -84,7 +92,7 @@ export default {
       const { src } = find(picturesInfo, { name: 'original' });
       const { src: thumbnailSrc } = find(picturesInfo, { name: 'thumbnail' });
 
-      debug('onUpload', JSON.stringify(picturesInfo));
+      debug('onUpload', src, this.busy);
 
       try {
         const picture = await model.create({
@@ -97,6 +105,8 @@ export default {
       } catch (e) {
         error('onUpload', e.message);
       }
+
+      this.busy = false;
 
     },
 

@@ -4,6 +4,7 @@
 
   vue-core-image-upload.browser(
   :crop="false"
+  @imageuploading="$emit('imageuploading')"
   @imageuploaded="imageUploaded"
   @errorhandle="onError"
   :data="imageData"

@@ -40,6 +40,8 @@
 <script>
 
 import { createNamespacedHelpers } from 'vuex';
+import ManagedComponent from '@/lib/ManagedComponent';
+import Article from '@/models/Article';
 
 import { TOGGLE_ARTICLE_SHARE, TOGGLE_ARTICLE_SELECTED } from '@/vuex/catalogue/mutations';
 import { SHARED_ARTICLES, SELECTED_ARTICLE } from '@/vuex/catalogue/getters';
@@ -62,6 +64,8 @@ export default {
   props: {
     article: Object,
   },
+
+  // models: [Article],
 
   computed: {
 
@@ -103,6 +107,16 @@ export default {
     },
 
   },
+
+  created() {
+    Article.bindOne(this, this.article.id);
+  },
+
+  beforeDestroy() {
+    Article.unbindAll(this);
+  },
+
+  mixins: [ManagedComponent],
 
 };
 
