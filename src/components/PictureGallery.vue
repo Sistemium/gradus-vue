@@ -16,17 +16,19 @@
   take-photo-button(
   @done="onUpload"
   @error="unUploadError"
-  entity-name="ArticlePicture"
+  :entity-name="model.name"
   )
 
 </template>
 <script>
 
+import find from 'lodash/find';
+
 import TakePhotoButton from '@/components/TakePhotoButton.vue';
 import log from 'sistemium-telegram/services/log';
 
 const name = 'PictureGallery';
-const { debug } = log(name);
+const { debug, error } = log(name);
 
 export default {
 
@@ -34,6 +36,17 @@ export default {
 
   props: {
     image: Object,
+    /**
+     * @property {Model} model
+     */
+    model: {
+      type: Object,
+      required: true,
+    },
+    newImageProperties: {
+      type: Object,
+      required: true,
+    },
   },
 
   data() {
@@ -65,8 +78,26 @@ export default {
       });
     },
 
-    onUpload(image) {
-      debug('onUpload', JSON.stringify(image));
+    async onUpload(picturesInfo) {
+
+      const { model } = this;
+      const { src } = find(picturesInfo, { name: 'original' });
+      const { src: thumbnailSrc } = find(picturesInfo, { name: 'thumbnail' });
+
+      debug('onUpload', JSON.stringify(picturesInfo));
+
+      try {
+        const picture = await model.create({
+          src,
+          thumbnailSrc,
+          picturesInfo,
+          ...this.newImageProperties,
+        });
+        this.$emit('uploaded', picture);
+      } catch (e) {
+        error('onUpload', e.message);
+      }
+
     },
 
   },

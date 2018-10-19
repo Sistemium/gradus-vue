@@ -12,11 +12,17 @@ center
   picture-gallery(
   @image-click="closeDialog()"
   :image="image"
+  :model="ArticlePicture"
+  :new-image-properties="newImageProperties"
+  @uploaded="onUpload"
   )
 
 </template>
 <script>
 
+import pick from 'lodash/pick';
+import ArticlePicture from '@/models/ArticlePicture';
+import Article from '@/models/Article';
 import PictureGallery from './PictureGallery.vue';
 
 export default {
@@ -28,7 +34,10 @@ export default {
   },
 
   data() {
-    return { visible: true };
+    return {
+      visible: true,
+      ArticlePicture,
+    };
   },
 
   computed: {
@@ -36,12 +45,19 @@ export default {
       const { avatarPicture } = this.article;
       return avatarPicture;
     },
+    newImageProperties() {
+      return pick(this.article, ['name']);
+    },
   },
 
   methods: {
     closeDialog() {
       this.visible = false;
       this.$emit('closed');
+    },
+    async onUpload(articlePicture) {
+      this.article.avatarPictureId = articlePicture.id;
+      await Article.safeSave(this.article, true);
     },
   },
 

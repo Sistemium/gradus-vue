@@ -73,7 +73,7 @@ export default {
         this.$emit('error', res);
         return;
       }
-      this.$emit('done', { picturesInfo });
+      this.$emit('done', picturesInfo);
     },
 
     onError(params) {
