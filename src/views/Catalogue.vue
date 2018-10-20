@@ -43,7 +43,7 @@ el-container.catalogue
     )
 
   el-container.catalogue-main(
-  v-loading="loading"
+  v-loading="loading || busy"
   element-loading-text="Загрузка данных ..."
   )
 

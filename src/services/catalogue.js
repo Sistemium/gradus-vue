@@ -57,8 +57,11 @@ export async function loadData() {
 }
 
 export async function getArticlePictures(article) {
-  const apa = await ArticlePictureArticle.findAll({ articleId: article.id }, { force: true });
-  return Promise.all(apa.map(({ pictureId }) => ArticlePicture.find(pictureId)));
+  const where = { articleId: article.id };
+  const apa = await ArticlePictureArticle.findAll(where);
+  await Promise.all(apa.map(({ pictureId }) => ArticlePicture.find(pictureId)));
+  return ArticlePictureArticle.filter(where)
+    .map(({ pictureId }) => ArticlePicture.get(pictureId));
 }
 
 

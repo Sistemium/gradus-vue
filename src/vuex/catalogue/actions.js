@@ -28,8 +28,11 @@ export default {
   async [ARTICLE_AVATAR_CLICK]({ commit }, article) {
 
     if (article) {
-      const pictures = await svc.getArticlePictures(article);
-      commit(m.SET_GALLERY_PICTURES, pictures);
+
+      commit(m.SET_BUSY, true);
+      commit(m.SET_GALLERY_PICTURES, await svc.getArticlePictures(article));
+      commit(m.SET_BUSY, false);
+
     } else {
       commit(m.SET_GALLERY_PICTURES);
     }

@@ -10,10 +10,8 @@ element-loading-text="Загрузка изображения ..."
 
         img(:src="image.largeSrc")
 
-  img(
-  v-else
-  src="/images/placeholder.png"
-  )
+  .empty(v-else @click.prevent="$emit('image-click')")
+    img(src="/images/placeholder.png")
 
   take-photo-button(
   @done="onUpload"
@@ -130,6 +128,10 @@ export default {
     justify-content: center;
     display: flex;
     height: 100%;
+  }
+
+  .empty {
+
   }
 
   img {

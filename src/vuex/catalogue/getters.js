@@ -10,8 +10,8 @@ export const BUSY = 'BUSY';
 
 export default {
 
-  [BUSY](state, isBusy) {
-    state[BUSY] = isBusy;
+  [BUSY](state) {
+    return state[BUSY];
   },
 
   [GALLERY_PICTURES](state) {
