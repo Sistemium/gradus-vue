@@ -8,11 +8,13 @@ export default {
   namespaced: true,
 
   state: {
+    [states.GALLERY_PICTURES]: [],
     [states.SHARED_ARTICLES]: [],
     [states.SELECTED_ARTICLE]: null,
     [states.AVATAR_ARTICLE]: null,
     [states.ARTICLE_GROUP]: null,
     [states.SEARCH_TEXT]: '',
+    [states.BUSY]: false,
   },
 
   mutations,

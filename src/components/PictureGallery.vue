@@ -4,17 +4,16 @@
 v-loading="busy"
 element-loading-text="Загрузка изображения ..."
 )
-  .gallery-image(@click.prevent="$emit('image-click')")
+  el-carousel(trigger="click" height="450px" v-if="images.length" :autoplay="false")
+    el-carousel-item(v-for="image in images" :key="image.id")
+      .gallery-image(@click.prevent="$emit('image-click')")
 
-    img(
-    v-if="src"
-    :src="src"
-    )
+        img(:src="image.largeSrc")
 
-    img(
-    v-else
-    src="/images/placeholder.png"
-    )
+  img(
+  v-else
+  src="/images/placeholder.png"
+  )
 
   take-photo-button(
   @done="onUpload"
@@ -44,7 +43,7 @@ export default {
    */
 
   props: {
-    image: Object,
+    images: Array,
     model: {
       type: Object,
       required: true,
@@ -62,18 +61,17 @@ export default {
     };
   },
 
-  computed: {
-    src() {
-      const { image } = this;
-      return image ? image.largeSrc : null;
-    },
-  },
+  computed: {},
 
   components: {
     TakePhotoButton,
   },
 
   methods: {
+
+    src(image) {
+      return image ? image.largeSrc : null;
+    },
 
     unUploadError(err) {
       this.busy = false;
@@ -124,19 +122,19 @@ export default {
   text-align: center;
   height: 100%;
 
-  display: flex;
+  /*display: flex;*/
   flex-direction: column;
   align-items: center;
 
   .gallery-image {
-    flex: 1;
-    min-height: 0;
+    justify-content: center;
+    display: flex;
+    height: 100%;
   }
 
   img {
     cursor: zoom-out;
     object-fit: contain;
-    max-height: 100%;
   }
 
   .take-photo-button {

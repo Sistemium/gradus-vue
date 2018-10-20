@@ -9,6 +9,7 @@ import orderBy from 'lodash/orderBy';
 import ArticleGroup from '@/models/ArticleGroup';
 import Article from '@/models/Article';
 import ArticlePicture from '@/models/ArticlePicture';
+import ArticlePictureArticle from '@/models/ArticlePictureArticle';
 
 import log from 'sistemium-telegram/services/log';
 
@@ -53,6 +54,11 @@ export async function loadData() {
 
   debug('removedCount', removedCount);
 
+}
+
+export async function getArticlePictures(article) {
+  const apa = await ArticlePictureArticle.findAll({ articleId: article.id }, { force: true });
+  return Promise.all(apa.map(({ pictureId }) => ArticlePicture.find(pictureId)));
 }
 
 

@@ -100,6 +100,7 @@ export default {
     ...mapGetters({
       sharedArticles: getters.SHARED_ARTICLES,
       fullScreenArticle: getters.AVATAR_ARTICLE,
+      busy: getters.BUSY,
     }),
     searchText: {
       ...mapGetters({ get: getters.SEARCH_TEXT }),

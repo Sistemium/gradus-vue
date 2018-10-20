@@ -3,11 +3,18 @@ import * as g from './getters';
 export const TOGGLE_ARTICLE_SHARE = 'TOGGLE_ARTICLE_SHARE';
 export const RESET_SHARED_ARTICLES = 'RESET_SHARED_ARTICLES';
 export const TOGGLE_ARTICLE_SELECTED = 'TOGGLE_ARTICLE_SELECTED';
+
 export const SET_AVATAR_ARTICLE = `SET_${g.AVATAR_ARTICLE}`;
 export const SET_ARTICLE_GROUP = `SET_${g.ARTICLE_GROUP}`;
 export const SET_SEARCH_TEXT = `SET_${g.SEARCH_TEXT}`;
+export const SET_GALLERY_PICTURES = `SET_${g.GALLERY_PICTURES}`;
+export const SET_BUSY = `SET_${g.BUSY}`;
 
 export default {
+
+  [SET_BUSY](state, isBusy) {
+    state[g.BUSY] = !!isBusy;
+  },
 
   [SET_AVATAR_ARTICLE](state, article) {
     state[g.AVATAR_ARTICLE] = article ? article.id : null;
@@ -19,6 +26,10 @@ export default {
 
   [SET_SEARCH_TEXT](state, text) {
     state[g.SEARCH_TEXT] = text || '';
+  },
+
+  [SET_GALLERY_PICTURES](state, pictures) {
+    state[g.GALLERY_PICTURES] = pictures || [];
   },
 
   [RESET_SHARED_ARTICLES]({ selectedToShare }) {

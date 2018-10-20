@@ -5,9 +5,18 @@ export const SELECTED_ARTICLE = 'selectedArticle';
 export const AVATAR_ARTICLE = 'avatarArticle';
 export const ARTICLE_GROUP = 'articleGroup';
 export const SEARCH_TEXT = 'searchText';
-
+export const GALLERY_PICTURES = 'galleryPictures';
+export const BUSY = 'BUSY';
 
 export default {
+
+  [BUSY](state, isBusy) {
+    state[BUSY] = isBusy;
+  },
+
+  [GALLERY_PICTURES](state) {
+    return state[GALLERY_PICTURES];
+  },
 
   [SHARED_ARTICLES](state) {
     return state[SHARED_ARTICLES];
