@@ -4,8 +4,20 @@
 v-loading="busy"
 element-loading-text="Загрузка изображения ..."
 )
-  el-carousel(trigger="click" height="450px" v-if="images.length" :autoplay="false")
-    el-carousel-item(v-for="image in images" :key="image.id")
+  el-carousel(
+  ref="carousel"
+  v-if="images.length"
+  trigger="click"
+  height="500px"
+  :autoplay="false"
+  indicator-position="outside"
+  type="card"
+  )
+    el-carousel-item(
+    v-for="(image, idx) in images" :key="image.id"
+    :name="image.id"
+    :label="`Фото №${idx+1}`"
+    )
       .gallery-image(@click.prevent="$emit('image-click')")
 
         img(:src="image.largeSrc")
@@ -24,12 +36,15 @@ element-loading-text="Загрузка изображения ..."
 <script>
 
 import find from 'lodash/find';
+import { createNamespacedHelpers } from 'vuex';
+import * as getters from '@/vuex/catalogue/getters';
 
 import TakePhotoButton from '@/components/TakePhotoButton.vue';
 import log from 'sistemium-telegram/services/log';
 
 const name = 'PictureGallery';
 const { debug, error } = log(name);
+const vuex = createNamespacedHelpers('catalogue');
 
 export default {
 
@@ -59,10 +74,16 @@ export default {
     };
   },
 
-  computed: {},
+  computed: vuex.mapGetters({ activeId: getters.ACTIVE_GALLERY_PICTURE }),
 
   components: {
     TakePhotoButton,
+  },
+
+  watch: {
+    activeId(id) {
+      this.$nextTick(() => this.$refs.carousel.setActiveItem(id));
+    },
   },
 
   methods: {

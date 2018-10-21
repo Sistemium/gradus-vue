@@ -21,7 +21,8 @@ export default {
 
     const pictures = getters[g.GALLERY_PICTURES];
 
-    commit(m.SET_GALLERY_PICTURES, [picture, ...pictures]);
+    commit(m.SET_GALLERY_PICTURES, [...pictures, picture]);
+    commit(m.SET_GALLERY_PICTURE, picture);
 
   },
 

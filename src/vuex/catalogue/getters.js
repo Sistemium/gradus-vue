@@ -7,8 +7,17 @@ export const ARTICLE_GROUP = 'articleGroup';
 export const SEARCH_TEXT = 'searchText';
 export const GALLERY_PICTURES = 'galleryPictures';
 export const BUSY = 'BUSY';
+export const ACTIVE_GALLERY_PICTURE = 'activeGalleryPicture';
 
 export default {
+
+  [ACTIVE_GALLERY_PICTURE](state) {
+    return state[ACTIVE_GALLERY_PICTURE];
+  },
+
+  [BUSY](state) {
+    return state[BUSY];
+  },
 
   [BUSY](state) {
     return state[BUSY];

@@ -24,9 +24,11 @@ center
 <script>
 
 import pick from 'lodash/pick';
+
 import { createNamespacedHelpers } from 'vuex';
 import * as g from '@/vuex/catalogue/getters';
 import * as a from '@/vuex/catalogue/actions';
+
 import log from 'sistemium-telegram/services/log';
 import ManagedComponent from '@/lib/ManagedComponent';
 import ArticlePictureArticle from '@/models/ArticlePictureArticle';

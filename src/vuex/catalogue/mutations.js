@@ -9,8 +9,13 @@ export const SET_ARTICLE_GROUP = `SET_${g.ARTICLE_GROUP}`;
 export const SET_SEARCH_TEXT = `SET_${g.SEARCH_TEXT}`;
 export const SET_GALLERY_PICTURES = `SET_${g.GALLERY_PICTURES}`;
 export const SET_BUSY = `SET_${g.BUSY}`;
+export const SET_GALLERY_PICTURE = `SET_${g.ACTIVE_GALLERY_PICTURE}`;
 
 export default {
+
+  [SET_GALLERY_PICTURE](state, picture) {
+    state[g.ACTIVE_GALLERY_PICTURE] = picture && picture.id;
+  },
 
   [SET_BUSY](state, isBusy) {
     state[g.BUSY] = !!isBusy;
