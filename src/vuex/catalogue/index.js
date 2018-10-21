@@ -16,6 +16,7 @@ export default {
     [states.SEARCH_TEXT]: '',
     [states.BUSY]: false,
     [states.ACTIVE_GALLERY_PICTURE]: false,
+    [states.AVATAR_PICTURE]: false,
   },
 
   mutations,

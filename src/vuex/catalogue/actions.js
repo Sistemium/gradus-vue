@@ -9,7 +9,7 @@ export const ARTICLE_AVATAR_CLICK = 'ARTICLE_AVATAR_CLICK';
 export const ARTICLE_GROUP_CLICK = 'ARTICLE_GROUP_CLICK';
 export const SEARCH_TEXT_CHANGE = 'SEARCH_TEXT_CHANGE';
 export const ADD_GALLERY_PICTURE = 'ADD_GALLERY_PICTURE';
-export const SET_PICTURE_ACTIVE = 'SET_PICTURE_ACTIVE';
+export const SET_PICTURE_AS_AVATAR = 'SET_PICTURE_AS_AVATAR';
 
 export default {
 
@@ -18,8 +18,9 @@ export default {
     commit(m.RESET_SHARED_ARTICLES);
   },
 
-  async [SET_PICTURE_ACTIVE]({ getters }, picture) {
+  async [SET_PICTURE_AS_AVATAR]({ commit, getters }, picture) {
     await svc.setArticleAvatar(getters[g.AVATAR_ARTICLE], picture);
+    commit(m.SET_AVATAR_PICTURE, picture.id);
   },
 
   [ADD_GALLERY_PICTURE]({ commit, getters }, picture) {
@@ -44,6 +45,7 @@ export default {
     }
 
     commit(m.SET_AVATAR_ARTICLE, article || null);
+    commit(m.SET_AVATAR_PICTURE, article && article.avatarPictureId);
 
   },
 

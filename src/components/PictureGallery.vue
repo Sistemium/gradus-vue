@@ -12,6 +12,7 @@ element-loading-text="Загрузка изображения ..."
   :autoplay="false"
   indicator-position="outside"
   type="card"
+  :initial-index="carouselItem"
   @change="onItemChange"
   )
     el-carousel-item(
@@ -45,6 +46,7 @@ element-loading-text="Загрузка изображения ..."
 <script>
 
 import find from 'lodash/find';
+import findIndex from 'lodash/findIndex';
 import { createNamespacedHelpers } from 'vuex';
 import * as getters from '@/vuex/catalogue/getters';
 import * as a from '@/vuex/catalogue/actions';
@@ -67,7 +69,6 @@ export default {
 
   props: {
     images: Array,
-    avatarId: String,
     model: {
       type: Object,
       required: true,
@@ -87,13 +88,16 @@ export default {
   },
 
   computed: {
-    ...mapGetters({ activeId: getters.ACTIVE_GALLERY_PICTURE }),
+    ...mapGetters({
+      activeId: getters.ACTIVE_GALLERY_PICTURE,
+      avatarId: getters.AVATAR_PICTURE,
+    }),
     isAvatar() {
       const current = this.images[this.carouselItem];
       return current.id === this.avatarId;
     },
     buttonText() {
-      return this.isAvatar ? 'Основное фото' : `Сделать основным ${this.carouselItem + 1}`;
+      return this.isAvatar ? '✅ Основное фото' : 'Сделать основным фото';
     },
   },
 
@@ -109,7 +113,7 @@ export default {
 
   methods: {
 
-    ...mapActions({ setActive: a.SET_PICTURE_ACTIVE }),
+    ...mapActions({ setActive: a.SET_PICTURE_AS_AVATAR }),
 
     setAvatarClick() {
       this.setActive(this.images[this.carouselItem]);
@@ -158,6 +162,10 @@ export default {
 
     },
 
+  },
+
+  created() {
+    this.carouselItem = findIndex(this.images, ({ id }) => id === this.avatarId);
   },
 
 };

@@ -8,6 +8,7 @@ export const SEARCH_TEXT = 'searchText';
 export const GALLERY_PICTURES = 'galleryPictures';
 export const BUSY = 'BUSY';
 export const ACTIVE_GALLERY_PICTURE = 'activeGalleryPicture';
+export const AVATAR_PICTURE = 'avatarPicture';
 
 export default {
 
@@ -33,6 +34,10 @@ export default {
 
   [SELECTED_ARTICLE](state) {
     return state[SELECTED_ARTICLE];
+  },
+
+  [AVATAR_PICTURE](state) {
+    return state[AVATAR_PICTURE];
   },
 
   [AVATAR_ARTICLE](state) {

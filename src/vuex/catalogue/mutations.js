@@ -10,6 +10,7 @@ export const SET_SEARCH_TEXT = `SET_${g.SEARCH_TEXT}`;
 export const SET_GALLERY_PICTURES = `SET_${g.GALLERY_PICTURES}`;
 export const SET_BUSY = `SET_${g.BUSY}`;
 export const SET_GALLERY_PICTURE = `SET_${g.ACTIVE_GALLERY_PICTURE}`;
+export const SET_AVATAR_PICTURE = `SET_${g.AVATAR_PICTURE}`;
 
 export default {
 
@@ -23,6 +24,10 @@ export default {
 
   [SET_AVATAR_ARTICLE](state, article) {
     state[g.AVATAR_ARTICLE] = article ? article.id : null;
+  },
+
+  [SET_AVATAR_PICTURE](state, picture) {
+    state[g.AVATAR_PICTURE] = picture || null;
   },
 
   [SET_ARTICLE_GROUP](state, articleGroup) {

@@ -17,7 +17,6 @@ center
   :images="images"
   :model="ArticlePicture"
   :new-image-properties="newImageProperties"
-  :avatar-id="article.avatarPictureId"
   @uploaded="onUpload"
   )
 
@@ -34,7 +33,7 @@ import log from 'sistemium-telegram/services/log';
 import ManagedComponent from '@/lib/ManagedComponent';
 import ArticlePictureArticle from '@/models/ArticlePictureArticle';
 import ArticlePicture from '@/models/ArticlePicture';
-import Article from '@/models/Article';
+
 import PictureGallery from './PictureGallery.vue';
 
 const { debug, error } = log('CatalogueArticleDialog.vue');
@@ -68,7 +67,10 @@ export default {
 
   methods: {
 
-    ...vuex.mapActions({ addPicture: a.ADD_GALLERY_PICTURE }),
+    ...vuex.mapActions({
+      addPicture: a.ADD_GALLERY_PICTURE,
+      setAsAvatar: a.SET_PICTURE_AS_AVATAR,
+    }),
 
     closeDialog() {
       this.visible = false;
@@ -79,7 +81,7 @@ export default {
 
       debug('onUpload', articlePicture);
 
-      const { id: articleId } = this.article;
+      const { id: articleId, avatarPictureId } = this.article;
       const { id: pictureId } = articlePicture;
 
       this.busy = true;
@@ -91,10 +93,11 @@ export default {
           pictureId,
         });
 
-        this.$set(this.article, 'avatarPictureId', pictureId);
-        await Article.safeSave(this.article, true);
-
         this.addPicture(articlePicture);
+
+        if (!avatarPictureId) {
+          await this.setAsAvatar(articlePicture);
+        }
 
       } catch (e) {
         error(e);
