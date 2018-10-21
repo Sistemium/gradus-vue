@@ -158,6 +158,11 @@ export function catalogueData(currentArticleGroup, searchText, filteredGroups) {
 
 }
 
+export function unsetSameArticle(article) {
+  Vue.set(article, 'articleSameId', null);
+  return Article.safeSave(article);
+}
+
 /**
  * Links articles to each other
  * @param {Object} article

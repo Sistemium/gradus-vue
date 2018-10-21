@@ -10,8 +10,15 @@ export const ARTICLE_GROUP_CLICK = 'ARTICLE_GROUP_CLICK';
 export const SEARCH_TEXT_CHANGE = 'SEARCH_TEXT_CHANGE';
 export const ADD_GALLERY_PICTURE = 'ADD_GALLERY_PICTURE';
 export const SET_PICTURE_AS_AVATAR = 'SET_PICTURE_AS_AVATAR';
+export const REMOVE_SAME_ARTICLE = 'REMOVE_SAME_ARTICLE';
 
 export default {
+
+  async [REMOVE_SAME_ARTICLE]({ commit }, article) {
+    commit(m.SET_BUSY, true);
+    await svc.unsetSameArticle(article);
+    commit(m.SET_BUSY, false);
+  },
 
   async [SHARE_WITH_ARTICLE]({ commit, state: { selectedToShare } }, article) {
     await svc.setSameArticle(article, selectedToShare);
