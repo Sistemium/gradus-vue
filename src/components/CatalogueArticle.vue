@@ -15,6 +15,10 @@
       span {{ article.extraLabel }}
     .sub-title
       small.same-articles(v-if="sameArticles.length") +{{ sameArticles.length }}
+    .same-articles(v-if="isSelected || showSame")
+      .same-article(v-for="same in sameArticles" :key="same.id")
+        span {{ same.name }}
+        span {{ same.extraLabel }}
 
   .buttons
 
@@ -66,6 +70,12 @@ export default {
   },
 
   // models: [Article],
+
+  data() {
+    return {
+      showSame: false,
+    };
+  },
 
   computed: {
 
@@ -142,8 +152,11 @@ $avatar-size: 50px;
 
 }
 
-.has-same {
-  background-color: $gray-background;
+.same-article {
+  font-size: 75%;
+  & + .same-article {
+    margin-top: $margin-top/3;
+  }
 }
 
 .main {
