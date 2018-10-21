@@ -17,6 +17,7 @@ center
   :images="images"
   :model="ArticlePicture"
   :new-image-properties="newImageProperties"
+  :avatar-id="article.avatarPictureId"
   @uploaded="onUpload"
   )
 

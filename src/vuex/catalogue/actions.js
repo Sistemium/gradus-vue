@@ -9,12 +9,17 @@ export const ARTICLE_AVATAR_CLICK = 'ARTICLE_AVATAR_CLICK';
 export const ARTICLE_GROUP_CLICK = 'ARTICLE_GROUP_CLICK';
 export const SEARCH_TEXT_CHANGE = 'SEARCH_TEXT_CHANGE';
 export const ADD_GALLERY_PICTURE = 'ADD_GALLERY_PICTURE';
+export const SET_PICTURE_ACTIVE = 'SET_PICTURE_ACTIVE';
 
 export default {
 
   async [SHARE_WITH_ARTICLE]({ commit, state: { selectedToShare } }, article) {
     await svc.setSameArticle(article, selectedToShare);
     commit(m.RESET_SHARED_ARTICLES);
+  },
+
+  async [SET_PICTURE_ACTIVE]({ getters }, picture) {
+    await svc.setArticleAvatar(getters[g.AVATAR_ARTICLE], picture);
   },
 
   [ADD_GALLERY_PICTURE]({ commit, getters }, picture) {

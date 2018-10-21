@@ -12,6 +12,7 @@ element-loading-text="Загрузка изображения ..."
   :autoplay="false"
   indicator-position="outside"
   type="card"
+  @change="onItemChange"
   )
     el-carousel-item(
     v-for="(image, idx) in images" :key="image.id"
@@ -25,12 +26,20 @@ element-loading-text="Загрузка изображения ..."
   .empty(v-else @click.prevent="$emit('image-click')")
     img(src="/images/placeholder.png")
 
-  take-photo-button(
-  @done="onUpload"
-  @error="unUploadError"
-  @imageuploading="busy = true"
-  :entity-name="model.name"
-  )
+  .buttons
+
+    el-button.make-avatar(
+    v-if="images.length > 1"
+    @click="setAvatarClick"
+    :disabled="isAvatar"
+    ) {{ buttonText }}
+
+    take-photo-button(
+    @done="onUpload"
+    @error="unUploadError"
+    @imageuploading="busy = true"
+    :entity-name="model.name"
+    )
 
 </template>
 <script>
@@ -38,13 +47,14 @@ element-loading-text="Загрузка изображения ..."
 import find from 'lodash/find';
 import { createNamespacedHelpers } from 'vuex';
 import * as getters from '@/vuex/catalogue/getters';
+import * as a from '@/vuex/catalogue/actions';
 
 import TakePhotoButton from '@/components/TakePhotoButton.vue';
 import log from 'sistemium-telegram/services/log';
 
 const name = 'PictureGallery';
 const { debug, error } = log(name);
-const vuex = createNamespacedHelpers('catalogue');
+const { mapGetters, mapActions } = createNamespacedHelpers('catalogue');
 
 export default {
 
@@ -57,6 +67,7 @@ export default {
 
   props: {
     images: Array,
+    avatarId: String,
     model: {
       type: Object,
       required: true,
@@ -71,10 +82,20 @@ export default {
     return {
       busy: false,
       newImage: null,
+      carouselItem: 0,
     };
   },
 
-  computed: vuex.mapGetters({ activeId: getters.ACTIVE_GALLERY_PICTURE }),
+  computed: {
+    ...mapGetters({ activeId: getters.ACTIVE_GALLERY_PICTURE }),
+    isAvatar() {
+      const current = this.images[this.carouselItem];
+      return current.id === this.avatarId;
+    },
+    buttonText() {
+      return this.isAvatar ? 'Основное фото' : `Сделать основным ${this.carouselItem + 1}`;
+    },
+  },
 
   components: {
     TakePhotoButton,
@@ -88,8 +109,18 @@ export default {
 
   methods: {
 
+    ...mapActions({ setActive: a.SET_PICTURE_ACTIVE }),
+
+    setAvatarClick() {
+      this.setActive(this.images[this.carouselItem]);
+    },
+
     src(image) {
       return image ? image.largeSrc : null;
+    },
+
+    onItemChange(carouselItem) {
+      this.carouselItem = carouselItem;
     },
 
     unUploadError(err) {
@@ -160,9 +191,13 @@ export default {
     object-fit: contain;
   }
 
+  .buttons {
+    margin-top: $margin;
+    display: flex;
+    justify-content: space-around;
+  }
+
   .take-photo-button {
-    margin-top: $margin-top * 2;
-    display: inline-block;
   }
 
 }

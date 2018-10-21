@@ -6,6 +6,8 @@ import map from 'lodash/map';
 import escapeRegExp from 'lodash/escapeRegExp';
 import orderBy from 'lodash/orderBy';
 
+import Vue from 'vue';
+
 import ArticleGroup from '@/models/ArticleGroup';
 import Article from '@/models/Article';
 import ArticlePicture from '@/models/ArticlePicture';
@@ -53,6 +55,14 @@ export async function loadData() {
     });
 
   debug('removedCount', removedCount);
+
+}
+
+export async function setArticleAvatar(article, picture) {
+
+  debug('setArticleAvatar', article.id, picture.id);
+  Vue.set(article, 'avatarPictureId', picture.id);
+  return Article.safeSave(article, true);
 
 }
 
