@@ -42,6 +42,13 @@ element-loading-text="Загрузка изображения ..."
     :entity-name="model.name"
     )
 
+    el-button.remove(
+    v-if="images.length"
+    @click="removeClick"
+    :disabled="images.length > 1 && isAvatar"
+    ) {{ 'Удалить' }}
+
+
 </template>
 <script>
 
@@ -93,11 +100,13 @@ export default {
       avatarId: getters.AVATAR_PICTURE,
     }),
     isAvatar() {
-      const current = this.images[this.carouselItem];
-      return current.id === this.avatarId;
+      return this.currentImage && this.currentImage.id === this.avatarId;
     },
     buttonText() {
-      return this.isAvatar ? '✅ Основное фото' : 'Сделать основным фото';
+      return this.isAvatar ? '✅ Основное фото' : 'Сделать основным';
+    },
+    currentImage() {
+      return this.images[this.carouselItem];
     },
   },
 
@@ -113,10 +122,17 @@ export default {
 
   methods: {
 
-    ...mapActions({ setActive: a.SET_PICTURE_AS_AVATAR }),
+    ...mapActions({
+      setActive: a.SET_PICTURE_AS_AVATAR,
+      removeArticlePicture: a.REMOVE_GALLERY_PICTURE,
+    }),
 
     setAvatarClick() {
-      this.setActive(this.images[this.carouselItem]);
+      this.setActive(this.currentImage);
+    },
+
+    async removeClick() {
+      await this.removeArticlePicture(this.currentImage);
     },
 
     src(image) {

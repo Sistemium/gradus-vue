@@ -60,8 +60,11 @@ export async function loadData() {
 
 export async function setArticleAvatar(article, picture) {
 
-  debug('setArticleAvatar', article.id, picture.id);
-  Vue.set(article, 'avatarPictureId', picture.id);
+  const { id: articleId } = article;
+  const { id: pictureId = null } = picture || {};
+
+  debug('setArticleAvatar', articleId, pictureId);
+  Vue.set(article, 'avatarPictureId', pictureId);
   return Article.safeSave(article, true);
 
 }
@@ -155,6 +158,21 @@ export function catalogueData(currentArticleGroup, searchText, filteredGroups) {
     articles,
     groups,
   };
+
+}
+
+export function removeArticlePicture(article, picture) {
+
+  const { id: articleId } = article;
+  const { id: pictureId } = picture;
+
+  const destroy = ArticlePictureArticle.filter({
+    articleId,
+    pictureId,
+  })
+    .map(apa => ArticlePictureArticle.destroy(apa));
+
+  return Promise.all(destroy);
 
 }
 

@@ -164,9 +164,11 @@ $avatar-size: 50px;
   margin-top: $margin-top/3;
 
   .remove-same {
+
+    padding: 6px 6px 6px 8px;
+
     &:hover {
       //font-weight: bold;
-      padding: $margin-right/2 $margin-right;
       background-color: $white;
       border-radius: $border-radius;
     }
