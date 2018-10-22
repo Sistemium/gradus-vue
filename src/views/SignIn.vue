@@ -125,7 +125,7 @@ export default {
         return this[AUTH_REQUEST](value)
           .then(() => {
             this.input = '';
-          });
+          }).catch(() => {});
       }
 
       return this[AUTH_REQUEST_CONFIRM](value)
