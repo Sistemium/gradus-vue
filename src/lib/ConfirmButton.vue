@@ -1,6 +1,8 @@
 <template lang="pug">
 
-el-button.confirm-button(:type="buttonType" @click="onClick") {{ buttonText }}
+el-badge.countdown(:value="countdown" :hidden="!countdown")
+  el-button.confirm-button(:type="buttonType" @click="onClick")
+    span {{ buttonText }}
 
 </template>
 <script>
@@ -21,6 +23,8 @@ export default {
   data() {
     return {
       confirmation: false,
+      countdown: false,
+      interval: false,
     };
   },
 
@@ -31,7 +35,7 @@ export default {
     },
 
     buttonType() {
-      return this.confirmation ? 'danger' : 'default';
+      return this.confirmation ? 'warning' : 'default';
     },
 
   },
@@ -41,6 +45,12 @@ export default {
 
       const onTimeout = () => {
         this.confirmation = false;
+        clearInterval(this.interval);
+        this.countdown = 0;
+      };
+
+      const onCountdown = () => {
+        this.countdown -= 1;
       };
 
       const { confirmation } = this;
@@ -51,6 +61,8 @@ export default {
         this.$emit('confirm');
       } else {
         this.confirmation = setTimeout(onTimeout, this.timeout);
+        this.countdown = 5;
+        this.interval = setInterval(onCountdown, 1000);
       }
 
     },
@@ -59,3 +71,10 @@ export default {
 };
 
 </script>
+<style scoped>
+
+.countdown {
+  margin-right: 6px;
+}
+
+</style>
