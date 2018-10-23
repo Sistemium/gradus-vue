@@ -43,7 +43,7 @@ el-container.catalogue
     )
 
   el-container.catalogue-main(
-  v-loading="loading"
+  v-loading="loading || busy"
   element-loading-text="Загрузка данных ..."
   )
 
@@ -100,6 +100,7 @@ export default {
     ...mapGetters({
       sharedArticles: getters.SHARED_ARTICLES,
       fullScreenArticle: getters.AVATAR_ARTICLE,
+      busy: getters.BUSY,
     }),
     searchText: {
       ...mapGetters({ get: getters.SEARCH_TEXT }),

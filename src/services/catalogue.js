@@ -6,9 +6,12 @@ import map from 'lodash/map';
 import escapeRegExp from 'lodash/escapeRegExp';
 import orderBy from 'lodash/orderBy';
 
+import Vue from 'vue';
+
 import ArticleGroup from '@/models/ArticleGroup';
 import Article from '@/models/Article';
 import ArticlePicture from '@/models/ArticlePicture';
+import ArticlePictureArticle from '@/models/ArticlePictureArticle';
 
 import log from 'sistemium-telegram/services/log';
 
@@ -53,6 +56,25 @@ export async function loadData() {
 
   debug('removedCount', removedCount);
 
+}
+
+export async function setArticleAvatar(article, picture) {
+
+  const { id: articleId } = article;
+  const { id: pictureId = null } = picture || {};
+
+  debug('setArticleAvatar', articleId, pictureId);
+  Vue.set(article, 'avatarPictureId', pictureId);
+  return Article.safeSave(article, true);
+
+}
+
+export async function getArticlePictures(article) {
+  const where = { articleId: article.id };
+  const apa = await ArticlePictureArticle.findAll(where);
+  await Promise.all(apa.map(({ pictureId }) => ArticlePicture.find(pictureId)));
+  return ArticlePictureArticle.filter(where)
+    .map(({ pictureId }) => ArticlePicture.get(pictureId));
 }
 
 
@@ -137,6 +159,26 @@ export function catalogueData(currentArticleGroup, searchText, filteredGroups) {
     groups,
   };
 
+}
+
+export function removeArticlePicture(article, picture) {
+
+  const { id: articleId } = article;
+  const { id: pictureId } = picture;
+
+  const destroy = ArticlePictureArticle.filter({
+    articleId,
+    pictureId,
+  })
+    .map(apa => ArticlePictureArticle.destroy(apa));
+
+  return Promise.all(destroy);
+
+}
+
+export function unsetSameArticle(article) {
+  Vue.set(article, 'articleSameId', null);
+  return Article.safeSave(article);
 }
 
 /**

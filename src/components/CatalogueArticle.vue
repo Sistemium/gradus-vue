@@ -14,7 +14,12 @@
       span {{ article.name }}
       span {{ article.extraLabel }}
     .sub-title
-      small.same-articles(v-if="sameArticles.length") +{{ sameArticles.length }}
+      small.same-articles(v-if="!showSame && sameArticles.length") +{{ sameArticles.length }}
+    .same-articles(v-if="showSame")
+      .same-article(v-for="same in sameArticles" :key="same.id")
+        span.remove-same(@click.prevent.stop="removeSameClick(same)") ❌
+        span {{ same.name }}
+        span {{ same.extraLabel }}
 
   .buttons
 
@@ -40,10 +45,12 @@
 <script>
 
 import { createNamespacedHelpers } from 'vuex';
+import ManagedComponent from '@/lib/ManagedComponent';
+import Article from '@/models/Article';
 
 import { TOGGLE_ARTICLE_SHARE, TOGGLE_ARTICLE_SELECTED } from '@/vuex/catalogue/mutations';
 import { SHARED_ARTICLES, SELECTED_ARTICLE } from '@/vuex/catalogue/getters';
-import { SHARE_WITH_ARTICLE, ARTICLE_AVATAR_CLICK } from '@/vuex/catalogue/actions';
+import * as a from '@/vuex/catalogue/actions';
 
 const vuex = createNamespacedHelpers('catalogue');
 
@@ -63,6 +70,14 @@ export default {
     article: Object,
   },
 
+  // models: [Article],
+
+  // data() {
+  //   return {
+  //
+  //   };
+  // },
+
   computed: {
 
     ...vuex.mapState({
@@ -73,6 +88,10 @@ export default {
       },
       sharedArticles: SHARED_ARTICLES,
     }),
+
+    showSame() {
+      return this.isSelected;
+    },
 
     isSelectedToShare() {
       const { sharedArticles, article } = this;
@@ -94,8 +113,9 @@ export default {
     }),
 
     ...vuex.mapActions({
-      shareWithArticle: SHARE_WITH_ARTICLE,
-      avatarClick: ARTICLE_AVATAR_CLICK,
+      shareWithArticle: a.SHARE_WITH_ARTICLE,
+      avatarClick: a.ARTICLE_AVATAR_CLICK,
+      removeSameClick: a.REMOVE_SAME_ARTICLE,
     }),
 
     thumbnailSrc(article) {
@@ -103,6 +123,16 @@ export default {
     },
 
   },
+
+  created() {
+    Article.bindOne(this, this.article.id);
+  },
+
+  beforeDestroy() {
+    Article.unbindAll(this);
+  },
+
+  mixins: [ManagedComponent],
 
 };
 
@@ -128,8 +158,24 @@ $avatar-size: 50px;
 
 }
 
-.has-same {
-  background-color: $gray-background;
+.same-article {
+
+  font-size: 75%;
+  margin-top: $margin-top/3;
+
+  .remove-same {
+
+    padding: 6px 6px 6px 8px;
+
+    &:hover {
+      //font-weight: bold;
+      background-color: $white;
+      border-radius: $border-radius;
+    }
+    margin-right: $margin-right;
+    color: $red;
+  }
+
 }
 
 .main {

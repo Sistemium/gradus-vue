@@ -5,9 +5,28 @@ export const SELECTED_ARTICLE = 'selectedArticle';
 export const AVATAR_ARTICLE = 'avatarArticle';
 export const ARTICLE_GROUP = 'articleGroup';
 export const SEARCH_TEXT = 'searchText';
-
+export const GALLERY_PICTURES = 'galleryPictures';
+export const BUSY = 'BUSY';
+export const ACTIVE_GALLERY_PICTURE = 'activeGalleryPicture';
+export const AVATAR_PICTURE = 'avatarPicture';
 
 export default {
+
+  [ACTIVE_GALLERY_PICTURE](state) {
+    return state[ACTIVE_GALLERY_PICTURE];
+  },
+
+  [BUSY](state) {
+    return state[BUSY];
+  },
+
+  [BUSY](state) {
+    return state[BUSY];
+  },
+
+  [GALLERY_PICTURES](state) {
+    return state[GALLERY_PICTURES];
+  },
 
   [SHARED_ARTICLES](state) {
     return state[SHARED_ARTICLES];
@@ -15,6 +34,10 @@ export default {
 
   [SELECTED_ARTICLE](state) {
     return state[SELECTED_ARTICLE];
+  },
+
+  [AVATAR_PICTURE](state) {
+    return state[AVATAR_PICTURE];
   },
 
   [AVATAR_ARTICLE](state) {

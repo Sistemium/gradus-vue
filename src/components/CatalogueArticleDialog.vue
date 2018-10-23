@@ -7,17 +7,37 @@ el-dialog(
 :visible.sync="visible"
 custom-class="el-dialog-gallery"
 @closed="closeDialog()"
+:append-to-body="true"
 center
 )
   picture-gallery(
+  v-loading="busy"
+  element-loading-text="Обработка изображения ..."
   @image-click="closeDialog()"
-  :image="image"
+  :images="images"
+  :model="ArticlePicture"
+  :new-image-properties="newImageProperties"
+  @uploaded="onUpload"
   )
 
 </template>
 <script>
 
+import pick from 'lodash/pick';
+
+import { createNamespacedHelpers } from 'vuex';
+import * as g from '@/vuex/catalogue/getters';
+import * as a from '@/vuex/catalogue/actions';
+
+import log from 'sistemium-telegram/services/log';
+import ManagedComponent from '@/lib/ManagedComponent';
+import ArticlePictureArticle from '@/models/ArticlePictureArticle';
+import ArticlePicture from '@/models/ArticlePicture';
+
 import PictureGallery from './PictureGallery.vue';
+
+const { debug, error } = log('CatalogueArticleDialog.vue');
+const vuex = createNamespacedHelpers('catalogue');
 
 export default {
 
@@ -27,27 +47,76 @@ export default {
     article: Object,
   },
 
+  // models: [Article, ArticlePicture],
+
   data() {
-    return { visible: true };
+    return {
+      busy: false,
+      image: undefined,
+      visible: true,
+      ArticlePicture,
+    };
   },
 
   computed: {
-    image() {
-      const { avatarPicture } = this.article;
-      return avatarPicture;
+    newImageProperties() {
+      return pick(this.article, ['name']);
     },
+    ...vuex.mapGetters({ images: g.GALLERY_PICTURES }),
   },
 
   methods: {
+
+    ...vuex.mapActions({
+      addPicture: a.ADD_GALLERY_PICTURE,
+      setAsAvatar: a.SET_PICTURE_AS_AVATAR,
+    }),
+
     closeDialog() {
       this.visible = false;
       this.$emit('closed');
     },
+
+    async onUpload(articlePicture) {
+
+      debug('onUpload', articlePicture);
+
+      const { id: articleId, avatarPictureId } = this.article;
+      const { id: pictureId } = articlePicture;
+
+      this.busy = true;
+
+      try {
+
+        await ArticlePictureArticle.create({
+          articleId,
+          pictureId,
+        });
+
+        this.addPicture(articlePicture);
+
+        if (!avatarPictureId) {
+          await this.setAsAvatar(articlePicture);
+        }
+
+      } catch (e) {
+        error(e);
+      }
+
+      this.busy = false;
+
+    },
+
+  },
+
+  created() {
   },
 
   components: {
     PictureGallery,
   },
+
+  mixins: [ManagedComponent],
 
 };
 

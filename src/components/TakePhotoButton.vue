@@ -4,6 +4,7 @@
 
   vue-core-image-upload.browser(
   :crop="false"
+  @imageuploading="$emit('imageuploading')"
   @imageuploaded="imageUploaded"
   @errorhandle="onError"
   :data="imageData"
@@ -73,7 +74,7 @@ export default {
         this.$emit('error', res);
         return;
       }
-      this.$emit('done', { picturesInfo });
+      this.$emit('done', picturesInfo);
     },
 
     onError(params) {

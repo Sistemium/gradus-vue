@@ -6,6 +6,7 @@ import '@/lib/element-ui';
 import { AUTH_INIT } from 'sistemium-vue/store/auth/actions';
 
 import Resize from '@/lib/Resize.vue';
+import ConfirmButton from '@/lib/ConfirmButton.vue';
 
 import './index.scss';
 
@@ -15,6 +16,7 @@ import store from './store';
 
 Vue.config.productionTip = false;
 Vue.component('resize', Resize);
+Vue.component(ConfirmButton.name, ConfirmButton);
 
 new Vue({
   router,
