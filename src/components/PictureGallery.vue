@@ -42,12 +42,12 @@ element-loading-text="Загрузка изображения ..."
     :entity-name="model.name"
     )
 
-    el-button.remove(
+    confirm-button.remove(
     v-if="images.length"
-    @click="removeClick"
     :disabled="images.length > 1 && isAvatar"
-    ) {{ 'Удалить' }}
-
+    text="Удалить" confirm-text="Точно удалить?"
+    @confirm="removeClick"
+    )
 
 </template>
 <script>
