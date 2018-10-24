@@ -1,17 +1,18 @@
 <template lang="pug">
 
-resize.list-group.catalogue-article-list(v-if="items.length" padding="35")
+resize.list-group.catalogue-article-list(v-if="items.length" padding="35" ref="resizer")
 
-  DynamicScroller.scroller(
+  dynamic-scroller.scroller(
   :items="groupedItems()"
-  :min-item-height="54"
+  :min-item-height="68"
+  :page-mode="true"
   )
 
     template(slot-scope='{ item, index, active }')
-      DynamicScrollerItem(
+      dynamic-scroller-item(
       :item="item"
       :active="active"
-      :size-dependencies="[item.name]"
+      :size-dependencies="[item.name, item.id]"
       :data-index="index"
       )
 
@@ -27,12 +28,15 @@ import Vue from 'vue';
 import VueVirtualScroller from 'vue-virtual-scroller';
 
 import Article from '@/models/Article';
+import log from 'sistemium-telegram/services/log';
 
 import { groupedArticles } from '@/services/catalogue';
 
 import CatalogueArticle from './CatalogueArticle.vue';
 
 Vue.use(VueVirtualScroller);
+
+const { debug } = log('CatalogueArticleList');
 
 export default {
 
@@ -56,6 +60,15 @@ export default {
     Article.unbindAll(this);
   },
 
+  watch: {
+    items(items) {
+      debug(items.length);
+      this.$nextTick(() => {
+        this.$refs.resizer.$el.scrollTop = 0;
+      });
+    },
+  },
+
   components: {
     CatalogueArticle,
   },
@@ -72,8 +85,8 @@ export default {
   padding: $margin-right;
 }
 
-.scroller{
-  height: 800px;
+.scroller {
+  height: 100%;
 }
 
 </style>

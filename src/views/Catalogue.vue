@@ -1,12 +1,9 @@
 <template lang="pug">
 
-el-container.catalogue
-
-  catalogue-article-dialog(
-  v-if="fullScreenArticle"
-  :article="fullScreenArticle"
-  @closed="closeGallery()"
-  )
+el-container.catalogue(
+no-v-loading.fullscreen.lock="loading || busy"
+element-loading-text="Загрузка данных ..."
+)
 
   el-header.catalogue-header(height="")
 
@@ -42,10 +39,7 @@ el-container.catalogue
     placeholder="поиск"
     )
 
-  el-container.catalogue-main(
-  v-loading="loading || busy"
-  element-loading-text="Загрузка данных ..."
-  )
+  el-container.catalogue-main
 
     el-aside(v-if="!loading")
       catalogue-group-list(
@@ -65,6 +59,12 @@ el-container.catalogue
       v-else
       )
         p Подходящие товары не найдены
+
+  catalogue-article-dialog(
+  v-if="fullScreenArticle"
+  :article="fullScreenArticle"
+  @closed="closeGallery()"
+  )
 
 </template>
 <script>
