@@ -12,7 +12,7 @@ resize.list-group.catalogue-article-list(v-if="items.length" padding="35" ref="r
       dynamic-scroller-item(
       :item="item"
       :active="active"
-      :size-dependencies="[item.name, item.id]"
+      :size-dependencies="[item.name]"
       :data-index="index"
       )
 

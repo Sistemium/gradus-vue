@@ -5,9 +5,10 @@
 :class="{active: isSelected, 'has-same': sameArticles.length}"
 )
 
-  .avatar(@click.prevent.stop="avatarClick(article)")
-    img.placeholder(v-if="!thumbnailSrc(article)" src="/images/placeholder.png")
-    img(:src="thumbnailSrc(article)" v-else)
+  avatar-picture(
+  @click.native.prevent.stop="avatarClick(article)"
+  :imageSrc ="thumbnailSrc"
+  )
 
   .main
     .title
@@ -51,6 +52,8 @@ import ManagedComponent from '@/lib/ManagedComponent';
 import { TOGGLE_ARTICLE_SHARE, TOGGLE_ARTICLE_SELECTED } from '@/vuex/catalogue/mutations';
 import { SHARED_ARTICLES, SELECTED_ARTICLE } from '@/vuex/catalogue/getters';
 import * as a from '@/vuex/catalogue/actions';
+
+import AvatarPicture from './AvatarPicture.vue';
 
 const vuex = createNamespacedHelpers('catalogue');
 
@@ -103,6 +106,11 @@ export default {
       return article.sameArticles;
     },
 
+    thumbnailSrc() {
+      const { article } = this;
+      return article.avatarPicture && article.avatarPicture.thumbnailSrc;
+    },
+
   },
 
   methods: {
@@ -118,10 +126,6 @@ export default {
       removeSameClick: a.REMOVE_SAME_ARTICLE,
     }),
 
-    thumbnailSrc(article) {
-      return article.avatarPicture && article.avatarPicture.thumbnailSrc;
-    },
-
   },
 
   created() {
@@ -132,6 +136,10 @@ export default {
     // Article.unbindAll(this);
   },
 
+  components: {
+    AvatarPicture,
+  },
+
   mixins: [ManagedComponent],
 
 };
@@ -140,23 +148,6 @@ export default {
 <style scoped lang="scss">
 
 @import "../styles/variables";
-
-$avatar-size: 50px;
-
-.avatar {
-
-  cursor: zoom-in;
-  min-width: $avatar-size;
-  min-height: $avatar-size;
-  text-align: center;
-  margin-right: $margin-right;
-
-  img {
-    max-width: $avatar-size;
-    max-height: $avatar-size;
-  }
-
-}
 
 .same-article {
 
