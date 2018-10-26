@@ -4,6 +4,10 @@ export default new Model({
 
   name: 'ArticlePictureArticle',
 
+  validateOnSet: false,
+  noValidate: true,
+  keepChangeHistory: false,
+
   relations: {
     belongsTo: {
       // Article: {

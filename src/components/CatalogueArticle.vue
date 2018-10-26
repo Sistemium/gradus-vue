@@ -2,7 +2,7 @@
 
 .catalogue-article(
 @click="toggleSelected(article)"
-:class="{active: isSelected, 'has-same': sameArticles.length}"
+:class="{active: isSelected}"
 )
 
   avatar-picture(
@@ -11,16 +11,18 @@
   )
 
   .main
+
     .title
       span {{ article.name }}
       span {{ article.extraLabel }}
+
     .sub-title
-      small.same-articles(v-if="!showSame && sameArticles.length") +{{ sameArticles.length }}
-    .same-articles(v-if="showSame")
-      .same-article(v-for="same in sameArticles" :key="same.id")
-        span.remove-same(@click.prevent.stop="removeSameClick(same)") ❌
-        span {{ same.name }}
-        span {{ same.extraLabel }}
+      small.same-articles(v-if="!showSame && hasSameArticles()") +{{ hasSameArticles() }}
+
+    same-articles-list(
+    v-if="showSame"
+    @remove-click="removeSameClick"
+    )
 
   .buttons
 
@@ -34,7 +36,7 @@
     )
 
     el-button(
-    v-if="!isSelected && !sameArticles.length"
+    v-if="!isSelected && !hasSameArticles()"
     circle
     size="mini"
     :icon="isSelectedToShare ? 'el-icon-circle-check' : 'el-icon-share'"
@@ -47,13 +49,14 @@
 
 import { createNamespacedHelpers } from 'vuex';
 import ManagedComponent from '@/lib/ManagedComponent';
-// import Article from '@/models/Article';
+import Article from '@/models/Article';
 
-import { TOGGLE_ARTICLE_SHARE, TOGGLE_ARTICLE_SELECTED } from '@/vuex/catalogue/mutations';
+import { TOGGLE_ARTICLE_SHARE } from '@/vuex/catalogue/mutations';
 import { SHARED_ARTICLES, SELECTED_ARTICLE } from '@/vuex/catalogue/getters';
 import * as a from '@/vuex/catalogue/actions';
 
 import AvatarPicture from './AvatarPicture.vue';
+import SameArticlesList from './SameArticlesList.vue';
 
 const vuex = createNamespacedHelpers('catalogue');
 
@@ -86,8 +89,8 @@ export default {
     ...vuex.mapState({
       isSelected(state) {
         const { article } = this;
-        const selected = state[SELECTED_ARTICLE] || {};
-        return selected.id === article.id;
+        const selectedId = state[SELECTED_ARTICLE];
+        return selectedId === article.id;
       },
       sharedArticles: SHARED_ARTICLES,
     }),
@@ -101,21 +104,16 @@ export default {
       return sharedArticles && sharedArticles.indexOf(article.id) !== -1;
     },
 
-    sameArticles() {
-      const { article } = this;
-      return article.sameArticles;
-    },
-
   },
 
   methods: {
 
     ...vuex.mapMutations({
       toggleShare: TOGGLE_ARTICLE_SHARE,
-      toggleSelected: TOGGLE_ARTICLE_SELECTED,
     }),
 
     ...vuex.mapActions({
+      toggleSelected: a.TOGGLE_ARTICLE_SELECTED,
       shareWithArticle: a.SHARE_WITH_ARTICLE,
       avatarClick: a.ARTICLE_AVATAR_CLICK,
       removeSameClick: a.REMOVE_SAME_ARTICLE,
@@ -125,10 +123,24 @@ export default {
       return article.avatarPicture && article.avatarPicture.thumbnailSrc;
     },
 
+    hasSameArticles() {
+      const { article } = this;
+      return article.sameArticles && article.sameArticles.length;
+    },
+
+    rebind(article) {
+      Article.unbindAll(this);
+      if (article) {
+        Article.bindOne(this, article.id);
+      }
+    },
+
   },
 
   created() {
-    // Article.bindOne(this, this.article.id);
+
+    this.$watch('article', this.rebind, { immediate: !!this.article });
+
   },
 
   beforeDestroy() {
@@ -137,6 +149,7 @@ export default {
 
   components: {
     AvatarPicture,
+    SameArticlesList,
   },
 
   mixins: [ManagedComponent],
@@ -164,6 +177,22 @@ export default {
     }
     margin-right: $margin-right;
     color: $red;
+  }
+}
+
+$avatar-size: 50px;
+
+.avatar {
+
+  cursor: zoom-in;
+  min-width: $avatar-size;
+  min-height: $avatar-size;
+  text-align: center;
+  margin-right: $margin-right;
+
+  img {
+    max-width: $avatar-size;
+    max-height: $avatar-size;
   }
 
 }

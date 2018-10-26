@@ -17,6 +17,7 @@ export const ADD_GALLERY_PICTURE = 'ADD_GALLERY_PICTURE';
 export const REMOVE_GALLERY_PICTURE = 'REMOVE_GALLERY_PICTURE';
 export const SET_PICTURE_AS_AVATAR = 'SET_PICTURE_AS_AVATAR';
 export const REMOVE_SAME_ARTICLE = 'REMOVE_SAME_ARTICLE';
+export const TOGGLE_ARTICLE_SELECTED = 'TOGGLE_ARTICLE_SELECTED';
 
 export default {
 
@@ -43,15 +44,22 @@ export default {
 
   },
 
-  async [REMOVE_SAME_ARTICLE]({ commit }, article) {
+  async [REMOVE_SAME_ARTICLE]({ commit, getters }, article) {
     commit(m.SET_BUSY, true);
     await svc.unsetSameArticle(article);
+    const selected = getters[g.SELECTED_ARTICLE];
+    if (selected) {
+      commit(m.SET_SAME_ARTICLES, selected.sameArticles);
+    }
     commit(m.SET_BUSY, false);
   },
 
   async [SHARE_WITH_ARTICLE]({ commit, state: { selectedToShare } }, article) {
+    commit(m.SET_BUSY, true);
     await svc.setSameArticle(article, selectedToShare);
     commit(m.RESET_SHARED_ARTICLES);
+    commit(m.SET_SAME_ARTICLES, article.sameArticles);
+    commit(m.SET_BUSY, false);
   },
 
   async [SET_PICTURE_AS_AVATAR]({ commit, getters }, picture) {
@@ -92,5 +100,12 @@ export default {
   [SEARCH_TEXT_CHANGE]: debounce(({ commit }, text) => {
     commit(m.SET_SEARCH_TEXT, text);
   }, 750),
+
+  [TOGGLE_ARTICLE_SELECTED]({ commit, getters }, article) {
+    const selected = getters[g.SELECTED_ARTICLE];
+    const isSelected = selected && (selected.id === article.id);
+    commit(m.SET_SELECTED_ARTICLE, isSelected ? null : article);
+    commit(m.SET_SAME_ARTICLES, isSelected ? null : article.sameArticles);
+  },
 
 };

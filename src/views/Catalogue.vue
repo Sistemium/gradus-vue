@@ -39,7 +39,10 @@ element-loading-text="Загрузка данных ..."
     placeholder="поиск"
     )
 
-  el-container.catalogue-main
+  el-container.catalogue-main(
+  v-loading="loading"
+  element-loading-text="Загрузка данных ..."
+  )
 
     el-aside(v-if="!loading")
       catalogue-group-list(
@@ -93,6 +96,7 @@ export default {
       currentArticleGroupParents: [],
       loading: false,
       filteredGroups: [],
+      message: null,
     };
   },
 
@@ -147,6 +151,21 @@ export default {
 
     },
 
+  },
+
+  watch: {
+    busy(isBusy) {
+      const { message: currentMessage } = this;
+      if (currentMessage) {
+        currentMessage.close();
+      }
+      if (isBusy) {
+        this.message = this.$message({
+          message: 'Загрузка данных ...',
+          type: 'warning',
+        });
+      }
+    },
   },
 
   components: {

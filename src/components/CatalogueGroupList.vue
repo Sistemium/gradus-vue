@@ -20,9 +20,9 @@ padding="35"
   :class="value && value.id === item.id && 'active'"
   )
     span.label {{ item.name }}
-    .badge(v-if="item.articles.length")
-      span {{ item.articles.length }}
-    i.el-icon-arrow-right(v-if="item.children.length")
+    .badge(v-if="item.hasArticles()")
+      span {{ item.hasArticles() }}
+    i.el-icon-arrow-right(v-if="item.children && item.children.length")
 
 </template>
 <script>
@@ -41,7 +41,7 @@ export default {
     },
 
     notEmpty(item) {
-      return item.children.length || item.articles.length;
+      return (item.children && item.children.length) || (item.articles && item.articles.length);
     },
 
   },
