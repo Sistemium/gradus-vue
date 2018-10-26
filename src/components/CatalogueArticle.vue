@@ -5,9 +5,10 @@
 :class="{active: isSelected}"
 )
 
-  .avatar(@click.prevent.stop="avatarClick(article)")
-    img.placeholder(v-if="!thumbnailSrc(article)" src="/images/placeholder.png")
-    img(:src="thumbnailSrc(article)" v-else)
+  avatar-picture(
+  @click.native.prevent.stop="avatarClick(article)"
+  :imageSrc ="thumbnailSrc(article)"
+  )
 
   .main
 
@@ -54,8 +55,8 @@ import { TOGGLE_ARTICLE_SHARE } from '@/vuex/catalogue/mutations';
 import { SHARED_ARTICLES, SELECTED_ARTICLE } from '@/vuex/catalogue/getters';
 import * as a from '@/vuex/catalogue/actions';
 
+import AvatarPicture from './AvatarPicture.vue';
 import SameArticlesList from './SameArticlesList.vue';
-
 
 const vuex = createNamespacedHelpers('catalogue');
 
@@ -137,16 +138,21 @@ export default {
   },
 
   created() {
+
     this.$watch('article', this.rebind, { immediate: !!this.article });
+
   },
 
   beforeDestroy() {
-    Article.unbindAll(this);
+    // Article.unbindAll(this);
+  },
+
+  components: {
+    AvatarPicture,
+    SameArticlesList,
   },
 
   mixins: [ManagedComponent],
-
-  components: { SameArticlesList },
 
 };
 
@@ -154,6 +160,25 @@ export default {
 <style scoped lang="scss">
 
 @import "../styles/variables";
+
+.same-article {
+
+  font-size: 75%;
+  margin-top: $margin-top/3;
+
+  .remove-same {
+
+    padding: 6px 6px 6px 8px;
+
+    &:hover {
+      //font-weight: bold;
+      background-color: $white;
+      border-radius: $border-radius;
+    }
+    margin-right: $margin-right;
+    color: $red;
+  }
+}
 
 $avatar-size: 50px;
 

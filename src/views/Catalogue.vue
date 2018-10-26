@@ -1,12 +1,9 @@
 <template lang="pug">
 
-el-container.catalogue
-
-  catalogue-article-dialog(
-  v-if="fullScreenArticle"
-  :article="fullScreenArticle"
-  @closed="closeGallery()"
-  )
+el-container.catalogue(
+no-v-loading.fullscreen.lock="loading || busy"
+element-loading-text="Загрузка данных ..."
+)
 
   el-header.catalogue-header(height="")
 
@@ -65,6 +62,12 @@ el-container.catalogue
       v-else
       )
         p Подходящие товары не найдены
+
+  catalogue-article-dialog(
+  v-if="fullScreenArticle"
+  :article="fullScreenArticle"
+  @closed="closeGallery()"
+  )
 
 </template>
 <script>
