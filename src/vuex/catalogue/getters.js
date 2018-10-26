@@ -9,8 +9,13 @@ export const GALLERY_PICTURES = 'galleryPictures';
 export const BUSY = 'BUSY';
 export const ACTIVE_GALLERY_PICTURE = 'activeGalleryPicture';
 export const AVATAR_PICTURE = 'avatarPicture';
+export const SAME_ARTICLES = 'sameArticles';
 
 export default {
+
+  [SAME_ARTICLES](state) {
+    return catalogue.getArticles(state[SAME_ARTICLES]);
+  },
 
   [ACTIVE_GALLERY_PICTURE](state) {
     return state[ACTIVE_GALLERY_PICTURE];
@@ -33,7 +38,8 @@ export default {
   },
 
   [SELECTED_ARTICLE](state) {
-    return state[SELECTED_ARTICLE];
+    const id = state[SELECTED_ARTICLE];
+    return id ? catalogue.getArticle(id) : null;
   },
 
   [AVATAR_PICTURE](state) {

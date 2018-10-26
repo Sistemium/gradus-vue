@@ -177,8 +177,7 @@ export function removeArticlePicture(article, picture) {
 }
 
 export function unsetSameArticle(article) {
-  Vue.set(article, 'articleSameId', null);
-  return Article.safeSave(article);
+  return Article.update(article, { articleSameId: null });
 }
 
 /**
@@ -197,8 +196,9 @@ export function setSameArticle(article, sameArticles) {
       error('Not found same article', id);
       return false;
     }
-    sameArticle.articleSameId = articleSameId;
-    return Article.safeSave(sameArticle);
+    // sameArticle.articleSameId = articleSameId;
+    // return Article.safeSave(sameArticle, true);
+    return Article.update(sameArticle, { articleSameId });
   });
 
   return Promise.all(saving);
