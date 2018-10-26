@@ -1,8 +1,8 @@
+import map from 'lodash/map';
 import * as g from './getters';
 
 export const TOGGLE_ARTICLE_SHARE = 'TOGGLE_ARTICLE_SHARE';
 export const RESET_SHARED_ARTICLES = 'RESET_SHARED_ARTICLES';
-export const TOGGLE_ARTICLE_SELECTED = 'TOGGLE_ARTICLE_SELECTED';
 
 export const SET_AVATAR_ARTICLE = `SET_${g.AVATAR_ARTICLE}`;
 export const SET_ARTICLE_GROUP = `SET_${g.ARTICLE_GROUP}`;
@@ -11,11 +11,17 @@ export const SET_GALLERY_PICTURES = `SET_${g.GALLERY_PICTURES}`;
 export const SET_BUSY = `SET_${g.BUSY}`;
 export const SET_GALLERY_PICTURE = `SET_${g.ACTIVE_GALLERY_PICTURE}`;
 export const SET_AVATAR_PICTURE = `SET_${g.AVATAR_PICTURE}`;
+export const SET_SELECTED_ARTICLE = `SET_${g.SELECTED_ARTICLE}`;
+export const SET_SAME_ARTICLES = `SET_${g.SAME_ARTICLES}`;
 
 export default {
 
   [SET_GALLERY_PICTURE](state, picture) {
     state[g.ACTIVE_GALLERY_PICTURE] = picture && picture.id;
+  },
+
+  [SET_SAME_ARTICLES](state, articles) {
+    state[g.SAME_ARTICLES] = map(articles, 'id');
   },
 
   [SET_BUSY](state, isBusy) {
@@ -60,8 +66,8 @@ export default {
 
   },
 
-  [TOGGLE_ARTICLE_SELECTED](state, article) {
-    state.selectedArticle = state.selectedArticle === article ? null : article;
+  [SET_SELECTED_ARTICLE](state, article) {
+    state[g.SELECTED_ARTICLE] = article && article.id;
   },
 
 };
