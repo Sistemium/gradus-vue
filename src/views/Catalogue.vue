@@ -43,7 +43,7 @@ el-container.catalogue
     )
 
   el-container.catalogue-main(
-  v-loading="loading || busy"
+  v-loading="loading"
   element-loading-text="Загрузка данных ..."
   )
 
@@ -93,6 +93,7 @@ export default {
       currentArticleGroupParents: [],
       loading: false,
       filteredGroups: [],
+      message: null,
     };
   },
 
@@ -147,6 +148,21 @@ export default {
 
     },
 
+  },
+
+  watch: {
+    busy(isBusy) {
+      const { message: currentMessage } = this;
+      if (currentMessage) {
+        currentMessage.close();
+      }
+      if (isBusy) {
+        this.message = this.$message({
+          message: 'Загрузка данных ...',
+          type: 'warning',
+        });
+      }
+    },
   },
 
   components: {

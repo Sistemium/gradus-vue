@@ -55,9 +55,11 @@ export default {
   },
 
   async [SHARE_WITH_ARTICLE]({ commit, state: { selectedToShare } }, article) {
+    commit(m.SET_BUSY, true);
     await svc.setSameArticle(article, selectedToShare);
     commit(m.RESET_SHARED_ARTICLES);
     commit(m.SET_SAME_ARTICLES, article.sameArticles);
+    commit(m.SET_BUSY, false);
   },
 
   async [SET_PICTURE_AS_AVATAR]({ commit, getters }, picture) {
