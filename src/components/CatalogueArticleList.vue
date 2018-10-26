@@ -76,6 +76,13 @@ export default {
   padding: $margin-right;
   box-sizing: border-box
 }
+
+.catalogue-article {
+
+  border-top: $list-cell-borders;
+
+}
+
 .first-item{
   border-top: none
 }
