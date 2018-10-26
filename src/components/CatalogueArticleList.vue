@@ -13,7 +13,7 @@ resize.list-group.catalogue-article-list(v-if="items.length" padding="35" ref="r
       dynamic-scroller-item(
         :item='item',
         :active='active',
-        :size-dependencies="[item.message]"
+        :size-dependencies="[item.message, sameArticles]"
         :data-index='index'
       )
 
@@ -29,6 +29,8 @@ resize.list-group.catalogue-article-list(v-if="items.length" padding="35" ref="r
 
 import Vue from 'vue';
 import VueVirtualScroller from 'vue-virtual-scroller';
+import { mapGetters } from 'vuex';
+import { SAME_ARTICLES } from '@/vuex/catalogue/getters';
 
 import Article from '@/models/Article';
 
@@ -36,11 +38,14 @@ import { groupedArticles } from '@/services/catalogue';
 
 import CatalogueArticle from './CatalogueArticle.vue';
 
+
 Vue.use(VueVirtualScroller);
 
 export default {
 
   name: 'CatalogueArticleList',
+
+  computed: mapGetters('catalogue', { sameArticles: SAME_ARTICLES }),
 
   props: {
     items: Array,
