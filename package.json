@@ -9,11 +9,8 @@
   },
   "dependencies": {
     "element-ui": "^2.4.8",
-<<<<<<< HEAD
     "inputmask": "^4.0.2",
-=======
     "js-data": "^3.0.4",
->>>>>>> master
     "lodash": "^4.17.11",
     "sistemium-telegram": "^1.2.7",
     "sistemium-vue": "^1.0.3",

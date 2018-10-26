@@ -1,15 +1,11 @@
-import VueManagedModel from 'sistemium-vue/jsdata/Model';
+import Model from 'sistemium-vue/jsdata/Model';
 import forEach from 'lodash/forEach';
 
-<<<<<<< HEAD
-export default new VueManagedModel({
-=======
 import RelationCache from '@/lib/RelationCache';
 
 const relationCache = new RelationCache({});
 
 const ArticleGroup = new Model({
->>>>>>> master
 
   name: 'ArticleGroup',
 
