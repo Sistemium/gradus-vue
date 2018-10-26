@@ -7,7 +7,7 @@
 
   avatar-picture(
   @click.native.prevent.stop="avatarClick(article)"
-  :imageSrc ="thumbnailSrc"
+  :imageSrc ="thumbnailSrc(article)"
   )
 
   .main
@@ -106,11 +106,6 @@ export default {
       return article.sameArticles;
     },
 
-    thumbnailSrc() {
-      const { article } = this;
-      return article.avatarPicture && article.avatarPicture.thumbnailSrc;
-    },
-
   },
 
   methods: {
@@ -125,6 +120,10 @@ export default {
       avatarClick: a.ARTICLE_AVATAR_CLICK,
       removeSameClick: a.REMOVE_SAME_ARTICLE,
     }),
+
+    thumbnailSrc(article) {
+      return article.avatarPicture && article.avatarPicture.thumbnailSrc;
+    },
 
   },
 

@@ -2,41 +2,24 @@
 
 resize.list-group.catalogue-article-list(v-if="items.length" padding="35" ref="resizer")
 
-  dynamic-scroller.scroller(
-  :items="groupedItems()"
-  :min-item-height="68"
-  :page-mode="true"
-  )
+  virtual-list(:size="40" :remain="15")
 
-    template(slot-scope='{ item, index, active }')
-      dynamic-scroller-item(
-      :item="item"
-      :active="active"
-      :size-dependencies="[item.name]"
-      :data-index="index"
-      )
-
-        catalogue-article.list-group-item(
-        :key="item.id"
-        :article="item"
-        @avatar-click="$emit('avatar-click', item)"
-        )
+    catalogue-article.list-group-item(
+    v-for="article in groupedItems()"
+    :key="article.id"
+    :article="article"
+    @avatar-click="$emit('avatar-click', article)"
+    )
 
 </template>
 <script>
-import Vue from 'vue';
-import VueVirtualScroller from 'vue-virtual-scroller';
+import virtualList from 'vue-virtual-scroll-list';
 
 import Article from '@/models/Article';
-import log from 'sistemium-telegram/services/log';
 
 import { groupedArticles } from '@/services/catalogue';
 
 import CatalogueArticle from './CatalogueArticle.vue';
-
-Vue.use(VueVirtualScroller);
-
-const { debug } = log('CatalogueArticleList');
 
 export default {
 
@@ -60,17 +43,9 @@ export default {
     Article.unbindAll(this);
   },
 
-  watch: {
-    items(items) {
-      debug(items.length);
-      this.$nextTick(() => {
-        this.$refs.resizer.$el.scrollTop = 0;
-      });
-    },
-  },
-
   components: {
     CatalogueArticle,
+    'virtual-list': virtualList,
   },
 
 };
@@ -83,10 +58,7 @@ export default {
 .list-group-item {
   display: flex;
   padding: $margin-right;
-}
-
-.scroller {
-  height: 100%;
+  box-sizing: border-box
 }
 
 </style>
