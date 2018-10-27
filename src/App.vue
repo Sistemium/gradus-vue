@@ -18,7 +18,7 @@
 
         hello-world
 
-        p.buttons(v-if="!authorizing")
+        .buttons(v-if="!authorizing")
           router-link(to="/sign-in" tag="div")
             el-button(type="primary") Вход для клиентов
 
@@ -55,3 +55,16 @@ export default {
 };
 
 </script>
+<style scoped lang="scss">
+
+@import "./styles/variables.scss";
+
+.join {
+  text-align: center;
+}
+
+.buttons {
+  padding-top: $margin-top/2;
+}
+
+</style>
