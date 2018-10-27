@@ -6,15 +6,15 @@
 
   .fields
 
-    el-input(
-      v-if="phaState==='sms'"
-      label="Телефон"
-      v-model="phone"
-      readonly
-      disabled
-      )
+    el-input.phone-number(
+    v-if="phaState==='sms'"
+    label="Телефон"
+    v-model="phone"
+    readonly
+    disabled
+    )
 
-    el-input.long-title(
+    el-input.sms(
     v-model="input"
     type="tel"
     id="sign-input"
@@ -36,7 +36,7 @@
 import { mapActions, mapState } from 'vuex';
 import InputMask from 'inputmask';
 
-import { AUTH_REQUEST, AUTH_REQUEST_CONFIRM } from 'sistemium-vue/store/auth/actions';
+import * as a from 'sistemium-vue/store/auth/actions';
 import { PHA_AUTH_TOKEN } from 'sistemium-vue/store/auth/mutations';
 
 // import log from 'sistemium-telegram/services/log';
@@ -80,9 +80,9 @@ export default {
     },
     buttonText() {
       if (this.phaState === 'phone') {
-        return 'Укажите номер, который на вас зарегистрирован';
+        return 'Укажите зарегистрированный в системе сотовый номер';
       }
-      return this.isComplete ? 'Вход' : 'Вам отправлено СМС';
+      return this.isComplete ? 'Вход' : 'Вам отправлено СМС с одноразовым паролем';
     },
     buttonType() {
       return this.phaState === 'phone' ? '' : 'primary';
@@ -96,20 +96,35 @@ export default {
       }
     },
     input() {
-
-      if ((this.phaState === 'sms' && this.input.length === 6) ||
-        (this.isComplete && this.phaState === 'phone')) {
-
+      const smsComplete = this.phaState === 'sms' && this.input.length === 6;
+      const phoneComplete = this.isComplete && this.phaState === 'phone';
+      if (smsComplete || phoneComplete) {
         this.$nextTick(() => this.sendClick());
-
       }
-
+    },
+    error(message) {
+      if (message) {
+        this.$message({
+          message,
+          type: 'error',
+          onClose: () => {
+            this.clearError();
+            this.attachMask();
+          },
+          showClose: true,
+          duration: 5000,
+        });
+      }
     },
   },
 
   methods: {
 
-    ...mapActions('auth', [AUTH_REQUEST, AUTH_REQUEST_CONFIRM]),
+    ...mapActions('auth', {
+      authRequest: a.AUTH_REQUEST,
+      authConfirm: a.AUTH_REQUEST_CONFIRM,
+      clearError: a.CLEAR_ERROR,
+    }),
 
     sendClick() {
 
@@ -117,18 +132,23 @@ export default {
         return false;
       }
 
-      const value = { value: this.masked.unmaskedvalue(), input: this.input };
+      const value = {
+        value: this.masked.unmaskedvalue(),
+        input: this.input,
+      };
 
       this.masked = {};
 
       if (this.phaState === 'phone') {
-        return this[AUTH_REQUEST](value)
+        return this.authRequest(value)
           .then(() => {
             this.input = '';
-          }).catch(() => {});
+          })
+          .catch(() => {
+          });
       }
 
-      return this[AUTH_REQUEST_CONFIRM](value)
+      return this.authConfirm(value)
         .then(() => this.$router.push('/'));
 
     },
@@ -145,7 +165,8 @@ export default {
         return;
       }
 
-      this.masked = this.inputMask().mask(el);
+      this.masked = this.inputMask()
+        .mask(el);
 
     },
 
@@ -175,6 +196,17 @@ export default {
 <style scoped lang="scss">
 
 @import "../styles/variables";
+
+.sign-in {
+  margin: 0 auto;
+  max-width: 470px;
+}
+
+.fields {
+  > * + * {
+    margin-top: $margin-top;
+  }
+}
 
 .buttons {
 
