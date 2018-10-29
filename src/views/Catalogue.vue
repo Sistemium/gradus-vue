@@ -163,6 +163,7 @@ export default {
         this.message = this.$message({
           message: 'Загрузка данных ...',
           type: 'warning',
+          duration: 0,
         });
       }
     },
