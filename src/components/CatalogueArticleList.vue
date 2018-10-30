@@ -4,7 +4,7 @@ resize.list-group.catalogue-article-list(v-if="items.length" padding="35" ref="r
 
   dynamic-scroller.scroller(
     :items="groupedItems()"
-    :min-item-height="80"
+    :min-item-height="68"
     :pageMode="true"
   )
 
@@ -69,6 +69,14 @@ export default {
     CatalogueArticle,
   },
 
+  watch: {
+    items() {
+      this.$nextTick(() => {
+        this.$refs.resizer.$el.scrollTop = 0;
+      });
+    },
+  },
+
 };
 
 </script>
@@ -79,7 +87,8 @@ export default {
 .list-group-item {
   display: flex;
   padding: $margin-right;
-  box-sizing: border-box
+  box-sizing: border-box;
+  min-height: 68px;
 }
 
 .catalogue-article {
