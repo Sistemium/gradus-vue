@@ -1,5 +1,6 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <h1>Система «Градус»</h1>
+    <p>Проект находится в стадии первичного тестирования</p>
   </div>
 </template>
