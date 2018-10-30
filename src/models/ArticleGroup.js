@@ -2,6 +2,7 @@ import Model from 'sistemium-vue/jsdata/Model';
 import forEach from 'lodash/forEach';
 
 import RelationCache from '@/lib/RelationCache';
+import Article from './Article';
 
 const relationCache = new RelationCache({});
 
@@ -18,6 +19,7 @@ const ArticleGroup = new Model({
     properties: {
       parent: relationCache.one('parent', 'articleGroupId'),
       children: relationCache.many('articleGroupId'),
+      articles: relationCache.many('articles', 'articleGroupId'),
     },
   },
 
@@ -84,4 +86,5 @@ export default ArticleGroup;
 relationCache.setRelations({
   parent: ArticleGroup,
   articleGroupId: ArticleGroup,
+  articles: Article,
 });
