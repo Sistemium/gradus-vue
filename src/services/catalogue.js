@@ -1,3 +1,4 @@
+import intersection from 'lodash/intersection';
 import filter from 'lodash/filter';
 import keyBy from 'lodash/keyBy';
 import flatten from 'lodash/flatten';
@@ -19,19 +20,15 @@ const { debug, error } = log('catalogue');
 
 export async function loadData() {
 
-  await ArticleGroup.findAll({
-    limit: 10000,
-  });
+  const fetchParams = {
+    limit: 1500,
+  };
 
-  await ArticlePicture.findAll({
-    limit: 20000,
-    // 'x-offset:': '*',
-  });
+  await ArticleGroup.fetchAll(fetchParams);
 
-  await Article.findAll({
-    limit: 1000,
-    // 'x-offset:': '*',
-  });
+  await ArticlePicture.fetchAll(fetchParams);
+
+  await Article.fetchAll(fetchParams);
 
   const articles = Article.filter({});
   debug('articles', articles.length);
@@ -109,7 +106,7 @@ export function articlesByGroupID(articleGroup, search) {
 
 export function articleGroupsBySearch(search) {
 
-  const articles = searchArticles(Article.filter(), search);
+  const articles = searchArticles(Article.filter({ articleSameId: null }), search);
   debug('articleGroupsBySearch:articles', articles.length);
 
   const groupIds = uniq(map(articles, 'articleGroupId'));
@@ -135,7 +132,7 @@ export function catalogueData(currentArticleGroup, searchText, filteredGroups) {
     groups = filter(filteredGroups, g => g.articleGroupId === articleGroupId);
     // debug('bindCurrent', groups.length, articleGroupId, children.length);
   } else {
-    groups = orderBy(currentArticleGroup.parent.children, 'name');
+    groups = orderBy(intersection(currentArticleGroup.parent.children, filteredGroups), 'name');
   }
 
   const articles = articlesByGroupID(currentArticleGroup, searchText) || [];
