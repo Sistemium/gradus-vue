@@ -31,12 +31,12 @@ export default class RelationCache {
     return this.relations[name].get(id);
   }
 
-  getMany(name, id) {
+  getMany(name, fk, id) {
     if (!id) {
       return [];
     }
     const model = this.relations[name];
-    const index = model.indexed[name];
+    const index = model.indexed[fk];
     return index[id];
   }
 
@@ -50,14 +50,14 @@ export default class RelationCache {
     };
   }
 
-  many(name, prop = 'id') {
+  many(name, fk = name, prop = 'id') {
     const cache = this;
     return {
       type: 'array',
       configurable: true,
       enumerable: false,
       get() {
-        return cache.getMany(name, this[prop]);
+        return cache.getMany(name, fk, this[prop]);
       },
     };
   }
