@@ -89,24 +89,24 @@ export function getArticleGroup(id) {
 }
 
 
-export function articlesByGroupID(articleGroup, search) {
+export function articlesByGroupID(articleGroup, filters) {
 
   if (!articleGroup) {
-    return searchArticles(Article.filter(), search);
+    return filterArticles(Article.filter(), filters);
   }
 
   const ids = keyBy(flatten(filter(map(articleGroup.descendants(), 'children'))), 'id');
   ids[articleGroup.id] = articleGroup;
-  return searchArticles(
+  return filterArticles(
     orderBy(filter(Article.filter(), ({ articleGroupId }) => ids[articleGroupId]), 'name'),
-    search,
+    filters,
   );
 
 }
 
 export function articleGroupsBySearch(search) {
 
-  const articles = searchArticles(Article.filter({ articleSameId: null }), search);
+  const articles = filterArticles(Article.filter({ articleSameId: null }), search);
   debug('articleGroupsBySearch:articles', articles.length);
 
   const groupIds = uniq(map(articles, 'articleGroupId'));
@@ -122,7 +122,7 @@ export function articleGroupsBySearch(search) {
 }
 
 
-export function catalogueData(currentArticleGroup, searchText, filteredGroups) {
+export function catalogueData(currentArticleGroup, filters, filteredGroups) {
 
   const { id: articleGroupId = null, children = [] } = currentArticleGroup || {};
 
@@ -135,7 +135,7 @@ export function catalogueData(currentArticleGroup, searchText, filteredGroups) {
     groups = orderBy(intersection(currentArticleGroup.parent.children, filteredGroups), 'name');
   }
 
-  const articles = articlesByGroupID(currentArticleGroup, searchText) || [];
+  const articles = articlesByGroupID(currentArticleGroup, filters) || [];
 
   let parents = [];
 
@@ -211,13 +211,18 @@ export function groupedArticles(articles) {
   return filter(articles, a => !a.articleSameId);
 }
 
-function searchArticles(articles, search) {
+function filterArticles(articles, filters) {
 
-  if (!search) {
+  const { searchText, imageFilter } = filters;
+
+  if (!searchText && !imageFilter) {
+
     return articles;
+
   }
 
-  const re = new RegExp(escapeRegExp(search), 'i');
-  return filter(articles, a => re.test(a.name));
+  const re = searchText && new RegExp(escapeRegExp(searchText), 'i');
+
+  return filter(articles, a => (!re || re.test(a.name)) && (!imageFilter || a.avatarPicture));
 
 }

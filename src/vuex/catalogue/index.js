@@ -13,6 +13,7 @@ export default {
     [states.SELECTED_ARTICLE]: null,
     [states.AVATAR_ARTICLE]: null,
     [states.ARTICLE_GROUP]: null,
+    [states.IMAGE_FILTER]: false,
     [states.SEARCH_TEXT]: '',
     [states.BUSY]: false,
     [states.ACTIVE_GALLERY_PICTURE]: false,

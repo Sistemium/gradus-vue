@@ -29,8 +29,14 @@ element-loading-text="Загрузка данных ..."
         ) {{ article.name }}
 
     .stats
-      span Товаров:
-      strong {{ articles.length }}
+      el-popover(
+      placement="bottom"
+      width="100"
+      trigger="click"
+      )
+        span Без картинки:
+        el-switch.right(v-model="imageFilter")
+        el-button(slot="reference") Фильтры
 
     el-input.searcher(
     prefix-icon="el-icon-search"
@@ -114,6 +120,10 @@ export default {
       ...mapGetters({ get: getters.ARTICLE_GROUP }),
       ...mapActions({ set: actions.ARTICLE_GROUP_CLICK }),
     },
+    imageFilter: {
+      ...mapGetters({ get: getters.IMAGE_FILTER }),
+      ...mapActions({ set: actions.IMAGE_FILTER_TOGGLE }),
+    },
     selectedArticles() {
       return svc.getArticles(this.sharedArticles);
     },
@@ -125,6 +135,7 @@ export default {
     this.loading = false;
     this.$watch('currentArticleGroup', this.bindCurrent);
     this.$watch('searchText', this.bindArticles, { immediate: true });
+    this.$watch('imageFilter', this.bindCurrent);
   },
 
   methods: {
@@ -139,9 +150,14 @@ export default {
 
     bindCurrent() {
 
+      const { searchText, imageFilter } = this;
+
       const data = svc.catalogueData(
         this.currentArticleGroup,
-        this.searchText,
+        {
+          searchText,
+          imageFilter,
+        },
         this.filteredGroups,
       );
 
@@ -226,6 +242,12 @@ export default {
   li {
     font-size: 85%;
   }
+}
+
+.right{
+
+  float: right;
+
 }
 
 </style>
