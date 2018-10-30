@@ -36,8 +36,11 @@ export default {
       background-color: $white;
       border-radius: $border-radius;
     }
-    margin-right: $margin-right;
     color: $red;
+  }
+
+  > * + * {
+    margin-left: $margin-right;
   }
 
 }
