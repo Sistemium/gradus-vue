@@ -161,42 +161,6 @@ export default {
 
 @import "../styles/variables";
 
-.same-article {
-
-  font-size: 75%;
-  margin-top: $margin-top/3;
-
-  .remove-same {
-
-    padding: 6px 6px 6px 8px;
-
-    &:hover {
-      //font-weight: bold;
-      background-color: $white;
-      border-radius: $border-radius;
-    }
-    margin-right: $margin-right;
-    color: $red;
-  }
-}
-
-$avatar-size: 50px;
-
-.avatar {
-
-  cursor: zoom-in;
-  min-width: $avatar-size;
-  min-height: $avatar-size;
-  text-align: center;
-  margin-right: $margin-right;
-
-  img {
-    max-width: $avatar-size;
-    max-height: $avatar-size;
-  }
-
-}
-
 .main {
 
   flex: 1;

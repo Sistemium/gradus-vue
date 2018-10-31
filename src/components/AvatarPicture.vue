@@ -1,8 +1,8 @@
 <template lang="pug">
 
-  .avatar
-    img.placeholder(v-if="imageSrc" :src="imageSrc")
-    img(src="/images/placeholder.png" v-else)
+.avatar
+  img.placeholder(v-if="imageSrc" :src="imageSrc")
+  img(src="/images/placeholder.png" v-else)
 
 </template>
 
@@ -19,23 +19,23 @@ export default {
 
 <style scoped lang="scss">
 
-  @import "../styles/variables";
+@import "../styles/variables";
 
-  $avatar-size: 50px;
+$avatar-size: 50px;
 
-  .avatar {
+.avatar {
 
-    cursor: zoom-in;
-    min-width: $avatar-size;
-    min-height: $avatar-size;
-    text-align: center;
-    margin-right: $margin-right;
+  cursor: zoom-in;
+  min-width: $avatar-size;
+  min-height: $avatar-size;
+  text-align: center;
+  margin-right: $margin-right;
 
-    img {
-      max-width: $avatar-size;
-      max-height: $avatar-size;
-    }
-
+  img {
+    max-width: $avatar-size;
+    max-height: $avatar-size;
   }
+
+}
 
 </style>
