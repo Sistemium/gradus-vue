@@ -49,7 +49,10 @@ export default {
   },
 
   computed: {
-    ...mapState('auth', { token: 'id' }),
+    ...mapState('auth', {
+      token: 'id',
+      org: ({ account }) => account.org,
+    }),
     // isNative,
     uploadHeaders() {
       return { authorization: this.token };
@@ -59,7 +62,7 @@ export default {
   methods: {
 
     imsUrl() {
-      return `/ims?folder=${this.entityName}/${serverDateFormat()}`;
+      return `/ims/${this.org}?folder=${this.entityName}/${serverDateFormat()}`;
     },
 
     // nativeTriggerClick() {

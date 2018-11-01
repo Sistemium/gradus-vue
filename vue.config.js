@@ -9,7 +9,7 @@ module.exports = {
         // },
       },
       '/ims': {
-        target: 'https://api.sistemium.com/ims/dr50',
+        target: 'https://api.sistemium.com/ims',
         changeOrigin: true,
         pathRewrite: {
           '^/ims': '',
