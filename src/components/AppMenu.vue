@@ -10,6 +10,9 @@
     el-menu-item(index="/catalogue")
       img(src="../assets/icons8-moleskine.svg")
       span Каталог
+    el-menu-item(index="/campaigns")
+      img(src="../assets/icons8-moleskine.svg")
+      span Акции
     el-menu-item(index="/about")
       img(src="../assets/icons8-info.svg")
       span О проекте
