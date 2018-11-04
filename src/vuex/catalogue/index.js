@@ -14,6 +14,7 @@ export default {
     [states.AVATAR_ARTICLE]: null,
     [states.ARTICLE_GROUP]: null,
     [states.IMAGE_FILTER]: false,
+    [states.SELECTED_DATE]: '',
     [states.SEARCH_TEXT]: '',
     [states.BUSY]: false,
     [states.ACTIVE_GALLERY_PICTURE]: false,

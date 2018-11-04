@@ -1,32 +1,46 @@
 <template lang="pug">
 
-  el-select
-    el-option(v-for="")
+  el-select(v-model="selectedDate")
+    el-option(
+    v-for="month in lastYearMonths"
+    :key="month"
+    :label="month"
+    :value="month"
+    )
 
 </template>
 
 <script>
 
-import date from 'date-fns';
+import { createNamespacedHelpers } from 'vuex';
+
+import * as getters from '@/vuex/catalogue/getters';
+import * as actions from '@/vuex/catalogue/actions';
+
+import { monthGenerator } from 'sistemium-telegram/services/moments';
+
+const { mapActions, mapGetters } = createNamespacedHelpers('catalogue');
 
 export default {
 
-  name: "Campaigns",
+  name: 'Campaigns',
 
   computed: {
 
     lastYearMonths() {
 
-      const today = new Date();
+      return monthGenerator(12, Date());
 
-      const year = today.getFullYear();
+    },
 
-      const month = year.getMonth() + 1
+    selectedDate: {
+      ...mapGetters({ get: getters.SELECTED_DATE }),
+      ...mapActions({ set: actions.SELECT_DATE }),
+    },
 
-    }
+  },
+};
 
-  }
-}
 </script>
 
 <style scoped lang="scss">
