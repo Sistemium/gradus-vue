@@ -11,12 +11,13 @@ export async function loadData() {
 
 }
 
-// export async function campaignsData(searchText, selectedDate) {
-//
-//   const fetchParams = {
-//     limit: 1500,
-//   };
-//
-//   await Campaign.fetchAll(fetchParams);
-//
-// }
+export function campaignsData(searchText, month) {
+
+  const fetchParams = {
+    limit: 1500,
+    month,
+  };
+
+  return Campaign.fetchAll(fetchParams);
+
+}

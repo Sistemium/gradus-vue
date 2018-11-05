@@ -3,10 +3,17 @@
   el-select(v-model="selectedDate")
     el-option(
     v-for="month in lastYearMonths"
-    :key="month"
-    :label="month"
-    :value="month"
+    :key="month.label"
+    :label="month.label"
+    :value="month.label"
     )
+
+  <!--el-input.searcher(-->
+  <!--prefix-icon="el-icon-search"-->
+  <!--v-model="searchText"-->
+  <!--:clearable="true"-->
+  <!--placeholder="поиск"-->
+  <!--)-->
 
 </template>
 
@@ -47,29 +54,32 @@ export default {
       ...mapGetters({ get: getters.SELECTED_DATE }),
       ...mapActions({ set: actions.SELECT_DATE }),
     },
+    searchText: {
+      ...mapGetters({ get: getters.SEARCH_TEXT }),
+      ...mapActions({ set: actions.SEARCH_TEXT_CHANGE }),
+    },
 
   },
 
   methods: {
 
-    bindCurrent() {
+    async bindCampaigns() {
 
-      // const data = svc.campaignsData(
-      //   this.searchText,
-      //   this.selectedDate,
-      // );
-      //
-      // this.campaigns = data.campaigns;
+      this.loading = true;
+
+      this.campaigns = await svc.campaignsData(
+        this.searchText,
+        '2018-11',
+      );
+
+      this.loading = false;
 
     },
 
   },
 
   async created() {
-    this.loading = true;
-    await svc.loadData();
-    this.loading = false;
-    this.$watch('searchText', this.bindArticles, { immediate: true });
+    this.$watch('searchText', this.bindCampaigns, { immediate: true });
   },
 };
 
