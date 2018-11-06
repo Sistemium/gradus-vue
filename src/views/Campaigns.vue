@@ -1,19 +1,43 @@
 <template lang="pug">
 
-  el-select(v-model="selectedDate")
-    el-option(
-    v-for="month in lastYearMonths"
-    :key="month.label"
-    :label="month.label"
-    :value="month.label"
-    )
+el-container.campaigns(
+no-v-loading.fullscreen.lock="loading || busy"
+element-loading-text="Загрузка данных ..."
+)
 
-  <!--el-input.searcher(-->
-  <!--prefix-icon="el-icon-search"-->
-  <!--v-model="searchText"-->
-  <!--:clearable="true"-->
-  <!--placeholder="поиск"-->
-  <!--)-->
+  el-header.catalogue-header(height="")
+
+    strong Период:
+
+    el-select.select(v-model="selectedDate")
+      el-option(
+      v-for="month in lastYearMonths"
+      :key="month.id"
+      :label="month.label"
+      :value="month.id"
+      )
+
+  el-container.catalogue-main(
+  v-loading="loading"
+  element-loading-text="Загрузка данных ..."
+  )
+
+    el-table(
+    :data="campaigns"
+    v-if="!loading"
+    )
+      el-table-column(
+      prop="name"
+      label="Название"
+      )
+      el-table-column(
+      prop="dateB"
+      label="Дата начала"
+      )
+      el-table-column(
+      prop="dateE"
+      label="Дата окончания"
+      )
 
 </template>
 
@@ -69,8 +93,10 @@ export default {
 
       this.campaigns = await svc.campaignsData(
         this.searchText,
-        '2018-11',
+        this.selectedDate,
       );
+
+      console.log(this.selectedDate);
 
       this.loading = false;
 
@@ -79,12 +105,18 @@ export default {
   },
 
   async created() {
-    this.$watch('searchText', this.bindCampaigns, { immediate: true });
+    this.$watch('selectedDate', this.bindCampaigns, { immediate: true });
   },
 };
 
 </script>
 
 <style scoped lang="scss">
+
+.select{
+
+  margin-left: 10px;
+
+}
 
 </style>
