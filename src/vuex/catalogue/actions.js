@@ -13,7 +13,6 @@ export const SHARE_WITH_ARTICLE = 'SHARE_WITH_ARTICLE';
 export const ARTICLE_AVATAR_CLICK = 'ARTICLE_AVATAR_CLICK';
 export const ARTICLE_GROUP_CLICK = 'ARTICLE_GROUP_CLICK';
 export const IMAGE_FILTER_TOGGLE = 'IMAGE_FILTER_TOGGLE';
-export const SELECT_DATE = 'SELECT_DATE';
 export const SEARCH_TEXT_CHANGE = 'SEARCH_TEXT_CHANGE';
 export const ADD_GALLERY_PICTURE = 'ADD_GALLERY_PICTURE';
 export const REMOVE_GALLERY_PICTURE = 'REMOVE_GALLERY_PICTURE';
@@ -114,7 +113,4 @@ export default {
     commit(m.SET_IMAGE_FILTER);
   },
 
-  [SELECT_DATE]({ commit }, date) {
-    commit(m.SET_SELECTED_DATE, date);
-  },
 };

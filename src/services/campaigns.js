@@ -18,6 +18,6 @@ export function campaignsData(searchText, month) {
     month,
   };
 
-  return Campaign.fetchAll(fetchParams);
+  return Campaign.findAll(fetchParams);
 
 }

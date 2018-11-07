@@ -45,14 +45,14 @@ element-loading-text="Загрузка данных ..."
 
 import { createNamespacedHelpers } from 'vuex';
 
-import * as getters from '@/vuex/catalogue/getters';
-import * as actions from '@/vuex/catalogue/actions';
+import * as getters from '@/vuex/campaigns/getters';
+import * as actions from '@/vuex/campaigns/actions';
 
 import * as svc from '@/services/campaigns';
 
 import { monthGenerator } from 'sistemium-telegram/services/moments';
 
-const { mapActions, mapGetters } = createNamespacedHelpers('catalogue');
+const { mapActions, mapGetters } = createNamespacedHelpers('campaigns');
 
 export default {
 

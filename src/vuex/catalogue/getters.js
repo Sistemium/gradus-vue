@@ -5,7 +5,6 @@ export const SELECTED_ARTICLE = 'selectedArticle';
 export const AVATAR_ARTICLE = 'avatarArticle';
 export const ARTICLE_GROUP = 'articleGroup';
 export const IMAGE_FILTER = 'imageFilter';
-export const SELECTED_DATE = 'selectedDate';
 export const SEARCH_TEXT = 'searchText';
 export const GALLERY_PICTURES = 'galleryPictures';
 export const BUSY = 'BUSY';
@@ -60,10 +59,6 @@ export default {
 
   [IMAGE_FILTER](state) {
     return state[IMAGE_FILTER];
-  },
-
-  [SELECTED_DATE](state) {
-    return state[SELECTED_DATE];
   },
 
   [SEARCH_TEXT](state) {
