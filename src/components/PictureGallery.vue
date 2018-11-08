@@ -20,7 +20,7 @@ element-loading-text="Загрузка изображения ..."
     :name="image.id"
     :label="`Фото №${idx+1}`"
     )
-      .gallery-image(@click.prevent="$emit('image-click')")
+      .gallery-image(@click.prevent="$emit('image-click', item)")
 
         img(:src="image.largeSrc")
 

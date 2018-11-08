@@ -13,7 +13,7 @@ center
   picture-gallery(
   v-loading="busy"
   element-loading-text="Обработка изображения ..."
-  @image-click="closeDialog()"
+  @image-click="closeDialog"
   :images="images"
   :model="ArticlePicture"
   :new-image-properties="newImageProperties"

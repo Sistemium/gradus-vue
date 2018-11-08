@@ -35,7 +35,7 @@ element-loading-text="Загрузка данных ..."
       trigger="click"
       )
         span Без картинки:
-        el-switch.right(v-model="imageFilter")
+        el-switch.image-filter(v-model="onlyNoAvatar")
         el-button(slot="reference") Фильтры
 
     el-input.searcher(
@@ -120,7 +120,7 @@ export default {
       ...mapGetters({ get: getters.ARTICLE_GROUP }),
       ...mapActions({ set: actions.ARTICLE_GROUP_CLICK }),
     },
-    imageFilter: {
+    onlyNoAvatar: {
       ...mapGetters({ get: getters.IMAGE_FILTER }),
       ...mapActions({ set: actions.IMAGE_FILTER_TOGGLE }),
     },
@@ -135,7 +135,7 @@ export default {
     this.loading = false;
     this.$watch('currentArticleGroup', this.bindCurrent);
     this.$watch('searchText', this.bindArticles, { immediate: true });
-    this.$watch('imageFilter', this.bindCurrent);
+    this.$watch('onlyNoAvatar', this.bindCurrent);
   },
 
   methods: {
@@ -150,13 +150,13 @@ export default {
 
     bindCurrent() {
 
-      const { searchText, imageFilter } = this;
+      const { searchText, onlyNoAvatar } = this;
 
       const data = svc.catalogueData(
         this.currentArticleGroup,
         {
           searchText,
-          imageFilter,
+          onlyNoAvatar,
         },
         this.filteredGroups,
       );
@@ -244,7 +244,7 @@ export default {
   }
 }
 
-.right{
+.image-filter {
 
   float: right;
 

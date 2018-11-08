@@ -5,19 +5,27 @@ no-v-loading.fullscreen.lock="loading || busy"
 element-loading-text="Загрузка данных ..."
 )
 
-  el-header.catalogue-header(height="")
+  el-header.campaigns-header(height="")
 
-    strong Период:
+    .month
+      strong Период:
 
-    el-select.select(v-model="selectedDate")
-      el-option(
-      v-for="month in lastYearMonths"
-      :key="month.id"
-      :label="month.label"
-      :value="month.id"
-      )
+      el-select.select(v-model="selectedDate" placeholder="выберите")
+        el-option(
+        v-for="month in lastYearMonths"
+        :key="month.id"
+        :label="month.label"
+        :value="month.id"
+        )
 
-  el-container.catalogue-main(
+    el-input.searcher(
+    prefix-icon="el-icon-search"
+    v-model="searchText"
+    :clearable="true"
+    placeholder="поиск"
+    )
+
+  el-container.campaigns-main(
   v-loading="loading"
   element-loading-text="Загрузка данных ..."
   )
@@ -48,8 +56,6 @@ import { createNamespacedHelpers } from 'vuex';
 import * as getters from '@/vuex/campaigns/getters';
 import * as actions from '@/vuex/campaigns/actions';
 
-import * as svc from '@/services/campaigns';
-
 import { monthGenerator } from 'sistemium-telegram/services/moments';
 
 const { mapActions, mapGetters } = createNamespacedHelpers('campaigns');
@@ -58,10 +64,8 @@ export default {
 
   name: 'Campaigns',
 
-
   data() {
     return {
-      campaigns: [],
       loading: false,
     };
   },
@@ -87,37 +91,41 @@ export default {
 
   },
 
-  methods: {
-
-    async bindCampaigns() {
-
-      this.loading = true;
-
-      this.campaigns = await svc.campaignsData(
-        this.searchText,
-        this.selectedDate,
-      );
-
-      console.log(this.selectedDate);
-
-      this.loading = false;
-
-    },
-
-  },
-
-  async created() {
-    this.$watch('selectedDate', this.bindCampaigns, { immediate: true });
-  },
 };
 
 </script>
 
 <style scoped lang="scss">
 
-.select{
+@import "../styles/variables";
+
+.select {
 
   margin-left: 10px;
+
+}
+
+.campaigns-header {
+
+  height: 70px;
+  margin-top: -20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-right: 0;
+  padding-left: 3px;
+  justify-content: space-between;
+
+  strong {
+    margin-left: $margin-right;
+  }
+
+}
+
+.searcher {
+
+  max-width: 200px;
+  float: right;
 
 }
 
