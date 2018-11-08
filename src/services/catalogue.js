@@ -213,9 +213,9 @@ export function groupedArticles(articles) {
 
 function filterArticles(articles, filters) {
 
-  const { searchText, imageFilter } = filters;
+  const { searchText, onlyNoAvatar } = filters;
 
-  if (!searchText && !imageFilter) {
+  if (!searchText && !onlyNoAvatar) {
 
     return articles;
 
@@ -223,6 +223,6 @@ function filterArticles(articles, filters) {
 
   const re = searchText && new RegExp(escapeRegExp(searchText), 'i');
 
-  return filter(articles, a => (!re || re.test(a.name)) && (!imageFilter || a.avatarPicture));
+  return filter(articles, a => (!re || re.test(a.name)) && (!onlyNoAvatar || a.avatarPicture));
 
 }
