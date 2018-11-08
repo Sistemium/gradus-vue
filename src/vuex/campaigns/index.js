@@ -10,6 +10,7 @@ export default {
   state: {
     [states.SELECTED_DATE]: '',
     [states.SEARCH_TEXT]: '',
+    [states.CAMPAIGNS]: [],
   },
 
   mutations,

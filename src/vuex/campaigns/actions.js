@@ -1,4 +1,5 @@
 import debounce from 'lodash/debounce';
+import * as svc from '@/services/campaigns';
 
 import * as m from './mutations';
 
@@ -11,7 +12,12 @@ export default {
     commit(m.SET_SEARCH_TEXT, text);
   }, 750),
 
-  [SELECT_DATE]({ commit }, date) {
+  async [SELECT_DATE]({ commit }, date) {
+
+    const campaigns = await svc.campaignsData(date);
+
+    commit(m.SET_CAMPAIGNS, campaigns);
+
     commit(m.SET_SELECTED_DATE, date);
   },
 };

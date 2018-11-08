@@ -74,6 +74,8 @@ export default {
 
     },
 
+    ...mapGetters({ campaigns: getters.CAMPAIGNS }),
+
     selectedDate: {
       ...mapGetters({ get: getters.SELECTED_DATE }),
       ...mapActions({ set: actions.SELECT_DATE }),
