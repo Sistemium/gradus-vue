@@ -8,7 +8,7 @@ export default {
   namespaced: true,
 
   state: {
-    [states.SELECTED_DATE]: '',
+    [states.SELECTED_MONTH]: '',
     [states.SEARCH_TEXT]: '',
     [states.CAMPAIGNS]: [],
   },

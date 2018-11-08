@@ -10,7 +10,7 @@ element-loading-text="Загрузка данных ..."
     .month
       strong Период:
 
-      el-select.select(v-model="selectedDate" placeholder="выберите")
+      el-select.select(v-model="selectedMonth" placeholder="выберите")
         el-option(
         v-for="month in lastYearMonths"
         :key="month.id"
@@ -80,9 +80,9 @@ export default {
 
     ...mapGetters({ campaigns: getters.CAMPAIGNS }),
 
-    selectedDate: {
-      ...mapGetters({ get: getters.SELECTED_DATE }),
-      ...mapActions({ set: actions.SELECT_DATE }),
+    selectedMonth: {
+      ...mapGetters({ get: getters.SELECTED_MONTH }),
+      ...mapActions({ set: actions.SELECT_MONTH }),
     },
     searchText: {
       ...mapGetters({ get: getters.SEARCH_TEXT }),

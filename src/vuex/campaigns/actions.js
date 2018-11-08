@@ -3,7 +3,7 @@ import * as svc from '@/services/campaigns';
 
 import * as m from './mutations';
 
-export const SELECT_DATE = 'SELECT_DATE';
+export const SELECT_MONTH = 'SELECT_MONTH';
 export const SEARCH_TEXT_CHANGE = 'SEARCH_TEXT_CHANGE';
 
 export default {
@@ -12,12 +12,12 @@ export default {
     commit(m.SET_SEARCH_TEXT, text);
   }, 750),
 
-  async [SELECT_DATE]({ commit }, date) {
+  async [SELECT_MONTH]({ commit }, date) {
 
     const campaigns = await svc.campaignsData(date);
 
     commit(m.SET_CAMPAIGNS, campaigns);
 
-    commit(m.SET_SELECTED_DATE, date);
+    commit(m.SET_SELECTED_MONTH, date);
   },
 };

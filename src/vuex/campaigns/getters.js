@@ -1,13 +1,13 @@
 import * as campaign from '@/services/campaigns';
 
-export const SELECTED_DATE = 'selectedDate';
+export const SELECTED_MONTH = 'selectedMonth';
 export const SEARCH_TEXT = 'searchText';
 export const CAMPAIGNS = 'campaigns';
 
 export default {
 
-  [SELECTED_DATE](state) {
-    return state[SELECTED_DATE];
+  [SELECTED_MONTH](state) {
+    return state[SELECTED_MONTH];
   },
 
   [SEARCH_TEXT](state) {
