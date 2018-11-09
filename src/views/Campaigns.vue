@@ -125,7 +125,6 @@ export default {
 .searcher {
 
   max-width: 200px;
-  float: right;
 
 }
 

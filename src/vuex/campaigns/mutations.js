@@ -3,7 +3,7 @@ import * as g from './getters';
 
 export const SET_SELECTED_MONTH = `SET_${g.SELECTED_MONTH}`;
 export const SET_SEARCH_TEXT = `SET_${g.SEARCH_TEXT}`;
-export const SET_CAMPAIGNS = `SET_${g.SEARCH_TEXT}`;
+export const SET_CAMPAIGNS = `SET_${g.CAMPAIGNS}`;
 
 export default {
 
