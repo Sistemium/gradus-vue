@@ -7,7 +7,8 @@ element-loading-text="Загрузка данных ..."
 
   el-header.campaigns-header(height="")
 
-    .month
+    .filter
+
       strong Период:
 
       el-select.select(v-model="selectedMonth" placeholder="выберите")
@@ -18,12 +19,14 @@ element-loading-text="Загрузка данных ..."
         :value="month.id"
         )
 
-    el-input.searcher(
-    prefix-icon="el-icon-search"
-    v-model="searchText"
-    :clearable="true"
-    placeholder="поиск"
-    )
+      el-input.searcher(
+      prefix-icon="el-icon-search"
+      v-model="searchText"
+      :clearable="true"
+      placeholder="поиск"
+      )
+
+    el-button Добавить акцию
 
   el-container.campaigns-main(
   v-loading="loading"
@@ -124,6 +127,7 @@ export default {
 
 .searcher {
 
+  margin-left: 10px;
   max-width: 200px;
 
 }
