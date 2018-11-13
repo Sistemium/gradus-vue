@@ -28,13 +28,31 @@ element-loading-text="Загрузка данных ..."
 
     el-button(@click="newCampaignVisible = true") Добавить акцию
 
-    el-dialog(
-      title="Новая Акция" :visible.sync="newCampaignVisible"
+    el-dialog.campaign-input(
+      title="Новая Акция"
+      :visible.sync="newCampaignVisible"
+      :before-close="closeDialog"
     )
 
+      label Название *
+
+      el-input(v-model="newCampaign.name")
+
+      label Дата начала *
+
+      el-date-picker(v-model="newCampaign.dateB")
+
+      label Дата окончания *
+
+      el-date-picker(v-model="newCampaign.dateE")
+
+      label Описание
+
+      el-input(v-model="newCampaign.commentText" type="textarea" autosize)
+
       span(slot="footer" class="dialog-footer")
-        el-button(@click="dialogFormVisible = false") Отмена
-        el-button(type="primary" @click="dialogFormVisible = false") Готово
+        el-button(@click="closeDialog") Отмена
+        el-button(type="primary" @click="closeDialog") Готово
 
   el-container.campaigns-main(
   v-loading="loading"
@@ -79,6 +97,7 @@ export default {
     return {
       loading: false,
       newCampaignVisible: false,
+      newCampaign: {},
     };
   },
 
@@ -99,6 +118,18 @@ export default {
     searchText: {
       ...mapGetters({ get: getters.SEARCH_TEXT }),
       ...mapActions({ set: actions.SEARCH_TEXT_CHANGE }),
+    },
+
+  },
+
+  methods: {
+
+    closeDialog() {
+
+      this.newCampaignVisible = false;
+
+      this.newCampaign = {};
+
     },
 
   },
@@ -138,6 +169,31 @@ export default {
 
   margin-left: 10px;
   max-width: 200px;
+
+}
+
+.campaign-input{
+
+  .el-input{
+
+    padding: 12px 6px;
+    display: block;
+    width: 100%;
+
+  }
+
+  .el-textarea{
+
+    padding: 12px 6px;
+    width: 100%;
+
+  }
+
+  label{
+
+    padding: 6px;
+
+  }
 
 }
 
