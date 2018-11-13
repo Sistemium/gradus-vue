@@ -26,7 +26,15 @@ element-loading-text="Загрузка данных ..."
       placeholder="поиск"
       )
 
-    el-button Добавить акцию
+    el-button(@click="newCampaignVisible = true") Добавить акцию
+
+    el-dialog(
+      title="Новая Акция" :visible.sync="newCampaignVisible"
+    )
+
+      span(slot="footer" class="dialog-footer")
+        el-button(@click="dialogFormVisible = false") Отмена
+        el-button(type="primary" @click="dialogFormVisible = false") Готово
 
   el-container.campaigns-main(
   v-loading="loading"
@@ -70,6 +78,7 @@ export default {
   data() {
     return {
       loading: false,
+      newCampaignVisible: false,
     };
   },
 
