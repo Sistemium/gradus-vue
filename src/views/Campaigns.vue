@@ -40,11 +40,13 @@ element-loading-text="Загрузка данных ..."
 
       label Дата начала *
 
-      el-date-picker(v-model="newCampaign.dateB")
+      el-date-picker(v-model="newCampaign.dateB"
+      :picker-options = "{ disabledDate: disableMinDate }")
 
       label Дата окончания *
 
-      el-date-picker(v-model="newCampaign.dateE")
+      el-date-picker(v-model="newCampaign.dateE"
+      :picker-options= "{ disabledDate: disableMaxDate }")
 
       label Описание
 
@@ -132,6 +134,18 @@ export default {
 
     },
 
+    disableMinDate(date) {
+
+      return !!(this.newCampaign.dateE && date > this.newCampaign.dateE);
+
+    },
+
+    disableMaxDate(date) {
+
+      return !!(this.newCampaign.dateB && date < this.newCampaign.dateB);
+
+    },
+
   },
 
 };
@@ -179,7 +193,7 @@ export default {
     padding: 12px 6px;
     display: block;
     width: 100%;
-    
+
   }
 
   .el-textarea{
