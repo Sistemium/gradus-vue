@@ -48,7 +48,7 @@ element-loading-text="Загрузка данных ..."
 
       label Описание
 
-      el-input(v-model="newCampaign.commentText" type="textarea" autosize)
+      el-input(v-model="newCampaign.commentText" type="textarea" :rows="4" resize="none")
 
       span(slot="footer" class="dialog-footer")
         el-button(@click="closeDialog") Отмена
@@ -179,7 +179,7 @@ export default {
     padding: 12px 6px;
     display: block;
     width: 100%;
-
+    
   }
 
   .el-textarea{
