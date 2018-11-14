@@ -54,7 +54,7 @@ element-loading-text="Загрузка данных ..."
 
       span(slot="footer" class="dialog-footer")
         el-button(@click="closeDialog") Отмена
-        el-button(type="primary" @click="closeDialog") Готово
+        el-button(type="primary" @click="submitDialog") Готово
 
   el-container.campaigns-main(
   v-loading="loading"
@@ -88,6 +88,7 @@ import * as getters from '@/vuex/campaigns/getters';
 import * as actions from '@/vuex/campaigns/actions';
 
 import { monthGenerator } from 'sistemium-telegram/services/moments';
+import Campaign from '@/models/Campaign';
 
 const { mapActions, mapGetters } = createNamespacedHelpers('campaigns');
 
@@ -131,6 +132,14 @@ export default {
       this.newCampaignVisible = false;
 
       this.newCampaign = {};
+
+    },
+
+    submitDialog() {
+
+      Campaign.create(this.newCampaign);
+
+      this.closeDialog();
 
     },
 
