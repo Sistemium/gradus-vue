@@ -40,13 +40,21 @@ element-loading-text="Загрузка данных ..."
 
       label Дата начала *
 
-      el-date-picker(v-model="newCampaign.dateB"
-      :picker-options = "{ disabledDate: disableMinDate }")
+      el-date-picker(
+      v-model="newCampaign.dateB"
+      :picker-options = "{ disabledDate: disableMinDate }"
+      format="yyyy/MM/dd"
+      value-format="yyyy-MM-dd"
+      )
 
       label Дата окончания *
 
-      el-date-picker(v-model="newCampaign.dateE"
-      :picker-options= "{ disabledDate: disableMaxDate }")
+      el-date-picker(
+      v-model="newCampaign.dateE"
+      :picker-options= "{ disabledDate: disableMaxDate }"
+      format="yyyy/MM/dd"
+      value-format="yyyy-MM-dd"
+      )
 
       label Описание
 
@@ -135,9 +143,13 @@ export default {
 
     },
 
-    submitDialog() {
+    async submitDialog() {
 
-      Campaign.create(this.newCampaign);
+      await Campaign.create({
+        ...this.newCampaign,
+        isActive: true,
+
+      });
 
       this.closeDialog();
 
