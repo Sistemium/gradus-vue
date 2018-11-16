@@ -78,11 +78,11 @@ element-loading-text="Загрузка данных ..."
       label="Название"
       )
       el-table-column(
-      prop="dateB"
+      :formatter="dateBFormatter"
       label="Дата начала"
       )
       el-table-column(
-      prop="dateE"
+      :formatter="dateEFormatter"
       label="Дата окончания"
       )
 
@@ -95,7 +95,7 @@ import { createNamespacedHelpers } from 'vuex';
 import * as getters from '@/vuex/campaigns/getters';
 import * as actions from '@/vuex/campaigns/actions';
 
-import { monthGenerator } from 'sistemium-telegram/services/moments';
+import { monthGenerator, longDate } from 'sistemium-telegram/services/moments';
 import Campaign from '@/models/Campaign';
 
 const { mapActions, mapGetters } = createNamespacedHelpers('campaigns');
@@ -164,6 +164,18 @@ export default {
     disableMaxDate(date) {
 
       return !!(this.newCampaign.dateB && date < this.newCampaign.dateB);
+
+    },
+
+    dateBFormatter(date) {
+
+      return longDate(date.dateB);
+
+    },
+
+    dateEFormatter(date) {
+
+      return longDate(date.dateE);
 
     },
 
