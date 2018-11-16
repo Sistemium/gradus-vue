@@ -157,13 +157,13 @@ export default {
 
     disableMinDate(date) {
 
-      return !!(this.newCampaign.dateE && date > this.newCampaign.dateE);
+      return !!(this.newCampaign.dateE && date > new Date(this.newCampaign.dateE));
 
     },
 
     disableMaxDate(date) {
 
-      return !!(this.newCampaign.dateB && date < this.newCampaign.dateB);
+      return !!(this.newCampaign.dateB && date < new Date(this.newCampaign.dateB));
 
     },
 
