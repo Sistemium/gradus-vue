@@ -31,7 +31,6 @@ import * as a from '@/vuex/catalogue/actions';
 
 import log from 'sistemium-telegram/services/log';
 import ManagedComponent from '@/lib/ManagedComponent';
-import ArticlePictureArticle from '@/models/ArticlePictureArticle';
 import ArticlePicture from '@/models/ArticlePicture';
 
 import PictureGallery from './PictureGallery.vue';
@@ -79,21 +78,15 @@ export default {
 
     async onUpload(articlePicture) {
 
-      debug('onUpload', articlePicture);
-
       const { id: articleId, avatarPictureId } = this.article;
-      const { id: pictureId } = articlePicture;
+
+      debug('onUpload', articlePicture, articleId);
 
       this.busy = true;
 
       try {
 
-        await ArticlePictureArticle.create({
-          articleId,
-          pictureId,
-        });
-
-        this.addPicture(articlePicture);
+        await this.addPicture({ picture: articlePicture, articleId });
 
         if (!avatarPictureId) {
           await this.setAsAvatar(articlePicture);

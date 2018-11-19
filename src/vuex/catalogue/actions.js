@@ -1,6 +1,8 @@
 import debounce from 'lodash/debounce';
 import without from 'lodash/without';
 
+import ArticlePictureArticle from '@/models/ArticlePictureArticle';
+
 import * as svc from '@/services/catalogue';
 import * as m from '@/vuex/catalogue/mutations';
 import * as g from '@/vuex/catalogue/getters';
@@ -68,7 +70,13 @@ export default {
     commit(m.SET_AVATAR_PICTURE, picture && picture.id);
   },
 
-  [ADD_GALLERY_PICTURE]({ commit, getters }, picture) {
+  async [ADD_GALLERY_PICTURE]({ commit, getters }, { picture, articleId }) {
+
+    const { id: pictureId } = picture;
+    await ArticlePictureArticle.create({
+      articleId,
+      pictureId,
+    });
 
     const pictures = getters[g.GALLERY_PICTURES];
 
