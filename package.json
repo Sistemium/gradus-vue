@@ -12,7 +12,7 @@
     "inputmask": "^4.0.2",
     "js-data": "^3.0.4",
     "lodash": "^4.17.11",
-    "sistemium-telegram": "^1.2.7",
+    "sistemium-telegram": "^1.2.9",
     "sistemium-vue": "^1.0.5",
     "vue": "^2.5.17",
     "vue-core-image-upload": "^2.4.11",
