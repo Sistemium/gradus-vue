@@ -155,6 +155,7 @@ export default {
           src,
           thumbnailSrc,
           picturesInfo,
+          name: fileName,
           ...this.newImageProperties,
         });
         this.$emit('uploaded', picture, fileName);
