@@ -10,12 +10,11 @@ custom-class="el-dialog-gallery"
 :append-to-body="true"
 center
 )
-  picture-gallery(
+  catalogue-picture-gallery(
   v-loading="busy"
   element-loading-text="Обработка изображения ..."
   @image-click="closeDialog"
-  :images="images"
-  :model="ArticlePicture"
+  :model="this.pictureModel"
   :new-image-properties="newImageProperties"
   @uploaded="onUpload"
   )
@@ -26,14 +25,12 @@ center
 import pick from 'lodash/pick';
 
 import { createNamespacedHelpers } from 'vuex';
-import * as g from '@/vuex/catalogue/getters';
 import * as a from '@/vuex/catalogue/actions';
 
 import log from 'sistemium-telegram/services/log';
 import ManagedComponent from '@/lib/ManagedComponent';
-import ArticlePicture from '@/models/ArticlePicture';
 
-import PictureGallery from './PictureGallery.vue';
+import CataloguePictureGallery from './CataloguePictureGallery';
 
 const { debug, error } = log('CatalogueArticleDialog.vue');
 const vuex = createNamespacedHelpers('catalogue');
@@ -44,6 +41,7 @@ export default {
 
   props: {
     article: Object,
+    pictureModel: Object,
   },
 
   // models: [Article, ArticlePicture],
@@ -53,7 +51,6 @@ export default {
       busy: false,
       image: undefined,
       visible: true,
-      ArticlePicture,
     };
   },
 
@@ -61,7 +58,6 @@ export default {
     newImageProperties() {
       return pick(this.article, ['name']);
     },
-    ...vuex.mapGetters({ images: g.GALLERY_PICTURES }),
   },
 
   methods: {
@@ -76,11 +72,11 @@ export default {
       this.$emit('closed');
     },
 
-    async onUpload(articlePicture) {
+    async onUpload(articlePicture, fileName) {
 
       const { id: articleId, avatarPictureId } = this.article;
 
-      debug('onUpload', articlePicture, articleId);
+      debug('onUpload', articlePicture, articleId, fileName);
 
       this.busy = true;
 
@@ -106,7 +102,7 @@ export default {
   },
 
   components: {
-    PictureGallery,
+    CataloguePictureGallery,
   },
 
   mixins: [ManagedComponent],

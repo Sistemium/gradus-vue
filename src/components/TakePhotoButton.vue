@@ -4,8 +4,10 @@
 
   vue-core-image-upload.browser(
   :crop="false"
+  ref="uploadComponent"
   @imageuploading="$emit('imageuploading')"
   @imageuploaded="imageUploaded"
+  @imagechanged="imageChanged"
   @errorhandle="onError"
   :data="imageData"
   :max-file-size="5242880"
@@ -45,6 +47,7 @@ export default {
   data() {
     return {
       imageData: null,
+      fileName: null,
     };
   },
 
@@ -57,6 +60,11 @@ export default {
   },
 
   methods: {
+
+    imageChanged(file) {
+      debug('imageChanged', file);
+      this.fileName = file.name;
+    },
 
     imsUrl() {
       return `/ims?folder=${this.entityName}/${serverDateFormat()}`;
@@ -74,7 +82,7 @@ export default {
         this.$emit('error', res);
         return;
       }
-      this.$emit('done', picturesInfo);
+      this.$emit('done', picturesInfo, this.fileName);
     },
 
     onError(params) {

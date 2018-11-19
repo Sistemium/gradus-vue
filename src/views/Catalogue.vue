@@ -72,6 +72,7 @@ element-loading-text="Загрузка данных ..."
   catalogue-article-dialog(
   v-if="fullScreenArticle"
   :article="fullScreenArticle"
+  :picture-model="ArticlePicture"
   @closed="closeGallery()"
   )
 
@@ -89,6 +90,8 @@ import CatalogueGroupList from '@/components/CatalogueGroupList.vue';
 import CatalogueArticleList from '@/components/CatalogueArticleList.vue';
 import CatalogueArticleDialog from '@/components/CatalogueArticleDialog.vue';
 
+import ArticlePicture from '@/models/ArticlePicture';
+
 const { mapActions, mapGetters } = createNamespacedHelpers('catalogue');
 
 export default {
@@ -103,6 +106,7 @@ export default {
       loading: false,
       filteredGroups: [],
       message: null,
+      ArticlePicture,
     };
   },
 

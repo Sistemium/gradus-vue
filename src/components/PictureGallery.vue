@@ -20,7 +20,7 @@ element-loading-text="Загрузка изображения ..."
     :name="image.id"
     :label="`Фото №${idx+1}`"
     )
-      .gallery-image(@click.prevent="$emit('image-click', item)")
+      .gallery-image(@click.prevent="$emit('image-click', image)")
 
         img(:src="image.largeSrc")
 
@@ -30,7 +30,7 @@ element-loading-text="Загрузка изображения ..."
   .buttons
 
     el-button.make-avatar(
-    v-if="images.length > 1"
+    v-if="avatarId && images.length > 1"
     @click="setAvatarClick"
     :disabled="isAvatar"
     ) {{ buttonText }}
@@ -54,16 +54,13 @@ element-loading-text="Загрузка изображения ..."
 
 import find from 'lodash/find';
 import findIndex from 'lodash/findIndex';
-import { createNamespacedHelpers } from 'vuex';
-import * as getters from '@/vuex/catalogue/getters';
-import * as a from '@/vuex/catalogue/actions';
 
 import TakePhotoButton from '@/components/TakePhotoButton.vue';
 import log from 'sistemium-telegram/services/log';
 
 const name = 'PictureGallery';
 const { debug, error } = log(name);
-const { mapGetters, mapActions } = createNamespacedHelpers('catalogue');
+// const { mapActions } = createNamespacedHelpers('catalogue');
 
 export default {
 
@@ -75,7 +72,7 @@ export default {
    */
 
   props: {
-    images: Array,
+    // images: Array,
     model: {
       type: Object,
       required: true,
@@ -95,10 +92,6 @@ export default {
   },
 
   computed: {
-    ...mapGetters({
-      activeId: getters.ACTIVE_GALLERY_PICTURE,
-      avatarId: getters.AVATAR_PICTURE,
-    }),
     isAvatar() {
       return this.currentImage && this.currentImage.id === this.avatarId;
     },
@@ -121,11 +114,6 @@ export default {
   },
 
   methods: {
-
-    ...mapActions({
-      setActive: a.SET_PICTURE_AS_AVATAR,
-      removeArticlePicture: a.REMOVE_GALLERY_PICTURE,
-    }),
 
     setAvatarClick() {
       this.setActive(this.currentImage);
@@ -154,13 +142,13 @@ export default {
       });
     },
 
-    async onUpload(picturesInfo) {
+    async onUpload(picturesInfo, fileName) {
 
       const { model } = this;
       const { src } = find(picturesInfo, { name: 'original' });
       const { src: thumbnailSrc } = find(picturesInfo, { name: 'thumbnail' });
 
-      debug('onUpload', src, this.busy);
+      debug('onUpload', src, fileName);
 
       try {
         const picture = await model.create({
@@ -169,7 +157,7 @@ export default {
           picturesInfo,
           ...this.newImageProperties,
         });
-        this.$emit('uploaded', picture);
+        this.$emit('uploaded', picture, fileName);
       } catch (e) {
         error('onUpload', e.message);
       }
