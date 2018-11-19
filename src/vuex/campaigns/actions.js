@@ -6,6 +6,7 @@ import * as m from './mutations';
 
 export const SELECT_MONTH = 'SELECT_MONTH';
 export const SEARCH_TEXT_CHANGE = 'SEARCH_TEXT_CHANGE';
+export const UPDATE_CAMPAIGN = 'UPDATE_CAMPAIGN';
 
 export default {
 
@@ -30,5 +31,19 @@ export default {
     commit(m.SET_CAMPAIGNS, campaigns);
 
     commit(m.SET_SELECTED_MONTH, date);
+  },
+
+  async [UPDATE_CAMPAIGN]({ commit, getters }, campaign) {
+
+    const searchText = getters[g.SEARCH_TEXT];
+
+    const date = getters[g.SELECTED_MONTH];
+
+    await svc.saveCampain(campaign);
+
+    const campaigns = await svc.campaignsData(date, searchText);
+
+    commit(m.SET_CAMPAIGNS, campaigns);
+
   },
 };

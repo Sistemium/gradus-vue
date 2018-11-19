@@ -32,3 +32,12 @@ export async function campaignsData(month, searchText) {
 export function getCampaigns(ids) {
   return Campaign.getMany(ids);
 }
+
+/**
+ *
+ * @param {Array} ids
+ * @returns {Array}
+ */
+export function saveCampain(campaign) {
+  return Campaign.create(campaign);
+}

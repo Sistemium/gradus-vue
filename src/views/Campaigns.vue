@@ -96,7 +96,6 @@ import * as getters from '@/vuex/campaigns/getters';
 import * as actions from '@/vuex/campaigns/actions';
 
 import { monthGenerator, longDate } from 'sistemium-telegram/services/moments';
-import Campaign from '@/models/Campaign';
 
 const { mapActions, mapGetters } = createNamespacedHelpers('campaigns');
 
@@ -135,6 +134,8 @@ export default {
 
   methods: {
 
+    ...mapActions({ updateCampaign: actions.UPDATE_CAMPAIGN }),
+
     closeDialog() {
 
       this.newCampaignVisible = false;
@@ -145,10 +146,9 @@ export default {
 
     async submitDialog() {
 
-      await Campaign.create({
+      this.updateCampaign({
         ...this.newCampaign,
         isActive: true,
-
       });
 
       this.closeDialog();
