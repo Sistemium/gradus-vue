@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import Campaign from '@/models/Campaign';
+import CampaignPicture from '@/models/CampaignPicture';
 import escapeRegExp from 'lodash/escapeRegExp';
 import filter from 'lodash/filter';
 
@@ -35,9 +36,31 @@ export function getCampaigns(ids) {
 
 /**
  *
+ * @param {String} id
+ * @returns {Object}
+ */
+export function getCampaign(id) {
+  return Campaign.get(id);
+}
+
+/**
+ *
+ * @param {Object} campaign
+ * @returns {Promise}
+ */
+export function saveCampaign(campaign) {
+  return Campaign.create(campaign);
+}
+
+export function getCampaignPicturesByCampaign(campaign) {
+  return CampaignPicture.findAll({ campaignId: campaign.id });
+}
+
+/**
+ *
  * @param {Array} ids
  * @returns {Array}
  */
-export function saveCampain(campaign) {
-  return Campaign.create(campaign);
+export function getCampaignPictures(ids) {
+  return CampaignPicture.getMany(ids);
 }

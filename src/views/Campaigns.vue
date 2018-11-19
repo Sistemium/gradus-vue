@@ -29,9 +29,9 @@ element-loading-text="Загрузка данных ..."
     el-button(@click="newCampaignVisible = true") Добавить акцию
 
     el-dialog.campaign-input(
-      title="Новая Акция"
-      :visible.sync="newCampaignVisible"
-      :before-close="closeDialog"
+    title="Новая Акция"
+    :visible.sync="newCampaignVisible"
+    :before-close="closeDialog"
     )
 
       label Название *
@@ -72,10 +72,12 @@ element-loading-text="Загрузка данных ..."
     el-table(
     :data="campaigns"
     v-if="!loading"
+    @cell-click="campaignClick"
     )
       el-table-column(
       prop="name"
       label="Название"
+      @click="campaignAvatarClick()"
       )
       el-table-column(
       :formatter="dateBFormatter"
@@ -86,11 +88,20 @@ element-loading-text="Загрузка данных ..."
       label="Дата окончания"
       )
 
+  campaign-pictures-dialog(
+  v-if="galleryCampaign"
+  :campaign="galleryCampaign"
+  @closed="campaignAvatarClick()"
+  )
+
 </template>
 
 <script>
 
 import { createNamespacedHelpers } from 'vuex';
+import CampaignPicturesDialog from '@/components/CampaignPicturesDialog.vue';
+
+// import log from 'sistemium-telegram/services/log';
 
 import * as getters from '@/vuex/campaigns/getters';
 import * as actions from '@/vuex/campaigns/actions';
@@ -98,6 +109,8 @@ import * as actions from '@/vuex/campaigns/actions';
 import { monthGenerator, longDate } from 'sistemium-telegram/services/moments';
 
 const { mapActions, mapGetters } = createNamespacedHelpers('campaigns');
+
+// const { debug } = log('Campaigns');
 
 export default {
 
@@ -119,7 +132,10 @@ export default {
 
     },
 
-    ...mapGetters({ campaigns: getters.CAMPAIGNS }),
+    ...mapGetters({
+      campaigns: getters.CAMPAIGNS,
+      galleryCampaign: getters.GALLERY_CAMPAIGN,
+    }),
 
     selectedMonth: {
       ...mapGetters({ get: getters.SELECTED_MONTH }),
@@ -134,7 +150,14 @@ export default {
 
   methods: {
 
-    ...mapActions({ updateCampaign: actions.UPDATE_CAMPAIGN }),
+    ...mapActions({
+      updateCampaign: actions.UPDATE_CAMPAIGN,
+      campaignAvatarClick: actions.CAMPAIGN_AVATAR_CLICK,
+    }),
+
+    campaignClick(row) {
+      this.campaignAvatarClick(row);
+    },
 
     closeDialog() {
 
@@ -181,6 +204,8 @@ export default {
 
   },
 
+  components: { CampaignPicturesDialog },
+
 };
 
 </script>
@@ -219,9 +244,9 @@ export default {
 
 }
 
-.campaign-input{
+.campaign-input {
 
-  .el-input{
+  .el-input {
 
     padding: 12px 6px;
     display: block;
@@ -229,14 +254,14 @@ export default {
 
   }
 
-  .el-textarea{
+  .el-textarea {
 
     padding: 12px 6px;
     width: 100%;
 
   }
 
-  label{
+  label {
 
     padding: 6px;
 

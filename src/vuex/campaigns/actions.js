@@ -7,6 +7,7 @@ import * as m from './mutations';
 export const SELECT_MONTH = 'SELECT_MONTH';
 export const SEARCH_TEXT_CHANGE = 'SEARCH_TEXT_CHANGE';
 export const UPDATE_CAMPAIGN = 'UPDATE_CAMPAIGN';
+export const CAMPAIGN_AVATAR_CLICK = 'CAMPAIGN_AVATAR_CLICK';
 
 export default {
 
@@ -39,11 +40,28 @@ export default {
 
     const date = getters[g.SELECTED_MONTH];
 
-    await svc.saveCampain(campaign);
+    await svc.saveCampaign(campaign);
 
     const campaigns = await svc.campaignsData(date, searchText);
 
     commit(m.SET_CAMPAIGNS, campaigns);
 
   },
+
+  async [CAMPAIGN_AVATAR_CLICK]({ commit }, campaign) {
+
+    if (campaign) {
+
+      commit(m.SET_BUSY, true);
+      commit(m.SET_GALLERY_PICTURES, await svc.getCampaignPicturesByCampaign(campaign));
+      commit(m.SET_BUSY, false);
+
+    } else {
+      commit(m.SET_GALLERY_PICTURES);
+    }
+
+    commit(m.SET_GALLERY_CAMPAIGN, campaign);
+
+  },
+
 };
