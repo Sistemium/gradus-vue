@@ -189,9 +189,9 @@ export default {
   align-items: center;
 
   .gallery-image {
-    /*justify-content: center;*/
-    /*display: flex;*/
-    /*height: 100%;*/
+    justify-content: center;
+    display: flex;
+    height: 100%;
   }
 
   .empty {
