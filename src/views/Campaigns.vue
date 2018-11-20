@@ -28,42 +28,6 @@ element-loading-text="Загрузка данных ..."
 
     el-button(@click="newCampaignVisible = true") Добавить акцию
 
-    el-dialog.campaign-input(
-    title="Новая Акция"
-    :visible.sync="newCampaignVisible"
-    :before-close="closeDialog"
-    )
-
-      label Название *
-
-      el-input(v-model="newCampaign.name")
-
-      label Дата начала *
-
-      el-date-picker(
-      v-model="newCampaign.dateB"
-      :picker-options = "{ disabledDate: disableMinDate }"
-      format="yyyy/MM/dd"
-      value-format="yyyy-MM-dd"
-      )
-
-      label Дата окончания *
-
-      el-date-picker(
-      v-model="newCampaign.dateE"
-      :picker-options= "{ disabledDate: disableMaxDate }"
-      format="yyyy/MM/dd"
-      value-format="yyyy-MM-dd"
-      )
-
-      label Описание
-
-      el-input(v-model="newCampaign.commentText" type="textarea" :rows="4" resize="none")
-
-      span(slot="footer" class="dialog-footer")
-        el-button(@click="closeDialog") Отмена
-        el-button(type="primary" @click="submitDialog") Готово
-
   el-container.campaigns-main(
   v-loading="loading"
   element-loading-text="Загрузка данных ..."
@@ -87,6 +51,42 @@ element-loading-text="Загрузка данных ..."
       :formatter="dateEFormatter"
       label="Дата окончания"
       )
+
+  el-dialog.campaign-input(
+  title="Новая Акция"
+  :visible.sync="newCampaignVisible"
+  :before-close="closeDialog"
+  )
+
+    label Название *
+
+    el-input(v-model="newCampaign.name")
+
+    label Дата начала *
+
+    el-date-picker(
+    v-model="newCampaign.dateB"
+    :picker-options = "{ disabledDate: disableMinDate }"
+    format="yyyy/MM/dd"
+    value-format="yyyy-MM-dd"
+    )
+
+    label Дата окончания *
+
+    el-date-picker(
+    v-model="newCampaign.dateE"
+    :picker-options= "{ disabledDate: disableMaxDate }"
+    format="yyyy/MM/dd"
+    value-format="yyyy-MM-dd"
+    )
+
+    label Описание
+
+    el-input(v-model="newCampaign.commentText" type="textarea" :rows="4" resize="none")
+
+    span(slot="footer" class="dialog-footer")
+      el-button(@click="closeDialog") Отмена
+      el-button(type="primary" @click="submitDialog") Готово
 
   campaign-pictures-dialog(
   v-if="galleryCampaign"
