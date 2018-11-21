@@ -26,7 +26,7 @@ element-loading-text="Загрузка данных ..."
       placeholder="поиск"
       )
 
-    el-button(@click="newCampaignVisible = true") Добавить акцию
+    el-button(@click="campaignDialogVisible = true") Добавить акцию
 
   el-container.campaigns-main(
   v-loading="loading"
@@ -52,41 +52,10 @@ element-loading-text="Загрузка данных ..."
       label="Дата окончания"
       )
 
-  el-dialog.campaign-input(
-  title="Новая Акция"
-  :visible.sync="newCampaignVisible"
-  :before-close="closeDialog"
+  campaign-dialog(
+  v-if="campaignDialogVisible"
+  @closed="addCampaingsClose()"
   )
-
-    label Название *
-
-    el-input(v-model="newCampaign.name")
-
-    label Дата начала *
-
-    el-date-picker(
-    v-model="newCampaign.dateB"
-    :picker-options = "{ disabledDate: disableMinDate }"
-    format="yyyy/MM/dd"
-    value-format="yyyy-MM-dd"
-    )
-
-    label Дата окончания *
-
-    el-date-picker(
-    v-model="newCampaign.dateE"
-    :picker-options= "{ disabledDate: disableMaxDate }"
-    format="yyyy/MM/dd"
-    value-format="yyyy-MM-dd"
-    )
-
-    label Описание
-
-    el-input(v-model="newCampaign.commentText" type="textarea" :rows="4" resize="none")
-
-    span(slot="footer" class="dialog-footer")
-      el-button(@click="closeDialog") Отмена
-      el-button(type="primary" @click="submitDialog") Готово
 
   campaign-pictures-dialog(
   v-if="galleryCampaign"
@@ -100,6 +69,7 @@ element-loading-text="Загрузка данных ..."
 
 import { createNamespacedHelpers } from 'vuex';
 import CampaignPicturesDialog from '@/components/CampaignPicturesDialog.vue';
+import CampaignDialog from '@/components/CampaignDialog.vue';
 
 // import log from 'sistemium-telegram/services/log';
 
@@ -107,6 +77,7 @@ import * as getters from '@/vuex/campaigns/getters';
 import * as actions from '@/vuex/campaigns/actions';
 
 import { monthGenerator, longDate } from 'sistemium-telegram/services/moments';
+
 
 const { mapActions, mapGetters } = createNamespacedHelpers('campaigns');
 
@@ -119,8 +90,7 @@ export default {
   data() {
     return {
       loading: false,
-      newCampaignVisible: false,
-      newCampaign: {},
+      campaignDialogVisible: false,
     };
   },
 
@@ -151,43 +121,11 @@ export default {
   methods: {
 
     ...mapActions({
-      updateCampaign: actions.UPDATE_CAMPAIGN,
       campaignAvatarClick: actions.CAMPAIGN_AVATAR_CLICK,
     }),
 
     campaignClick(row) {
       this.campaignAvatarClick(row);
-    },
-
-    closeDialog() {
-
-      this.newCampaignVisible = false;
-
-      this.newCampaign = {};
-
-    },
-
-    async submitDialog() {
-
-      this.updateCampaign({
-        ...this.newCampaign,
-        isActive: true,
-      });
-
-      this.closeDialog();
-
-    },
-
-    disableMinDate(date) {
-
-      return !!(this.newCampaign.dateE && date > new Date(this.newCampaign.dateE));
-
-    },
-
-    disableMaxDate(date) {
-
-      return !!(this.newCampaign.dateB && date < new Date(this.newCampaign.dateB));
-
     },
 
     dateBFormatter(date) {
@@ -202,9 +140,15 @@ export default {
 
     },
 
+    addCampaingsClose() {
+
+      this.campaignDialogVisible = false;
+
+    },
+
   },
 
-  components: { CampaignPicturesDialog },
+  components: { CampaignDialog, CampaignPicturesDialog },
 
 };
 
@@ -241,31 +185,6 @@ export default {
 
   margin-left: 10px;
   max-width: 200px;
-
-}
-
-.campaign-input {
-
-  .el-input {
-
-    padding: 12px 6px;
-    display: block;
-    width: 100%;
-
-  }
-
-  .el-textarea {
-
-    padding: 12px 6px;
-    width: 100%;
-
-  }
-
-  label {
-
-    padding: 6px;
-
-  }
 
 }
 
