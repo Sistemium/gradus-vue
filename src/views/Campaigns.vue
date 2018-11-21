@@ -54,7 +54,8 @@ element-loading-text="Загрузка данных ..."
 
   campaign-dialog(
   v-if="campaignDialogVisible"
-  @closed="addCampaingsClose()"
+  @closed="addCampaingClose()"
+  @submit="addCampaing"
   )
 
   campaign-pictures-dialog(
@@ -122,6 +123,7 @@ export default {
 
     ...mapActions({
       campaignAvatarClick: actions.CAMPAIGN_AVATAR_CLICK,
+      updateCampaign: actions.UPDATE_CAMPAIGN,
     }),
 
     campaignClick(row) {
@@ -140,9 +142,18 @@ export default {
 
     },
 
-    addCampaingsClose() {
+    addCampaingClose() {
 
       this.campaignDialogVisible = false;
+
+    },
+
+    addCampaing(newCampaign) {
+
+      this.updateCampaign({
+        ...newCampaign,
+        isActive: true,
+      });
 
     },
 

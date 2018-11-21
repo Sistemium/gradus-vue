@@ -40,11 +40,6 @@ title="Новая Акция"
 
 <script>
 
-import { createNamespacedHelpers } from 'vuex';
-import * as actions from '@/vuex/campaigns/actions';
-
-const { mapActions } = createNamespacedHelpers('campaigns');
-
 export default {
 
   name: 'CampaignDialog',
@@ -58,10 +53,6 @@ export default {
 
   methods: {
 
-    ...mapActions({
-      updateCampaign: actions.UPDATE_CAMPAIGN,
-    }),
-
     closeDialog() {
 
       this.newCampaign = {};
@@ -74,11 +65,7 @@ export default {
 
     async submitDialog() {
 
-      this.updateCampaign({
-        ...this.newCampaign,
-        isActive: true,
-      });
-
+      this.$emit('submit', this.newCampaign);
 
       this.closeDialog();
 
