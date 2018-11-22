@@ -6,35 +6,41 @@ title="Новая Акция"
 :visible.sync="visible"
 )
 
-  label Название *
-
-  el-input(v-model="newCampaign.name")
-
-  label Дата начала *
-
-  el-date-picker(
-  v-model="newCampaign.dateB"
-  :picker-options = "{ disabledDate: disableMinDate }"
-  format="yyyy/MM/dd"
-  value-format="yyyy-MM-dd"
+  el-form(
+  :model="newCampaign"
+  ref="newCampaign"
+  :rules="rules"
   )
 
-  label Дата окончания *
+    el-form-item(label="Название" prop="name")
 
-  el-date-picker(
-  v-model="newCampaign.dateE"
-  :picker-options= "{ disabledDate: disableMaxDate }"
-  format="yyyy/MM/dd"
-  value-format="yyyy-MM-dd"
-  )
+      el-input(v-model="newCampaign.name")
 
-  label Описание
+    el-form-item(label="Дата начала" prop="dateB")
 
-  el-input(v-model="newCampaign.commentText" type="textarea" :rows="4" resize="none")
+      el-date-picker(
+      v-model="newCampaign.dateB"
+      :picker-options = "{ disabledDate: disableMinDate }"
+      format="yyyy/MM/dd"
+      value-format="yyyy-MM-dd"
+      )
 
-  span(slot="footer" class="dialog-footer")
-    el-button(@click="closeDialog") Отмена
-    el-button(type="primary" @click="submitDialog") Готово
+    el-form-item(label="Дата окончания" prop="dateE")
+
+      el-date-picker(
+      v-model="newCampaign.dateE"
+      :picker-options= "{ disabledDate: disableMaxDate }"
+      format="yyyy/MM/dd"
+      value-format="yyyy-MM-dd"
+      )
+
+    el-form-item(label="Описание" prop="commentText")
+
+      el-input(v-model="newCampaign.commentText" type="textarea" :rows="4" resize="none")
+
+    el-form-item
+      el-button(@click="closeDialog") Отмена
+      el-button(type="primary" @click="submitDialog('newCampaign')") Готово
 
 </template>
 
@@ -46,7 +52,29 @@ export default {
 
   data() {
     return {
-      newCampaign: {},
+      newCampaign: {
+        name: '',
+        dateB: '',
+        dateE: '',
+        commentText: '',
+      },
+      rules: {
+        name: [
+          {
+            required: true, message: 'Введите название', trigger: 'blur',
+          },
+        ],
+        dateB: [
+          {
+            required: true, message: 'Введите дату начала', trigger: 'blur',
+          },
+        ],
+        dateE: [
+          {
+            required: true, message: 'Введите дату окончания', trigger: 'blur',
+          },
+        ],
+      },
       visible: true,
     };
   },
@@ -63,11 +91,18 @@ export default {
 
     },
 
-    async submitDialog() {
+    async submitDialog(formName) {
 
-      this.$emit('submit', this.newCampaign);
+      this.$refs[formName].validate(valid => {
+        if (valid) {
 
-      this.closeDialog();
+          this.$emit('submit', this.newCampaign);
+
+          this.closeDialog();
+        }
+
+        return !!valid;
+      });
 
     },
 
@@ -94,23 +129,8 @@ export default {
 .campaign-input {
 
   .el-input {
-
-    padding: 12px 6px;
-    display: block;
+    
     width: 100%;
-
-  }
-
-  .el-textarea {
-
-    padding: 12px 6px;
-    width: 100%;
-
-  }
-
-  label {
-
-    padding: 6px;
 
   }
 
