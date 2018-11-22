@@ -36,6 +36,7 @@ element-loading-text="Загрузка данных ..."
     el-table(
     :data="campaigns"
     v-if="!loading"
+    @cell-click="campaignClick"
     )
       el-table-column(
       prop="name"
@@ -131,10 +132,6 @@ export default {
       updateCampaign: actions.UPDATE_CAMPAIGN,
     }),
 
-    campaignClick(row) {
-      this.campaignAvatarClick(row);
-    },
-
     dateBFormatter(date) {
 
       return longDate(date.dateB);
@@ -159,6 +156,15 @@ export default {
         ...newCampaign,
         isActive: true,
       });
+
+    },
+
+    campaignClick(row, column) {
+      if (column.label === 'Картинки') {
+
+        this.campaignAvatarClick(row);
+
+      }
 
     },
 
@@ -204,7 +210,7 @@ export default {
 
 }
 
-img{
+.placeholder{
 
   width: 100%;
 

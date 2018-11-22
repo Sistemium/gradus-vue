@@ -101,7 +101,7 @@ export default {
           this.closeDialog();
         }
 
-        return !!valid;
+        return valid;
       });
 
     },
