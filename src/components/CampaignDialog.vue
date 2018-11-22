@@ -129,7 +129,7 @@ export default {
 .campaign-input {
 
   .el-input {
-    
+
     width: 100%;
 
   }

@@ -36,12 +36,10 @@ element-loading-text="Загрузка данных ..."
     el-table(
     :data="campaigns"
     v-if="!loading"
-    @cell-click="campaignClick"
     )
       el-table-column(
       prop="name"
       label="Название"
-      @click="campaignAvatarClick()"
       )
       el-table-column(
       :formatter="dateBFormatter"
@@ -51,6 +49,13 @@ element-loading-text="Загрузка данных ..."
       :formatter="dateEFormatter"
       label="Дата окончания"
       )
+      el-table-column(
+      width="90"
+      label="Картинки"
+      )
+        template(slot-scope="scope")
+          <!--img(v-if="imageSrc" :src="imageSrc")-->
+          img.placeholder(src="/images/placeholder.png")
 
   campaign-dialog(
   v-if="campaignDialogVisible"
@@ -196,6 +201,12 @@ export default {
 
   margin-left: 10px;
   max-width: 200px;
+
+}
+
+img{
+
+  width: 100%;
 
 }
 
