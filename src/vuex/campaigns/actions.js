@@ -8,6 +8,7 @@ export const SELECT_MONTH = 'SELECT_MONTH';
 export const SEARCH_TEXT_CHANGE = 'SEARCH_TEXT_CHANGE';
 export const UPDATE_CAMPAIGN = 'UPDATE_CAMPAIGN';
 export const CAMPAIGN_AVATAR_CLICK = 'CAMPAIGN_AVATAR_CLICK';
+export const ADD_GALLERY_PICTURE = 'ADD_GALLERY_PICTURE';
 
 export default {
 
@@ -61,6 +62,16 @@ export default {
     }
 
     commit(m.SET_GALLERY_CAMPAIGN, campaign);
+
+  },
+
+  [ADD_GALLERY_PICTURE]({ commit, getters }, picture) {
+
+    const galleryPictures = getters[g.GALLERY_PICTURES];
+
+    galleryPictures.push(picture);
+
+    commit(m.SET_GALLERY_PICTURES, galleryPictures);
 
   },
 

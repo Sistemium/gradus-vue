@@ -25,7 +25,7 @@ center
 // import pick from 'lodash/pick';
 
 import { createNamespacedHelpers } from 'vuex';
-// import * as a from '@/vuex/catalogue/actions';
+import * as a from '@/vuex/campaigns/actions';
 
 import log from 'sistemium-telegram/services/log';
 
@@ -33,7 +33,7 @@ import CampaignPicture from '@/models/CampaignPicture';
 
 import CampaignsPictureGallery from './CampaignsPictureGallery';
 
-const { debug } = log('CampaignPicturesDialog.vue');
+const { debug, error } = log('CampaignPicturesDialog.vue');
 const vuex = createNamespacedHelpers('campaigns');
 
 export default {
@@ -55,16 +55,14 @@ export default {
 
   computed: {
     newImageProperties() {
-      // return pick(this.article, ['name']);
-      // TODO: return file name as name
-      return {};
+      return {campaignId: this.campaign.id};
     },
   },
 
   methods: {
 
     ...vuex.mapActions({
-      // addPicture: a.ADD_GALLERY_PICTURE,
+      addPicture: a.ADD_GALLERY_PICTURE,
       // setAsAvatar: a.SET_PICTURE_AS_AVATAR,
     }),
 
@@ -81,17 +79,17 @@ export default {
 
       this.busy = true;
 
-      // try {
-      //
-      //   await this.addPicture({ picture: articlePicture, articleId });
-      //
+      try {
+
+        await this.addPicture(picture);
+
       //   if (!avatarPictureId) {
       //     await this.setAsAvatar(articlePicture);
       //   }
-      //
-      // } catch (e) {
-      //   error(e);
-      // }
+
+      } catch (e) {
+        error(e);
+      }
 
       this.busy = false;
 
