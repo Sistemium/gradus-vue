@@ -12,10 +12,10 @@ export default {
 
   computed: {
     ...mapGetters({
-      // activeId: getters.ACTIVE_GALLERY_PICTURE,
-      // avatarId: getters.AVATAR_PICTURE,
+      activeId: getters.ACTIVE_GALLERY_PICTURE,
       images: getters.GALLERY_PICTURES,
     }),
+    avatarId: () => undefined,
   },
 
   methods: {

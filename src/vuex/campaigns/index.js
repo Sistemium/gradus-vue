@@ -14,6 +14,7 @@ export default {
     [states.CAMPAIGNS]: [],
     [states.GALLERY_CAMPAIGN]: null,
     [states.GALLERY_PICTURES]: [],
+    [states.ACTIVE_GALLERY_PICTURE]: false,
   },
 
   mutations,

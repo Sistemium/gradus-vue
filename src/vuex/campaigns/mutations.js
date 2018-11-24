@@ -9,6 +9,8 @@ export const SET_CAMPAIGNS = `SET_${g.CAMPAIGNS}`;
 export const SET_GALLERY_CAMPAIGN = `SET_${g.GALLERY_CAMPAIGN}`;
 export const SET_GALLERY_PICTURES = `SET_${g.GALLERY_PICTURES}`;
 
+export const SET_GALLERY_PICTURE = `SET_${g.ACTIVE_GALLERY_PICTURE}`;
+
 export default {
 
   [SET_BUSY](state, isBusy) {
@@ -33,6 +35,10 @@ export default {
 
   [SET_GALLERY_PICTURES](state, pictures) {
     state[g.GALLERY_PICTURES] = map(pictures, 'id');
+  },
+
+  [SET_GALLERY_PICTURE](state, picture) {
+    state[g.ACTIVE_GALLERY_PICTURE] = picture && picture.id;
   },
 
 };

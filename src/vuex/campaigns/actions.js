@@ -69,9 +69,9 @@ export default {
 
     const galleryPictures = getters[g.GALLERY_PICTURES];
 
-    galleryPictures.push(picture);
+    commit(m.SET_GALLERY_PICTURES, [...galleryPictures, picture]);
 
-    commit(m.SET_GALLERY_PICTURES, galleryPictures);
+    commit(m.SET_GALLERY_PICTURE, picture);
 
   },
 

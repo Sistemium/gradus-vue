@@ -7,6 +7,7 @@ export const CAMPAIGNS = 'campaigns';
 
 export const GALLERY_CAMPAIGN = 'galleryCampaign';
 export const GALLERY_PICTURES = 'galleryPictures';
+export const ACTIVE_GALLERY_PICTURE = 'activeGalleryPicture';
 
 export default {
 
@@ -29,6 +30,10 @@ export default {
 
   [GALLERY_PICTURES](state) {
     return svc.getCampaignPictures(state[GALLERY_PICTURES]);
+  },
+
+  [ACTIVE_GALLERY_PICTURE](state) {
+    return state[ACTIVE_GALLERY_PICTURE];
   },
 
 };
