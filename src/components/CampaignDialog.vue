@@ -1,7 +1,7 @@
 <template lang="pug">
 
 el-dialog.campaign-input(
-title="Новая Акция"
+:title="title"
 :before-close="closeDialog"
 :visible.sync="visible"
 )
@@ -124,9 +124,25 @@ export default {
 
   },
 
+  computed: {
+
+    title() {
+
+      if (this.campaign.id) {
+
+        return 'Редактировать';
+
+      }
+
+      return 'Новая Акция';
+
+    },
+
+  },
+
   created() {
 
-    this.newCampaign = { ...this.campaign }
+    this.newCampaign = { ...this.campaign };
 
   },
 
