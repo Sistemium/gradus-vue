@@ -3,6 +3,7 @@ import Campaign from '@/models/Campaign';
 import CampaignPicture from '@/models/CampaignPicture';
 import escapeRegExp from 'lodash/escapeRegExp';
 import filter from 'lodash/filter';
+import ArticlePictureArticle from "@/models/ArticlePictureArticle";
 
 /**
  *
@@ -63,4 +64,10 @@ export function getCampaignPicturesByCampaign(campaign) {
  */
 export function getCampaignPictures(ids) {
   return CampaignPicture.getMany(ids);
+}
+
+export function removeCampaignPicture(picture) {
+
+  return CampaignPicture.destroy(picture);
+
 }

@@ -1,6 +1,6 @@
 import { createNamespacedHelpers } from 'vuex';
 import * as getters from '@/vuex/campaigns/getters';
-// import * as a from '@/vuex/campaigns/actions';
+import * as a from '@/vuex/catalogue/actions';
 import PictureGallery from './PictureGallery.vue';
 
 const { mapGetters, mapActions } = createNamespacedHelpers('campaigns');
@@ -20,8 +20,7 @@ export default {
 
   methods: {
     ...mapActions({
-      // setActive: a.SET_PICTURE_AS_AVATAR,
-      // removeArticlePicture: a.REMOVE_GALLERY_PICTURE,
+      removeArticlePicture: a.REMOVE_GALLERY_PICTURE,
     }),
   },
 
