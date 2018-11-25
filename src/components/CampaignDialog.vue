@@ -50,6 +50,10 @@ export default {
 
   name: 'CampaignDialog',
 
+  props: {
+    campaign: Object,
+  },
+
   data() {
     return {
       newCampaign: {
@@ -117,6 +121,12 @@ export default {
       return !!(this.newCampaign.dateB && date < new Date(this.newCampaign.dateB));
 
     },
+
+  },
+
+  created() {
+
+    this.newCampaign = { ...this.campaign }
 
   },
 

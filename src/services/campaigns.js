@@ -3,7 +3,6 @@ import Campaign from '@/models/Campaign';
 import CampaignPicture from '@/models/CampaignPicture';
 import escapeRegExp from 'lodash/escapeRegExp';
 import filter from 'lodash/filter';
-import ArticlePictureArticle from "@/models/ArticlePictureArticle";
 
 /**
  *
@@ -50,7 +49,15 @@ export function getCampaign(id) {
  * @returns {Promise}
  */
 export function saveCampaign(campaign) {
+
+  if (campaign.id) {
+
+    return Campaign.update(campaign, campaign);
+
+  }
+
   return Campaign.create(campaign);
+
 }
 
 export function getCampaignPicturesByCampaign(campaign) {

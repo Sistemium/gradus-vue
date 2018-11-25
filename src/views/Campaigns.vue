@@ -26,7 +26,7 @@ element-loading-text="Загрузка данных ..."
       placeholder="поиск"
       )
 
-    el-button(@click="campaignDialogVisible = true") Добавить акцию
+    el-button(@click="campaign = {}") Добавить акцию
 
   el-container.campaigns-main(
   v-loading="loading"
@@ -59,9 +59,10 @@ element-loading-text="Загрузка данных ..."
           img.placeholder(src="/images/placeholder.png")
 
   campaign-dialog(
-  v-if="campaignDialogVisible"
-  @closed="addCampaingClose()"
-  @submit="addCampaing"
+  v-if="campaign"
+  :campaign="campaign"
+  @closed="editCampaingClose()"
+  @submit="editCampaing"
   )
 
   campaign-pictures-dialog(
@@ -97,7 +98,7 @@ export default {
   data() {
     return {
       loading: false,
-      campaignDialogVisible: false,
+      campaign: undefined,
     };
   },
 
@@ -144,16 +145,16 @@ export default {
 
     },
 
-    addCampaingClose() {
+    editCampaingClose() {
 
-      this.campaignDialogVisible = false;
+      this.campaign = undefined;
 
     },
 
-    addCampaing(newCampaign) {
+    editCampaing(campaign) {
 
       this.updateCampaign({
-        ...newCampaign,
+        ...campaign,
         isActive: true,
       });
 
@@ -163,6 +164,10 @@ export default {
       if (column.label === 'Картинки') {
 
         this.campaignAvatarClick(row);
+
+      } else {
+
+        this.campaign = row;
 
       }
 

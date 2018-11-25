@@ -1,11 +1,10 @@
 import debounce from 'lodash/debounce';
+import log from 'sistemium-telegram/services/log';
+import without from 'lodash/without';
 import * as svc from '@/services/campaigns';
 import * as g from '@/vuex/campaigns/getters';
 
 import * as m from './mutations';
-import without from 'lodash/without';
-import log from 'sistemium-telegram/services/log';
-import { GALLERY_CAMPAIGN } from "@/vuex/campaigns/getters";
 
 const { debug } = log('vuex:actions');
 
@@ -81,7 +80,7 @@ export default {
 
   },
 
-  async [REMOVE_GALLERY_PICTURE]({ commit, getters, dispatch }, picture) {
+  async [REMOVE_GALLERY_PICTURE]({ commit, getters }, picture) {
 
     const pictures = without(getters[g.GALLERY_PICTURES], picture);
 

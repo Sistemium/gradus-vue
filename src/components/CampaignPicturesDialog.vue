@@ -63,7 +63,6 @@ export default {
 
     ...vuex.mapActions({
       addPicture: a.ADD_GALLERY_PICTURE,
-      // setAsAvatar: a.SET_PICTURE_AS_AVATAR,
     }),
 
     closeDialog() {
@@ -82,10 +81,6 @@ export default {
       try {
 
         await this.addPicture(picture);
-
-      //   if (!avatarPictureId) {
-      //     await this.setAsAvatar(articlePicture);
-      //   }
 
       } catch (e) {
         error(e);
