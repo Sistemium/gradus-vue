@@ -39,8 +39,15 @@ el-dialog.campaign-input(
       el-input(v-model="newCampaign.commentText" type="textarea" :rows="4" resize="none")
 
     el-form-item
-      el-button(@click="closeDialog") Отмена
-      el-button(type="primary" @click="submitDialog('newCampaign')") Готово
+      .buttons
+        .editButtons
+          el-button(@click="closeDialog") Отмена
+          el-button(type="primary" @click="submitDialog('newCampaign')") Готово
+        confirm-button.remove(
+        v-if="campaign.id"
+        text="Удалить" confirm-text="Точно удалить?"
+        @confirm="removeClick"
+        )
 
 </template>
 
@@ -122,6 +129,8 @@ export default {
 
     },
 
+    removeClick() {},
+
   },
 
   computed: {
@@ -157,6 +166,20 @@ export default {
   .el-input {
 
     width: 100%;
+
+  }
+
+  .buttons{
+
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+
+  }
+
+  .remove{
+
+    margin-right: 0;
 
   }
 
