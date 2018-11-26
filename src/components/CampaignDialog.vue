@@ -129,7 +129,13 @@ export default {
 
     },
 
-    removeClick() {},
+    removeClick() {
+
+      this.$emit('remove', this.campaign);
+
+      this.closeDialog();
+
+    },
 
   },
 

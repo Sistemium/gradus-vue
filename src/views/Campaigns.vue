@@ -63,6 +63,7 @@ element-loading-text="Загрузка данных ..."
   :campaign="campaign"
   @closed="editCampaingClose()"
   @submit="editCampaing"
+  @remove="removeCampaign"
   )
 
   campaign-pictures-dialog(
@@ -131,6 +132,7 @@ export default {
     ...mapActions({
       campaignAvatarClick: actions.CAMPAIGN_AVATAR_CLICK,
       updateCampaign: actions.UPDATE_CAMPAIGN,
+      removeCampaign: actions.REMOVE_CAMPAIGN,
     }),
 
     dateBFormatter(date) {

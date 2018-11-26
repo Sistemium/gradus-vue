@@ -78,3 +78,9 @@ export function removeCampaignPicture(picture) {
   return CampaignPicture.destroy(picture);
 
 }
+
+export function removeCampaign(campaign) {
+
+  return Campaign.destroy(campaign);
+
+}
