@@ -55,21 +55,20 @@ element-loading-text="Загрузка данных ..."
       label="Картинки"
       )
         template(slot-scope="scope")
-          <!--img(v-if="imageSrc" :src="imageSrc")-->
-          img.placeholder(src="/images/placeholder.png")
+          campaign-avatar(:campaign="scope.row")
 
   campaign-dialog(
   v-if="campaign"
   :campaign="campaign"
-  @closed="editCampaingClose()"
-  @submit="editCampaing"
+  @closed="editCampaignClose()"
+  @submit="editCampaign"
   @remove="removeCampaign"
   )
 
   campaign-pictures-dialog(
   v-if="galleryCampaign"
   :campaign="galleryCampaign"
-  @closed="campaignAvatarClick()"
+  @closed="onGalleryClosed"
   )
 
 </template>
@@ -79,6 +78,7 @@ element-loading-text="Загрузка данных ..."
 import { createNamespacedHelpers } from 'vuex';
 import CampaignPicturesDialog from '@/components/CampaignPicturesDialog.vue';
 import CampaignDialog from '@/components/CampaignDialog.vue';
+import CampaignAvatar from '@/components/CampaignAvatar.vue';
 
 // import log from 'sistemium-telegram/services/log';
 
@@ -148,13 +148,13 @@ export default {
 
     },
 
-    editCampaingClose() {
+    editCampaignClose() {
 
       this.campaign = undefined;
 
     },
 
-    editCampaing(campaign) {
+    editCampaign(campaign) {
 
       this.updateCampaign({
         ...campaign,
@@ -176,6 +176,13 @@ export default {
 
     },
 
+    onGalleryClosed() {
+      this.campaignAvatarClick();
+      this.$nextTick(() => {
+        this.$forceUpdate();
+      });
+    },
+
   },
 
   watch: {
@@ -194,7 +201,7 @@ export default {
     },
   },
 
-  components: { CampaignDialog, CampaignPicturesDialog },
+  components: { CampaignDialog, CampaignPicturesDialog, CampaignAvatar },
 
 };
 
@@ -234,7 +241,7 @@ export default {
 
 }
 
-.placeholder{
+.placeholder {
 
   width: 100%;
 

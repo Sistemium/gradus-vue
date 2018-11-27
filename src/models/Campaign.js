@@ -9,6 +9,12 @@ export default new Model({
   keepChangeHistory: false,
 
   relations: {
+    hasMany: {
+      CampaignPicture: {
+        localField: 'pictures',
+        foreignKey: 'campaignId',
+      },
+    },
   },
 
   methods: {},

@@ -5,6 +5,13 @@ export default new Model({
   name: 'CampaignPicture',
 
   relations: {
+    belongsTo: {
+      Campaign: {
+        localField: 'campaign',
+        localKey: 'campaignId',
+      },
+    },
+
   },
 
 });

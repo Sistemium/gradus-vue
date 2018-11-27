@@ -17,7 +17,7 @@ export async function campaignsData(month, searchText) {
     month,
   };
 
-  const campaigns = await Campaign.findAll(fetchParams, { force: true });
+  const campaigns = await Campaign.findAll(fetchParams, { force: true, with: ['CampaignPicture'] });
 
   const re = searchText && new RegExp(escapeRegExp(searchText), 'i');
 
