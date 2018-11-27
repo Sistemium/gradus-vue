@@ -114,6 +114,7 @@ export default {
     ...mapGetters({
       campaigns: getters.CAMPAIGNS,
       galleryCampaign: getters.GALLERY_CAMPAIGN,
+      busy: getters.BUSY,
     }),
 
     selectedMonth: {
@@ -175,6 +176,22 @@ export default {
 
     },
 
+  },
+
+  watch: {
+    busy(isBusy) {
+      const { message: currentMessage } = this;
+      if (currentMessage) {
+        currentMessage.close();
+      }
+      if (isBusy) {
+        this.message = this.$message({
+          message: 'Загрузка данных ...',
+          type: 'warning',
+          duration: 0,
+        });
+      }
+    },
   },
 
   components: { CampaignDialog, CampaignPicturesDialog },

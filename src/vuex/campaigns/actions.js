@@ -20,6 +20,8 @@ export default {
 
   [SEARCH_TEXT_CHANGE]: debounce(async ({ commit, getters }, searchText) => {
 
+    commit(m.SET_BUSY, true);
+
     commit(m.SET_SEARCH_TEXT, searchText);
 
     const date = getters[g.SELECTED_MONTH];
@@ -28,9 +30,13 @@ export default {
 
     commit(m.SET_CAMPAIGNS, campaigns);
 
+    commit(m.SET_BUSY, false);
+
   }, 750),
 
   async [SELECT_MONTH]({ commit, getters }, date) {
+
+    commit(m.SET_BUSY, true);
 
     const searchText = getters[g.SEARCH_TEXT];
 
@@ -39,9 +45,13 @@ export default {
     commit(m.SET_CAMPAIGNS, campaigns);
 
     commit(m.SET_SELECTED_MONTH, date);
+
+    commit(m.SET_BUSY, false);
   },
 
   async [UPDATE_CAMPAIGN]({ commit, getters }, campaign) {
+
+    commit(m.SET_BUSY, true);
 
     const searchText = getters[g.SEARCH_TEXT];
 
@@ -53,9 +63,13 @@ export default {
 
     commit(m.SET_CAMPAIGNS, campaigns);
 
+    commit(m.SET_BUSY, false);
+
   },
 
   async [CAMPAIGN_AVATAR_CLICK]({ commit }, campaign) {
+
+    commit(m.SET_BUSY, true);
 
     if (campaign) {
 
@@ -68,6 +82,8 @@ export default {
     }
 
     commit(m.SET_GALLERY_CAMPAIGN, campaign);
+
+    commit(m.SET_BUSY, false);
 
   },
 
@@ -83,9 +99,9 @@ export default {
 
   async [REMOVE_GALLERY_PICTURE]({ commit, getters }, picture) {
 
-    const pictures = without(getters[g.GALLERY_PICTURES], picture);
-
     commit(m.SET_BUSY, true);
+
+    const pictures = without(getters[g.GALLERY_PICTURES], picture);
 
     debug(REMOVE_GALLERY_PICTURE, picture.id);
 

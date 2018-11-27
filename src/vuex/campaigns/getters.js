@@ -36,4 +36,8 @@ export default {
     return state[ACTIVE_GALLERY_PICTURE];
   },
 
+  [BUSY](state) {
+    return state[BUSY];
+  },
+
 };
