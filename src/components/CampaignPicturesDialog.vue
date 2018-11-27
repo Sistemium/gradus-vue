@@ -55,7 +55,7 @@ export default {
 
   computed: {
     newImageProperties() {
-      return {campaignId: this.campaign.id};
+      return { campaignId: this.campaign.id };
     },
   },
 
