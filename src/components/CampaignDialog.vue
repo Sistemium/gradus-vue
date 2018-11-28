@@ -4,6 +4,7 @@ el-dialog.campaign-input(
 :title="title"
 :before-close="closeDialog"
 :visible.sync="visible"
+:append-to-body="true"
 )
 
   el-form(
