@@ -36,7 +36,7 @@ el-dialog.campaign-input(
 
     el-form-item(label="Описание" prop="commentText")
 
-      el-input(v-model="newCampaign.commentText" type="textarea" :rows="4" resize="none")
+      el-input(v-model="newCampaign.commentText" type="textarea" :rows="4")
 
     el-form-item
       .buttons
