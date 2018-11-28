@@ -34,6 +34,14 @@ el-dialog.campaign-input(
       value-format="yyyy-MM-dd"
       )
 
+    el-form-item(label="Версия" prop="version" v-if="isEdit()")
+
+      el-input-number(
+      v-model="newCampaign.version"
+      :min="minVersion()"
+      :max="maxVersion()"
+      )
+
     el-form-item(label="Описание" prop="commentText")
 
       el-input(v-model="newCampaign.commentText" type="textarea" :rows="4")
@@ -44,7 +52,7 @@ el-dialog.campaign-input(
           el-button(@click="closeDialog") Отмена
           el-button(type="primary" @click="submitDialog('newCampaign')") Готово
         confirm-button.remove(
-        v-if="campaign.id"
+        v-if="isEdit()"
         text="Удалить" confirm-text="Точно удалить?"
         @confirm="removeClick"
         )
@@ -86,7 +94,9 @@ export default {
           },
         ],
       },
+
       visible: true,
+
     };
   },
 
@@ -137,13 +147,29 @@ export default {
 
     },
 
+    isEdit() {
+      return this.campaign.id;
+    },
+
+    minVersion() {
+
+      return this.campaign.version || 1;
+
+    },
+
+    maxVersion() {
+
+      return (this.campaign.version || 1) + 1;
+
+    },
+
   },
 
   computed: {
 
     title() {
 
-      if (this.campaign.id) {
+      if (this.isEdit()) {
 
         return 'Редактировать';
 
@@ -157,7 +183,15 @@ export default {
 
   created() {
 
-    this.newCampaign = { ...this.campaign };
+    this.newCampaign = {
+      ...this.campaign,
+    };
+
+    if (!this.newCampaign.version) {
+
+      this.newCampaign.version = 1;
+
+    }
 
   },
 
@@ -186,6 +220,12 @@ export default {
   .remove{
 
     margin-right: 0;
+
+  }
+
+  .el-input-number{
+
+    width: 100%;
 
   }
 
