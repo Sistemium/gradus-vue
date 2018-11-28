@@ -37,6 +37,7 @@ element-loading-text="Загрузка данных ..."
     :data="campaigns"
     v-if="!loading"
     @cell-click="campaignClick"
+    :default-sort="{prop: 'name'}"
     )
       el-table-column(
       prop="name"
