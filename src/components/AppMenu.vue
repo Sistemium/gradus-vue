@@ -11,10 +11,10 @@
       img(src="../assets/icons8-moleskine.svg")
       span Каталог
     el-menu-item(index="/campaigns")
-      img(src="../assets/icons8-moleskine.svg")
+      img(src="../assets/icons8-discount.svg")
       span Акции
     el-menu-item(index="/targets")
-      img(src="../assets/icons8-moleskine.svg")
+      img(src="../assets/icons8-goal.svg")
       span Задачи
     el-menu-item(index="/about")
       img(src="../assets/icons8-info.svg")
