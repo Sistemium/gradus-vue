@@ -134,12 +134,15 @@ export default {
   },
 
   async created() {
+
     this.loading = true;
     await svc.loadData();
     this.loading = false;
+
     this.$watch('currentArticleGroup', this.bindCurrent);
     this.$watch('searchText', this.bindArticles, { immediate: true });
     this.$watch('onlyNoAvatar', this.bindCurrent);
+
   },
 
   methods: {
@@ -221,6 +224,7 @@ export default {
 
   .stats, .selected {
     margin: auto $margin-top;
+
     strong {
       margin-left: $margin-right;
     }
@@ -243,6 +247,7 @@ export default {
 
 .el-popper {
   max-width: 500px;
+
   li {
     font-size: 85%;
   }
