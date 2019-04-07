@@ -2,7 +2,9 @@
 
 .sign-in
 
-  p Пожалуйста, представьтесь
+  p.title
+    span Пожалуйста, представьтесь
+    a.clickable(@click="cancelClick") Отмена
 
   .fields
 
@@ -33,7 +35,7 @@
 </template>
 <script>
 
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapState, mapMutations } from 'vuex';
 import InputMask from 'inputmask';
 
 import * as a from 'sistemium-vue/store/auth/actions';
@@ -126,6 +128,10 @@ export default {
       clearError: a.CLEAR_ERROR,
     }),
 
+    ...mapMutations('auth', {
+      authCancel: PHA_AUTH_TOKEN,
+    }),
+
     sendClick() {
 
       if (!this.isComplete || this.error) {
@@ -151,6 +157,12 @@ export default {
       return this.authConfirm(value)
         .then(() => this.$router.push('/'));
 
+    },
+
+    cancelClick() {
+      this.input = '';
+      this.authCancel();
+      this.clearError();
     },
 
     element() {
@@ -196,6 +208,11 @@ export default {
 <style scoped lang="scss">
 
 @import "../styles/variables";
+
+.title {
+  display: flex;
+  justify-content: space-between;
+}
 
 .sign-in {
   margin: 0 auto;

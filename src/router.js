@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
 import SignIn from './views/SignIn.vue';
-import Campaigns from './views/Campaigns.vue';
+// import Campaigns from './views/Campaigns.vue';
 
 Vue.use(Router);
 
@@ -45,9 +45,17 @@ export default new Router({
     {
       path: '/campaigns',
       name: 'campaigns',
-      component: Campaigns,
+      component: () => import(/* webpackChunkName: "catalogue" */ './views/Campaigns.vue'),
       meta: {
         label: 'Акции',
+      },
+    },
+    {
+      path: '/targets',
+      name: 'targets',
+      component: () => import(/* webpackChunkName: "catalogue" */ './views/SalesTargets.vue'),
+      meta: {
+        label: 'Задачи',
       },
     },
   ],

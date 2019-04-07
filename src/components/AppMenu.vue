@@ -13,6 +13,9 @@
     el-menu-item(index="/campaigns")
       img(src="../assets/icons8-moleskine.svg")
       span Акции
+    el-menu-item(index="/targets")
+      img(src="../assets/icons8-moleskine.svg")
+      span Задачи
     el-menu-item(index="/about")
       img(src="../assets/icons8-info.svg")
       span О проекте
