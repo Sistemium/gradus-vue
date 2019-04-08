@@ -8,11 +8,11 @@
   )
 
     el-aside(v-if="!loading")
-
-      sales-target-group-list(
-      :items="salesTargetGroups"
-      v-model="currentGroup"
-      )
+      resize(padding="30")
+        sales-target-group-list(
+        :items="targetGroups"
+        v-model="currentGroup"
+        )
 
     el-main(v-if="!loading")
       sales-target-edit
@@ -23,6 +23,9 @@
 import SalesTargetEdit from '@/components/SalesTargetEdit.vue';
 import SalesTargetGroupList from '@/components/SalesTargetGroupList.vue';
 
+import SalesTargetGroup from '@/models/SalesTargetGroup';
+import SalesTarget from '@/models/SalesTarget';
+
 export default {
 
   name: 'SalesTargets',
@@ -31,8 +34,23 @@ export default {
     return {
       loading: false,
       currentGroup: null,
-      salesTargetGroups: [],
+      targetGroups: [],
     };
+  },
+
+  async created() {
+
+    this.loading = true;
+    await SalesTargetGroup.findAll({}, { with: ['ArticleGroup'] });
+    await SalesTarget.findAll({});
+    this.loading = false;
+
+    SalesTargetGroup.bindAll(this, {}, 'targetGroups');
+
+    // this.$watch('currentArticleGroup', this.bindCurrent);
+    // this.$watch('searchText', this.bindArticles, { immediate: true });
+    // this.$watch('onlyNoAvatar', this.bindCurrent);
+
   },
 
   components: {
