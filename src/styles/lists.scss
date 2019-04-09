@@ -7,6 +7,10 @@
   border: $list-cell-borders;
   overflow: hidden;
 
+  & + .list-group {
+    margin-top: $margin-top;
+  }
+
   .list-group-header {
     padding: $margin-top/2;
     font-weight: bold;

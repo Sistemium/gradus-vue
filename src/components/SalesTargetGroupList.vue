@@ -58,8 +58,4 @@ export default {
 
 @import "../styles/variables";
 
-.list-group + .list-group {
-  margin-top: $margin-top;
-}
-
 </style>

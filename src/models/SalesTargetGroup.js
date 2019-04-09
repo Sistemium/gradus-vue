@@ -12,6 +12,12 @@ export default new Model({
         localKey: 'articleGroupId',
       },
     },
+    hasMany: {
+      SalesTarget: {
+        localField: 'targets',
+        foreignKey: 'targetGroupId',
+      },
+    },
   },
 
   methods: {},

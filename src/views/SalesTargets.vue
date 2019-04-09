@@ -15,12 +15,14 @@
         )
 
     el-main(v-if="!loading")
-      sales-target-edit
+      sales-target-group-edit(
+      v-model="currentGroup"
+      )
 
 </template>
 <script>
 
-import SalesTargetEdit from '@/components/SalesTargetEdit.vue';
+import SalesTargetGroupEdit from '@/components/SalesTargetGroupEdit.vue';
 import SalesTargetGroupList from '@/components/SalesTargetGroupList.vue';
 
 import SalesTargetGroup from '@/models/SalesTargetGroup';
@@ -42,7 +44,8 @@ export default {
 
     this.loading = true;
     await SalesTargetGroup.findAll({}, { with: ['ArticleGroup'] });
-    await SalesTarget.findAll({});
+    const targets = await SalesTarget.findAll({}, { with: ['Article'] });
+    await Promise.all(targets.map(target => target.loadArticles()));
     this.loading = false;
 
     SalesTargetGroup.bindAll(this, {}, 'targetGroups');
@@ -54,7 +57,7 @@ export default {
   },
 
   components: {
-    SalesTargetEdit,
+    SalesTargetGroupEdit,
     SalesTargetGroupList,
   },
 
@@ -64,5 +67,10 @@ export default {
 <style scoped lang="scss">
 
 @import "../styles/variables";
+
+.el-main {
+  padding: 0;
+  margin-left: $margin-top;
+}
 
 </style>
