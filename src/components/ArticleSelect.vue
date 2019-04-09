@@ -60,7 +60,7 @@ export default {
       const where = {
         name: { likei: `%${search}%` },
       };
-      const articles = await Article.findAll({ where });
+      const articles = await Article.findAll({ where, limit: 50 });
       vm.setOptions(articles);
       loading(false);
     }, 500),

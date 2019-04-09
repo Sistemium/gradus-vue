@@ -7,18 +7,28 @@
     el-input-number(v-model="cnt" :min="1" size="small" :step="1" @change="onCnt")
 
   .list-group(v-if="articles.length")
-    .list-group-item(v-for="article in articles") {{ article.name }}
+    .list-group-item(v-for="article in articles")
+      span.name {{ article.name }}
+      a.del(@click.prevent="delArticleClick(article)") Удалить
 
   article-select(ref="newArticle" @input="onNewArticle")
 
 </template>
 <script>
 
+import log from 'sistemium-telegram/services/log';
+import map from 'lodash/map';
+import pull from 'lodash/pull';
+
 import ArticleSelect from '@/components/ArticleSelect.vue';
+import SalesTarget from '@/models/SalesTarget';
+
+const name = 'SalesTargetEdit';
+const { error } = log(name);
 
 export default {
 
-  name: 'SalesTargetEdit',
+  name,
   components: { ArticleSelect },
 
   props: {
@@ -36,16 +46,33 @@ export default {
   },
 
   methods: {
+
     onCnt(newValue) {
       this.target.cnt = newValue;
+      this.save();
     },
+
     onNewArticle(article) {
-      if (article) {
-        this.articles.push(article);
-        // this.newArticle = null;
-        this.$refs.newArticle.clear();
+      if (!article) {
+        return;
       }
+      this.articles.push(article);
+      this.$refs.newArticle.clear();
+      this.target.articleIds = map(this.articles, 'id');
+      this.save();
     },
+
+    save() {
+      this.target.articleIds = map(this.articles, 'id');
+      SalesTarget.safeSave(this.target)
+        .catch(error);
+    },
+
+    delArticleClick(article) {
+      this.articles = [...pull(this.articles, article)];
+      this.save();
+    },
+
   },
 
 };
@@ -66,6 +93,15 @@ label {
 
 .article-select {
   margin-top: $margin-right;
+}
+
+.del {
+  margin-left: $margin-right;
+  visibility: hidden;
+}
+
+.list-group-item:hover .del {
+  visibility: visible;
 }
 
 </style>

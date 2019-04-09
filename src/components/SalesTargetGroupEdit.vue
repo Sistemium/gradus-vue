@@ -10,11 +10,12 @@
 
     el-button.add(type="primary" @click="addClick" size="small") Добавить цель
 
-  .sales-target(
-  v-for="target in targets" :key="target.id"
-  )
-    confirm-button.del(type="text" @confirm="delClick(target)" text="Удалить")
-    sales-target-edit(:target="target")
+  resize(padding="105")
+    .sales-target(
+    v-for="target in targets" :key="target.id"
+    )
+      confirm-button.del(type="text" @confirm="delClick(target)" text="Удалить")
+      sales-target-edit(:target="target")
 
 </template>
 <script>
@@ -54,7 +55,7 @@ export default {
       const item = SalesTarget.mapper.createInstance({
         targetGroupId: this.value.id,
         articleIds: [],
-        cnt: 0,
+        cnt: 1,
       });
       this.targets.push(item);
     },
@@ -102,6 +103,10 @@ label {
 .del {
   position: absolute;
   top: -3px;
+}
+
+.stm-resize {
+  padding-bottom: 70px;
 }
 
 </style>
