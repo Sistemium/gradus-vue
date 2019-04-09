@@ -13,6 +13,10 @@ export default {
 
   props: {
     text: String,
+    type: {
+      type: String,
+      default: 'default',
+    },
     confirmText: String,
     timeout: {
       type: Number,
@@ -31,11 +35,11 @@ export default {
   computed: {
 
     buttonText() {
-      return this.confirmation ? this.confirmText : this.text;
+      return this.confirmation ? this.confirmText || `${this.text}?` : this.text;
     },
 
     buttonType() {
-      return this.confirmation ? 'warning' : 'default';
+      return this.confirmation ? 'warning' : this.type;
     },
 
   },
