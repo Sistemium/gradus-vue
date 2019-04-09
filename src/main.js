@@ -2,6 +2,7 @@ import Vue from 'vue';
 
 import '@/lib/element-ui';
 import 'intersection-observer';
+import '@/lib/v-select';
 // import VueObserveVisibility from 'vue-observe-visibility';
 
 import { AUTH_INIT } from 'sistemium-vue/store/auth/actions';
