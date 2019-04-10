@@ -16,6 +16,7 @@
 
     el-main(v-if="!loading")
       sales-target-group-edit(
+      v-if="currentGroup"
       v-model="currentGroup"
       )
 
@@ -40,19 +41,37 @@ export default {
     };
   },
 
+  watch: {
+    currentGroup(group) {
+      const { name } = this.$route;
+      if (group) {
+        this.$router.replace({
+          name,
+          params: { groupId: group.id },
+        });
+      } else {
+        this.$router.replace({ name });
+      }
+    },
+  },
+
   async created() {
 
     this.loading = true;
+
     await SalesTargetGroup.findAll({}, { with: ['ArticleGroup'] });
-    const targets = await SalesTarget.findAll({}, { with: ['Article'] });
+    const targets = await SalesTarget.findAll({});
     await Promise.all(targets.map(target => target.loadArticles()));
+
     this.loading = false;
 
     SalesTargetGroup.bindAll(this, {}, 'targetGroups');
 
-    // this.$watch('currentArticleGroup', this.bindCurrent);
-    // this.$watch('searchText', this.bindArticles, { immediate: true });
-    // this.$watch('onlyNoAvatar', this.bindCurrent);
+    const { groupId } = this.$route.params;
+
+    if (groupId) {
+      this.currentGroup = SalesTargetGroup.get(groupId);
+    }
 
   },
 

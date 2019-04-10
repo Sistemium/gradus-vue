@@ -4,12 +4,18 @@
 
   .field
     label Цель СКЮ:
-    el-input-number(v-model="cnt" :min="1" size="small" :step="1" @change="onCnt")
+    el-input-number(
+    v-model="cnt"
+    :min="1"
+    :max="articles.length || 1"
+    size="small"
+    @change="onCnt"
+    )
 
   .list-group(v-if="articles.length")
     .list-group-item(v-for="article in articles")
       span.name {{ article.name }}
-      a.del(@click.prevent="delArticleClick(article)") Удалить
+      confirm-button.del(@confirm="delArticleClick(article)" text="Удалить" type="text")
 
   article-select(ref="newArticle" @input="onNewArticle")
 
@@ -102,6 +108,19 @@ label {
 
 .list-group-item:hover .del {
   visibility: visible;
+}
+
+.list-group-item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.list-group-item /deep/ button {
+  padding: 0;
+
+  &.confirmation {
+    padding: 4px;
+  }
 }
 
 </style>

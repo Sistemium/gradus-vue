@@ -107,6 +107,7 @@ label {
 
 .stm-resize {
   padding-bottom: 70px;
+  overflow-y: visible;
 }
 
 </style>

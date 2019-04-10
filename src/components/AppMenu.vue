@@ -3,7 +3,7 @@
 #app-menu
 
   el-menu#main-menu(
-  :default-active="$route.path"
+  :default-active="defaultActive"
   mode="horizontal"
   :router="true"
   :class="{ 'not-root': $route.name !== 'home' }"
@@ -49,6 +49,9 @@ export default {
 
   computed: {
     ...mapState('auth', { account: 'account' }),
+    defaultActive() {
+      return this.$route.path.match(/^\/[^/]*/)[0];
+    },
   },
 
   components: { AccountMenu },

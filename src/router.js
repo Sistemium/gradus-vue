@@ -51,7 +51,7 @@ export default new Router({
       },
     },
     {
-      path: '/targets',
+      path: '/targets/:groupId?',
       name: 'targets',
       component: () => import(/* webpackChunkName: "catalogue" */ './views/SalesTargets.vue'),
       meta: {
