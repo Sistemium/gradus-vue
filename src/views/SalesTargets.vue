@@ -12,6 +12,7 @@
         sales-target-group-list(
         :items="targetGroups"
         v-model="currentGroup"
+        @add="addTargetGroupClick"
         )
 
     el-main(v-if="!loading")
@@ -19,6 +20,12 @@
       v-if="currentGroup"
       v-model="currentGroup"
       )
+
+  sales-target-group-dialog(
+  v-if="newTargetGroup"
+  :sales-target-group="newTargetGroup"
+  @closed="onDialogClose"
+  )
 
 </template>
 <script>
@@ -29,6 +36,8 @@ import SalesTargetGroupList from '@/components/SalesTargetGroupList.vue';
 import SalesTargetGroup from '@/models/SalesTargetGroup';
 import SalesTarget from '@/models/SalesTarget';
 
+import SalesTargetGroupDialog from '@/components/SalesTargetGroupDialog.vue';
+
 export default {
 
   name: 'SalesTargets',
@@ -38,6 +47,7 @@ export default {
       loading: false,
       currentGroup: null,
       targetGroups: [],
+      newTargetGroup: null,
     };
   },
 
@@ -53,6 +63,22 @@ export default {
         this.$router.replace({ name });
       }
     },
+  },
+
+  methods: {
+
+    addTargetGroupClick(toArticleGroup) {
+      const { id: articleGroupId } = toArticleGroup;
+      this.newTargetGroup = { articleGroupId };
+    },
+
+    onDialogClose(res) {
+      if (res) {
+        this.currentGroup = res;
+      }
+      this.newTargetGroup = null;
+    },
+
   },
 
   async created() {
@@ -78,6 +104,7 @@ export default {
   components: {
     SalesTargetGroupEdit,
     SalesTargetGroupList,
+    SalesTargetGroupDialog,
   },
 
 };

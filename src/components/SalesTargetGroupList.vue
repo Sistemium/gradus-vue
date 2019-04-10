@@ -2,9 +2,16 @@
 
 .sales-target-group-list
 
-  .list-group(v-for="group in groupedItems" :key="group.name")
+  .list-group(v-for="group in groupedItems" :key="group.id")
 
-    .list-group-header {{ group.name }}
+    .list-group-header
+      .name {{ group.name }}
+      el-button.add(
+      size="medium"
+      type="text"
+      icon="el-icon-circle-plus-outline"
+      @click="$emit('add', group)"
+      )
 
     .list-group-item.sales-target-group(
     v-for="item in group.items" :key="item.id"
@@ -19,6 +26,9 @@
 import groupBy from 'lodash/groupBy';
 import orderBy from 'lodash/orderBy';
 import map from 'lodash/map';
+import get from 'lodash/get';
+
+import ArticleGroup from '@/models/ArticleGroup';
 
 export default {
 
@@ -33,10 +43,11 @@ export default {
 
     groupedItems() {
 
-      const data = groupBy(this.items, 'articleGroup.name');
+      const data = groupBy(this.items, 'articleGroup.id');
 
-      return orderBy(map(data, (items, name) => ({
-        name,
+      return orderBy(map(data, (items, id) => ({
+        id,
+        name: get(ArticleGroup.get(id), 'name'),
         items,
       })), 'name');
 
@@ -57,5 +68,14 @@ export default {
 <style scoped lang="scss">
 
 @import "../styles/variables";
+
+.list-group-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.add {
+  padding: 0;
+}
 
 </style>
