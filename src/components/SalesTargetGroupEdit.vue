@@ -8,21 +8,28 @@
       label Группа:
       strong {{ value && value.name }}
 
-    el-button.add(type="primary" @click="addClick" size="small") Добавить цель
+    el-button.del(type="info" @click="delGroup" size="mini" icon="el-icon-delete" circle)
+    el-button.add(type="primary" @click="addClick" size="mini") Добавить цель
 
   resize(padding="105")
     .sales-target(
     v-for="target in targets" :key="target.id"
     )
-      confirm-button.del(type="text" @confirm="delClick(target)" text="Удалить")
+      confirm-button.del(type="text" @confirm="delTarget(target)" text="Удалить")
       sales-target-edit(:target="target")
 
 </template>
 <script>
 
+import log from 'sistemium-telegram/services/log';
+
 import pull from 'lodash/pull';
 import SalesTarget from '@/models/SalesTarget';
+import SalesTargetGroup from '@/models/SalesTargetGroup';
 import SalesTargetEdit from './SalesTargetEdit.vue';
+
+const { error } = log('SalesTargetGroupEdit');
+
 
 /**
  * @property {String} value.id
@@ -46,9 +53,43 @@ export default {
 
   methods: {
 
-    delClick(item) {
-      const newTargets = pull(this.targets, item);
-      this.targets = [...newTargets];
+    delGroup() {
+      this.$confirm(`Удалить все группу целей «${this.value.name}»`, 'Внимание!', {
+        confirmButtonText: 'Удалить',
+        cancelButtonText: 'Нет, оставить',
+        type: 'warning',
+      })
+        .then(async () => {
+          try {
+            await SalesTargetGroup.destroy(this.value);
+          } catch (err) {
+            error(err.message);
+            this.$message({
+              message: 'Ошибка удаления',
+              type: 'warning',
+              duration: 5000,
+            });
+          }
+        })
+        .catch(() => {
+        });
+    },
+
+    async delTarget(target) {
+
+      try {
+        SalesTarget.destroy(target);
+        const newTargets = pull(this.targets, target);
+        this.targets = [...newTargets];
+      } catch (err) {
+        error(err.message);
+        this.$message({
+          message: 'Ошибка удаления',
+          type: 'warning',
+          duration: 5000,
+        });
+      }
+
     },
 
     addClick() {
@@ -93,14 +134,15 @@ label {
 .header {
   h2 {
     margin: 0;
+    flex: 1;
   }
 
   display: flex;
-  justify-content: space-between;
+  /*justify-content: space-between;*/
   align-items: center;
 }
 
-.del {
+.sales-target > .del {
   position: absolute;
   top: -3px;
 }

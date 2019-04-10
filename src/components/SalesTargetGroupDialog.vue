@@ -63,7 +63,8 @@ export default {
 
         try {
           const saved = await SalesTargetGroup.create(this.salesTargetGroup);
-          this.closeDialog(saved);
+          this.visible = false;
+          this.$emit('closed', saved);
         } catch (err) {
           error(err);
         }
@@ -71,9 +72,9 @@ export default {
       });
     },
 
-    closeDialog(res) {
+    closeDialog() {
       this.visible = false;
-      this.$emit('closed', res);
+      this.$emit('closed');
     },
 
   },

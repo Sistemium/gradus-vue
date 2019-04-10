@@ -30,6 +30,8 @@
 </template>
 <script>
 
+import find from 'lodash/find';
+
 import SalesTargetGroupEdit from '@/components/SalesTargetGroupEdit.vue';
 import SalesTargetGroupList from '@/components/SalesTargetGroupList.vue';
 
@@ -91,7 +93,11 @@ export default {
 
     this.loading = false;
 
-    SalesTargetGroup.bindAll(this, {}, 'targetGroups');
+    SalesTargetGroup.bindAll(this, {}, 'targetGroups', groups => {
+      if (this.currentGroup && !find(groups, { id: this.currentGroup.id })) {
+        this.currentGroup = null;
+      }
+    });
 
     const { groupId } = this.$route.params;
 
