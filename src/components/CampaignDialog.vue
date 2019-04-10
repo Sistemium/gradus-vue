@@ -81,17 +81,23 @@ export default {
       rules: {
         name: [
           {
-            required: true, message: 'Введите название', trigger: 'blur',
+            required: true,
+            message: 'Введите название',
+            trigger: 'blur',
           },
         ],
         dateB: [
           {
-            required: true, message: 'Введите дату начала', trigger: 'blur',
+            required: true,
+            message: 'Введите дату начала',
+            trigger: 'blur',
           },
         ],
         dateE: [
           {
-            required: true, message: 'Введите дату окончания', trigger: 'blur',
+            required: true,
+            message: 'Введите дату окончания',
+            trigger: 'blur',
           },
         ],
       },
@@ -106,9 +112,7 @@ export default {
     closeDialog() {
 
       this.newCampaign = {};
-
       this.visible = false;
-
       this.$emit('closed');
 
     },
@@ -116,34 +120,29 @@ export default {
     async submitDialog(formName) {
 
       this.$refs[formName].validate(valid => {
+
         if (valid) {
-
           this.$emit('submit', this.newCampaign);
-
           this.closeDialog();
         }
 
         return valid;
+
       });
 
     },
 
     disableMinDate(date) {
-
       return !!(this.newCampaign.dateE && date > new Date(this.newCampaign.dateE));
-
     },
 
     disableMaxDate(date) {
-
       return !!(this.newCampaign.dateB && date < new Date(this.newCampaign.dateB));
-
     },
 
     removeClick() {
 
       this.$emit('remove', this.campaign);
-
       this.closeDialog();
 
     },
@@ -153,15 +152,11 @@ export default {
     },
 
     minVersion() {
-
       return this.campaign.version || 1;
-
     },
 
     maxVersion() {
-
       return (this.campaign.version || 1) + 1;
-
     },
 
   },
@@ -169,29 +164,17 @@ export default {
   computed: {
 
     title() {
-
-      if (this.isEdit()) {
-
-        return 'Редактировать';
-
-      }
-
-      return 'Новая Акция';
-
+      return this.isEdit() ? 'Редактировать' : 'Новая Акция';
     },
 
   },
 
   created() {
 
-    this.newCampaign = {
-      ...this.campaign,
-    };
+    this.newCampaign = { ...this.campaign };
 
     if (!this.newCampaign.version) {
-
       this.newCampaign.version = 1;
-
     }
 
   },
@@ -205,12 +188,10 @@ export default {
 .campaign-input {
 
   .el-input {
-
     width: 100%;
-
   }
 
-  .buttons{
+  .buttons {
 
     display: flex;
     justify-content: space-between;
@@ -218,16 +199,12 @@ export default {
 
   }
 
-  .remove{
-
+  .remove {
     margin-right: 0;
-
   }
 
-  .el-input-number{
-
+  .el-input-number {
     width: 100%;
-
   }
 
 }
