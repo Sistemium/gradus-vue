@@ -17,7 +17,7 @@
       span.name {{ article.name }}
       confirm-button.del(@confirm="delArticleClick(article)" text="Удалить" type="text")
 
-  article-select(ref="newArticle" @input="onNewArticle")
+  article-select(ref="newArticle" @input="onNewArticle" placeholder="Добавить товар")
 
 </template>
 <script>

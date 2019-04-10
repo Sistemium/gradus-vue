@@ -8,6 +8,7 @@ label="name"
 :options="options"
 @search="onSearch"
 ref="select"
+:placeholder="placeholder"
 )
 
   template(slot="no-options") напишите часть названия, чтобы начать поиск
@@ -37,6 +38,7 @@ export default {
 
   props: {
     value: Object,
+    placeholder: String,
   },
 
   methods: {
