@@ -1,7 +1,11 @@
 <template lang="pug">
 
 el-badge.countdown(:value="countdown" :hidden="!countdown")
-  el-button.confirm-button(:type="buttonType" @click="onClick")
+  el-button.confirm-button(
+  :type="buttonType"
+  :class="countdown && 'confirmation'"
+  @click="onClick"
+  )
     span {{ buttonText }}
 
 </template>
