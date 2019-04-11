@@ -33,7 +33,7 @@ import CampaignPicture from '@/models/CampaignPicture';
 
 import CampaignsPictureGallery from './CampaignsPictureGallery';
 
-const { debug, error } = log('CampaignPicturesDialog.vue');
+const { debug, error } = log('CampaignPicturesDialog');
 const vuex = createNamespacedHelpers('campaigns');
 
 export default {

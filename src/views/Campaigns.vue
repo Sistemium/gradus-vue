@@ -33,7 +33,7 @@ element-loading-text="Загрузка данных ..."
   element-loading-text="Загрузка данных ..."
   )
 
-    el-table(
+    el-table.table(
     :data="campaigns"
     v-if="!loading"
     @cell-click="campaignClick"
@@ -77,9 +77,9 @@ element-loading-text="Загрузка данных ..."
 <script>
 
 import { createNamespacedHelpers } from 'vuex';
-import CampaignPicturesDialog from '@/components/CampaignPicturesDialog.vue';
-import CampaignDialog from '@/components/CampaignDialog.vue';
-import CampaignAvatar from '@/components/CampaignAvatar.vue';
+import CampaignPicturesDialog from '@/components/campaigns/CampaignPicturesDialog.vue';
+import CampaignDialog from '@/components/campaigns/CampaignDialog.vue';
+import CampaignAvatar from '@/components/campaigns/CampaignAvatar.vue';
 
 // import log from 'sistemium-telegram/services/log';
 
@@ -246,6 +246,10 @@ export default {
 
   width: 100%;
 
+}
+
+.table /deep/ .el-table__row {
+  cursor: pointer;
 }
 
 </style>
