@@ -119,7 +119,7 @@ export default {
 </script>
 <style scoped lang="scss">
 
-@import "../styles/variables";
+@import "../../styles/variables";
 
 .sales-target {
   margin-top: $margin-top * 2;

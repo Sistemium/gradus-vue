@@ -21,9 +21,10 @@ el-dialog(
 
 import log from 'sistemium-telegram/services/log';
 
-import SalesTargetGroupForm from '@/components/SalesTargetGroupForm.vue';
 import ArticleGroup from '@/models/ArticleGroup';
 import SalesTargetGroup from '@/models/SalesTargetGroup';
+
+import SalesTargetGroupForm from './SalesTargetGroupForm.vue';
 
 const { error } = log('SalesTargetGroupDialog');
 
@@ -101,7 +102,7 @@ export default {
 </script>
 <style scoped lang="scss">
 
-@import "../styles/variables";
+@import "../../styles/variables";
 
 .buttons {
 

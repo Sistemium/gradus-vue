@@ -37,14 +37,14 @@
 
 import find from 'lodash/find';
 
-import SalesTargetGroupEdit from '@/components/SalesTargetGroupEdit.vue';
-import SalesTargetGroupList from '@/components/SalesTargetGroupList.vue';
+import SalesTargetGroupEdit from '@/components/salesTargets/SalesTargetGroupEdit.vue';
+import SalesTargetGroupList from '@/components/salesTargets/SalesTargetGroupList.vue';
 
 import SalesTargetGroup from '@/models/SalesTargetGroup';
 import SalesTarget from '@/models/SalesTarget';
 import ArticleGroup from '@/models/ArticleGroup';
 
-import SalesTargetGroupDialog from '@/components/SalesTargetGroupDialog.vue';
+import SalesTargetGroupDialog from '@/components/salesTargets/SalesTargetGroupDialog.vue';
 
 export default {
 

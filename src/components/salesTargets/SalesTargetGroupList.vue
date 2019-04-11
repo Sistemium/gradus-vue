@@ -67,7 +67,7 @@ export default {
 </script>
 <style scoped lang="scss">
 
-@import "../styles/variables";
+@import "../../styles/variables";
 
 .list-group-header {
   display: flex;
