@@ -37,6 +37,7 @@ import SalesTargetGroupList from '@/components/SalesTargetGroupList.vue';
 
 import SalesTargetGroup from '@/models/SalesTargetGroup';
 import SalesTarget from '@/models/SalesTarget';
+import ArticleGroup from '@/models/ArticleGroup';
 
 import SalesTargetGroupDialog from '@/components/SalesTargetGroupDialog.vue';
 
@@ -87,6 +88,7 @@ export default {
 
     this.loading = true;
 
+    await ArticleGroup.findAll({ articleGroupId: null });
     await SalesTargetGroup.findAll({}, { with: ['ArticleGroup'] });
     const targets = await SalesTarget.findAll({});
     await Promise.all(targets.map(target => target.loadArticles()));

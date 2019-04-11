@@ -36,45 +36,54 @@ export default {
   },
 
   data() {
+
+    const filter = {
+      where: { articleGroupId: { '==': null } },
+      orderBy: ['name'],
+    };
+
     return {
       visible: true,
-      articleGroups: ArticleGroup.filter({ articleGroupId: null }),
+      articleGroups: ArticleGroup.filter(filter),
     };
+
   },
 
   methods: {
 
     submitClick() {
-      this.$refs.form.validate(async (res, errors) => {
-
-        if (!res) {
-
-          error('validation', errors);
-
-          this.$message({
-            message: 'Данные некорректны!',
-            type: 'warning',
-            duration: 5000,
-          });
-
-          return;
-
-        }
-
-        try {
-          const saved = await SalesTargetGroup.create(this.salesTargetGroup);
-          this.visible = false;
-          this.$emit('closed', saved);
-        } catch (err) {
-          error(err);
-        }
-
-      });
+      this.$refs.form.validate(this.onValidate);
     },
 
     closeDialog() {
       this.visible = false;
       this.$emit('closed');
+    },
+
+    async onValidate(res, errors) {
+
+      if (!res) {
+
+        error('validation', errors);
+
+        this.$message({
+          message: 'Данные некорректны!',
+          type: 'warning',
+          duration: 5000,
+        });
+
+        return;
+
+      }
+
+      try {
+        const saved = await SalesTargetGroup.create(this.salesTargetGroup);
+        this.visible = false;
+        this.$emit('closed', saved);
+      } catch (err) {
+        error(err);
+      }
+
     },
 
   },

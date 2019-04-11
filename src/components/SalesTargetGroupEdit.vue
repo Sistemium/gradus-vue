@@ -8,7 +8,7 @@
       label Группа:
       strong {{ value && value.name }}
 
-    el-button.del(type="info" @click="delGroup" size="mini" icon="el-icon-delete" circle)
+    el-button.del(@click="delGroup" size="mini" icon="el-icon-delete" circle)
     el-button.add(type="primary" @click="addClick" size="mini") Добавить цель
 
   resize(padding="105")
@@ -63,12 +63,7 @@ export default {
           try {
             await SalesTargetGroup.destroy(this.value);
           } catch (err) {
-            error(err.message);
-            this.$message({
-              message: 'Ошибка удаления',
-              type: 'warning',
-              duration: 5000,
-            });
+            this.showErrorMessage(err);
           }
         })
         .catch(() => {
@@ -78,16 +73,11 @@ export default {
     async delTarget(target) {
 
       try {
-        SalesTarget.destroy(target);
+        await SalesTarget.destroy(target);
         const newTargets = pull(this.targets, target);
         this.targets = [...newTargets];
       } catch (err) {
-        error(err.message);
-        this.$message({
-          message: 'Ошибка удаления',
-          type: 'warning',
-          duration: 5000,
-        });
+        this.showErrorMessage(err);
       }
 
     },
@@ -99,6 +89,15 @@ export default {
         cnt: 1,
       });
       this.targets.push(item);
+    },
+
+    showErrorMessage(err) {
+      error(err.message);
+      this.$message({
+        message: 'Ошибка удаления',
+        type: 'warning',
+        duration: 5000,
+      });
     },
 
   },
