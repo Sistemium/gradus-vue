@@ -33,7 +33,8 @@ element-loading-text="Загрузка данных ..."
   element-loading-text="Загрузка данных ..."
   )
 
-    campaigns-table(v-if="!loading" :campaigns="campaigns" @cell-click="campaignClick")
+    resize.resize(padding="30")
+      campaigns-table(v-if="!loading" :campaigns="campaigns" @cell-click="campaignClick")
 
   campaign-dialog(
   v-if="campaign"
@@ -192,6 +193,11 @@ export default {
     margin-left: $margin-right;
   }
 
+}
+
+.resize {
+  display: block;
+  width: 100%;
 }
 
 .searcher {
