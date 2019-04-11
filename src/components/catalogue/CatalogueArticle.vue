@@ -56,7 +56,7 @@ import { SHARED_ARTICLES, SELECTED_ARTICLE } from '@/vuex/catalogue/getters';
 import * as a from '@/vuex/catalogue/actions';
 
 import AvatarPicture from '@/components/AvatarPicture.vue';
-import SameArticlesList from '@/components/SameArticlesList.vue';
+import SameArticlesList from './SameArticlesList.vue';
 
 const vuex = createNamespacedHelpers('catalogue');
 
