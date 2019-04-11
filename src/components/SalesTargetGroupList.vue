@@ -48,7 +48,7 @@ export default {
       return orderBy(map(data, (items, id) => ({
         id,
         name: get(ArticleGroup.get(id), 'name'),
-        items,
+        items: orderBy(items, 'name'),
       })), 'name');
 
     },

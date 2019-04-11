@@ -7,19 +7,24 @@
   element-loading-text="Загрузка данных ..."
   )
 
-    el-aside(v-if="!loading")
+    el-aside(v-if="!loading && targetGroups.length")
       resize(padding="30")
         sales-target-group-list(
         :items="targetGroups"
         v-model="currentGroup"
-        @add="addTargetGroupClick"
+        @add="addTargetGroup"
         )
 
-    el-main(v-if="!loading")
+    el-main()
       sales-target-group-edit(
       v-if="currentGroup"
       v-model="currentGroup"
       )
+      .no-current-group(v-else)
+        el-button(
+        v-if="!loading"
+        @click="addTargetGroup()" type="primary"
+        ) Добавить группу целей
 
   sales-target-group-dialog(
   v-if="newTargetGroup"
@@ -70,8 +75,8 @@ export default {
 
   methods: {
 
-    addTargetGroupClick(toArticleGroup) {
-      const { id: articleGroupId } = toArticleGroup;
+    addTargetGroup(toArticleGroup) {
+      const { id: articleGroupId } = toArticleGroup || {};
       this.newTargetGroup = { articleGroupId };
     },
 
@@ -88,9 +93,16 @@ export default {
 
     this.loading = true;
 
-    await ArticleGroup.findAll({ articleGroupId: null });
-    await SalesTargetGroup.findAll({}, { with: ['ArticleGroup'] });
-    const targets = await SalesTarget.findAll({});
+    await ArticleGroup.findAll({
+      articleGroupId: '',
+    }, { force: true });
+
+    await SalesTargetGroup.findAll({}, {
+      with: ['ArticleGroup'],
+      force: true,
+    });
+
+    const targets = await SalesTarget.findAll({}, { force: true });
     await Promise.all(targets.map(target => target.loadArticles()));
 
     this.loading = false;
@@ -125,6 +137,11 @@ export default {
 .el-main {
   padding: 0;
   margin-left: $margin-top;
+}
+
+.no-current-group {
+  text-align: center;
+  margin-top: 100px;
 }
 
 </style>
