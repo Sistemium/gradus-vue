@@ -55,8 +55,8 @@ import { TOGGLE_ARTICLE_SHARE } from '@/vuex/catalogue/mutations';
 import { SHARED_ARTICLES, SELECTED_ARTICLE } from '@/vuex/catalogue/getters';
 import * as a from '@/vuex/catalogue/actions';
 
-import AvatarPicture from './AvatarPicture.vue';
-import SameArticlesList from './SameArticlesList.vue';
+import AvatarPicture from '@/components/AvatarPicture.vue';
+import SameArticlesList from '@/components/SameArticlesList.vue';
 
 const vuex = createNamespacedHelpers('catalogue');
 
@@ -159,7 +159,7 @@ export default {
 </script>
 <style scoped lang="scss">
 
-@import "../styles/variables";
+@import "../../styles/variables";
 
 .same-article {
 

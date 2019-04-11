@@ -86,9 +86,9 @@ import * as actions from '@/vuex/catalogue/actions';
 
 import * as svc from '@/services/catalogue';
 
-import CatalogueGroupList from '@/components/CatalogueGroupList.vue';
-import CatalogueArticleList from '@/components/CatalogueArticleList.vue';
-import CatalogueArticleDialog from '@/components/CatalogueArticleDialog.vue';
+import CatalogueGroupList from '@/components/catalogue/CatalogueGroupList.vue';
+import CatalogueArticleList from '@/components/catalogue/CatalogueArticleList.vue';
+import CatalogueArticleDialog from '@/components/catalogue/CatalogueArticleDialog.vue';
 
 import ArticlePicture from '@/models/ArticlePicture';
 

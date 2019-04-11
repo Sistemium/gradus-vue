@@ -32,7 +32,7 @@ import ManagedComponent from '@/lib/ManagedComponent';
 
 import CataloguePictureGallery from './CataloguePictureGallery';
 
-const { debug, error } = log('CatalogueArticleDialog.vue');
+const { debug, error } = log('CatalogueArticleDialog');
 const vuex = createNamespacedHelpers('catalogue');
 
 export default {
@@ -112,6 +112,6 @@ export default {
 </script>
 <style scoped lang="scss">
 
-@import "../styles/variables";
+@import "../../styles/variables";
 
 </style>
