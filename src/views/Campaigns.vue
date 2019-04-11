@@ -26,37 +26,14 @@ element-loading-text="Загрузка данных ..."
       placeholder="поиск"
       )
 
-    el-button(@click="campaign = {}") Добавить акцию
+    el-button(type="primary" @click="campaign = {}") Добавить акцию
 
   el-container.campaigns-main(
   v-loading="loading"
   element-loading-text="Загрузка данных ..."
   )
 
-    el-table.table(
-    :data="campaigns"
-    v-if="!loading"
-    @cell-click="campaignClick"
-    :default-sort="{prop: 'name'}"
-    )
-      el-table-column(
-      prop="name"
-      label="Название"
-      )
-      el-table-column(
-      :formatter="dateBFormatter"
-      label="Дата начала"
-      )
-      el-table-column(
-      :formatter="dateEFormatter"
-      label="Дата окончания"
-      )
-      el-table-column(
-      width="90"
-      label="Картинки"
-      )
-        template(slot-scope="scope")
-          campaign-avatar(:campaign="scope.row")
+    campaigns-table(v-if="!loading" :campaigns="campaigns" @cell-click="campaignClick")
 
   campaign-dialog(
   v-if="campaign"
@@ -79,15 +56,14 @@ element-loading-text="Загрузка данных ..."
 import { createNamespacedHelpers } from 'vuex';
 import CampaignPicturesDialog from '@/components/campaigns/CampaignPicturesDialog.vue';
 import CampaignDialog from '@/components/campaigns/CampaignDialog.vue';
-import CampaignAvatar from '@/components/campaigns/CampaignAvatar.vue';
+import CampaignsTable from '@/components/campaigns/CampaignsTable.vue';
 
 // import log from 'sistemium-telegram/services/log';
 
 import * as getters from '@/vuex/campaigns/getters';
 import * as actions from '@/vuex/campaigns/actions';
 
-import { monthGenerator, longDate } from 'sistemium-telegram/services/moments';
-
+import { monthGenerator } from 'sistemium-telegram/services/moments';
 
 const { mapActions, mapGetters } = createNamespacedHelpers('campaigns');
 
@@ -107,9 +83,7 @@ export default {
   computed: {
 
     lastYearMonths() {
-
       return monthGenerator(12, Date());
-
     },
 
     ...mapGetters({
@@ -137,22 +111,8 @@ export default {
       removeCampaign: actions.REMOVE_CAMPAIGN,
     }),
 
-    dateBFormatter(date) {
-
-      return longDate(date.dateB);
-
-    },
-
-    dateEFormatter(date) {
-
-      return longDate(date.dateE);
-
-    },
-
     editCampaignClose() {
-
       this.campaign = undefined;
-
     },
 
     editCampaign(campaign) {
@@ -165,14 +125,11 @@ export default {
     },
 
     campaignClick(row, column) {
+
       if (column.label === 'Картинки') {
-
         this.campaignAvatarClick(row);
-
       } else {
-
         this.campaign = row;
-
       }
 
     },
@@ -202,7 +159,11 @@ export default {
     },
   },
 
-  components: { CampaignDialog, CampaignPicturesDialog, CampaignAvatar },
+  components: {
+    CampaignDialog,
+    CampaignPicturesDialog,
+    CampaignsTable,
+  },
 
 };
 
@@ -213,9 +174,7 @@ export default {
 @import "../styles/variables";
 
 .select {
-
   margin-left: 10px;
-
 }
 
 .campaigns-header {
@@ -240,16 +199,6 @@ export default {
   margin-left: 10px;
   max-width: 200px;
 
-}
-
-.placeholder {
-
-  width: 100%;
-
-}
-
-.table /deep/ .el-table__row {
-  cursor: pointer;
 }
 
 </style>
