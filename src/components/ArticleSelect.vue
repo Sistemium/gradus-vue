@@ -9,20 +9,26 @@ label="name"
 @search="onSearch"
 ref="select"
 :placeholder="placeholder"
+:close-on-select="false"
 )
 
   template(slot="no-options") напишите часть названия, чтобы начать поиск
 
   template(slot="option" slot-scope="option")
-    .name {{ option.name }}
+    .article
+      .name {{ option.name }}
+      .extra-label(v-if="option.extraLabel") {{ option.extraLabel }}
 
   template(slot="selected-option" slot-scope="option")
-    .name {{ option.name }}
+    .article
+      .name {{ option.name }}
+      .extra-label(v-if="option.extraLabel") {{ option.extraLabel }}
 
 </template>
 <script>
 
 import debounce from 'lodash/debounce';
+import orderBy from 'lodash/orderBy';
 import Article from '@/models/Article';
 
 export default {
@@ -68,7 +74,7 @@ export default {
     }, 500),
 
     setOptions(options) {
-      this.options = options;
+      this.options = orderBy(options, 'name');
     },
 
   },
@@ -84,5 +90,16 @@ export default {
   /*overflow-y: auto;*/
 }
 
+.article-select /deep/ .dropdown-menu a {
+  white-space: normal;
+  border-bottom: solid 1px $gray-border-color;
+}
+
+.article {
+  display: flex;
+  .extra-label {
+    margin-left: $margin-right;
+  }
+}
 
 </style>

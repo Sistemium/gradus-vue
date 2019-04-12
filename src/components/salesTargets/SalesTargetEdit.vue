@@ -14,7 +14,9 @@
 
   .list-group(v-if="articles.length")
     .list-group-item(v-for="article in articles")
-      span.name {{ article.name }}
+      .article
+        .name {{ article.name }}
+        .extra-label(v-if="article.extraLabel") {{ article.extraLabel }}
       confirm-button.del(@confirm="delArticleClick(article)" text="Удалить" type="text")
 
   article-select(ref="newArticle" @input="onNewArticle" placeholder="Добавить товар")
@@ -120,6 +122,14 @@ label {
 
   &.confirmation {
     padding: 4px;
+  }
+}
+
+.article {
+  display: flex;
+  .extra-label {
+    margin-left: $margin-right;
+    color: $gray;
   }
 }
 
