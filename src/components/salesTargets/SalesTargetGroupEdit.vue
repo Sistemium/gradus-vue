@@ -22,6 +22,7 @@
 </template>
 <script>
 
+import uuid from '@/lib/uuid';
 import log from 'sistemium-telegram/services/log';
 
 import pull from 'lodash/pull';
@@ -89,6 +90,7 @@ export default {
 
     addClick() {
       const item = SalesTarget.mapper.createInstance({
+        id: uuid(),
         targetGroupId: this.value.id,
         articleIds: [],
         cnt: 1,

@@ -21,7 +21,8 @@
     "vue-router": "^3.0.1",
     "vue-select": "^2.6.4",
     "vue-virtual-scroller": "^1.0.0-beta.2",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "uuid": "latest"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.4",
