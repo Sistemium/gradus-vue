@@ -13,12 +13,7 @@ element-loading-text="Загрузка данных ..."
 
       month-select(:months="lastYearMonths" v-model="selectedMonth")
 
-      el-input.searcher(
-      prefix-icon="el-icon-search"
-      v-model="searchText"
-      :clearable="true"
-      placeholder="поиск"
-      )
+      search-input(v-model="searchText")
 
     el-button(type="primary" @click="campaign = {}") Добавить акцию
 
@@ -197,7 +192,7 @@ export default {
   width: 100%;
 }
 
-.searcher {
+.search-input {
 
   margin-left: 10px;
   max-width: 200px;
