@@ -22,6 +22,10 @@ ref="form"
 
     el-input(v-model="model.name")
 
+  el-form-item(label="Сортировка" prop="ord")
+
+    el-input-number(v-model="model.ord" :min="0")
+
 </template>
 <script>
 
@@ -37,6 +41,13 @@ const rules = {
     {
       required: true,
       message: 'Выберите товарную группу',
+      trigger: 'change',
+    },
+  ],
+  ord: [
+    {
+      required: true,
+      message: 'Укажите порядок сортировки',
       trigger: 'change',
     },
   ],

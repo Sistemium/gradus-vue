@@ -22,7 +22,7 @@ element-loading-text="Загрузка данных ..."
   element-loading-text="Загрузка данных ..."
   )
 
-    resize.resize(padding="30")
+    resize.resize(:padding="30")
       campaigns-table(v-if="!loading" :campaigns="campaigns" @cell-click="campaignClick")
 
   campaign-dialog(

@@ -8,10 +8,11 @@
       label Группа:
       strong {{ value && value.name }}
 
+    el-button.del(@click="editGroup" size="mini" icon="el-icon-edit" circle)
     el-button.del(@click="delGroup" size="mini" icon="el-icon-delete" circle)
     el-button.add(type="primary" @click="addClick" size="mini") Добавить цель
 
-  resize(padding="105")
+  resize(:padding="105" :maximize="true")
     .sales-target(
     v-for="target in targets" :key="target.id"
     )
@@ -53,6 +54,10 @@ export default {
 
   methods: {
 
+    editGroup() {
+      this.$emit('edit-click');
+    },
+
     delGroup() {
       this.$confirm(`Удалить все группу целей «${this.value.name}»`, 'Внимание!', {
         confirmButtonText: 'Удалить',
@@ -87,6 +92,7 @@ export default {
         targetGroupId: this.value.id,
         articleIds: [],
         cnt: 1,
+        ord: 1,
       });
       this.targets.push(item);
     },
@@ -149,6 +155,7 @@ label {
 .stm-resize {
   padding-bottom: 70px;
   overflow-y: visible;
+  /*height: 100%;*/
 }
 
 </style>
