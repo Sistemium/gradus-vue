@@ -9,7 +9,6 @@ label="name"
 @search="onSearch"
 ref="select"
 :placeholder="placeholder"
-:close-on-select="false"
 )
 
   template(slot="no-options") напишите часть названия, чтобы начать поиск
@@ -96,9 +95,14 @@ export default {
 }
 
 .article {
-  display: flex;
+
+  > * {
+    display: inline;
+  }
+
   .extra-label {
     margin-left: $margin-right;
+    color: $gray;
   }
 }
 

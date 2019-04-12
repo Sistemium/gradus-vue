@@ -1,20 +1,22 @@
 <template lang="pug">
 
-el-dialog(
+el-dialog#sales-target-group-dialog(
 :title="title"
 :before-close="closeDialog"
 :visible.sync="visible"
 :append-to-body="true"
 )
-  sales-target-group-form(
-  ref="form"
-  :sales-target-group="salesTargetGroup"
-  :article-groups="articleGroups"
-  )
+  .dialog-body(v-loading="busy")
 
-  .buttons
-    el-button(type="primary" @click="submitClick") Готово
-    el-button(@click="closeDialog") Отмена
+    sales-target-group-form(
+    ref="form"
+    :sales-target-group="salesTargetGroup"
+    :article-groups="articleGroups"
+    )
+
+    .buttons
+      el-button(type="primary" @click="submitClick") Готово
+      el-button(@click="closeDialog") Отмена
 
 </template>
 <script>
@@ -44,6 +46,7 @@ export default {
     };
 
     return {
+      busy: false,
       visible: true,
       articleGroups: ArticleGroup.filter(filter),
     };
@@ -77,6 +80,14 @@ export default {
 
       }
 
+      const loading = this.$message({
+        message: 'Сохранение данных ...',
+        type: 'warning',
+        duration: 0,
+      });
+
+      this.busy = true;
+
       try {
         const saved = await SalesTargetGroup.create(this.salesTargetGroup);
         this.visible = false;
@@ -84,6 +95,9 @@ export default {
       } catch (err) {
         error(err);
       }
+
+      loading.close();
+      this.busy = false;
 
     },
 

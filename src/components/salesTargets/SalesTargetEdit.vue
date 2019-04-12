@@ -64,8 +64,14 @@ export default {
       if (!article) {
         return;
       }
-      this.articles.push(article);
+
       this.$refs.newArticle.clear();
+
+      if (this.target.articleIds.indexOf(article.id) >= 0) {
+        return;
+      }
+
+      this.articles.push(article);
       this.target.articleIds = map(this.articles, 'id');
       this.save();
     },
@@ -126,7 +132,11 @@ label {
 }
 
 .article {
-  display: flex;
+
+  > * {
+    display: inline;
+  }
+
   .extra-label {
     margin-left: $margin-right;
     color: $gray;

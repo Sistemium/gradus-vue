@@ -12,7 +12,10 @@ export default {
 
   name: 'Resize',
 
-  props: ['padding'],
+  props: {
+    padding: Number,
+    maximize: Boolean,
+  },
 
   data() {
     return {
@@ -38,7 +41,11 @@ export default {
       const { top } = this.$refs.root.getBoundingClientRect();
       this.top = top;
       this.height = window.innerHeight;
-      this.style = { 'max-height': `${this.height - this.top - (this.padding || 0)}px` };
+      const maxHeight = `${this.height - this.top - (this.padding || 0)}px`;
+      this.style = { 'max-height': maxHeight };
+      if (this.maximize) {
+        this.style = { height: maxHeight };
+      }
     },
 
   },

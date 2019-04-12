@@ -2,7 +2,7 @@
 
 resize.list-group.catalogue-groups-list.filters(
 v-if="items.length || parents.length"
-padding="35"
+:padding="35"
 )
 
   .list-group-item.parent(

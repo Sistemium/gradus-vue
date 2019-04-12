@@ -8,7 +8,7 @@
   )
 
     el-aside(v-if="!loading && targetGroups.length")
-      resize(padding="30")
+      resize(:padding="30")
         sales-target-group-list(
         :items="targetGroups"
         v-model="currentGroup"
@@ -19,6 +19,7 @@
       sales-target-group-edit(
       v-if="currentGroup"
       v-model="currentGroup"
+      @edit-click="editTargetGroup"
       )
       .no-current-group(v-else)
         el-button(
@@ -75,9 +76,20 @@ export default {
 
   methods: {
 
+    editTargetGroup() {
+      const { articleGroupId } = this.currentGroup;
+      this.newTargetGroup = {
+        ...this.currentGroup,
+        articleGroupId,
+      };
+    },
+
     addTargetGroup(toArticleGroup) {
       const { id: articleGroupId } = toArticleGroup || {};
-      this.newTargetGroup = { articleGroupId };
+      this.newTargetGroup = {
+        articleGroupId,
+        ord: 1,
+      };
     },
 
     onDialogClose(res) {
