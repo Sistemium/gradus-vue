@@ -9,15 +9,9 @@ element-loading-text="Загрузка данных ..."
 
     .filter
 
-      strong Период:
+      label Период:
 
-      el-select.select(v-model="selectedMonth" placeholder="выберите")
-        el-option(
-        v-for="month in lastYearMonths"
-        :key="month.id"
-        :label="month.label"
-        :value="month.id"
-        )
+      month-select(:months="lastYearMonths" v-model="selectedMonth")
 
       el-input.searcher(
       prefix-icon="el-icon-search"
@@ -55,6 +49,7 @@ element-loading-text="Загрузка данных ..."
 <script>
 
 import { createNamespacedHelpers } from 'vuex';
+import MonthSelect from '@/components/MonthSelect.vue';
 import CampaignPicturesDialog from '@/components/campaigns/CampaignPicturesDialog.vue';
 import CampaignDialog from '@/components/campaigns/CampaignDialog.vue';
 import CampaignsTable from '@/components/campaigns/CampaignsTable.vue';
@@ -164,6 +159,7 @@ export default {
     CampaignDialog,
     CampaignPicturesDialog,
     CampaignsTable,
+    MonthSelect,
   },
 
 };
@@ -174,7 +170,7 @@ export default {
 
 @import "../styles/variables";
 
-.select {
+.month-select {
   margin-left: 10px;
 }
 
@@ -189,8 +185,9 @@ export default {
   padding-left: 3px;
   justify-content: space-between;
 
-  strong {
+  label {
     margin-left: $margin-right;
+    font-weight: bold;
   }
 
 }
