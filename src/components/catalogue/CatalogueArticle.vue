@@ -14,7 +14,8 @@
 
     .title
       span {{ article.name }}
-      span {{ article.extraLabel }}
+      span.package-rel x {{ article.packageRel }}
+      span.extra-label {{ article.extraLabel }}
 
     .sub-title
       small.same-articles(v-if="!showSame && hasSameArticles()") +{{ hasSameArticles() }}
@@ -65,6 +66,7 @@ const vuex = createNamespacedHelpers('catalogue');
  * @property {String} article.id
  * @property {String} article.extraLabel
  * @property {Array} article.sameArticles
+ * @property {Number} article.packageRel
  * @property {Object} article.avatarPicture.thumbnailSrc
  */
 
@@ -175,6 +177,7 @@ export default {
       background-color: $white;
       border-radius: $border-radius;
     }
+
     margin-right: $margin-right;
     color: $red;
   }
@@ -210,6 +213,11 @@ $avatar-size: 50px;
 
     > * + * {
       margin-left: $margin-right;
+    }
+
+    .extra-label, .package-rel {
+      color: $gray;
+      font-size: 80%;
     }
 
   }
