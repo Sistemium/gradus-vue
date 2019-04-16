@@ -223,6 +223,6 @@ function filterArticles(articles, filters) {
 
   const re = searchText && new RegExp(escapeRegExp(searchText), 'i');
 
-  return filter(articles, a => (!re || re.test(a.name)) && (!onlyNoAvatar || a.avatarPicture));
+  return filter(articles, a => (!re || re.test(a.name)) && (!onlyNoAvatar || !a.avatarPicture));
 
 }
