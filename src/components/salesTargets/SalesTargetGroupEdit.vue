@@ -16,19 +16,23 @@
     .sales-target(
     v-for="target in targets" :key="target.id"
     )
-      confirm-button.del(type="text" @confirm="delTarget(target)" text="Удалить")
-      sales-target-edit(:target="target")
+      .target-buttons
+        confirm-button.del(type="text" @confirm="delTarget(target)" text="Удалить" size="mini")
+        el-button.edit(@click="editTargetClick(target)" size="mini" icon="el-icon-edit" circle)
+      sales-target-view(:target="target")
+
+  sales-target-dialog(:sales-target="editingTarget" v-if="editingTarget" @closed="onDialogClose")
 
 </template>
 <script>
 
-import uuid from '@/lib/uuid';
 import log from 'sistemium-telegram/services/log';
 
 import pull from 'lodash/pull';
 import SalesTarget from '@/models/SalesTarget';
 import SalesTargetGroup from '@/models/SalesTargetGroup';
-import SalesTargetEdit from './SalesTargetEdit.vue';
+import SalesTargetView from './SalesTargetView.vue';
+import SalesTargetDialog from './SalesTargetDialog.vue';
 
 const { error } = log('SalesTargetGroupEdit');
 
@@ -45,9 +49,10 @@ export default {
   },
 
   data() {
-    const { value } = this;
+
     return {
-      targets: value ? [...value.targets] : [],
+      targets: this.getTargets(),
+      editingTarget: null,
     };
   },
 
@@ -55,8 +60,17 @@ export default {
 
   methods: {
 
+    getTargets() {
+      const { value } = this;
+      return value ? [...value.targets] : [];
+    },
+
     editGroup() {
       this.$emit('edit-click');
+    },
+
+    editTargetClick(target) {
+      this.editingTarget = target;
     },
 
     delGroup() {
@@ -88,15 +102,21 @@ export default {
 
     },
 
+    onDialogClose() {
+      // if (res) {
+      //   this.editingTarget = res;
+      // }
+      this.editingTarget = null;
+      this.targets = this.getTargets();
+    },
+
     addClick() {
-      const item = SalesTarget.mapper.createInstance({
-        id: uuid(),
+      this.editingTarget = SalesTarget.mapper.createInstance({
         targetGroupId: this.value.id,
         articleIds: [],
         cnt: 1,
         ord: 1,
       });
-      this.targets.push(item);
     },
 
     showErrorMessage(err) {
@@ -120,7 +140,10 @@ export default {
     },
   },
 
-  components: { SalesTargetEdit },
+  components: {
+    SalesTargetView,
+    SalesTargetDialog,
+  },
 
 };
 
@@ -149,9 +172,10 @@ label {
   align-items: center;
 }
 
-.sales-target > .del {
+.target-buttons {
   position: absolute;
-  top: -3px;
+  top: 0;
+  right: 0;
 }
 
 .stm-resize {

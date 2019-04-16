@@ -4,6 +4,7 @@ el-badge.countdown(:value="countdown" :hidden="!countdown")
   el-button.confirm-button(
   :type="buttonType"
   :class="countdown && 'confirmation'"
+  :size="size"
   @click="onClick"
   )
     span {{ buttonText }}
@@ -17,6 +18,9 @@ export default {
 
   props: {
     text: String,
+    size: {
+      type: String,
+    },
     type: {
       type: String,
       default: 'default',

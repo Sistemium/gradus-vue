@@ -2,15 +2,24 @@
 
 .sales-target-edit
 
-  .field
-    label Цель СКЮ:
-    el-input-number(
-    v-model="cnt"
-    :min="1"
-    :max="articles.length || 1"
-    size="small"
-    @change="onCnt"
-    )
+  el-form.fields(
+  ref="form"
+  :model="target"
+  :rules="rules"
+  )
+
+    el-form-item(label="Название" prop="name")
+      el-input(v-model="target.name")
+
+    el-form-item(label="Цель СКЮ")
+      el-input-number(
+      v-model="target.cnt"
+      :min="1"
+      :max="articles.length || 1"
+      size="small"
+      )
+
+  article-select(ref="newArticle" @input="onNewArticle" placeholder="Добавить товар")
 
   .list-group(v-if="articles.length")
     .list-group-item(v-for="article in articles")
@@ -19,24 +28,36 @@
         .extra-label(v-if="article.extraLabel") {{ article.extraLabel }}
       confirm-button.del(@confirm="delArticleClick(article)" text="Удалить" type="text")
 
-  article-select(ref="newArticle" @input="onNewArticle" placeholder="Добавить товар")
-
 </template>
 <script>
 
-import log from 'sistemium-telegram/services/log';
 import map from 'lodash/map';
 import pull from 'lodash/pull';
 
 import ArticleSelect from '@/components/ArticleSelect.vue';
-import SalesTarget from '@/models/SalesTarget';
+// import SalesTarget from '@/models/SalesTarget';
 
-const name = 'SalesTargetEdit';
-const { error } = log(name);
+const NAME = 'SalesTargetEdit';
+
+const rules = {
+  name: [
+    {
+      required: true,
+      message: 'Укажите название',
+      trigger: 'change',
+    },
+  ],
+};
+
+/**
+ * @property {String} target.name
+ * @property {Array} target.articleIds
+ * @property {Number} target.cnt
+ */
 
 export default {
 
-  name,
+  name: NAME,
   components: { ArticleSelect },
 
   props: {
@@ -44,21 +65,14 @@ export default {
   },
 
   data() {
-    const { cnt, articleIds = [], articles } = this.target || {};
+    const { articles } = this.target || {};
     return {
-      cnt,
-      articleIds,
       articles: [...(articles ? articles.call(this.target) : [])],
-      // newArticle: null,
+      rules,
     };
   },
 
   methods: {
-
-    onCnt(newValue) {
-      this.target.cnt = newValue;
-      this.save();
-    },
 
     onNewArticle(article) {
       if (!article) {
@@ -72,19 +86,15 @@ export default {
       }
 
       this.articles.push(article);
-      this.target.articleIds = map(this.articles, 'id');
-      this.save();
-    },
-
-    save() {
-      this.target.articleIds = map(this.articles, 'id');
-      SalesTarget.safeSave(this.target)
-        .catch(error);
     },
 
     delArticleClick(article) {
       this.articles = [...pull(this.articles, article)];
-      this.save();
+    },
+
+    validate(cb) {
+      this.target.articleIds = map(this.articles, 'id');
+      return this.$refs.form.validate(cb);
     },
 
   },
@@ -96,9 +106,21 @@ export default {
 
 @import "../../styles/variables";
 
+.fields {
+  display: flex;
+
+  > *:first-child {
+    flex: 1;
+    margin-right: $margin-top;
+  }
+
+}
+
 .field {
   text-align: right;
   margin: $margin-right 0;
+  display: flex;
+  align-items: center;
 }
 
 label {
@@ -129,6 +151,10 @@ label {
   &.confirmation {
     padding: 4px;
   }
+}
+
+.article-select {
+  margin-bottom: $margin-top;
 }
 
 .article {
