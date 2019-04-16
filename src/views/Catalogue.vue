@@ -38,12 +38,7 @@ element-loading-text="Загрузка данных ..."
         el-switch.image-filter(v-model="onlyNoAvatar")
         el-button(slot="reference") Фильтры
 
-    el-input.searcher(
-    prefix-icon="el-icon-search"
-    v-model="searchText"
-    :clearable="true"
-    placeholder="поиск"
-    )
+    search-input.searcher(v-model="searchText")
 
   el-container.catalogue-main(
   v-loading="loading"

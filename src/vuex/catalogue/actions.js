@@ -1,4 +1,3 @@
-import debounce from 'lodash/debounce';
 import without from 'lodash/without';
 
 import ArticlePictureArticle from '@/models/ArticlePictureArticle';
@@ -106,9 +105,9 @@ export default {
     commit(m.SET_ARTICLE_GROUP, articleGroup);
   },
 
-  [SEARCH_TEXT_CHANGE]: debounce(({ commit }, text) => {
+  [SEARCH_TEXT_CHANGE]: ({ commit }, text) => {
     commit(m.SET_SEARCH_TEXT, text);
-  }, 750),
+  },
 
   [TOGGLE_ARTICLE_SELECTED]({ commit, getters }, article) {
     const selected = getters[g.SELECTED_ARTICLE];
