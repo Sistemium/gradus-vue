@@ -11,7 +11,7 @@ element-loading-text="Загрузка изображения ..."
   height="500px"
   :autoplay="false"
   indicator-position="outside"
-  type="card"
+  :type="carouselType"
   :initial-index="carouselItem"
   @change="onItemChange"
   )
@@ -80,6 +80,10 @@ export default {
     newImageProperties: {
       type: Object,
       required: true,
+    },
+    carouselType: {
+      type: String,
+      default: 'card',
     },
   },
 
@@ -192,7 +196,8 @@ export default {
   .gallery-image {
     justify-content: center;
     display: flex;
-    height: 100%;
+    max-height: 100%;
+    max-width: 100%;
   }
 
   .empty {

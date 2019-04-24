@@ -16,6 +16,7 @@ center
   @image-click="closeDialog"
   :model="this.pictureModel"
   :new-image-properties="newImageProperties"
+  carousel-type=""
   @uploaded="onUpload"
   )
 
