@@ -52,7 +52,12 @@ export default {
   },
 
   computed: {
-    ...mapState('auth', { token: 'id' }),
+    ...mapState('auth', {
+      token: 'id',
+      org(auth) {
+        return (auth && auth.account) ? auth.account.org : null;
+      },
+    }),
     // isNative,
     uploadHeaders() {
       return { authorization: this.token };
@@ -67,7 +72,7 @@ export default {
     },
 
     imsUrl() {
-      return `/ims?folder=${this.entityName}/${serverDateFormat()}`;
+      return `/ims/${this.org}?folder=${this.entityName}/${serverDateFormat()}`;
     },
 
     // nativeTriggerClick() {
