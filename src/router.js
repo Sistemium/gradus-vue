@@ -58,5 +58,13 @@ export default new Router({
         label: 'Задачи',
       },
     },
+    {
+      path: '/possibleOutlets',
+      name: 'possibleOutlets',
+      component: () => import(/* webpackChunkName: "catalogue" */ './views/PossibleOutletsPage.vue'),
+      meta: {
+        label: 'Проверка точек',
+      },
+    },
   ],
 });

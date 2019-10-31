@@ -21,7 +21,10 @@
     el-menu-item(index="/targets")
       img(src="../assets/icons8-goal.svg")
       span Задачи
-    el-menu-item(index="/about")
+    el-menu-item(index="/possibleOutlets")
+      img(src="../assets/icons8-validation.svg")
+      span Точки
+    //el-menu-item(index="/about")
       img(src="../assets/icons8-info.svg")
       span О проекте
 

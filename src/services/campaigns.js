@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import Campaign from '@/models/Campaign';
 import CampaignPicture from '@/models/CampaignPicture';
 import escapeRegExp from 'lodash/escapeRegExp';
