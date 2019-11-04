@@ -45,17 +45,8 @@ export default {
     loading: territoryGetters.busy,
   },
 
-  async created() {
-
-    await store.dispatch(`territory/${a.LOAD_TERRITORY_DATA}`);
-    this.filteredSalesman = svc.groupedSalesman();
-    const { salesmanId } = this.$route.params;
-
-    if (salesmanId) {
-      this.currentSalesman = svc.salesmanById(salesmanId);
-    }
-
-    this.$watch('currentSalesman.id', salesmanId => {
+  methods: {
+    onSalesmanId(salesmanId) {
       this.outlets = svc.possibleOutlets(salesmanId);
       if (salesmanId) {
         this.$router.push({
@@ -67,7 +58,20 @@ export default {
           name: 'PossibleOutlets',
         });
       }
-    }, { immediate: true });
+    },
+  },
+
+  async created() {
+
+    await store.dispatch(`territory/${a.LOAD_TERRITORY_DATA}`);
+    this.filteredSalesman = svc.groupedSalesman();
+    const { salesmanId } = this.$route.params;
+
+    if (salesmanId) {
+      this.currentSalesman = svc.salesmanById(salesmanId);
+    }
+
+    this.$watch('currentSalesman.id', this.onSalesmanId, { immediate: true });
 
   },
 
