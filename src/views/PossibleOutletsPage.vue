@@ -10,6 +10,7 @@
     el-aside(v-if="!loading")
       resize(:padding="30")
 
+        search-input(v-model="searchText")
         salesman-grouped-list(:grouped-items="filteredSalesman" v-model="currentSalesman")
 
     el-main()
@@ -18,7 +19,14 @@
         h3
           span(v-if="currentSalesman") {{ currentSalesman.name }}
           span(v-else) Никому не назначено
-        salesman-outlets-list(:outlets="outlets" @click="onOutletClick")
+
+        salesman-outlets-list(
+          v-if="filteredOutlets.length"
+          :outlets="filteredOutlets"
+          @click="onOutletClick"
+        )
+
+        .empty(v-else) нет подходящих точек
 
   router-view
 
@@ -41,11 +49,15 @@ export default {
       filteredSalesman: [],
       currentSalesman: null,
       outlets: [],
+      searchText: '',
     };
   },
 
   computed: {
     loading: territoryGetters.busy,
+    filteredOutlets() {
+      return svc.filterOutlets(this.outlets, this.searchText);
+    },
   },
 
   methods: {
@@ -114,4 +126,9 @@ h3 {
   padding-bottom: 15px;
   font-weight: bold;
 }
+
+.search-input {
+  margin-bottom: $margin-top;
+}
+
 </style>

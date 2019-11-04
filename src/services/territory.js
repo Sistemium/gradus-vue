@@ -2,6 +2,7 @@ import groupBy from 'lodash/groupBy';
 import fpOrderBy from 'lodash/fp/orderBy';
 import map from 'lodash/map';
 import get from 'lodash/get';
+import escapeRegExp from 'lodash/escapeRegExp';
 
 import SalesGroup from '@/models/SalesGroup';
 import Salesman from '@/models/Salesman';
@@ -47,8 +48,20 @@ export function groupedSalesman() {
 
 export function possibleOutlets(salesmanId) {
 
-  const data = PossibleOutlet.filter({ salesmanId });
+  const data = orderByName(PossibleOutlet.filter({ salesmanId }));
 
   return orderByName(data);
+
+}
+
+export function filterOutlets(outlets, searchText) {
+
+  if (!searchText) {
+    return outlets;
+  }
+
+  const re = new RegExp(escapeRegExp(searchText), 'i');
+
+  return outlets.filter(({ name, address }) => re.test(name) || re.test(address));
 
 }
