@@ -15,6 +15,9 @@ export async function loadTerritory() {
   await PossibleOutlet.findAll();
 }
 
+export function salesmanById(salesmanId) {
+  return Salesman.get(salesmanId);
+}
 
 export function groupedSalesman() {
 

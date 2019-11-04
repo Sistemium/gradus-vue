@@ -60,11 +60,15 @@ export default new Router({
     },
     {
       path: '/possibleOutlets',
-      name: 'possibleOutlets',
+      name: 'PossibleOutlets',
       component: () => import(/* webpackChunkName: "catalogue" */ './views/PossibleOutletsPage.vue'),
       meta: {
         label: 'Проверка точек',
       },
+      children: [{
+        name: 'SalesGroupPossibleOutlets',
+        path: ':salesmanId',
+      }],
     },
   ],
 });

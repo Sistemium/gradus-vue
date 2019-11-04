@@ -19,6 +19,9 @@
 </template>
 <script>
 
+import fpGet from 'lodash/fp/get';
+
+const getId = fpGet('id');
 
 export default {
 
@@ -33,8 +36,11 @@ export default {
 
   methods: {
     itemClick(item) {
-      // const { value } = this;
-      this.$emit('input', item);
+      if (getId(this.value) === getId(item)) {
+        this.$emit('input', null);
+      } else {
+        this.$emit('input', item);
+      }
     },
   },
 

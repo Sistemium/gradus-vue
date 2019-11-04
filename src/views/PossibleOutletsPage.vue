@@ -15,6 +15,9 @@
     el-main()
       resize(:padding="30")
 
+        h3
+          span(v-if="currentSalesman") {{ currentSalesman.name }}
+          span(v-else) Никому не назначено
         salesman-outlets-list(:outlets="outlets")
 
 </template>
@@ -43,11 +46,29 @@ export default {
   },
 
   async created() {
+
     await store.dispatch(`territory/${a.LOAD_TERRITORY_DATA}`);
     this.filteredSalesman = svc.groupedSalesman();
-    this.$watch('currentSalesman.id', currentSalesmanId => {
-      this.outlets = svc.possibleOutlets(currentSalesmanId);
-    });
+    const { salesmanId } = this.$route.params;
+
+    if (salesmanId) {
+      this.currentSalesman = svc.salesmanById(salesmanId);
+    }
+
+    this.$watch('currentSalesman.id', salesmanId => {
+      this.outlets = svc.possibleOutlets(salesmanId);
+      if (salesmanId) {
+        this.$router.push({
+          name: 'SalesGroupPossibleOutlets',
+          params: { salesmanId },
+        });
+      } else {
+        this.$router.push({
+          name: 'PossibleOutlets',
+        });
+      }
+    }, { immediate: true });
+
   },
 
   components: {
@@ -69,4 +90,12 @@ export default {
   margin-left: $margin-top;
 }
 
+h3 {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  margin-bottom: 0;
+  padding-bottom: 15px;
+  font-weight: bold;
+}
 </style>
