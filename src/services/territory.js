@@ -21,6 +21,10 @@ export function salesmanById(salesmanId) {
   return Salesman.get(salesmanId);
 }
 
+export function possibleOutletById(id) {
+  return PossibleOutlet.get(id);
+}
+
 export function groupedSalesman() {
 
   const data = groupBy(Salesman.getAll(), 'salesGroupId');

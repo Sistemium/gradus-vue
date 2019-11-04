@@ -1,52 +1,52 @@
 <template lang="pug">
 
 .picture-gallery(
-v-loading="busy"
-element-loading-text="Загрузка изображения ..."
+  v-loading="busy"
+  element-loading-text="Загрузка изображения ..."
 )
   el-carousel(
-  ref="carousel"
-  v-if="images.length"
-  trigger="click"
-  height="500px"
-  :autoplay="false"
-  indicator-position="outside"
-  :type="carouselType"
-  :initial-index="carouselItem"
-  @change="onItemChange"
+    ref="carousel"
+    v-if="images.length"
+    trigger="click"
+    height="500px"
+    :autoplay="false"
+    indicator-position="outside"
+    :type="carouselType"
+    :initial-index="carouselItem"
+    @change="onItemChange"
   )
     el-carousel-item(
-    v-for="(image, idx) in images" :key="image.id"
-    :name="image.id"
-    :label="`Фото №${idx+1}`"
+      v-for="(image, idx) in images" :key="image.id"
+      :name="image.id"
+      :label="`Фото №${idx+1}`"
     )
       .gallery-image(@click.prevent="$emit('image-click', image)")
 
-        img(:src="image.largeSrc")
+        img(:src="image.largeSrc || image.smallSrc")
 
   .empty(v-else @click.prevent="$emit('image-click')")
     img(src="/images/placeholder.png")
 
-  .buttons
+  .buttons(v-if="model")
 
     el-button.make-avatar(
-    v-if="avatarId && images.length > 1"
-    @click="setAvatarClick"
-    :disabled="isAvatar"
+      v-if="avatarId && images.length > 1"
+      @click="setAvatarClick"
+      :disabled="isAvatar"
     ) {{ buttonText }}
 
     take-photo-button(
-    @done="onUpload"
-    @error="unUploadError"
-    @imageuploading="busy = true"
-    :entity-name="model.name"
+      @done="onUpload"
+      @error="unUploadError"
+      @imageuploading="busy = true"
+      :entity-name="model.name"
     )
 
     confirm-button.remove(
-    v-if="images.length"
-    :disabled="images.length > 1 && isAvatar"
-    text="Удалить" confirm-text="Точно удалить?"
-    @confirm="removeClick"
+      v-if="images.length"
+      :disabled="images.length > 1 && isAvatar"
+      text="Удалить" confirm-text="Точно удалить?"
+      @confirm="removeClick"
     )
 
 </template>
@@ -75,11 +75,11 @@ export default {
     // images: Array,
     model: {
       type: Object,
-      required: true,
+      // required: true,
     },
     newImageProperties: {
       type: Object,
-      required: true,
+      // required: true,
     },
     carouselType: {
       type: String,

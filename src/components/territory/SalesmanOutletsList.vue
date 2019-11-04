@@ -4,6 +4,7 @@
   .salesman.list-group-item(
     v-for="outlet in outlets"
     :key="outlet.id"
+    @click="$emit('click', outlet)"
   )
     .texts
       .name(v-text="outlet.name")

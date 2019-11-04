@@ -33,6 +33,7 @@ export default new Model({
       if (hasPhotos) {
         return 'el-icon-camera';
       }
+      return null;
     },
   },
 

@@ -45,7 +45,7 @@ export default new Router({
     {
       path: '/campaigns',
       name: 'campaigns',
-      component: () => import(/* webpackChunkName: "catalogue" */ './views/Campaigns.vue'),
+      component: () => import(/* webpackChunkName: "campaigns" */ './views/Campaigns.vue'),
       meta: {
         label: 'Акции',
       },
@@ -53,7 +53,7 @@ export default new Router({
     {
       path: '/targets/:groupId?',
       name: 'targets',
-      component: () => import(/* webpackChunkName: "catalogue" */ './views/SalesTargets.vue'),
+      component: () => import(/* webpackChunkName: "salesTargets" */ './views/SalesTargets.vue'),
       meta: {
         label: 'Задачи',
       },
@@ -61,13 +61,14 @@ export default new Router({
     {
       path: '/possibleOutlets',
       name: 'PossibleOutlets',
-      component: () => import(/* webpackChunkName: "catalogue" */ './views/PossibleOutletsPage.vue'),
+      component: () => import(/* webpackChunkName: "outlets" */ './views/PossibleOutletsPage.vue'),
       meta: {
         label: 'Проверка точек',
       },
       children: [{
-        name: 'SalesGroupPossibleOutlets',
-        path: ':salesmanId',
+        name: 'PossibleOutletDialog',
+        path: ':outletId',
+        component: () => import(/* webpackChunkName: "outlets" */ './views/PossibleOutletDialog.vue'),
       }],
     },
   ],

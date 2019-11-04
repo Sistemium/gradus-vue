@@ -18,7 +18,9 @@
         h3
           span(v-if="currentSalesman") {{ currentSalesman.name }}
           span(v-else) Никому не назначено
-        salesman-outlets-list(:outlets="outlets")
+        salesman-outlets-list(:outlets="outlets" @click="onOutletClick")
+
+  router-view
 
 </template>
 <script>
@@ -29,6 +31,7 @@ import { territoryGetters } from '@/vuex/territory/maps';
 import * as svc from '@/services/territory';
 import SalesmanGroupedList from '@/components/territory/SalesmanGroupedList.vue';
 import SalesmanOutletsList from '@/components/territory/SalesmanOutletsList.vue';
+import PossibleOutletDialog from '@/views/PossibleOutletDialog.vue';
 
 const NAME = 'PossibleOutletsPage';
 
@@ -46,18 +49,22 @@ export default {
   },
 
   methods: {
+    onOutletClick(outlet) {
+      this.$router.push({
+        name: 'PossibleOutletDialog',
+        params: { outletId: outlet.id },
+        query: this.$route.query,
+      });
+    },
     onSalesmanId(salesmanId) {
       this.outlets = svc.possibleOutlets(salesmanId);
+      const state = {
+        name: 'PossibleOutlets',
+      };
       if (salesmanId) {
-        this.$router.push({
-          name: 'SalesGroupPossibleOutlets',
-          params: { salesmanId },
-        });
-      } else {
-        this.$router.push({
-          name: 'PossibleOutlets',
-        });
+        state.query = { salesmanId };
       }
+      this.$router.push(state);
     },
   },
 
@@ -65,7 +72,7 @@ export default {
 
     await store.dispatch(`territory/${a.LOAD_TERRITORY_DATA}`);
     this.filteredSalesman = svc.groupedSalesman();
-    const { salesmanId } = this.$route.params;
+    const { salesmanId } = this.$route.query;
 
     if (salesmanId) {
       this.currentSalesman = svc.salesmanById(salesmanId);
@@ -76,6 +83,7 @@ export default {
   },
 
   components: {
+    PossibleOutletDialog,
     SalesmanOutletsList,
     SalesmanGroupedList,
   },
