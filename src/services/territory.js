@@ -28,18 +28,27 @@ export function possibleOutletById(id) {
 
 export function groupedSalesman(searchText) {
 
+  const re = new RegExp(`^${escapeRegExp(searchText)}`, 'i');
   const data = groupBy(Salesman.getAll(), 'salesGroupId');
-  const grouped = map(data, (items, id) => ({
+
+  const grouped = map(data, (salesmen, id) => ({
+
     id,
     name: get(SalesGroup.get(id), 'name'),
-    items: orderByName(items)
-      .map(item => ({
-        ...item,
-        count() {
-          return filterOutlets(possibleOutlets(item.id), searchText).length;
-        },
-      }))
+
+    items: orderByName(salesmen)
+      .map(salesman => {
+        const outlets = possibleOutlets(salesman.id);
+        return {
+          ...salesman,
+          outlets: re.test(salesman.name) ? outlets : filterOutlets(outlets, searchText),
+          count() {
+            return this.outlets.length;
+          },
+        };
+      })
       .filter(item => item.count()),
+
   }));
 
   return orderByName(grouped.filter(({ items }) => items.length));

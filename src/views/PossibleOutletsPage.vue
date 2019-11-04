@@ -45,6 +45,9 @@
 </template>
 <script>
 
+import flatten from 'lodash/flatten';
+import find from 'lodash/find';
+import map from 'lodash/map';
 import store from '@/store';
 import * as a from '@/vuex/territory/actions';
 import { territoryGetters } from '@/vuex/territory/maps';
@@ -67,6 +70,13 @@ export default {
   computed: {
     loading: territoryGetters.busy,
     filteredOutlets() {
+      if (this.currentSalesman) {
+        const salesmen = flatten(map(this.filteredSalesman, 'items'));
+        const salesman = find(salesmen, { id: this.currentSalesman.id });
+        if (salesman) {
+          return salesman.outlets;
+        }
+      }
       return svc.filterOutlets(this.outlets, this.searchText);
     },
     filteredSalesman() {
