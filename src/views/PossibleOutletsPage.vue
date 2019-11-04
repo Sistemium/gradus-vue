@@ -94,6 +94,10 @@ export default {
   margin-left: $margin-top;
 }
 
+.el-container {
+  min-height: 100px;
+}
+
 h3 {
   position: sticky;
   top: 0;

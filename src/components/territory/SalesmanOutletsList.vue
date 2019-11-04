@@ -5,8 +5,11 @@
     v-for="outlet in outlets"
     :key="outlet.id"
   )
-    .name(v-text="outlet.name")
-    .address(v-text="outlet.address")
+    .texts
+      .name(v-text="outlet.name")
+      .address(v-text="outlet.address")
+    .status(v-if="outlet.statusIcon()")
+      i(:class="outlet.statusIcon()")
 
 </template>
 <script>
@@ -28,6 +31,21 @@ export default {
 .address {
   margin-top: $padding;
   color: $gray;
+}
+
+.salesman {
+  display: flex;
+  .texts {
+    flex: 1;
+  }
+}
+
+i {
+  color: $blue;
+}
+
+.el-icon-circle-check {
+  color: $green;
 }
 
 </style>

@@ -6,6 +6,7 @@ import get from 'lodash/get';
 import SalesGroup from '@/models/SalesGroup';
 import Salesman from '@/models/Salesman';
 import PossibleOutlet from '@/models/PossibleOutlet';
+import PossibleOutletPhoto from '@/models/PossibleOutletPhoto';
 
 const orderByName = fpOrderBy(['name'], ['asc']);
 
@@ -13,6 +14,7 @@ export async function loadTerritory() {
   await SalesGroup.findAll();
   await Salesman.findAll();
   await PossibleOutlet.findAll();
+  await PossibleOutletPhoto.findAll();
 }
 
 export function salesmanById(salesmanId) {
@@ -22,8 +24,7 @@ export function salesmanById(salesmanId) {
 export function groupedSalesman() {
 
   const data = groupBy(Salesman.getAll(), 'salesGroupId');
-
-  return orderByName(map(data, (items, id) => ({
+  const grouped = map(data, (items, id) => ({
     id,
     name: get(SalesGroup.get(id), 'name'),
     items: orderByName(items)
@@ -34,7 +35,9 @@ export function groupedSalesman() {
         },
       }))
       .filter(item => item.count()),
-  })));
+  }));
+
+  return orderByName(grouped.filter(({ items }) => items.length));
 
 }
 
