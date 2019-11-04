@@ -4,7 +4,7 @@ el-input.search-input(
 prefix-icon="el-icon-search"
 v-model="searchText"
 :clearable="true"
-placeholder="поиск"
+placeholder="placeholder"
 )
 
 </template>
@@ -18,6 +18,10 @@ export default {
 
   props: {
     value: String,
+    placeholder: {
+      default: 'поиск',
+      type: String,
+    },
     debounce: {
       type: Number,
       default: 500,

@@ -11,7 +11,16 @@
       resize(:padding="30")
 
         search-input(v-model="searchText")
-        salesman-grouped-list(:grouped-items="filteredSalesman" v-model="currentSalesman")
+        salesman-grouped-list(
+          v-if="filteredSalesman.length"
+          :grouped-items="filteredSalesman"
+          v-model="currentSalesman"
+        )
+
+        .list-group(v-else)
+          .list-group-item
+            i.el-icon-warning
+            span Нет подходящих ТП
 
     el-main()
       resize(:padding="30")
@@ -26,7 +35,10 @@
           @click="onOutletClick"
         )
 
-        .empty(v-else) нет подходящих точек
+        .list-group(v-else)
+          .list-group-item
+            i.el-icon-warning
+            span Нет подходящих точек
 
   router-view
 
@@ -46,7 +58,6 @@ const NAME = 'PossibleOutletsPage';
 export default {
   data() {
     return {
-      filteredSalesman: [],
       currentSalesman: null,
       outlets: [],
       searchText: '',
@@ -57,6 +68,9 @@ export default {
     loading: territoryGetters.busy,
     filteredOutlets() {
       return svc.filterOutlets(this.outlets, this.searchText);
+    },
+    filteredSalesman() {
+      return svc.groupedSalesman(this.searchText);
     },
   },
 
@@ -83,7 +97,7 @@ export default {
   async created() {
 
     await store.dispatch(`territory/${a.LOAD_TERRITORY_DATA}`);
-    this.filteredSalesman = svc.groupedSalesman();
+
     const { salesmanId } = this.$route.query;
 
     if (salesmanId) {
@@ -129,6 +143,10 @@ h3 {
 
 .search-input {
   margin-bottom: $margin-top;
+}
+
+.el-icon-warning {
+  color: $orange;
 }
 
 </style>

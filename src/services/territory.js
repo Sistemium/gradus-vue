@@ -26,7 +26,7 @@ export function possibleOutletById(id) {
   return PossibleOutlet.get(id);
 }
 
-export function groupedSalesman() {
+export function groupedSalesman(searchText) {
 
   const data = groupBy(Salesman.getAll(), 'salesGroupId');
   const grouped = map(data, (items, id) => ({
@@ -36,7 +36,7 @@ export function groupedSalesman() {
       .map(item => ({
         ...item,
         count() {
-          return possibleOutlets(item.id).length;
+          return filterOutlets(possibleOutlets(item.id), searchText).length;
         },
       }))
       .filter(item => item.count()),
