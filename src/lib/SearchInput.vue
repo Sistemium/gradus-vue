@@ -4,7 +4,7 @@ el-input.search-input(
 prefix-icon="el-icon-search"
 v-model="searchText"
 :clearable="true"
-placeholder="placeholder"
+:placeholder="placeholder"
 )
 
 </template>

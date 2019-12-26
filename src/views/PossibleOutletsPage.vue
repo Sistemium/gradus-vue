@@ -10,7 +10,7 @@
     el-aside(v-if="!loading")
       resize(:padding="30")
 
-        search-input(v-model="searchText")
+        search-input(v-model="searchText" placeholder="поиск точек или ТП")
         salesman-grouped-list(
           v-if="filteredSalesman.length"
           :grouped-items="filteredSalesman"
