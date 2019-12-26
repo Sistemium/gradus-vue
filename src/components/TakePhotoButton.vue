@@ -10,7 +10,7 @@
   @imagechanged="imageChanged"
   @errorhandle="onError"
   :data="imageData"
-  :max-file-size="5242880"
+  :max-file-size="maxFileSize"
   :headers="uploadHeaders"
   :url="imsUrl()"
   )
@@ -39,6 +39,10 @@ export default {
     buttonText: {
       type: String,
       default: 'Добавить фото',
+      maxFileSize: {
+        type: Number,
+        default: 1024 ^ 2 * 20,
+      },
     },
   },
 
