@@ -41,7 +41,7 @@ export default {
       default: 'Добавить фото',
       maxFileSize: {
         type: Number,
-        default: 1024 ^ 2 * 20,
+        default: 1024 * 1024 * 20,
       },
     },
   },
