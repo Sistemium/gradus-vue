@@ -9,9 +9,9 @@ import orderBy from 'lodash/orderBy';
 
 import Vue from 'vue';
 
-import ArticleGroup from '@/models/ArticleGroup';
-import Article from '@/models/Article';
-import ArticlePicture from '@/models/ArticlePicture';
+import ArticleGroup from '@/models2/ArticleGroup';
+import Article from '@/models2/Article';
+import ArticlePicture from '@/models2/ArticlePicture';
 import ArticlePictureArticle from '@/models/ArticlePictureArticle';
 
 import log from 'sistemium-telegram/services/log';
@@ -21,8 +21,10 @@ const { debug, error } = log('catalogue');
 export async function loadData() {
 
   const fetchParams = {
-    limit: 1500,
+    // headers: { 'x-page-size': 1500 },
   };
+
+  debug('loadData:start');
 
   await ArticleGroup.fetchAll(fetchParams);
 
@@ -30,28 +32,22 @@ export async function loadData() {
 
   await Article.fetchAll(fetchParams);
 
-  const articles = Article.filter({});
+  const articles = Article.all();
   debug('articles', articles.length);
 
   const groupsWithArticlesIDs = Object.keys(keyBy(articles, 'articleGroupId'));
   debug('groupsWithArticlesIDs', groupsWithArticlesIDs.length);
 
-  const groupsWithArticles = filter(groupsWithArticlesIDs.map(id => ArticleGroup.get(id)));
+  const groupsWithArticles = ArticleGroup.query()
+    .whereIdIn(groupsWithArticlesIDs)
+    .with('parent')
+    .get();
   const parents = groupsWithArticles.map(item => map(item.ancestors(), 'id'));
-  const parentsWithArticlesIDs = uniq(flatten(parents));
-  debug('parentsWithArticlesIDs', parentsWithArticlesIDs.length);
+  const parentsWithArticlesIDs = keyBy(flatten(parents));
 
-  let removedCount = 0;
+  const deleted = await ArticleGroup.delete(g => !parentsWithArticlesIDs[g.id]);
 
-  ArticleGroup.filter()
-    .forEach(ag => {
-      if (parentsWithArticlesIDs.indexOf(ag.id) === -1) {
-        ArticleGroup.remove(ag);
-        removedCount += 1;
-      }
-    });
-
-  debug('removedCount', removedCount);
+  debug('removedCount', deleted.length);
 
 }
 
@@ -85,7 +81,10 @@ export function getArticles(ids) {
 
 
 export function getArticleGroup(id) {
-  return ArticleGroup.get(id);
+  return ArticleGroup.query()
+    .whereIdIn([id])
+    .with(['parent', 'children'])
+    .first();
 }
 
 
@@ -110,14 +109,21 @@ export function articleGroupsBySearch(search) {
   debug('articleGroupsBySearch:articles', articles.length);
 
   const groupIds = uniq(map(articles, 'articleGroupId'));
-  const groupsWithArticles = filter(groupIds.map(id => ArticleGroup.get(id)));
+  const groupsWithArticles = ArticleGroup.query()
+    .whereIdIn(groupIds)
+    .with(['parent'])
+    .get();
 
   const parents = groupsWithArticles.map(item => map(item.ancestors(), 'id'));
   const parentsWithArticlesIDs = uniq(flatten(parents));
 
   debug('articleGroupsBySearch', search, parentsWithArticlesIDs.length);
 
-  return orderBy(parentsWithArticlesIDs.map(id => ArticleGroup.get(id)), 'name');
+  return ArticleGroup.query()
+    .whereIdIn(parentsWithArticlesIDs)
+    .with(['children', 'parent'])
+    .orderBy('name')
+    .get();
 
 }
 
