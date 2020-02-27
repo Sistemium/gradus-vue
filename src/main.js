@@ -3,7 +3,7 @@ import Vue from 'vue';
 import '@/lib/element-ui';
 import 'intersection-observer';
 import '@/lib/v-select';
-// import VueObserveVisibility from 'vue-observe-visibility';
+import '@/lib/virtual-scroll';
 
 import { AUTH_INIT } from 'sistemium-vue/store/auth/actions';
 
@@ -21,7 +21,6 @@ Vue.config.productionTip = false;
 Vue.component('resize', Resize);
 Vue.component(ConfirmButton.name, ConfirmButton);
 Vue.component(SearchInput.name, SearchInput);
-// Vue.use(VueObserveVisibility);
 
 new Vue({
   router,

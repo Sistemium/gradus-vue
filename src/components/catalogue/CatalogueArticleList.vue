@@ -4,7 +4,7 @@ resize.list-group.catalogue-article-list(v-if="items.length" :padding="35" ref="
 
   dynamic-scroller.scroller(
     :items="groupedItems()"
-    :min-item-height="68"
+    :min-item-size="68"
     :pageMode="true"
   )
 
@@ -13,7 +13,7 @@ resize.list-group.catalogue-article-list(v-if="items.length" :padding="35" ref="
       dynamic-scroller-item(
         :item='item',
         :active='active',
-        :size-dependencies="[item.message, sameArticles]"
+        :size-dependencies="[sameArticles]"
         :data-index='index'
       )
 
