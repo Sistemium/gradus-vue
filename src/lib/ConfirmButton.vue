@@ -1,7 +1,12 @@
 <template lang="pug">
 
 el-badge.countdown(:value="countdown" :hidden="!countdown")
-  el-button.confirm-button(:type="buttonType" @click="onClick")
+  el-button.confirm-button(
+  :type="buttonType"
+  :class="countdown && 'confirmation'"
+  :size="size"
+  @click="onClick"
+  )
     span {{ buttonText }}
 
 </template>
@@ -13,6 +18,13 @@ export default {
 
   props: {
     text: String,
+    size: {
+      type: String,
+    },
+    type: {
+      type: String,
+      default: 'default',
+    },
     confirmText: String,
     timeout: {
       type: Number,
@@ -31,11 +43,11 @@ export default {
   computed: {
 
     buttonText() {
-      return this.confirmation ? this.confirmText : this.text;
+      return this.confirmation ? this.confirmText || `${this.text}?` : this.text;
     },
 
     buttonType() {
-      return this.confirmation ? 'warning' : 'default';
+      return this.confirmation ? 'warning' : this.type;
     },
 
   },

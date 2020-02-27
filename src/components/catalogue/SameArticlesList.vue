@@ -4,7 +4,8 @@
   .same-article(v-for="same in sameArticles" :key="same.id")
     span.remove-same(@click.prevent.stop="$emit('remove-click', same)") ❌
     span {{ same.name }}
-    span {{ same.extraLabel }}
+    span.package-rel x {{ same.packageRel }}
+    span.extra-label {{ same.extraLabel }}
 
 </template>
 <script>
@@ -20,7 +21,7 @@ export default {
 </script>
 <style scoped lang="scss">
 
-@import "../styles/variables";
+@import "../../styles/variables";
 
 .same-article {
 
@@ -41,6 +42,10 @@ export default {
 
   > * + * {
     margin-left: $margin-right;
+  }
+
+  .extra-label, .package-rel {
+    color: $gray;
   }
 
 }

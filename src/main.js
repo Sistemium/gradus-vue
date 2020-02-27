@@ -1,10 +1,13 @@
 import Vue from 'vue';
 
 import '@/lib/element-ui';
-// import '@/lib/sistemium';
+import 'intersection-observer';
+import '@/lib/v-select';
+// import VueObserveVisibility from 'vue-observe-visibility';
 
 import { AUTH_INIT } from 'sistemium-vue/store/auth/actions';
 
+import SearchInput from '@/lib/SearchInput.vue';
 import Resize from '@/lib/Resize.vue';
 import ConfirmButton from '@/lib/ConfirmButton.vue';
 
@@ -17,6 +20,8 @@ import store from './store';
 Vue.config.productionTip = false;
 Vue.component('resize', Resize);
 Vue.component(ConfirmButton.name, ConfirmButton);
+Vue.component(SearchInput.name, SearchInput);
+// Vue.use(VueObserveVisibility);
 
 new Vue({
   router,

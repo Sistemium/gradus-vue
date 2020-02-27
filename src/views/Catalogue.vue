@@ -29,15 +29,16 @@ element-loading-text="Загрузка данных ..."
         ) {{ article.name }}
 
     .stats
-      span Товаров:
-      strong {{ articles.length }}
+      el-popover(
+      placement="bottom"
+      width="100"
+      trigger="click"
+      )
+        span Без картинки:
+        el-switch.image-filter(v-model="onlyNoAvatar")
+        el-button(slot="reference") Фильтры
 
-    el-input.searcher(
-    prefix-icon="el-icon-search"
-    v-model="searchText"
-    :clearable="true"
-    placeholder="поиск"
-    )
+    search-input.searcher(v-model="searchText")
 
   el-container.catalogue-main(
   v-loading="loading"
@@ -66,6 +67,7 @@ element-loading-text="Загрузка данных ..."
   catalogue-article-dialog(
   v-if="fullScreenArticle"
   :article="fullScreenArticle"
+  :picture-model="ArticlePicture"
   @closed="closeGallery()"
   )
 
@@ -79,9 +81,11 @@ import * as actions from '@/vuex/catalogue/actions';
 
 import * as svc from '@/services/catalogue';
 
-import CatalogueGroupList from '@/components/CatalogueGroupList.vue';
-import CatalogueArticleList from '@/components/CatalogueArticleList.vue';
-import CatalogueArticleDialog from '@/components/CatalogueArticleDialog.vue';
+import CatalogueGroupList from '@/components/catalogue/CatalogueGroupList.vue';
+import CatalogueArticleList from '@/components/catalogue/CatalogueArticleList.vue';
+import CatalogueArticleDialog from '@/components/catalogue/CatalogueArticleDialog.vue';
+
+import ArticlePicture from '@/models/ArticlePicture';
 
 const { mapActions, mapGetters } = createNamespacedHelpers('catalogue');
 
@@ -97,6 +101,7 @@ export default {
       loading: false,
       filteredGroups: [],
       message: null,
+      ArticlePicture,
     };
   },
 
@@ -114,17 +119,25 @@ export default {
       ...mapGetters({ get: getters.ARTICLE_GROUP }),
       ...mapActions({ set: actions.ARTICLE_GROUP_CLICK }),
     },
+    onlyNoAvatar: {
+      ...mapGetters({ get: getters.IMAGE_FILTER }),
+      ...mapActions({ set: actions.IMAGE_FILTER_TOGGLE }),
+    },
     selectedArticles() {
       return svc.getArticles(this.sharedArticles);
     },
   },
 
   async created() {
+
     this.loading = true;
     await svc.loadData();
     this.loading = false;
+
     this.$watch('currentArticleGroup', this.bindCurrent);
     this.$watch('searchText', this.bindArticles, { immediate: true });
+    this.$watch('onlyNoAvatar', this.bindCurrent);
+
   },
 
   methods: {
@@ -139,9 +152,14 @@ export default {
 
     bindCurrent() {
 
+      const { searchText, onlyNoAvatar } = this;
+
       const data = svc.catalogueData(
         this.currentArticleGroup,
-        this.searchText,
+        {
+          searchText,
+          onlyNoAvatar,
+        },
         this.filteredGroups,
       );
 
@@ -201,6 +219,7 @@ export default {
 
   .stats, .selected {
     margin: auto $margin-top;
+
     strong {
       margin-left: $margin-right;
     }
@@ -223,9 +242,16 @@ export default {
 
 .el-popper {
   max-width: 500px;
+
   li {
     font-size: 85%;
   }
+}
+
+.image-filter {
+
+  float: right;
+
 }
 
 </style>

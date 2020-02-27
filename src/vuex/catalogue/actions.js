@@ -1,5 +1,6 @@
-import debounce from 'lodash/debounce';
 import without from 'lodash/without';
+
+import ArticlePictureArticle from '@/models/ArticlePictureArticle';
 
 import * as svc from '@/services/catalogue';
 import * as m from '@/vuex/catalogue/mutations';
@@ -12,6 +13,7 @@ const { debug } = log('vuex:actions');
 export const SHARE_WITH_ARTICLE = 'SHARE_WITH_ARTICLE';
 export const ARTICLE_AVATAR_CLICK = 'ARTICLE_AVATAR_CLICK';
 export const ARTICLE_GROUP_CLICK = 'ARTICLE_GROUP_CLICK';
+export const IMAGE_FILTER_TOGGLE = 'IMAGE_FILTER_TOGGLE';
 export const SEARCH_TEXT_CHANGE = 'SEARCH_TEXT_CHANGE';
 export const ADD_GALLERY_PICTURE = 'ADD_GALLERY_PICTURE';
 export const REMOVE_GALLERY_PICTURE = 'REMOVE_GALLERY_PICTURE';
@@ -67,7 +69,13 @@ export default {
     commit(m.SET_AVATAR_PICTURE, picture && picture.id);
   },
 
-  [ADD_GALLERY_PICTURE]({ commit, getters }, picture) {
+  async [ADD_GALLERY_PICTURE]({ commit, getters }, { picture, articleId }) {
+
+    const { id: pictureId } = picture;
+    await ArticlePictureArticle.create({
+      articleId,
+      pictureId,
+    });
 
     const pictures = getters[g.GALLERY_PICTURES];
 
@@ -97,15 +105,19 @@ export default {
     commit(m.SET_ARTICLE_GROUP, articleGroup);
   },
 
-  [SEARCH_TEXT_CHANGE]: debounce(({ commit }, text) => {
+  [SEARCH_TEXT_CHANGE]: ({ commit }, text) => {
     commit(m.SET_SEARCH_TEXT, text);
-  }, 750),
+  },
 
   [TOGGLE_ARTICLE_SELECTED]({ commit, getters }, article) {
     const selected = getters[g.SELECTED_ARTICLE];
     const isSelected = selected && (selected.id === article.id);
     commit(m.SET_SELECTED_ARTICLE, isSelected ? null : article);
     commit(m.SET_SAME_ARTICLES, isSelected ? null : article.sameArticles);
+  },
+
+  [IMAGE_FILTER_TOGGLE]({ commit }) {
+    commit(m.SET_IMAGE_FILTER);
   },
 
 };

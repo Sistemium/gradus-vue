@@ -2,7 +2,7 @@
 
 resize.list-group.catalogue-groups-list.filters(
 v-if="items.length || parents.length"
-padding="35"
+:padding="35"
 )
 
   .list-group-item.parent(
@@ -51,7 +51,7 @@ export default {
 </script>
 <style scoped lang="scss">
 
-@import "../styles/variables";
+@import "../../styles/badge";
 
 .item {
   display: flex;
@@ -61,13 +61,8 @@ export default {
   }
 }
 
-.badge span {
-  background-color: $gray-background;
-  border-radius: 10px;
-  padding: 3px 6px;
-  display: inline-block;
-  text-align: center;
-  color: $black;
+.badge {
+  @extend %badge;
 }
 
 </style>

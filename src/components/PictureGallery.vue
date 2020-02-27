@@ -1,52 +1,52 @@
 <template lang="pug">
 
 .picture-gallery(
-v-loading="busy"
-element-loading-text="Загрузка изображения ..."
+  v-loading="busy"
+  element-loading-text="Загрузка изображения ..."
 )
   el-carousel(
-  ref="carousel"
-  v-if="images.length"
-  trigger="click"
-  height="500px"
-  :autoplay="false"
-  indicator-position="outside"
-  type="card"
-  :initial-index="carouselItem"
-  @change="onItemChange"
+    ref="carousel"
+    v-if="images.length"
+    trigger="click"
+    height="500px"
+    :autoplay="false"
+    indicator-position="outside"
+    :type="carouselType"
+    :initial-index="carouselItem"
+    @change="onItemChange"
   )
     el-carousel-item(
-    v-for="(image, idx) in images" :key="image.id"
-    :name="image.id"
-    :label="`Фото №${idx+1}`"
+      v-for="(image, idx) in images" :key="image.id"
+      :name="image.id"
+      :label="`Фото №${idx+1}`"
     )
-      .gallery-image(@click.prevent="$emit('image-click')")
+      .gallery-image(@click.prevent="$emit('image-click', image)")
 
-        img(:src="image.largeSrc")
+        img(:src="image.largeSrc || image.smallSrc")
 
   .empty(v-else @click.prevent="$emit('image-click')")
     img(src="/images/placeholder.png")
 
-  .buttons
+  .buttons(v-if="model")
 
     el-button.make-avatar(
-    v-if="images.length > 1"
-    @click="setAvatarClick"
-    :disabled="isAvatar"
+      v-if="avatarId && images.length > 1"
+      @click="setAvatarClick"
+      :disabled="isAvatar"
     ) {{ buttonText }}
 
     take-photo-button(
-    @done="onUpload"
-    @error="unUploadError"
-    @imageuploading="busy = true"
-    :entity-name="model.name"
+      @done="onUpload"
+      @error="unUploadError"
+      @imageuploading="busy = true"
+      :entity-name="model.name"
     )
 
     confirm-button.remove(
-    v-if="images.length"
-    :disabled="images.length > 1 && isAvatar"
-    text="Удалить" confirm-text="Точно удалить?"
-    @confirm="removeClick"
+      v-if="images.length"
+      :disabled="images.length > 1 && isAvatar"
+      text="Удалить" confirm-text="Точно удалить?"
+      @confirm="removeClick"
     )
 
 </template>
@@ -54,16 +54,13 @@ element-loading-text="Загрузка изображения ..."
 
 import find from 'lodash/find';
 import findIndex from 'lodash/findIndex';
-import { createNamespacedHelpers } from 'vuex';
-import * as getters from '@/vuex/catalogue/getters';
-import * as a from '@/vuex/catalogue/actions';
 
 import TakePhotoButton from '@/components/TakePhotoButton.vue';
 import log from 'sistemium-telegram/services/log';
 
 const name = 'PictureGallery';
 const { debug, error } = log(name);
-const { mapGetters, mapActions } = createNamespacedHelpers('catalogue');
+// const { mapActions } = createNamespacedHelpers('catalogue');
 
 export default {
 
@@ -75,14 +72,18 @@ export default {
    */
 
   props: {
-    images: Array,
+    // images: Array,
     model: {
       type: Object,
-      required: true,
+      // required: true,
     },
     newImageProperties: {
       type: Object,
-      required: true,
+      // required: true,
+    },
+    carouselType: {
+      type: String,
+      default: 'card',
     },
   },
 
@@ -95,10 +96,6 @@ export default {
   },
 
   computed: {
-    ...mapGetters({
-      activeId: getters.ACTIVE_GALLERY_PICTURE,
-      avatarId: getters.AVATAR_PICTURE,
-    }),
     isAvatar() {
       return this.currentImage && this.currentImage.id === this.avatarId;
     },
@@ -121,11 +118,6 @@ export default {
   },
 
   methods: {
-
-    ...mapActions({
-      setActive: a.SET_PICTURE_AS_AVATAR,
-      removeArticlePicture: a.REMOVE_GALLERY_PICTURE,
-    }),
 
     setAvatarClick() {
       this.setActive(this.currentImage);
@@ -154,22 +146,23 @@ export default {
       });
     },
 
-    async onUpload(picturesInfo) {
+    async onUpload(picturesInfo, fileName) {
 
       const { model } = this;
       const { src } = find(picturesInfo, { name: 'original' });
       const { src: thumbnailSrc } = find(picturesInfo, { name: 'thumbnail' });
 
-      debug('onUpload', src, this.busy);
+      debug('onUpload', src, fileName);
 
       try {
         const picture = await model.create({
           src,
           thumbnailSrc,
           picturesInfo,
+          name: fileName,
           ...this.newImageProperties,
         });
-        this.$emit('uploaded', picture);
+        this.$emit('uploaded', picture, fileName);
       } catch (e) {
         error('onUpload', e.message);
       }
@@ -203,7 +196,8 @@ export default {
   .gallery-image {
     justify-content: center;
     display: flex;
-    height: 100%;
+    max-height: 100%;
+    max-width: 100%;
   }
 
   .empty {

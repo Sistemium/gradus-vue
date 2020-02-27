@@ -6,6 +6,7 @@ export const RESET_SHARED_ARTICLES = 'RESET_SHARED_ARTICLES';
 
 export const SET_AVATAR_ARTICLE = `SET_${g.AVATAR_ARTICLE}`;
 export const SET_ARTICLE_GROUP = `SET_${g.ARTICLE_GROUP}`;
+export const SET_IMAGE_FILTER = `SET_${g.IMAGE_FILTER}`;
 export const SET_SEARCH_TEXT = `SET_${g.SEARCH_TEXT}`;
 export const SET_GALLERY_PICTURES = `SET_${g.GALLERY_PICTURES}`;
 export const SET_BUSY = `SET_${g.BUSY}`;
@@ -68,6 +69,10 @@ export default {
 
   [SET_SELECTED_ARTICLE](state, article) {
     state[g.SELECTED_ARTICLE] = article && article.id;
+  },
+
+  [SET_IMAGE_FILTER](state) {
+    state[g.IMAGE_FILTER] = !state[g.IMAGE_FILTER];
   },
 
 };

@@ -10,12 +10,11 @@ custom-class="el-dialog-gallery"
 :append-to-body="true"
 center
 )
-  picture-gallery(
+  catalogue-picture-gallery(
   v-loading="busy"
   element-loading-text="Обработка изображения ..."
-  @image-click="closeDialog()"
-  :images="images"
-  :model="ArticlePicture"
+  @image-click="closeDialog"
+  :model="this.pictureModel"
   :new-image-properties="newImageProperties"
   @uploaded="onUpload"
   )
@@ -26,17 +25,14 @@ center
 import pick from 'lodash/pick';
 
 import { createNamespacedHelpers } from 'vuex';
-import * as g from '@/vuex/catalogue/getters';
 import * as a from '@/vuex/catalogue/actions';
 
 import log from 'sistemium-telegram/services/log';
 import ManagedComponent from '@/lib/ManagedComponent';
-import ArticlePictureArticle from '@/models/ArticlePictureArticle';
-import ArticlePicture from '@/models/ArticlePicture';
 
-import PictureGallery from './PictureGallery.vue';
+import CataloguePictureGallery from './CataloguePictureGallery';
 
-const { debug, error } = log('CatalogueArticleDialog.vue');
+const { debug, error } = log('CatalogueArticleDialog');
 const vuex = createNamespacedHelpers('catalogue');
 
 export default {
@@ -45,6 +41,7 @@ export default {
 
   props: {
     article: Object,
+    pictureModel: Object,
   },
 
   // models: [Article, ArticlePicture],
@@ -54,7 +51,6 @@ export default {
       busy: false,
       image: undefined,
       visible: true,
-      ArticlePicture,
     };
   },
 
@@ -62,7 +58,6 @@ export default {
     newImageProperties() {
       return pick(this.article, ['name']);
     },
-    ...vuex.mapGetters({ images: g.GALLERY_PICTURES }),
   },
 
   methods: {
@@ -77,23 +72,17 @@ export default {
       this.$emit('closed');
     },
 
-    async onUpload(articlePicture) {
-
-      debug('onUpload', articlePicture);
+    async onUpload(articlePicture, fileName) {
 
       const { id: articleId, avatarPictureId } = this.article;
-      const { id: pictureId } = articlePicture;
+
+      debug('onUpload', articlePicture, articleId, fileName);
 
       this.busy = true;
 
       try {
 
-        await ArticlePictureArticle.create({
-          articleId,
-          pictureId,
-        });
-
-        this.addPicture(articlePicture);
+        await this.addPicture({ picture: articlePicture, articleId });
 
         if (!avatarPictureId) {
           await this.setAsAvatar(articlePicture);
@@ -113,7 +102,7 @@ export default {
   },
 
   components: {
-    PictureGallery,
+    CataloguePictureGallery,
   },
 
   mixins: [ManagedComponent],
@@ -123,6 +112,6 @@ export default {
 </script>
 <style scoped lang="scss">
 
-@import "../styles/variables";
+@import "../../styles/variables";
 
 </style>

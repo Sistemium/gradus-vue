@@ -4,11 +4,13 @@
 
   vue-core-image-upload.browser(
   :crop="false"
+  ref="uploadComponent"
   @imageuploading="$emit('imageuploading')"
   @imageuploaded="imageUploaded"
+  @imagechanged="imageChanged"
   @errorhandle="onError"
   :data="imageData"
-  :max-file-size="5242880"
+  :max-file-size="maxFileSize"
   :headers="uploadHeaders"
   :url="imsUrl()"
   )
@@ -37,6 +39,10 @@ export default {
     buttonText: {
       type: String,
       default: 'Добавить фото',
+      maxFileSize: {
+        type: Number,
+        default: 1024 * 1024 * 20,
+      },
     },
   },
 
@@ -45,13 +51,16 @@ export default {
   data() {
     return {
       imageData: null,
+      fileName: null,
     };
   },
 
   computed: {
     ...mapState('auth', {
       token: 'id',
-      org: ({ account }) => account.org,
+      org(auth) {
+        return (auth && auth.account) ? auth.account.org : null;
+      },
     }),
     // isNative,
     uploadHeaders() {
@@ -60,6 +69,11 @@ export default {
   },
 
   methods: {
+
+    imageChanged(file) {
+      debug('imageChanged', file);
+      this.fileName = file.name;
+    },
 
     imsUrl() {
       return `/ims/${this.org}?folder=${this.entityName}/${serverDateFormat()}`;
@@ -77,7 +91,7 @@ export default {
         this.$emit('error', res);
         return;
       }
-      this.$emit('done', picturesInfo);
+      this.$emit('done', picturesInfo, this.fileName);
     },
 
     onError(params) {

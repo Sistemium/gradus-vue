@@ -2,15 +2,29 @@
 
 #app-menu
 
-  el-menu#main-menu(:default-active="$route.path" mode="horizontal" :router="true")
+  el-menu#main-menu(
+  :default-active="defaultActive"
+  mode="horizontal"
+  :router="true"
+  :class="{ 'not-root': $route.name !== 'home' }"
+  )
 
-    el-menu-item(index="/")
+    el-menu-item.home-item(index="/")
       img(src="../assets/icons8-home.svg")
       span Начало
     el-menu-item(index="/catalogue")
       img(src="../assets/icons8-moleskine.svg")
       span Каталог
-    el-menu-item(index="/about")
+    el-menu-item(index="/campaigns")
+      img(src="../assets/icons8-discount.svg")
+      span Акции
+    el-menu-item(index="/targets")
+      img(src="../assets/icons8-goal.svg")
+      span Задачи
+    el-menu-item(index="/possibleOutlets")
+      img(src="../assets/icons8-validation.svg")
+      span Точки
+    //el-menu-item(index="/about")
       img(src="../assets/icons8-info.svg")
       span О проекте
 
@@ -38,6 +52,9 @@ export default {
 
   computed: {
     ...mapState('auth', { account: 'account' }),
+    defaultActive() {
+      return this.$route.path.match(/^\/[^/]*/)[0];
+    },
   },
 
   components: { AccountMenu },
@@ -47,6 +64,7 @@ export default {
 </script>
 <style lang="scss">
 
+@import "../styles/responsive";
 @import "../styles/variables";
 
 $img-size: 30px;
@@ -69,8 +87,18 @@ $img-size: 30px;
   img {
     height: $img-size;
     width: $img-size;
+
     & + * {
       margin-left: $margin-right;
+    }
+  }
+
+}
+
+@include responsive-only(lt-md) {
+  .not-root {
+    .el-menu-item:not(.is-active):not(.home-item) {
+      display: none;
     }
   }
 }

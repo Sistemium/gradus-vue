@@ -8,7 +8,7 @@
   )
 
     el-header
-      app-menu
+      app-menu(v-if="authorized")
 
     el-main
 

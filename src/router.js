@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
 import SignIn from './views/SignIn.vue';
+// import Campaigns from './views/Campaigns.vue';
 
 Vue.use(Router);
 
@@ -40,6 +41,35 @@ export default new Router({
       meta: {
         label: 'Авторизация',
       },
+    },
+    {
+      path: '/campaigns',
+      name: 'campaigns',
+      component: () => import(/* webpackChunkName: "campaigns" */ './views/Campaigns.vue'),
+      meta: {
+        label: 'Акции',
+      },
+    },
+    {
+      path: '/targets/:groupId?',
+      name: 'targets',
+      component: () => import(/* webpackChunkName: "salesTargets" */ './views/SalesTargets.vue'),
+      meta: {
+        label: 'Задачи',
+      },
+    },
+    {
+      path: '/possibleOutlets',
+      name: 'PossibleOutlets',
+      component: () => import(/* webpackChunkName: "outlets" */ './views/PossibleOutletsPage.vue'),
+      meta: {
+        label: 'Проверка точек',
+      },
+      children: [{
+        name: 'PossibleOutletDialog',
+        path: ':outletId',
+        component: () => import(/* webpackChunkName: "outlets" */ './views/PossibleOutletDialog.vue'),
+      }],
     },
   ],
 });

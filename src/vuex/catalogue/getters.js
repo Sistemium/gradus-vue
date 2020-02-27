@@ -4,6 +4,7 @@ export const SHARED_ARTICLES = 'selectedToShare';
 export const SELECTED_ARTICLE = 'selectedArticle';
 export const AVATAR_ARTICLE = 'avatarArticle';
 export const ARTICLE_GROUP = 'articleGroup';
+export const IMAGE_FILTER = 'onlyNoAvatar';
 export const SEARCH_TEXT = 'searchText';
 export const GALLERY_PICTURES = 'galleryPictures';
 export const BUSY = 'BUSY';
@@ -54,6 +55,10 @@ export default {
   [ARTICLE_GROUP](state) {
     const id = state[ARTICLE_GROUP];
     return id ? catalogue.getArticleGroup(id) : null;
+  },
+
+  [IMAGE_FILTER](state) {
+    return state[IMAGE_FILTER];
   },
 
   [SEARCH_TEXT](state) {

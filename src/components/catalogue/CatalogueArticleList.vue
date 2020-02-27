@@ -1,6 +1,6 @@
 <template lang="pug">
 
-resize.list-group.catalogue-article-list(v-if="items.length" padding="35" ref="resizer")
+resize.list-group.catalogue-article-list(v-if="items.length" :padding="35" ref="resizer")
 
   dynamic-scroller.scroller(
     :items="groupedItems()"
@@ -82,7 +82,7 @@ export default {
 </script>
 <style scoped lang="scss">
 
-@import "../styles/variables";
+@import "../../styles/variables";
 
 .list-group-item {
   display: flex;
