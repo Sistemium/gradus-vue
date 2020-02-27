@@ -3,9 +3,9 @@
 resize.list-group.catalogue-article-list(v-if="items.length" :padding="35" ref="resizer")
 
   dynamic-scroller.scroller(
-    :items="groupedItems()"
-    :min-item-height="68"
-    :pageMode="true"
+    :items="groupedItems"
+    :min-item-size="68"
+    :page-mode="true"
   )
 
     template(slot-scope='{ item, index, active }')
@@ -13,8 +13,8 @@ resize.list-group.catalogue-article-list(v-if="items.length" :padding="35" ref="
       dynamic-scroller-item(
         :item='item',
         :active='active',
-        :size-dependencies="[item.message, sameArticles]"
-        :data-index='index'
+        :size-dependencies="[sameArticles]"
+        :index='index'
       )
 
         catalogue-article.list-group-item(
@@ -27,42 +27,40 @@ resize.list-group.catalogue-article-list(v-if="items.length" :padding="35" ref="
 </template>
 <script>
 
-import Vue from 'vue';
-import VueVirtualScroller from 'vue-virtual-scroller';
 import { mapGetters } from 'vuex';
 import { SAME_ARTICLES } from '@/vuex/catalogue/getters';
 
-import Article from '@/models/Article';
+// import Article from '@/models/Article';
 
 import { groupedArticles } from '@/services/catalogue';
 
 import CatalogueArticle from './CatalogueArticle.vue';
 
 
-Vue.use(VueVirtualScroller);
-
 export default {
 
   name: 'CatalogueArticleList',
 
-  computed: mapGetters('catalogue', { sameArticles: SAME_ARTICLES }),
+  computed: {
+    ...mapGetters('catalogue', { sameArticles: SAME_ARTICLES }),
+    groupedItems() {
+      return groupedArticles(this.items);
+    },
+  },
 
   props: {
     items: Array,
   },
 
   methods: {
-    groupedItems() {
-      return groupedArticles(this.items);
-    },
   },
 
   created() {
-    Article.bind(this);
+    // Article.bind(this);
   },
 
   beforeDestroy() {
-    Article.unbindAll(this);
+    // Article.unbindAll(this);
   },
 
   components: {
@@ -72,7 +70,7 @@ export default {
   watch: {
     items() {
       this.$nextTick(() => {
-        this.$refs.resizer.$el.scrollTop = 0;
+        // this.$refs.resizer.$el.scrollTop = 0;
       });
     },
   },

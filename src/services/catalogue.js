@@ -2,6 +2,7 @@ import intersection from 'lodash/intersection';
 import filter from 'lodash/filter';
 import keyBy from 'lodash/keyBy';
 import flatten from 'lodash/flatten';
+import get from 'lodash/get';
 import uniq from 'lodash/uniq';
 import map from 'lodash/map';
 import escapeRegExp from 'lodash/escapeRegExp';
@@ -12,7 +13,7 @@ import Vue from 'vue';
 import ArticleGroup from '@/models2/ArticleGroup';
 import Article from '@/models2/Article';
 import ArticlePicture from '@/models2/ArticlePicture';
-import ArticlePictureArticle from '@/models/ArticlePictureArticle';
+import ArticlePictureArticle from '@/models2/ArticlePictureArticle';
 
 import log from 'sistemium-telegram/services/log';
 
@@ -65,47 +66,71 @@ export async function setArticleAvatar(article, picture) {
 export async function getArticlePictures(article) {
   const where = { articleId: article.id };
   const apa = await ArticlePictureArticle.findAll(where);
-  await Promise.all(apa.map(({ pictureId }) => ArticlePicture.find(pictureId)));
-  return ArticlePictureArticle.filter(where)
+  await Promise.all(apa.map(({ pictureId }) => ArticlePicture.findById(pictureId)));
+  return apa
     .map(({ pictureId }) => ArticlePicture.get(pictureId));
 }
 
 
 export function getArticle(id) {
-  return Article.get(id);
+  debug('getArticle:id', id);
+  const res = Article.query()
+    .withAll()
+    .find(id);
+  debug('getArticle:res', !!res);
+  return res;
 }
 
 export function getArticles(ids) {
-  return Article.getMany(ids);
+  debug('getArticles:ids', ids.length);
+  const res = Article.query()
+    .whereIdIn(ids)
+    .with('sameArticles')
+    .get();
+  debug('getArticles:res', res.length);
+  return res;
 }
 
 
 export function getArticleGroup(id) {
-  return ArticleGroup.query()
-    .whereIdIn([id])
+  debug('getArticleGroup:id', id);
+  const res = ArticleGroup.query()
     .with(['parent', 'children'])
-    .first();
+    .find(id);
+  debug('getArticleGroup:res', res.length);
+  return res;
 }
 
 
 export function articlesByGroupID(articleGroup, filters) {
 
+  debug('articlesByGroupID:id', articleGroup);
+
+  const articles = Article.query()
+    .withAll()
+    .get();
+
   if (!articleGroup) {
-    return filterArticles(Article.filter(), filters);
+    return filterArticles(articles, filters);
   }
 
   const ids = keyBy(flatten(filter(map(articleGroup.descendants(), 'children'))), 'id');
   ids[articleGroup.id] = articleGroup;
-  return filterArticles(
-    orderBy(filter(Article.filter(), ({ articleGroupId }) => ids[articleGroupId]), 'name'),
+
+  debug('articlesByGroupID:ids', articles.length, ids);
+
+  const res = filterArticles(
+    orderBy(filter(articles, ({ articleGroupId }) => ids[articleGroupId]), 'name'),
     filters,
   );
 
+  debug('articlesByGroupID:res', res.length);
+  return res;
+
 }
 
-export function articleGroupsBySearch(search) {
+export function articleGroupsByArticles(articles) {
 
-  const articles = filterArticles(Article.filter({ articleSameId: null }), search);
   debug('articleGroupsBySearch:articles', articles.length);
 
   const groupIds = uniq(map(articles, 'articleGroupId'));
@@ -117,31 +142,32 @@ export function articleGroupsBySearch(search) {
   const parents = groupsWithArticles.map(item => map(item.ancestors(), 'id'));
   const parentsWithArticlesIDs = uniq(flatten(parents));
 
-  debug('articleGroupsBySearch', search, parentsWithArticlesIDs.length);
+  debug('articleGroupsBySearch', parentsWithArticlesIDs.length);
 
-  return ArticleGroup.query()
+  const res = ArticleGroup.query()
     .whereIdIn(parentsWithArticlesIDs)
     .with(['children', 'parent'])
     .orderBy('name')
     .get();
 
+  debug('articleGroupsByArticles:res', res.length);
+  return res;
+
 }
 
 
-export function catalogueData(currentArticleGroup, filters, filteredGroups) {
+export function catalogueArticleGroups(currentArticleGroup, articles, filteredGroups) {
 
   const { id: articleGroupId = null, children = [] } = currentArticleGroup || {};
 
-  let groups = null;
+  let groups;
 
   if (children.length || !articleGroupId) {
     groups = filter(filteredGroups, g => g.articleGroupId === articleGroupId);
-    // debug('bindCurrent', groups.length, articleGroupId, children.length);
+    debug('bindCurrent', groups.length, articleGroupId, children.length);
   } else {
     groups = orderBy(intersection(currentArticleGroup.parent.children, filteredGroups), 'name');
   }
-
-  const articles = articlesByGroupID(currentArticleGroup, filters) || [];
 
   let parents = [];
 
@@ -158,7 +184,6 @@ export function catalogueData(currentArticleGroup, filters, filteredGroups) {
 
   return {
     parents,
-    articles,
     groups,
   };
 
@@ -180,7 +205,10 @@ export function removeArticlePicture(article, picture) {
 }
 
 export function unsetSameArticle(article) {
-  return Article.update(article, { articleSameId: null });
+  return Article.update({
+    where: article.id,
+    data: { articleSameId: null },
+  });
 }
 
 /**
@@ -201,7 +229,10 @@ export function setSameArticle(article, sameArticles) {
     }
     // sameArticle.articleSameId = articleSameId;
     // return Article.safeSave(sameArticle, true);
-    return Article.update(sameArticle, { articleSameId });
+    return Article.update({
+      where: sameArticle.id,
+      data: { articleSameId },
+    });
   });
 
   return Promise.all(saving);
@@ -227,8 +258,18 @@ function filterArticles(articles, filters) {
 
   }
 
+  debug('filterArticles:filters', searchText, onlyNoAvatar);
+
   const re = searchText && new RegExp(escapeRegExp(searchText), 'i');
 
-  return filter(articles, a => (!re || re.test(a.name)) && (!onlyNoAvatar || !a.avatarPicture));
+  const res = filter(articles, a => {
+    if (re && !re.test(a.name)) {
+      return false;
+    }
+    return !onlyNoAvatar || !a.avatarPicture;
+  });
+
+  debug('filterArticles:res', res.length);
+  return res;
 
 }

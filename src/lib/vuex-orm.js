@@ -7,6 +7,7 @@ import log from 'sistemium-telegram/services/log';
 import Article from '@/models2/Article';
 import ArticleGroup from '@/models2/ArticleGroup';
 import ArticlePicture from '@/models2/ArticlePicture';
+import ArticlePictureArticle from '@/models2/ArticlePictureArticle';
 
 const { debug } = log('vuex-orm');
 
@@ -29,6 +30,7 @@ export default function () {
   database.register(Article);
   database.register(ArticleGroup);
   database.register(ArticlePicture);
+  database.register(ArticlePictureArticle);
 
   return VuexORM.install(database);
 

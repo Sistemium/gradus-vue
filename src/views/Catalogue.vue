@@ -1,8 +1,8 @@
 <template lang="pug">
 
 el-container.catalogue(
-no-v-loading.fullscreen.lock="loading || busy"
-element-loading-text="Загрузка данных ..."
+  no-v-loading.fullscreen.lock="loading || busy"
+  element-loading-text="Загрузка данных ..."
 )
 
   el-header.catalogue-header(height="")
@@ -13,8 +13,8 @@ element-loading-text="Загрузка данных ..."
         a(@click.prevent="currentArticleGroup = null") Все товары
 
       el-breadcrumb-item(
-      v-for="parent in currentArticleGroupParents"
-      :key="parent.id"
+        v-for="parent in groupsData.parents"
+        :key="parent.id"
       )
         a(@click.prevent="currentArticleGroup = parent") {{ parent.name }}
 
@@ -25,14 +25,14 @@ element-loading-text="Загрузка данных ..."
         i.el-icon-arrow-down.el-icon--right
       el-dropdown-menu(slot="dropdown")
         el-dropdown-item(
-        v-for="article in selectedArticles" :key="article.id"
+          v-for="article in selectedArticles" :key="article.id"
         ) {{ article.name }}
 
     .stats
       el-popover(
-      placement="bottom"
-      width="100"
-      trigger="click"
+        placement="bottom"
+        width="100"
+        trigger="click"
       )
         span Без картинки:
         el-switch.image-filter(v-model="onlyNoAvatar")
@@ -41,34 +41,34 @@ element-loading-text="Загрузка данных ..."
     search-input.searcher(v-model="searchText")
 
   el-container.catalogue-main(
-  v-loading="loading"
-  element-loading-text="Загрузка данных ..."
+    v-loading="loading"
+    element-loading-text="Загрузка данных ..."
   )
 
     el-aside(v-if="!loading")
       catalogue-group-list(
-      :items="articleGroups"
-      :parents="currentArticleGroupParents"
-      v-model="currentArticleGroup"
+        :items="articleGroups"
+        :parents="groupsData.parents"
+        v-model="currentArticleGroup"
       )
 
     el-main.articles(v-if="!loading")
 
       catalogue-article-list(
-      v-if="articles.length"
-      :items="articles"
+        v-if="articles.length"
+        :items="articles"
       )
 
       .empty(
-      v-else
+        v-else
       )
         p Подходящие товары не найдены
 
   catalogue-article-dialog(
-  v-if="fullScreenArticle"
-  :article="fullScreenArticle"
-  :picture-model="ArticlePicture"
-  @closed="closeGallery()"
+    v-if="fullScreenArticle"
+    :article="fullScreenArticle"
+    :picture-model="ArticlePicture"
+    @closed="closeGallery()"
   )
 
 </template>
@@ -95,11 +95,7 @@ export default {
 
   data() {
     return {
-      articles: [],
-      articleGroups: [],
-      currentArticleGroupParents: [],
       loading: false,
-      filteredGroups: [],
       message: null,
       ArticlePicture,
     };
@@ -126,6 +122,23 @@ export default {
     selectedArticles() {
       return svc.getArticles(this.sharedArticles);
     },
+    articles() {
+      const { searchText, onlyNoAvatar } = this;
+      return svc.articlesByGroupID(this.currentArticleGroup, {
+        searchText,
+        onlyNoAvatar,
+      });
+    },
+    filteredGroups() {
+      return svc.articleGroupsByArticles(this.articles);
+    },
+    articleGroups() {
+      return this.groupsData.groups;
+    },
+    groupsData() {
+      const { currentArticleGroup, articles, filteredGroups } = this;
+      return svc.catalogueArticleGroups(currentArticleGroup, articles, filteredGroups);
+    },
   },
 
   async created() {
@@ -134,41 +147,10 @@ export default {
     await svc.loadData();
     this.loading = false;
 
-    this.$watch('currentArticleGroup', this.bindCurrent);
-    this.$watch('searchText', this.bindArticles, { immediate: true });
-    this.$watch('onlyNoAvatar', this.bindCurrent);
-
   },
 
   methods: {
-
     ...mapActions({ closeGallery: actions.ARTICLE_AVATAR_CLICK }),
-
-    bindArticles() {
-
-      this.filteredGroups = svc.articleGroupsBySearch(this.searchText);
-      this.bindCurrent();
-    },
-
-    bindCurrent() {
-
-      const { searchText, onlyNoAvatar } = this;
-
-      const data = svc.catalogueData(
-        this.currentArticleGroup,
-        {
-          searchText,
-          onlyNoAvatar,
-        },
-        this.filteredGroups,
-      );
-
-      this.currentArticleGroupParents = data.parents;
-      this.articles = data.articles;
-      this.articleGroups = data.groups;
-
-    },
-
   },
 
   watch: {

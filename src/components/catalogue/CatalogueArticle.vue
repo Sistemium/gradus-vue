@@ -18,11 +18,11 @@
       span.extra-label {{ article.extraLabel }}
 
     .sub-title
-      small.same-articles(v-if="!showSame && hasSameArticles()") +{{ hasSameArticles() }}
+      small.same-articles(v-if="!showSame && hasSameArticles") +{{ hasSameArticles }}
 
     same-articles-list(
-    v-if="showSame"
-    @remove-click="removeSameClick"
+      v-if="showSame"
+      @remove-click="removeSameClick"
     )
 
   .buttons
@@ -37,7 +37,7 @@
     )
 
     el-button(
-    v-if="!isSelected && !hasSameArticles()"
+    v-if="!isSelected && !hasSameArticles"
     circle
     size="mini"
     :icon="isSelectedToShare ? 'el-icon-circle-check' : 'el-icon-share'"
@@ -50,7 +50,7 @@
 
 import { createNamespacedHelpers } from 'vuex';
 import ManagedComponent from '@/lib/ManagedComponent';
-import Article from '@/models/Article';
+// import Article from '@/models/Article';
 
 import { TOGGLE_ARTICLE_SHARE } from '@/vuex/catalogue/mutations';
 import { SHARED_ARTICLES, SELECTED_ARTICLE } from '@/vuex/catalogue/getters';
@@ -106,6 +106,11 @@ export default {
       return sharedArticles && sharedArticles.indexOf(article.id) !== -1;
     },
 
+    hasSameArticles() {
+      const { article } = this;
+      return article.sameArticles && article.sameArticles.length;
+    },
+
   },
 
   methods: {
@@ -125,23 +130,18 @@ export default {
       return article.avatarPicture && article.avatarPicture.thumbnailSrc;
     },
 
-    hasSameArticles() {
-      const { article } = this;
-      return article.sameArticles && article.sameArticles.length;
-    },
-
-    rebind(article) {
-      Article.unbindAll(this);
-      if (article) {
-        Article.bindOne(this, article.id);
-      }
-    },
+    // rebind(article) {
+    //   Article.unbindAll(this);
+    //   if (article) {
+    //     Article.bindOne(this, article.id);
+    //   }
+    // },
 
   },
 
   created() {
 
-    this.$watch('article', this.rebind, { immediate: !!this.article });
+    // this.$watch('article', this.rebind, { immediate: !!this.article });
 
   },
 
