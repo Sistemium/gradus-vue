@@ -39,10 +39,10 @@ export default {
     buttonText: {
       type: String,
       default: 'Добавить фото',
-      maxFileSize: {
-        type: Number,
-        default: 1024 * 1024 * 20,
-      },
+    },
+    maxFileSize: {
+      type: Number,
+      default: 1024 * 1024 * 20,
     },
   },
 
