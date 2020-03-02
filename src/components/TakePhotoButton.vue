@@ -3,16 +3,16 @@
 .take-photo-button
 
   vue-core-image-upload.browser(
-  :crop="false"
-  ref="uploadComponent"
-  @imageuploading="$emit('imageuploading')"
-  @imageuploaded="imageUploaded"
-  @imagechanged="imageChanged"
-  @errorhandle="onError"
-  :data="imageData"
-  :max-file-size="maxFileSize"
-  :headers="uploadHeaders"
-  :url="imsUrl()"
+    :crop="false"
+    ref="uploadComponent"
+    @imageuploading="$emit('imageuploading')"
+    @imageuploaded="imageUploaded"
+    @imagechanged="imageChanged"
+    @errorhandle="onError"
+    :data="imageData"
+    :max-file-size="maxFileSize"
+    :headers="uploadHeaders"
+    :url="imsUrl()"
   )
     el-button.trigger(plain type="primary") {{ buttonText }}
 
@@ -39,10 +39,10 @@ export default {
     buttonText: {
       type: String,
       default: 'Добавить фото',
-      maxFileSize: {
-        type: Number,
-        default: 1024 * 1024 * 20,
-      },
+    },
+    maxFileSize: {
+      type: Number,
+      default: 1024 * 1024 * 20,
     },
   },
 
