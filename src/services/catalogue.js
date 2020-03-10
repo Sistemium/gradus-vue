@@ -216,13 +216,14 @@ function filterArticles(articles, filters) {
   const { searchText, onlyNoAvatar } = filters;
 
   if (!searchText && !onlyNoAvatar) {
-
     return articles;
-
   }
 
   const re = searchText && new RegExp(escapeRegExp(searchText), 'i');
 
-  return filter(articles, a => (!re || re.test(a.name)) && (!onlyNoAvatar || !a.avatarPicture));
+  return filter(articles, a => {
+    const stage1 = !re || re.test(a.name) || re.test(a.extraLabel);
+    return stage1 && (!onlyNoAvatar || !a.avatarPicture);
+  });
 
 }
