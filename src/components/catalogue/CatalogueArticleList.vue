@@ -11,8 +11,8 @@ resize.list-group.catalogue-article-list(v-if="items.length" :padding="35" ref="
     template(slot-scope='{ item, index, active }')
 
       dynamic-scroller-item(
-        :item='item',
-        :active='active',
+        :item='item'
+        :active='active'
         :size-dependencies="[sameArticles]"
         :data-index='index'
       )
