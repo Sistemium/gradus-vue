@@ -35,7 +35,7 @@ export default {
   data() {
     return {
       confirmation: false,
-      countdown: false,
+      countdown: 0,
       interval: false,
     };
   },
