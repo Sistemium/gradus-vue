@@ -2,7 +2,10 @@
 
 el-menu(mode="horizontal" :router="false")
   el-submenu.account-menu(index="index")
-    template.title(slot="title") {{ account.name }}
+    template(slot="title")
+      span.title
+        img(src="../assets/icons8-test-account.svg")
+        span {{ account.name }}
     el-menu-item(index="/logout" @click="logoutMessage")
       img(src="../assets/icons8-shutdown.svg")
       span Выход
@@ -49,9 +52,26 @@ export default {
 <style scoped lang="scss">
 
 @import "../styles/variables";
+@import "../styles/responsive";
 
 .title {
   border-bottom: none !important;
+  img {
+    height: 30px;
+    width: 30px;
+  }
+}
+
+@include responsive-only(gt-sm) {
+  .title img {
+    display: none;
+  }
+}
+
+@include responsive-only(lt-md) {
+  .title span {
+    display: none;
+  }
 }
 
 </style>

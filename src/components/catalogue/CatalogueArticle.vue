@@ -220,6 +220,10 @@ $avatar-size: 50px;
       font-size: 80%;
     }
 
+    .extra-label {
+      color: $orange;
+    }
+
   }
 
   .operations {

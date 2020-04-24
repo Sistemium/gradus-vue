@@ -3,10 +3,10 @@
 #app-menu
 
   el-menu#main-menu(
-  :default-active="defaultActive"
-  mode="horizontal"
-  :router="true"
-  :class="{ 'not-root': $route.name !== 'home' }"
+    :default-active="defaultActive"
+    mode="horizontal"
+    :router="true"
+    :class="{ 'not-root': $route.name !== 'home' }"
   )
 
     el-menu-item.home-item(index="/")
@@ -29,9 +29,9 @@
       span О проекте
 
   account-menu#account-menu(
-  v-if="account"
-  :account="account"
-  index="/account"
+    v-if="account"
+    :account="account"
+    index="/account"
   )
 
 </template>
@@ -100,6 +100,9 @@ $img-size: 30px;
     .el-menu-item:not(.is-active):not(.home-item) {
       display: none;
     }
+  }
+  .el-menu--horizontal > .el-menu-item:not(.is-active) > span {
+    display: none;
   }
 }
 
