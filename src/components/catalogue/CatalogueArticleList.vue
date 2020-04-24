@@ -4,7 +4,7 @@ resize.list-group.catalogue-article-list(v-if="items.length" :padding="35" ref="
 
   dynamic-scroller.scroller(
     :items="groupedItems()"
-    :min-item-height="68"
+    :min-item-size="68"
     :pageMode="true"
   )
 
@@ -30,7 +30,7 @@ resize.list-group.catalogue-article-list(v-if="items.length" :padding="35" ref="
 import Vue from 'vue';
 import VueVirtualScroller from 'vue-virtual-scroller';
 import { mapGetters } from 'vuex';
-import { SAME_ARTICLES } from '@/vuex/catalogue/getters';
+import { SELECTED_ARTICLE } from '@/vuex/catalogue/getters';
 
 import Article from '@/models/Article';
 
@@ -45,7 +45,7 @@ export default {
 
   name: 'CatalogueArticleList',
 
-  computed: mapGetters('catalogue', { sameArticles: SAME_ARTICLES }),
+  computed: mapGetters('catalogue', { sameArticles: SELECTED_ARTICLE }),
 
   props: {
     items: Array,
