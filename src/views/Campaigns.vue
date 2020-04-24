@@ -1,42 +1,44 @@
 <template lang="pug">
 
 el-container.campaigns(
-no-v-loading.fullscreen.lock="loading || busy"
-element-loading-text="Загрузка данных ..."
+  no-v-loading.fullscreen.lock="loading || busy"
+  element-loading-text="Загрузка данных ..."
 )
 
   el-header.campaigns-header(height="")
 
     .filter
 
-      label Период:
-
-      month-select(:months="lastYearMonths" v-model="selectedMonth")
+      .period
+        label Период:
+        month-select(:months="lastYearMonths" v-model="selectedMonth")
 
       search-input(v-model="searchText")
 
-    el-button(type="primary" @click="campaign = {}") Добавить акцию
+    el-button.add-campaign(type="primary" @click="campaign = {}")
+      i.el-icon-document-add
+      span Добавить акцию
 
   el-container.campaigns-main(
-  v-loading="loading"
-  element-loading-text="Загрузка данных ..."
+    v-loading="loading"
+    element-loading-text="Загрузка данных ..."
   )
 
     resize.resize(:padding="30")
       campaigns-table(v-if="!loading" :campaigns="campaigns" @cell-click="campaignClick")
 
   campaign-dialog(
-  v-if="campaign"
-  :campaign="campaign"
-  @closed="editCampaignClose()"
-  @submit="editCampaign"
-  @remove="removeCampaign"
+    v-if="campaign"
+    :campaign="campaign"
+    @closed="editCampaignClose()"
+    @submit="editCampaign"
+    @remove="removeCampaign"
   )
 
   campaign-pictures-dialog(
-  v-if="galleryCampaign"
-  :campaign="galleryCampaign"
-  @closed="onGalleryClosed"
+    v-if="galleryCampaign"
+    :campaign="galleryCampaign"
+    @closed="onGalleryClosed"
   )
 
 </template>
@@ -134,6 +136,12 @@ export default {
 
   },
 
+  created() {
+    if (!this.selectedMonth) {
+      this.selectedMonth = this.lastYearMonths[0].id;
+    }
+  },
+
   watch: {
     busy(isBusy) {
       const { message: currentMessage } = this;
@@ -164,15 +172,17 @@ export default {
 <style scoped lang="scss">
 
 @import "../styles/variables";
+@import "../styles/responsive";
 
 .month-select {
-  margin-left: 10px;
+  @include responsive-only(gt-xs) {
+    margin-left: 10px;
+  }
 }
 
 .campaigns-header {
 
-  height: 70px;
-  margin-top: -20px;
+  margin-top: -10px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -183,6 +193,21 @@ export default {
   label {
     margin-left: $margin-right;
     font-weight: bold;
+  }
+
+  .filter {
+    display: flex;
+    @include responsive-only(xxs) {
+      flex-direction: column;
+    }
+  }
+
+  .period {
+    @include responsive-only(lt-sm) {
+      label {
+        display: none;
+      }
+    }
   }
 
 }
@@ -197,6 +222,26 @@ export default {
   margin-left: 10px;
   max-width: 200px;
 
+}
+
+.add-campaign {
+
+  @include responsive-only(lt-sm) {
+    span {
+      display: none;
+    }
+    padding: $padding;
+  }
+
+  @include responsive-only(gt-xs) {
+    i {
+      display: none;
+    }
+  }
+
+  i {
+    font-size: 25px;
+  }
 }
 
 </style>
