@@ -7,13 +7,7 @@ el-container.campaigns(
 
   el-header.campaigns-header(height="")
 
-    .filter
-
-      .period
-        label Период:
-        month-select(:months="lastYearMonths" v-model="selectedMonth")
-
-      search-input(v-model="searchText")
+    campaign-filters.filters
 
     el-button.add-campaign(type="primary" @click="campaign = {}")
       i.el-icon-document-add
@@ -46,17 +40,16 @@ el-container.campaigns(
 <script>
 
 import { createNamespacedHelpers } from 'vuex';
-import MonthSelect from '@/components/MonthSelect.vue';
+
 import CampaignPicturesDialog from '@/components/campaigns/CampaignPicturesDialog.vue';
 import CampaignDialog from '@/components/campaigns/CampaignDialog.vue';
 import CampaignsTable from '@/components/campaigns/CampaignsTable.vue';
+import CampaignFilters from '@/components/campaigns/CampaignFilters.vue';
 
 // import log from 'sistemium-telegram/services/log';
 
 import * as getters from '@/vuex/campaigns/getters';
 import * as actions from '@/vuex/campaigns/actions';
-
-import { monthGenerator } from 'sistemium-telegram/services/moments';
 
 const { mapActions, mapGetters } = createNamespacedHelpers('campaigns');
 
@@ -75,24 +68,11 @@ export default {
 
   computed: {
 
-    lastYearMonths() {
-      return monthGenerator(12, Date());
-    },
-
     ...mapGetters({
       campaigns: getters.CAMPAIGNS,
       galleryCampaign: getters.GALLERY_CAMPAIGN,
       busy: getters.BUSY,
     }),
-
-    selectedMonth: {
-      ...mapGetters({ get: getters.SELECTED_MONTH }),
-      ...mapActions({ set: actions.SELECT_MONTH }),
-    },
-    searchText: {
-      ...mapGetters({ get: getters.SEARCH_TEXT }),
-      ...mapActions({ set: actions.SEARCH_TEXT_CHANGE }),
-    },
 
   },
 
@@ -136,12 +116,6 @@ export default {
 
   },
 
-  created() {
-    if (!this.selectedMonth) {
-      this.selectedMonth = this.lastYearMonths[0].id;
-    }
-  },
-
   watch: {
     busy(isBusy) {
       const { message: currentMessage } = this;
@@ -159,10 +133,10 @@ export default {
   },
 
   components: {
+    CampaignFilters,
     CampaignDialog,
     CampaignPicturesDialog,
     CampaignsTable,
-    MonthSelect,
   },
 
 };
@@ -174,12 +148,6 @@ export default {
 @import "../styles/variables";
 @import "../styles/responsive";
 
-.month-select {
-  @include responsive-only(gt-xs) {
-    margin-left: 10px;
-  }
-}
-
 .campaigns-header {
 
   margin-top: -10px;
@@ -190,38 +158,11 @@ export default {
   padding-left: 3px;
   justify-content: space-between;
 
-  label {
-    margin-left: $margin-right;
-    font-weight: bold;
-  }
-
-  .filter {
-    display: flex;
-    @include responsive-only(xxs) {
-      flex-direction: column;
-    }
-  }
-
-  .period {
-    @include responsive-only(lt-sm) {
-      label {
-        display: none;
-      }
-    }
-  }
-
 }
 
 .resize {
   display: block;
   width: 100%;
-}
-
-.search-input {
-
-  margin-left: 10px;
-  max-width: 200px;
-
 }
 
 .add-campaign {
@@ -242,6 +183,7 @@ export default {
   i {
     font-size: 25px;
   }
+
 }
 
 </style>
