@@ -2,6 +2,7 @@ import Campaign from '@/models/Campaign';
 import CampaignPicture from '@/models/CampaignPicture';
 import escapeRegExp from 'lodash/escapeRegExp';
 import filter from 'lodash/filter';
+import orderBy from 'lodash/orderBy';
 
 /**
  *
@@ -30,7 +31,7 @@ export async function campaignsData(month, searchText) {
  * @returns {Array}
  */
 export function getCampaigns(ids) {
-  return Campaign.getMany(ids);
+  return orderBy(Campaign.getMany(ids), 'name');
 }
 
 /**
