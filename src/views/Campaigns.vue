@@ -9,6 +9,8 @@ el-container.campaigns(
 
     campaign-filters.filters
 
+    layout-select(v-model="layout")
+
     el-button.add-campaign(type="primary" @click="campaign = {}")
       i.el-icon-document-add
       span Добавить акцию
@@ -18,8 +20,9 @@ el-container.campaigns(
     element-loading-text="Загрузка данных ..."
   )
 
-    resize.resize(:padding="30")
+    resize.resize(:padding="30" v-if="layout==='table'")
       campaigns-table(v-if="!loading" :campaigns="campaigns" @cell-click="campaignClick")
+    campaigns-with-aside(:campaigns="campaigns" v-else)
 
   campaign-dialog(
     v-if="campaign"
@@ -40,20 +43,19 @@ el-container.campaigns(
 <script>
 
 import { createNamespacedHelpers } from 'vuex';
-
 import CampaignPicturesDialog from '@/components/campaigns/CampaignPicturesDialog.vue';
 import CampaignDialog from '@/components/campaigns/CampaignDialog.vue';
 import CampaignsTable from '@/components/campaigns/CampaignsTable.vue';
 import CampaignFilters from '@/components/campaigns/CampaignFilters.vue';
-
-// import log from 'sistemium-telegram/services/log';
-
 import * as getters from '@/vuex/campaigns/getters';
 import * as actions from '@/vuex/campaigns/actions';
-
-const { mapActions, mapGetters } = createNamespacedHelpers('campaigns');
+import CampaignsWithAside from '@/components/campaigns/CampaignsWithAside.vue';
+import LayoutSelect from '@/components/LayoutSelect.vue';
+// import log from 'sistemium-telegram/services/log';
 
 // const { debug } = log('Campaigns');
+
+const { mapActions, mapGetters } = createNamespacedHelpers('campaigns');
 
 export default {
 
@@ -63,6 +65,7 @@ export default {
     return {
       loading: false,
       campaign: undefined,
+      layout: 'list',
     };
   },
 
@@ -133,6 +136,8 @@ export default {
   },
 
   components: {
+    LayoutSelect,
+    CampaignsWithAside,
     CampaignFilters,
     CampaignDialog,
     CampaignPicturesDialog,
@@ -150,7 +155,7 @@ export default {
 
 .campaigns-header {
 
-  margin-top: -10px;
+  margin-top: -5px;
   display: flex;
   flex-direction: row;
   align-items: center;
