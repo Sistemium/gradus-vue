@@ -44,9 +44,26 @@ export default {
   },
 
   created() {
-    if (!this.selectedMonth) {
-      this.selectedMonth = this.lastYearMonths[0].id;
-    }
+    const immediate = !this.selectedMonth;
+    this.$watch('$route.params.monthId', monthId => {
+      this.selectedMonth = monthId || this.lastYearMonths[1].id;
+    }, { immediate });
+  },
+
+  watch: {
+    selectedMonth(monthId) {
+      const { name, params = {} } = this.$route;
+      if (params.monthId === monthId) {
+        return;
+      }
+      this.$router.push({
+        name,
+        params: {
+          ...params,
+          monthId,
+        },
+      });
+    },
   },
 
   components: { MonthSelect },
