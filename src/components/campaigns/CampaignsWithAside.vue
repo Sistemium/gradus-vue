@@ -42,6 +42,9 @@ export default {
     currentCampaign(campaign) {
       this.setRouterParams(campaign);
       this.currentCampaignPictures = [];
+      if (!campaign) {
+        return;
+      }
       this.loading = true;
       svc.getCampaignPicturesByCampaign(campaign)
         .then(pictures => {
