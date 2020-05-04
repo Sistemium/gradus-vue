@@ -4,7 +4,10 @@ el-container.campaigns-with-aside
   el-aside
     resize(:padding="30")
       campaigns-list.campaigns-list(:campaigns="campaigns" v-model="currentCampaign")
-  el-main()
+  el-main(
+    v-loading="loading"
+    element-loading-text="Загрузка данных ..."
+  )
     campaign-view(
       v-if="currentCampaign"
       :campaign="currentCampaign"
@@ -25,6 +28,7 @@ export default {
 
   data() {
     return {
+      loading: false,
       currentCampaign: undefined,
       currentCampaignPictures: undefined,
     };
@@ -38,9 +42,13 @@ export default {
     currentCampaign(campaign) {
       this.setRouterParams(campaign);
       this.currentCampaignPictures = [];
+      this.loading = true;
       svc.getCampaignPicturesByCampaign(campaign)
         .then(pictures => {
           this.currentCampaignPictures = pictures;
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
   },
