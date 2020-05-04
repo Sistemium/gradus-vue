@@ -43,7 +43,7 @@ export default new Router({
       },
     },
     {
-      path: '/campaigns/:monthId?',
+      path: '/campaigns/:monthId?/:campaignId?',
       name: 'campaigns',
       component: () => import(/* webpackChunkName: "campaigns" */ './views/Campaigns.vue'),
       meta: {
