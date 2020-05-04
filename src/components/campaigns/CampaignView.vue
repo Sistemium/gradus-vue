@@ -2,6 +2,10 @@
 
 .campaign-view
 
+  .buttons
+    // confirm-button.del(type="text" @confirm="delCampaign()" text="Удалить" size="mini")
+    el-button.edit(@click="editCampaignClick()" size="mini" icon="el-icon-edit" circle)
+
   .fields
     .name(v-text="campaign.name")
     .period
@@ -15,7 +19,7 @@
         v-for="picture in pictures"
         :key="picture.id"
       )
-        img(:src="picture.thumbnailSrc")
+        img(:src="picture.thumbnailSrc" @click="campaignThumbnailClick(picture)")
 
 </template>
 <script>
@@ -27,6 +31,18 @@ export default {
   props: {
     campaign: Object,
     pictures: Array,
+  },
+
+  methods: {
+    delCampaign() {
+      this.$emit('removeCampaign', this.campaign);
+    },
+    editCampaignClick() {
+      this.$emit('editCampaign', this.campaign);
+    },
+    campaignThumbnailClick(picture) {
+      this.$emit('campaignThumbnail', picture);
+    },
   },
 
   name: NAME,
@@ -73,10 +89,15 @@ export default {
   > * + * {
     margin-top: $margin-top;
   }
+
   .comment-text:before {
     content: "ℹ️";
     margin-right: $padding;
   }
+}
+
+.buttons {
+  float: right;
 }
 
 </style>

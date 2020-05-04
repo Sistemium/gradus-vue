@@ -22,7 +22,7 @@ el-container.campaigns(
 
     resize.resize(:padding="30" v-if="layout==='table'")
       campaigns-table(v-if="!loading" :campaigns="campaigns" @cell-click="campaignClick")
-    campaigns-with-aside(:campaigns="campaigns" v-else)
+    campaigns-with-aside(:campaigns="campaigns" v-else @editCampaign="campaignClick")
 
   campaign-dialog(
     v-if="campaign"
@@ -100,7 +100,7 @@ export default {
 
     },
 
-    campaignClick(row, column) {
+    campaignClick(row, column = {}) {
 
       if (column.label === 'Картинки') {
         this.campaignAvatarClick(row);

@@ -1,6 +1,7 @@
 <template lang="pug">
 
 el-dialog.campaign-input(
+top="4vh"
 :title="title"
 :before-close="closeDialog"
 :visible.sync="visible"
@@ -164,7 +165,7 @@ export default {
   computed: {
 
     title() {
-      return this.isEdit() ? 'Редактировать' : 'Новая Акция';
+      return this.isEdit() ? this.campaign.name : 'Новая Акция';
     },
 
   },

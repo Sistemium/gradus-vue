@@ -12,6 +12,8 @@ el-container.campaigns-with-aside
       v-if="currentCampaign"
       :campaign="currentCampaign"
       :pictures="currentCampaignPictures"
+      @editCampaign="onEditCampaign"
+      @removeCampaign=""
     )
 
 </template>
@@ -85,6 +87,9 @@ export default {
           campaignId,
         },
       });
+    },
+    onEditCampaign(campaign) {
+      this.$emit('editCampaign', campaign);
     },
   },
 
