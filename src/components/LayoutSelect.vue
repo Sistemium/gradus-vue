@@ -38,11 +38,11 @@ export default {
 @import "../styles/variables";
 
 i {
-  font-size: x-large;
+  font-size: large;
 }
 
 .layout-select /deep/ .el-radio-button__inner {
-  padding: 8px;
+  padding: 6px;
 }
 
 </style>
