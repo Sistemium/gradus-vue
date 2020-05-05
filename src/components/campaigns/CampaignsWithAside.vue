@@ -13,7 +13,7 @@ el-container.campaigns-with-aside
       :campaign="currentCampaign"
       :pictures="currentCampaignPictures"
       @editCampaign="onEditCampaign"
-      @removeCampaign=""
+      @campaignPictureClick="campaignPictureClick"
     )
 
 </template>
@@ -23,6 +23,10 @@ import find from 'lodash/find';
 import CampaignsList from '@/components/campaigns/CampaignsList.vue';
 import CampaignView from '@/components/campaigns/CampaignView.vue';
 import * as svc from '@/services/campaigns';
+import * as actions from '@/vuex/campaigns/actions';
+import { createNamespacedHelpers } from 'vuex';
+
+const { mapActions } = createNamespacedHelpers('campaigns');
 
 const NAME = 'CampaignsWithAside';
 
@@ -74,6 +78,9 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      campaignPictureClick: actions.SHOW_CAMPAIGN_PICTURE,
+    }),
     setRouterParams(campaign) {
       const { id: campaignId } = campaign || {};
       const { name, params = {} } = this.$route;

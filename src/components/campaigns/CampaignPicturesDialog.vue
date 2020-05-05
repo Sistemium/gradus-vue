@@ -1,7 +1,6 @@
 <template lang="pug">
 
 el-dialog(
-:title="campaign.name"
 :fullscreen="true"
 :show-close="true"
 :visible.sync="visible"
@@ -10,6 +9,7 @@ custom-class="el-dialog-gallery"
 :append-to-body="true"
 center
 )
+  .title(slot="title") {{ campaign.name }}
   campaigns-picture-gallery(
   v-loading="busy"
   element-loading-text="Обработка изображения ..."
@@ -100,3 +100,9 @@ export default {
 };
 
 </script>
+<style lang="scss" scoped>
+.title {
+  font-size: x-large;
+  font-weight: 400;
+}
+</style>

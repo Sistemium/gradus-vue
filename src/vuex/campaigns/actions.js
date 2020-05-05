@@ -12,6 +12,7 @@ export const SELECT_MONTH = 'SELECT_MONTH';
 export const SEARCH_TEXT_CHANGE = 'SEARCH_TEXT_CHANGE';
 export const UPDATE_CAMPAIGN = 'UPDATE_CAMPAIGN';
 export const CAMPAIGN_AVATAR_CLICK = 'CAMPAIGN_AVATAR_CLICK';
+export const SHOW_CAMPAIGN_PICTURE = 'SHOW_CAMPAIGN_PICTURE';
 export const ADD_GALLERY_PICTURE = 'ADD_GALLERY_PICTURE';
 export const REMOVE_GALLERY_PICTURE = 'REMOVE_GALLERY_PICTURE';
 export const REMOVE_CAMPAIGN = 'REMOVE_CAMPAIGN';
@@ -67,22 +68,35 @@ export default {
 
   },
 
-  async [CAMPAIGN_AVATAR_CLICK]({ commit }, campaign) {
+  async [SHOW_CAMPAIGN_PICTURE]({ commit }, campaignPicture) {
 
-    commit(m.SET_BUSY, true);
+    const { campaign } = campaignPicture || {};
 
     if (campaign) {
-
       commit(m.SET_BUSY, true);
       commit(m.SET_GALLERY_PICTURES, await svc.getCampaignPicturesByCampaign(campaign));
-      commit(m.SET_BUSY, false);
-
+      setTimeout(() => {
+        commit(m.SET_GALLERY_PICTURE, campaignPicture);
+      }, 0);
     } else {
       commit(m.SET_GALLERY_PICTURES);
     }
 
     commit(m.SET_GALLERY_CAMPAIGN, campaign);
+    commit(m.SET_BUSY, false);
 
+  },
+
+  async [CAMPAIGN_AVATAR_CLICK]({ commit }, campaign) {
+
+    if (campaign) {
+      commit(m.SET_BUSY, true);
+      commit(m.SET_GALLERY_PICTURES, await svc.getCampaignPicturesByCampaign(campaign));
+    } else {
+      commit(m.SET_GALLERY_PICTURES);
+    }
+
+    commit(m.SET_GALLERY_CAMPAIGN, campaign);
     commit(m.SET_BUSY, false);
 
   },

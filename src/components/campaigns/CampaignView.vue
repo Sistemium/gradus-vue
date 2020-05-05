@@ -41,7 +41,7 @@ export default {
       this.$emit('editCampaign', this.campaign);
     },
     campaignThumbnailClick(picture) {
-      this.$emit('campaignThumbnail', picture);
+      this.$emit('campaignPictureClick', picture);
     },
   },
 
@@ -64,6 +64,7 @@ export default {
 .thumbnail img {
   max-width: 170px;
   margin: $margin-top;
+  cursor: zoom-in;
 }
 
 .name {
