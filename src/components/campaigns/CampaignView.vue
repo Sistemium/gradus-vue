@@ -61,10 +61,18 @@ export default {
   justify-content: space-around;
 }
 
-.thumbnail img {
-  max-width: 170px;
-  margin: $margin-top;
-  cursor: zoom-in;
+.thumbnail {
+  margin: $padding;
+  border-radius: $border-radius;
+  border: solid 1px $gray-border-color;
+  &:hover {
+    border-color: $blue;
+  }
+  img {
+    max-width: 170px;
+    margin: $margin-top;
+    cursor: zoom-in;
+  }
 }
 
 .name {
