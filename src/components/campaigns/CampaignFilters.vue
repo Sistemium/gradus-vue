@@ -6,7 +6,7 @@
     label Период:
     month-select(:months="lastYearMonths" v-model="selectedMonth")
 
-  search-input(v-model="searchText")
+  search-input(v-model="searchText" :debounce="100")
 
 </template>
 <script>

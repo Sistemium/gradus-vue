@@ -17,11 +17,28 @@ export async function campaignsData(month, searchText) {
     month,
   };
 
-  const campaigns = await Campaign.findAll(fetchParams, { force: true, with: ['CampaignPicture'] });
+  await Campaign.findAll(fetchParams, {
+    // force: true,
+    with: ['CampaignPicture'],
+  });
 
+  return campaignsFilter(month, searchText);
+
+}
+
+function campaignsFilter(monthId, searchText) {
+
+  const campaigns = Campaign.getAll();
   const re = searchText && new RegExp(escapeRegExp(searchText), 'i');
+  const monthB = `${monthId}-01`;
+  const monthE = `${monthId}-31`;
 
-  return filter(campaigns, campaign => (!re || re.test(campaign.name)));
+  return filter(campaigns, ({ dateB, dateE, name }) => {
+    if (dateB > monthE || dateE < monthB) {
+      return false;
+    }
+    return !re || re.test(name);
+  });
 
 }
 
