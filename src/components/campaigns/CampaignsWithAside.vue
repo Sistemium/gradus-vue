@@ -19,7 +19,11 @@ el-container.campaigns-with-aside
       :show-empty="false"
       @uploaded="setPictures(currentCampaign)"
     )
-
+    el-alert(
+      v-if="!currentCampaign && campaigns.length"
+      title="👈 Выберите акцию из списка"
+      type="info"
+    )
 
 </template>
 <script>
