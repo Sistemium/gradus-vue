@@ -25,7 +25,7 @@
         img(:src="image.largeSrc || image.smallSrc")
 
   .empty(v-else @click.prevent="$emit('image-click')")
-    img(src="/images/placeholder.png")
+    img(src="/images/placeholder.png" v-if="showEmpty")
 
   .buttons(v-if="model")
 
@@ -84,6 +84,10 @@ export default {
     carouselType: {
       type: String,
       default: 'card',
+    },
+    showEmpty: {
+      type: Boolean,
+      default: true,
     },
   },
 

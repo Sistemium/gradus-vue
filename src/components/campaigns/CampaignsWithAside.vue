@@ -4,10 +4,7 @@ el-container.campaigns-with-aside
   el-aside
     resize(:padding="30")
       campaigns-list.campaigns-list(:campaigns="campaigns" v-model="currentCampaign")
-  el-main(
-    v-loading="loading"
-    element-loading-text="Загрузка данных ..."
-  )
+  el-main
     campaign-view(
       v-if="currentCampaign"
       :campaign="currentCampaign"
@@ -15,16 +12,25 @@ el-container.campaigns-with-aside
       @editCampaign="onEditCampaign"
       @campaignPictureClick="campaignPictureClick"
     )
+    campaigns-picture-gallery(
+      v-if="currentCampaign && !currentCampaignPictures.length"
+      :new-image-properties="{ campaignId: currentCampaign.id }"
+      carousel-type=""
+      :show-empty="false"
+      @uploaded="setPictures(currentCampaign)"
+    )
+
 
 </template>
 <script>
 
 import find from 'lodash/find';
-import CampaignsList from '@/components/campaigns/CampaignsList.vue';
-import CampaignView from '@/components/campaigns/CampaignView.vue';
 import * as svc from '@/services/campaigns';
 import * as actions from '@/vuex/campaigns/actions';
 import { createNamespacedHelpers } from 'vuex';
+import CampaignsPictureGallery from './CampaignsPictureGallery';
+import CampaignsList from './CampaignsList.vue';
+import CampaignView from './CampaignView.vue';
 
 const { mapActions } = createNamespacedHelpers('campaigns');
 
@@ -36,7 +42,7 @@ export default {
     return {
       loading: false,
       currentCampaign: undefined,
-      currentCampaignPictures: undefined,
+      currentCampaignPictures: [],
     };
   },
 
@@ -47,18 +53,7 @@ export default {
   watch: {
     currentCampaign(campaign) {
       this.setRouterParams(campaign);
-      this.currentCampaignPictures = [];
-      if (!campaign) {
-        return;
-      }
-      this.loading = true;
-      svc.getCampaignPicturesByCampaign(campaign)
-        .then(pictures => {
-          this.currentCampaignPictures = pictures;
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+      this.setPictures(campaign);
     },
   },
 
@@ -98,10 +93,25 @@ export default {
     onEditCampaign(campaign) {
       this.$emit('editCampaign', campaign);
     },
+    setPictures(campaign) {
+      this.currentCampaignPictures = campaign ? campaign.pictures : [];
+      if (!campaign) {
+        return;
+      }
+      this.loading = true;
+      svc.getCampaignPicturesByCampaign(campaign)
+        .then(pictures => {
+          this.currentCampaignPictures = pictures;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
   },
 
   name: NAME,
   components: {
+    CampaignsPictureGallery,
     CampaignView,
     CampaignsList,
   },

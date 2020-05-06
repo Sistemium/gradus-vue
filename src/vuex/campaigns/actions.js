@@ -58,13 +58,15 @@ export default {
 
     const date = getters[g.SELECTED_MONTH];
 
-    await svc.saveCampaign(campaign);
+    const saved = await svc.saveCampaign(campaign);
 
     const campaigns = await svc.campaignsData(date, searchText);
 
     commit(m.SET_CAMPAIGNS, campaigns);
 
     commit(m.SET_BUSY, false);
+
+    return saved;
 
   },
 
