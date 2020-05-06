@@ -44,14 +44,23 @@ export default {
   },
 
   created() {
-    const immediate = !this.selectedMonth;
+    const immediate = true;
     this.$watch('$route.params.monthId', monthId => {
-      this.selectedMonth = monthId || this.lastYearMonths[1].id;
+      this.selectedMonth = monthId || this.selectedMonth || this.lastYearMonths[1].id;
+      if (!monthId) {
+        this.updateRoute(this.selectedMonth);
+      }
     }, { immediate });
   },
 
   watch: {
     selectedMonth(monthId) {
+      this.updateRoute(monthId);
+    },
+  },
+
+  methods: {
+    updateRoute(monthId) {
       const { name, params = {} } = this.$route;
       if (params.monthId === monthId) {
         return;
