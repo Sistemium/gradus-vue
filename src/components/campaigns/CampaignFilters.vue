@@ -48,30 +48,14 @@ export default {
     this.$watch('$route.params.monthId', monthId => {
       this.selectedMonth = monthId || this.selectedMonth || this.lastYearMonths[1].id;
       if (!monthId) {
-        this.updateRoute(this.selectedMonth);
+        this.updateRouteParams({ monthId: this.selectedMonth });
       }
     }, { immediate });
   },
 
   watch: {
     selectedMonth(monthId) {
-      this.updateRoute(monthId);
-    },
-  },
-
-  methods: {
-    updateRoute(monthId) {
-      const { name, params = {} } = this.$route;
-      if (params.monthId === monthId) {
-        return;
-      }
-      this.$router.push({
-        name,
-        params: {
-          ...params,
-          monthId,
-        },
-      });
+      this.updateRouteParams({ monthId });
     },
   },
 

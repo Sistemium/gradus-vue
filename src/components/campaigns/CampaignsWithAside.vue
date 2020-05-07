@@ -56,7 +56,8 @@ export default {
 
   watch: {
     currentCampaign(campaign) {
-      this.setRouterParams(campaign);
+      const { id: campaignId } = campaign || {};
+      this.updateRouteParams({ campaignId });
       this.setPictures(campaign);
     },
   },
@@ -80,20 +81,6 @@ export default {
     ...mapActions({
       campaignPictureClick: actions.SHOW_CAMPAIGN_PICTURE,
     }),
-    setRouterParams(campaign) {
-      const { id: campaignId } = campaign || {};
-      const { name, params = {} } = this.$route;
-      if (params.campaignId === campaignId) {
-        return;
-      }
-      this.$router.push({
-        name,
-        params: {
-          ...params,
-          campaignId,
-        },
-      });
-    },
     onEditCampaign(campaign) {
       this.$emit('editCampaign', campaign);
     },
