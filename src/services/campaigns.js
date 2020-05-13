@@ -3,6 +3,7 @@ import CampaignPicture from '@/models/CampaignPicture';
 import escapeRegExp from 'lodash/escapeRegExp';
 import filter from 'lodash/filter';
 import orderBy from 'lodash/orderBy';
+import { monthToWhere } from '@/lib/dates';
 
 /**
  *
@@ -14,7 +15,7 @@ export async function campaignsData(month, searchText) {
 
   const fetchParams = {
     limit: 1500,
-    month,
+    'where:': monthToWhere(month),
   };
 
   await Campaign.findAll(fetchParams, {
