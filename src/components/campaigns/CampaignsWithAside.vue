@@ -2,8 +2,8 @@
 
 el-container.campaigns-with-aside
   el-aside
-    resize(:padding="30")
-      campaigns-list.campaigns-list(:campaigns="campaigns" v-model="currentCampaign")
+    resize#campaigns-list-container(:padding="30")
+      campaigns-list(:campaigns="campaigns" v-model="currentCampaign")
   el-main
     campaign-view(
       v-if="currentCampaign"
@@ -59,6 +59,9 @@ export default {
       const { id: campaignId } = campaign || {};
       this.updateRouteParams({ campaignId });
       this.setPictures(campaign);
+      this.$nextTick(() => {
+        this.scrollToCampaign(campaign);
+      });
     },
   },
 
@@ -77,12 +80,27 @@ export default {
     }, { immediate: true });
   },
 
+  mounted() {
+    this.$nextTick(() => {
+      this.scrollToCampaign(this.currentCampaign);
+    });
+  },
+
   methods: {
     ...mapActions({
       campaignPictureClick: actions.SHOW_CAMPAIGN_PICTURE,
     }),
     onEditCampaign(campaign) {
       this.$emit('editCampaign', campaign);
+    },
+    scrollToCampaign(campaign) {
+      if (!campaign) {
+        return;
+      }
+      this.$scrollTo(`#c-${campaign.id}`, 500, {
+        container: '#campaigns-list-container',
+        force: false,
+      });
     },
     setPictures(campaign) {
       this.currentCampaignPictures = campaign ? campaign.pictures : [];

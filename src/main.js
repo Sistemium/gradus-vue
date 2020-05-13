@@ -1,5 +1,6 @@
 import Vue from 'vue';
 
+import VueScrollTo from 'vue-scrollto';
 import '@/lib/element-ui';
 import 'intersection-observer';
 import '@/lib/v-select';
@@ -24,6 +25,7 @@ Vue.config.productionTip = false;
 Vue.component('resize', Resize);
 Vue.component(ConfirmButton.name, ConfirmButton);
 Vue.component(SearchInput.name, SearchInput);
+Vue.use(VueScrollTo);
 
 new Vue({
   router,

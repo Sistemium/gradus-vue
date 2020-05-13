@@ -1,9 +1,10 @@
 <template lang="pug">
 
 .campaigns-list
-  .list-group
+  .list-group(ref="listGroup")
     .list-group-item(
       v-for="item in campaigns" :key="item.id"
+      :id="`c-${item.id}`"
       @click.prevent="itemClick(item)"
       :class="value && value.id === item.id && 'active'"
     )
