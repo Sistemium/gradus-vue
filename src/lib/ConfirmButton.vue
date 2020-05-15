@@ -5,6 +5,7 @@ el-badge.countdown(:value="countdown" :hidden="!countdown")
   :type="buttonType"
   :class="countdown && 'confirmation'"
   :size="size"
+  :disabled="disabled"
   @click="onClick"
   )
     span {{ buttonText }}
@@ -29,6 +30,10 @@ export default {
     timeout: {
       type: Number,
       default: 5000,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
 

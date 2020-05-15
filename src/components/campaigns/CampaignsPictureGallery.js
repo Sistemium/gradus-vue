@@ -1,6 +1,6 @@
 import { createNamespacedHelpers } from 'vuex';
 import * as getters from '@/vuex/campaigns/getters';
-import * as a from '@/vuex/catalogue/actions';
+import * as a from '@/vuex/campaigns/actions';
 import PictureGallery from '@/components/PictureGallery.vue';
 import CampaignPicture from '@/models/CampaignPicture';
 

@@ -44,7 +44,7 @@
 
     confirm-button.remove(
       v-if="images.length"
-      :disabled="images.length > 1 && isAvatar"
+      :disabled="!currentImage || images.length > 1 && isAvatar"
       text="Удалить" confirm-text="Точно удалить?"
       @confirm="removeClick"
     )
