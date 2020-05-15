@@ -9,6 +9,9 @@
       :class="value && value.id === item.id && 'active'"
     )
       span.name {{ item.name }}
+      .badge(v-if="item.pictures.length")
+        span {{ item.pictures.length }}
+      .warning(v-else) ⚠️
 
 </template>
 <script>
@@ -32,6 +35,15 @@ export default {
 </script>
 <style scoped lang="scss">
 
-@import "../../styles/variables";
+@import "../../styles/badge";
+
+.badge {
+  @extend %badge;
+}
+
+.list-group-item {
+  display: flex;
+  justify-content: space-between;
+}
 
 </style>
