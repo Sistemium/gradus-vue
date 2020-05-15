@@ -39,6 +39,7 @@ export default {
 
 .badge {
   @extend %badge;
+  margin-left: $padding;
 }
 
 .list-group-item {
