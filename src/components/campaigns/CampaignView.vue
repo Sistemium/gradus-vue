@@ -14,7 +14,7 @@
       .date-e {{ campaign.dateE | ruDate }}
     .comment-text(v-text="campaign.commentText" v-if="campaign.commentText")
 
-  resize(:padding="30")
+  resize(:padding="50")
     .pictures()
       .thumbnail(
         v-for="picture in pictures"
