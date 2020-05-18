@@ -41,6 +41,7 @@
       @imageuploading="busy = true"
       :entity-name="model.name"
     )
+      slot(name="photoButton")
 
     confirm-button.remove(
       v-if="images.length"
@@ -202,7 +203,7 @@ export default {
 .picture-gallery {
 
   text-align: center;
-  height: 100%;
+  /*height: 100%;*/
 
   /*display: flex;*/
   flex-direction: column;

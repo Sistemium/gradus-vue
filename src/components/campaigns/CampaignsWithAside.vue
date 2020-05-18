@@ -9,16 +9,18 @@ el-container.campaigns-with-aside
       v-if="currentCampaign"
       :campaign="currentCampaign"
       :pictures="currentCampaignPictures"
-      @editCampaign="onEditCampaign"
       @campaignPictureClick="campaignPictureClick"
     )
-    campaigns-picture-gallery(
-      v-if="currentCampaign && !currentCampaignPictures.length"
-      :new-image-properties="{ campaignId: currentCampaign.id }"
-      carousel-type=""
-      :show-empty="false"
-      @uploaded="setPictures(currentCampaign)"
-    )
+      template(v-slot:buttons)
+        el-button.edit(@click="onEditCampaign" size="mini" icon="el-icon-edit" circle)
+      template(v-slot:footer)
+        campaigns-picture-gallery(
+          v-if="currentCampaign"
+          :new-image-properties="{ campaignId: currentCampaign.id }"
+          carousel-type=""
+          :show-empty="false"
+          @uploaded="setPictures(currentCampaign)"
+        )
     el-alert(
       v-if="!currentCampaign && campaigns.length"
       title="👈 Выберите акцию из списка"
@@ -92,8 +94,8 @@ export default {
     ...mapActions({
       campaignPictureClick: actions.SHOW_CAMPAIGN_PICTURE,
     }),
-    onEditCampaign(campaign) {
-      this.$emit('editCampaign', campaign);
+    onEditCampaign() {
+      this.$emit('editCampaign', this.currentCampaign);
     },
     scrollToCampaign(campaign) {
       if (!campaign) {

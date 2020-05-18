@@ -14,7 +14,8 @@
     :headers="uploadHeaders"
     :url="imsUrl()"
   )
-    el-button.trigger(plain type="primary") {{ buttonText }}
+    slot
+      el-button.trigger(plain type="primary") {{ buttonText }}
 
 </template>
 <script>
@@ -107,14 +108,10 @@ export default {
 
 @import "../styles/variables";
 
-.take-photo-button {
+.trigger {
   border: solid 1px $gray-border-color;
   border-radius: 4px;
-}
-
-.trigger {
   box-shadow: none;
-  border: none;
   width: 100%;
 }
 

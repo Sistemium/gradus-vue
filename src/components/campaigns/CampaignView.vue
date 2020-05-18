@@ -3,8 +3,9 @@
 .campaign-view
 
   .buttons
-    // confirm-button.del(type="text" @confirm="delCampaign()" text="Удалить" size="mini")
-    el-button.edit(@click="editCampaignClick()" size="mini" icon="el-icon-edit" circle)
+    slot(name="buttons")
+      el-button.edit(@click="editCampaignClick()" size="mini" icon="el-icon-edit" circle)
+      // confirm-button.del(type="text" @confirm="delCampaign()" text="Удалить" size="mini")
 
   .fields
     .name(v-text="campaign.name")
@@ -20,6 +21,7 @@
         :key="picture.id"
       )
         img(:src="picture.thumbnailSrc" @click="campaignThumbnailClick(picture)")
+    slot(name="footer")
 
 </template>
 <script>
