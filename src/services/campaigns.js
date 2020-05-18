@@ -78,8 +78,8 @@ export function saveCampaign(campaign) {
 
 }
 
-export function getCampaignPicturesByCampaign(campaign) {
-  return CampaignPicture.findAll({ campaignId: campaign.id });
+export function getCampaignPicturesByCampaign(campaign, force = false) {
+  return CampaignPicture.findAll({ campaignId: campaign.id }, { force });
 }
 
 /**

@@ -32,6 +32,7 @@ el-container.campaigns(
     @remove="removeCampaign"
   )
 
+  //router-view
   campaign-pictures-dialog(
     v-if="galleryCampaign"
     :campaign="galleryCampaign"
@@ -82,10 +83,17 @@ export default {
   methods: {
 
     ...mapActions({
-      campaignAvatarClick: actions.CAMPAIGN_AVATAR_CLICK,
+      campaignAvatarClickStore: actions.CAMPAIGN_AVATAR_CLICK,
       updateCampaign: actions.UPDATE_CAMPAIGN,
       removeCampaign: actions.REMOVE_CAMPAIGN,
     }),
+
+    campaignAvatarClick(campaign) {
+      this.campaignAvatarClickStore(campaign)
+        .then(() => {
+          // this.$router.push({ name: 'campaignGallery' });
+        });
+    },
 
     editCampaignClose() {
       this.campaign = undefined;

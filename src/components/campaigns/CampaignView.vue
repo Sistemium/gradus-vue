@@ -65,9 +65,11 @@ export default {
   margin: $padding;
   border-radius: $border-radius;
   border: solid 1px $gray-border-color;
+
   &:hover {
     border-color: $blue;
   }
+
   img {
     max-width: 170px;
     margin: $margin-top;

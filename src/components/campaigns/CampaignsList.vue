@@ -16,6 +16,8 @@
 </template>
 <script>
 
+import CampaignPicture from '@/models/CampaignPicture';
+
 const NAME = 'CampaignsList';
 
 export default {
@@ -29,6 +31,9 @@ export default {
       // const { value } = this;
       this.$emit('input', item);
     },
+  },
+  created() {
+    this.$bindToModel(CampaignPicture);
   },
 };
 

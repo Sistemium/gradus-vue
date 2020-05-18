@@ -29,6 +29,8 @@ el-container.campaigns-with-aside
 <script>
 
 import find from 'lodash/find';
+
+import CampaignPicture from '@/models/CampaignPicture';
 import * as svc from '@/services/campaigns';
 import * as actions from '@/vuex/campaigns/actions';
 import { createNamespacedHelpers } from 'vuex';
@@ -103,15 +105,14 @@ export default {
       });
     },
     setPictures(campaign) {
-      this.currentCampaignPictures = campaign ? campaign.pictures : [];
+      // this.currentCampaignPictures = campaign ? campaign.pictures : [];
+      const query = { campaignId: campaign && campaign.id };
+      CampaignPicture.bindAll(this, query, 'currentCampaignPictures');
       if (!campaign) {
         return;
       }
       this.loading = true;
-      svc.getCampaignPicturesByCampaign(campaign)
-        .then(pictures => {
-          this.currentCampaignPictures = pictures;
-        })
+      svc.getCampaignPicturesByCampaign(campaign, true)
         .finally(() => {
           this.loading = false;
         });
