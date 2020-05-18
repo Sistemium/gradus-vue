@@ -11,7 +11,8 @@
       span.name {{ item.name }}
       .badge(v-if="item.pictures.length")
         span {{ item.pictures.length }}
-      .warning(v-else) ⚠️
+      .warning(v-else)
+        i.el-icon-warning
 
 </template>
 <script>
@@ -41,6 +42,7 @@ export default {
 <style scoped lang="scss">
 
 @import "../../styles/badge";
+@import "../../styles/variables";
 
 .badge {
   @extend %badge;
@@ -50,6 +52,11 @@ export default {
 .list-group-item {
   display: flex;
   justify-content: space-between;
+}
+
+.warning {
+  color: $orange;
+  font-size: 22px;
 }
 
 </style>
