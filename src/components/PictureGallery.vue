@@ -89,6 +89,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    initialId: {
+      type: String,
+      default: null,
+    },
   },
 
   data() {
@@ -118,6 +122,9 @@ export default {
   watch: {
     activeId(id) {
       this.$nextTick(() => this.$refs.carousel.setActiveItem(id));
+    },
+    carouselItem(item) {
+      console.info(item); // eslint-disable-line
     },
   },
 
@@ -178,7 +185,11 @@ export default {
   },
 
   created() {
-    this.carouselItem = findIndex(this.images, ({ id }) => id === this.avatarId);
+    const isInitial = ({ id }) => id === this.initialId || this.avatarId;
+    const initial = findIndex(this.images, isInitial);
+    if (initial > -1) {
+      this.carouselItem = initial;
+    }
   },
 
 };
