@@ -1,3 +1,4 @@
+@import "styles/typography";
 @import "styles/lists";
 @import "styles/dialogs";
 @import "styles/buttons";
@@ -5,13 +6,6 @@
 
 body {
   //background: $gray-background;
-}
-
-#app {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: $black;
 }
 
 #app-view {

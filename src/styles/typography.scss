@@ -1,0 +1,14 @@
+@import "variables";
+
+$font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+#app {
+  font-family: $font;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: $black;
+}
+
+input, textarea {
+  font-family: $font;
+}
