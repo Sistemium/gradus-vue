@@ -1,0 +1,7 @@
+@import "variables";
+
+@media print {
+  .el-carousel__arrow, .el-button, .el-dialog__close {
+    display: none;
+  }
+}
