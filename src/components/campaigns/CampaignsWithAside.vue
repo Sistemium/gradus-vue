@@ -1,10 +1,13 @@
 <template lang="pug">
 
 el-container.campaigns-with-aside
+
   el-aside
     resize#campaigns-list-container(:padding="30")
       campaigns-list(:campaigns="campaigns" v-model="currentCampaign")
+
   el-main
+
     campaign-view(
       v-if="currentCampaign"
       :campaign="currentCampaign"
@@ -13,7 +16,7 @@ el-container.campaigns-with-aside
     )
       template(v-slot:buttons)
         el-button.edit(@click="onEditCampaign" size="mini" icon="el-icon-edit" circle)
-      template(v-slot:footer)
+      //template(v-slot:footer)
         campaigns-picture-gallery(
           v-if="currentCampaign"
           :new-image-properties="{ campaignId: currentCampaign.id }"
@@ -21,6 +24,7 @@ el-container.campaigns-with-aside
           :show-empty="false"
           @uploaded="setPictures(currentCampaign)"
         )
+
     el-alert(
       v-if="!currentCampaign && campaigns.length"
       title="👈 Выберите акцию из списка"

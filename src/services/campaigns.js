@@ -1,9 +1,28 @@
 import Campaign from '@/models/Campaign';
 import CampaignPicture from '@/models/CampaignPicture';
+import Action from '@/models/Action';
 import escapeRegExp from 'lodash/escapeRegExp';
 import filter from 'lodash/filter';
 import orderBy from 'lodash/orderBy';
+import map from 'lodash/map';
+import flatten from 'lodash/flatten';
+import chunk from 'lodash/chunk';
+import uniq from 'lodash/uniq';
 import { monthToWhere } from '@/lib/dates';
+
+async function findByMany(model, ids, options = {}) {
+
+  const { chunkSize = 100, field = 'id' } = options;
+
+  const chunks = chunk(uniq(ids), chunkSize);
+
+  return Promise.all(chunks.map(chunkIds => {
+    const where = { [field]: { in: chunkIds } };
+    return model.findAll({ where });
+  }))
+    .then(flatten);
+
+}
 
 /**
  *
@@ -18,10 +37,14 @@ export async function campaignsData(month, searchText) {
     'where:': monthToWhere(month),
   };
 
-  await Campaign.findAll(fetchParams, {
+  const campaigns = await Campaign.findAll(fetchParams, {
     // force: true,
     with: ['CampaignPicture'],
   });
+
+  const actionIds = filter(flatten(map(campaigns, 'actionIds')));
+
+  await findByMany(Action, actionIds);
 
   return campaignsFilter(month, searchText);
 

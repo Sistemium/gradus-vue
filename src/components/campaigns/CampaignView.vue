@@ -15,16 +15,23 @@
     .comment-text(v-text="campaign.commentText" v-if="campaign.commentText")
 
   resize(:padding="50")
+
+    .actions
+      campaign-action(v-for="action in actions" :action="action")
+
     .pictures()
       .thumbnail(
         v-for="picture in pictures"
         :key="picture.id"
       )
         img(:src="picture.thumbnailSrc" @click="campaignThumbnailClick(picture)")
+
     slot(name="footer")
 
 </template>
 <script>
+
+import CampaignAction from '@/components/campaigns/CampaignAction.vue';
 
 const NAME = 'CampaignView';
 
@@ -47,7 +54,17 @@ export default {
     },
   },
 
+  computed: {
+    actions() {
+      return this.campaign.actions();
+    },
+  },
+
   name: NAME,
+  components: {
+    CampaignAction,
+  },
+
 };
 
 </script>
@@ -82,6 +99,7 @@ export default {
 .name {
   font-size: large;
   font-weight: bold;
+  white-space: pre-line;
 }
 
 .period {
