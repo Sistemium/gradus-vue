@@ -30,11 +30,11 @@ export default new Model({
       }
       return filter([
         res.own && {
-          title: 'коммерческая',
+          title: 'комм.',
           name: 'discountOwn',
         },
         res.comp && {
-          title: 'компенсируемая',
+          title: 'комп.',
           name: 'discountComp',
         },
       ]);

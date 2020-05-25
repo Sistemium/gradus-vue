@@ -2,8 +2,11 @@
 
 .campaign-action
 
-  .name {{ action.name }}
-    .comment(v-if="action.commentText") ({{ action.commentText }})
+  .header
+    .name {{ action.name }}
+      .comment(v-if="action.commentText") ({{ action.commentText }})
+    .buttons
+      el-button.edit(@click="onEditClick" size="mini" icon="el-icon-edit" circle)
 
   table
     thead
@@ -34,6 +37,7 @@
 
   //.restrictions(v-if="hasRestrictions")
     action-option(v-for="restriction in hasRestrictions" :action="restriction")
+  router-view
 
 </template>
 <script>
@@ -53,6 +57,18 @@ export default {
   computed: {
     discountHeaders() {
       return this.action.discountHeaders();
+    },
+  },
+  methods: {
+    onEditClick() {
+      const { params } = this.$route;
+      this.$router.push({
+        name: 'campaignActionEdit',
+        params: {
+          ...params,
+          actionId: this.action.id,
+        },
+      });
     },
   },
   mixins: [actionBase],
@@ -112,14 +128,21 @@ th, td {
 .campaign-action {
 
   margin-top: $margin-top;
-  border: $list-cell-borders;
 
-  &, > .name {
+  > .header {
+    border: $list-cell-borders;
+    border-bottom-style: none;
     border-top-left-radius: $border-radius;
     border-top-right-radius: $border-radius;
   }
 
-  > .name {
+  > .header {
+    display: flex;
+
+    > .name {
+      flex: 1;
+    }
+
     background: $gray-background;
     padding: $padding * 2;
     font-weight: 600;

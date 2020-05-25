@@ -6,9 +6,16 @@ export default {
     label: 'Акции',
   },
   children: [{
-    name: 'campaignGallery',
-    path: 'gallery',
-    // component: () =>
-    // import(/* webpackChunkName: "campaigns" */ '../components/campaigns/CampaignPicturesDialog'),
+    name: 'campaignActionEdit',
+    path: 'action/:actionId/edit',
+    props: ({ params }) => ({
+      actionId: params.actionId,
+      from: {
+        name: 'campaigns',
+        params: { ...params },
+      },
+    }),
+    component: () =>
+      import(/* webpackChunkName: "campaigns" */ '../components/campaigns/CampaignActionEdit.vue'),
   }],
 };

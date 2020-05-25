@@ -4,6 +4,10 @@ const { error } = log('DialogComponent');
 
 export default {
 
+  props: {
+    from: [String, Object],
+  },
+
   data() {
     return {
       visible: true,
@@ -31,6 +35,10 @@ export default {
     closeDialog() {
       this.visible = false;
       this.$emit('closed');
+      if (this.from) {
+        this.$router.replace(this.from)
+          .catch(e => error('closeDialog', e));
+      }
     },
 
     async onValidate(res, errors) {
