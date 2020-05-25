@@ -1,17 +1,20 @@
 <template lang="pug">
 
-.action-option
+td.action-option
 
   .name(v-if="action.name") {{ action.name }}
     .comment(v-if="action.commentText") {{ action.commentText }}
 
+  .ranges(v-if="action.ranges")
+    .name(v-for="range in action.ranges") {{ range.name }}
+
   //.conditions
-  .options(v-if="hasOptions")
+  //.options(v-if="hasOptions")
     .option(v-for="option in hasOptions")
       action-option(:action="option")
 
-  action-required(:action="action" ref="required")
-  action-discount(:action="action" ref="discount")
+  // action-required(:action="action" ref="required")
+  // action-discount(:action="action" ref="discount")
 
 </template>
 <script>
@@ -40,7 +43,7 @@ export default {
 @import "./actionBase";
 
 .condition, .action-option {
-  display: flex;
+//  display: flex;
 }
 
 .comment {
@@ -48,9 +51,10 @@ export default {
   font-size: smaller;
 }
 
-.name {
-  flex: 1;
-  padding: $padding;
+.name + .name {
+  //flex: 1;
+  //padding: $padding;
+  margin-top: $padding;
 }
 
 </style>

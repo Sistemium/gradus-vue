@@ -1,6 +1,6 @@
 <template lang="pug">
 
-.action-required(v-if="required")
+td.action-required(v-if="required")
   .pcs(v-if="required.pcs") {{ required.pcs }} б.
   .volume(v-if="required.volume") {{ required.volume }} л.
   .sku(v-if="required.sku") {{ required.sku }} SKU

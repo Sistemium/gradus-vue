@@ -1,8 +1,8 @@
 <template lang="pug">
 
-.action-discount(v-if="discount")
-  .own(v-if="discount.own") {{ discount.own }}% комм
-  .comp(v-if="discount.comp") {{ discount.comp }}% комп
+td.action-discount(v-if="discount")
+  .own(v-if="discount.own") {{ discount.own }}
+  .comp(v-if="discount.comp") {{ discount.comp }}
 
 </template>
 <script>

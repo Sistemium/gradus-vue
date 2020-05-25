@@ -1,3 +1,5 @@
+import { discountInfo } from '@/models/Action';
+
 export default {
 
   props: {
@@ -14,14 +16,12 @@ export default {
       return discount && discount.$el.clientWidth;
     },
 
+    required() {
+      return this.action.required;
+    },
+
     discount() {
-      const { discountOwn: own = 0, discountComp: comp = 0 } = this.action;
-      const total = comp + own;
-      return total && {
-        total,
-        own,
-        comp,
-      };
+      return discountInfo(this.action);
     },
 
     hasOptions() {

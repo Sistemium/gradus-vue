@@ -1,24 +1,24 @@
 @import "../../styles/variables";
 
-.options {
-  flex: 1;
-}
+//.options {
+//  flex: 1;
+//}
 
 .comment:before {
   content: "❗";
   font-size: small;
 }
 
-.action-discount, .action-required {
-
-  display: flex;
-
-  > * {
-    padding: $padding;
-  }
-
-  > * {
-    border-left: solid 2px $gray-background;
-  }
-
-}
+//.action-discount, .action-required {
+//
+//  display: flex;
+//
+//  > * {
+//    padding: $padding;
+//  }
+//
+//  > * {
+//    border-left: solid 2px $gray-background;
+//  }
+//
+//}
