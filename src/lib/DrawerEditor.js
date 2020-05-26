@@ -1,5 +1,6 @@
 import log from 'sistemium-telegram/services/log';
-import isMatch from 'lodash/isMatch';
+// import isMatch from 'lodash/isMatch';
+import matches from 'lodash/matches';
 
 const { error } = log('DrawerEditor');
 
@@ -27,7 +28,7 @@ export default {
       return null;
     },
     changed() {
-      return !isMatch(this.modelOrigin, this.model);
+      return !matches(this.model)(this.modelOrigin);
     },
   },
   methods: {
