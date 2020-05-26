@@ -12,7 +12,7 @@
     type="default" size="small"
     @click="$emit('cancelClick')"
     :disabled="loading"
-  ) Закрыть
+  ) {{ changed ? 'Отмена' : 'Закрыть' }}
   el-button(
     type="primary" size="small"
     @click="$emit('saveClick')"
