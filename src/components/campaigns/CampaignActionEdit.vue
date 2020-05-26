@@ -6,7 +6,7 @@ el-drawer(
   :visible.sync="drawerOpen"
   :append-to-body="true"
   ref="drawer"
-  size="400px"
+  size="450px"
 )
   section.content(v-if="model")
     campaign-action-form.form(:model="model")
@@ -25,19 +25,24 @@ import DrawerEditor from '@/lib/DrawerEditor';
 import Action from '@/models/Action';
 import CampaignActionForm from '@/components/campaigns/CampaignActionForm.vue';
 import FormButtons from '@/lib/FormButtons.vue';
+import matchesDeep from '@/lib/matchesDeep';
+import cloneDeep from 'lodash/cloneDeep';
 
 const NAME = 'CampaignActionEdit';
 
 export default {
   computed: {
     modelOrigin() {
-      return Action.get(this.actionId);
+      return { required: {}, ...Action.get(this.actionId) };
+    },
+    changed() {
+      return !matchesDeep(this.model, this.modelOrigin);
     },
   },
   methods: {
     modelInstance(actionId) {
       const record = actionId ? this.modelOrigin : {};
-      return Action.mapper.createInstance({ ...record });
+      return Action.mapper.createInstance({ required: {}, ...cloneDeep(record) });
     },
     saveClick() {
       this.performOperation(() => Action.create(this.model));
