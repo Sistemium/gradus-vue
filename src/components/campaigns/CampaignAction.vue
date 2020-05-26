@@ -21,8 +21,11 @@
       tr.option(v-for="(option, idx) in hasOptions")
         td.number {{ idx + 1 }}
         action-option.ranges(:action="option")
-        action-required(v-if="required && idx === 0" :action="action" :rowspan="hasOptions.length")
-        action-required(v-if="!required" :action="option")
+        action-required(
+          v-if="hasRequired && idx === 0"
+          :action="action" :rowspan="hasOptions.length"
+        )
+        action-required(v-if="!hasRequired" :action="option")
         template(v-if="discount && idx === 0")
           td(
             v-for="discountHeader in discountHeaders"
@@ -41,7 +44,7 @@
 
 </template>
 <script>
-
+import Action from '@/models/Action';
 import ActionOption from '@/components/campaigns/ActionOption.vue';
 import ActionRequired from '@/components/campaigns/ActionRequired.vue';
 import actionBase from '@/components/campaigns/actionBase';
@@ -70,6 +73,9 @@ export default {
         },
       });
     },
+  },
+  created() {
+    this.$bindToModel(Action);
   },
   mixins: [actionBase],
 };

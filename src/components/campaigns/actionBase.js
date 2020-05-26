@@ -11,9 +11,9 @@ export default {
 
   computed: {
 
-    discountWidth() {
-      const { discount } = this.$refs;
-      return discount && discount.$el.clientWidth;
+    hasRequired() {
+      const { required } = this;
+      return required && Object.keys(required).length;
     },
 
     required() {
