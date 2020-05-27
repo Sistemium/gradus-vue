@@ -35,17 +35,20 @@ export default {
 
 .action-option-info {
 
-  display: grid;
-  grid-template-columns: auto auto;
+  display: flex;
+  flex-wrap: wrap;
+  // grid-template-columns: auto auto;
 
 }
 
 .title {
-  grid-column: 1 / span 2;
+  // grid-column: 1 / span 2;
+  display: block;
+  min-width: 100%;
 }
 
 .discount, .required {
-  margin-top: $padding;
+  margin: $padding $margin-right 0 0;
   display: flex;
 }
 

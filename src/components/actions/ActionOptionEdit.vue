@@ -23,7 +23,6 @@ el-drawer.campaign-action-edit(
 </template>
 <script>
 
-import Vue from 'vue';
 import DrawerEditor from '@/lib/DrawerEditor';
 import CampaignActionForm from '@/components/campaigns/CampaignActionForm.vue';
 import FormButtons from '@/lib/FormButtons.vue';
@@ -47,7 +46,7 @@ export default {
     },
     saveClick() {
       this.performOperation(() => {
-        Object.keys(this.model).forEach(key => Vue.set(this.option, key, this.model[key]));
+        this.$emit('save', this.model);
       });
     },
   },

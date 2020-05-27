@@ -23,6 +23,7 @@ el-drawer.campaign-action-edit(
     v-if="editOption"
     :option="editOption.option"
     :title="editOption.title"
+    @save="onOptionSave"
     @closed="editOption = null"
   )
 
@@ -51,6 +52,7 @@ export default {
   methods: {
     onEditOption(option, idx) {
       this.editOption = {
+        idx,
         option,
         title: `${this.modelOrigin.name} / вариант №${idx + 1}`,
       };
@@ -61,6 +63,13 @@ export default {
     },
     saveClick() {
       this.performOperation(() => Action.create(this.model));
+    },
+    onOptionSave(option) {
+      if (!this.editOption) {
+        throw new Error('Undefined option onOptionSave');
+      }
+      const { idx } = this.editOption;
+      this.$set(this.model.options, idx, option);
     },
   },
   props: {
