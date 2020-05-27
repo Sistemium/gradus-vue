@@ -4,7 +4,7 @@
 
   .buttons
     slot(name="buttons")
-      el-button.edit(@click="editCampaignClick()" size="mini" icon="el-icon-edit" circle)
+      button-edit.edit(@click="editCampaignClick()")
       // confirm-button.del(type="text" @confirm="delCampaign()" text="Удалить" size="mini")
 
   .fields

@@ -6,7 +6,7 @@
     .name {{ action.name }}
       .comment(v-if="action.commentText") ({{ action.commentText }})
     .buttons
-      el-button.edit(@click="onEditClick" size="mini" icon="el-icon-edit" circle)
+      button-edit.edit(@click="onEditClick")
 
   table
     thead
