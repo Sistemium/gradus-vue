@@ -17,7 +17,7 @@
   resize(:padding="50")
 
     .actions
-      campaign-action(v-for="action in actions" :action="action")
+      campaign-action(v-for="action in actions" :action="action" :key="action.id")
 
     .pictures()
       .thumbnail(

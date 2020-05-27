@@ -1,6 +1,6 @@
 <template lang="pug">
 
-el-button.edit(@click="$emit('click')" size="mini" icon="el-icon-edit" circle)
+el-button.button-edit(@click="$emit('click')" size="mini" icon="el-icon-edit" circle)
 
 </template>
 <script>
@@ -12,3 +12,10 @@ export default {
 };
 
 </script>
+<style lang="scss">
+@import "../styles/variables";
+
+.button-edit {
+  color: $primary-color;
+}
+</style>
