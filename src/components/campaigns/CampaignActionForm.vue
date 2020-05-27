@@ -20,22 +20,24 @@ el-form.campaign-action-form(
     .header
       h3.title Ассортимент
       .buttons
-        el-button.button-add(
-          @click="addRangeClick"
-          size="mini"
-          icon="el-icon-circle-plus"
-          circle
-        )
+        button-add(@click="addRangeClick")
     .range(v-for="(range, idx) in model.ranges" :key="idx")
+      // el-form-item(:required="true")
       el-input(
         v-model="range.name"
         size="mini"
         :clearable="true"
         @clear="clearRangeClick(idx)"
+        placeholder="описание ассортимента"
       )
+        template(slot="prepend") {{ idx+1 }}
 
   .options(v-if="model.options")
-    h3.title Варианты:
+    .header
+      h3.title Варианты:
+      .buttons
+        button-add(@click="addRangeClick")
+
     .option(v-for="(option, idx) in model.options" :key="idx")
       .number
         .idx {{ idx + 1 }}
@@ -64,6 +66,9 @@ const rules = {
 
 export default {
   methods: {
+    validate(cb) {
+      this.$refs.form.validate(cb);
+    },
     addRangeClick() {
       this.model.ranges.push({ name: '' });
     },
@@ -97,9 +102,15 @@ export default {
   border-radius: $border-radius;
   padding: $padding;
   background: $gray-background;
+  margin-top: $padding;
 
-  .title {
+  .header {
     grid-column: 2;
+    display: flex;
+
+    .title {
+      flex: 1;
+    }
   }
 
   .buttons {
@@ -114,9 +125,6 @@ export default {
     font-weight: bold;
   }
 
-  & + .option {
-    margin-top: $padding;
-  }
 }
 
 .header {
@@ -129,12 +137,12 @@ export default {
   }
 }
 
-.button-add {
-  color: $primary-color;
-}
+.ranges {
+  margin-bottom: 18px;
 
-.list-group-item > .el-input {
-  margin: 0;
+  .range {
+    margin-top: $padding;
+  }
 }
 
 </style>

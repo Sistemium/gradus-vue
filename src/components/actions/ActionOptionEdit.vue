@@ -11,7 +11,7 @@ el-drawer.campaign-action-edit(
   @closed="$emit('closed')"
 )
   section.content
-    campaign-action-form.form(:model="model")
+    campaign-action-form.form(:model="model" ref="form")
   form-buttons(
     :loading="loading"
     :changed="changed"
@@ -26,8 +26,9 @@ el-drawer.campaign-action-edit(
 import DrawerEditor from '@/lib/DrawerEditor';
 import CampaignActionForm from '@/components/campaigns/CampaignActionForm.vue';
 import FormButtons from '@/lib/FormButtons.vue';
+import remove from 'lodash/remove';
 
-const NAME = 'ActionOptionEdit.vue';
+const NAME = 'ActionOptionEdit';
 
 export default {
   name: NAME,
@@ -46,7 +47,14 @@ export default {
     },
     saveClick() {
       this.performOperation(() => {
+        remove(this.model.ranges, ({ name }) => !name);
         this.$emit('save', this.model);
+        // this.$refs.form.validate((isValid, invalidFields) => {
+        //   console.log(isValid, invalidFields); // eslint-disable-line
+        //   if (!isValid) {
+        //     throw new Error('Данные некорректны');
+        //   }
+        // });
       });
     },
   },
