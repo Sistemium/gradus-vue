@@ -45,6 +45,11 @@ export default {
         ...this.cloneDeep(this.option),
       };
     },
+    deleteClick() {
+      this.performOperation(() => {
+        this.$emit('delete');
+      });
+    },
     saveClick() {
       this.performOperation(() => {
         remove(this.model.ranges, ({ name }) => !name);

@@ -36,7 +36,7 @@ el-form.campaign-action-form(
     .header
       h3.title Варианты:
       .buttons
-        button-add(@click="addRangeClick")
+        button-add(@click="addOptionClick")
 
     .option(v-for="(option, idx) in model.options" :key="idx")
       .number
@@ -66,6 +66,9 @@ const rules = {
 
 export default {
   methods: {
+    addOptionClick() {
+      this.model.options.push({});
+    },
     validate(cb) {
       this.$refs.form.validate(cb);
     },

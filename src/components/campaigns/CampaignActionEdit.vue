@@ -24,6 +24,7 @@ el-drawer.campaign-action-edit(
     :option="editOption.option"
     :title="editOption.title"
     @save="onOptionSave"
+    @delete="onOptionDelete"
     @closed="editOption = null"
   )
 
@@ -63,6 +64,10 @@ export default {
     },
     saveClick() {
       this.performOperation(() => Action.create(this.model));
+    },
+    onOptionDelete() {
+      const { idx } = this.editOption;
+      this.model.options.splice(idx, 1);
     },
     onOptionSave(option) {
       if (!this.editOption) {
