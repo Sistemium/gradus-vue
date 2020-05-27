@@ -29,7 +29,7 @@ function arrayMatch(arr1, arr2) {
     return false;
   }
 
-  return findIndex(arr2, (elem, idx) => !matchesDeep(elem, arr2[idx])) === -1;
+  return findIndex(arr1, (elem, idx) => !matchesDeep(elem, arr2[idx])) === -1;
 
 }
 
