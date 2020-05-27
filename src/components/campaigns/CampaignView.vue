@@ -31,6 +31,7 @@
 </template>
 <script>
 
+import Action from '@/models/Action';
 import CampaignAction from '@/components/campaigns/CampaignAction.vue';
 
 const NAME = 'CampaignView';
@@ -40,6 +41,10 @@ export default {
   props: {
     campaign: Object,
     pictures: Array,
+  },
+
+  data() {
+    return { actions: [] };
   },
 
   methods: {
@@ -54,10 +59,10 @@ export default {
     },
   },
 
-  computed: {
-    actions() {
-      return this.campaign.actions();
-    },
+  created() {
+    this.$watch('campaign.actionIds', actionIds => {
+      this.$bindToModelFilter(Action, { where: { id: { in: actionIds || [] } } }, 'actions');
+    }, { immediate: true });
   },
 
   name: NAME,

@@ -44,10 +44,10 @@
 
 </template>
 <script>
-import Action from '@/models/Action';
-import ActionOption from '@/components/campaigns/ActionOption.vue';
-import ActionRequired from '@/components/campaigns/ActionRequired.vue';
-import actionBase from '@/components/campaigns/actionBase';
+
+import ActionOption from '@/components/actions/ActionOption.vue';
+import ActionRequired from '@/components/actions/ActionRequired.vue';
+import actionBase from '@/components/actions/actionBase';
 
 const NAME = 'CampaignAction';
 
@@ -74,9 +74,6 @@ export default {
       });
     },
   },
-  created() {
-    this.$bindToModel(Action);
-  },
   mixins: [actionBase],
 };
 
@@ -84,7 +81,7 @@ export default {
 <style scoped lang="scss">
 
 @import "../../styles/variables";
-@import "./actionBase";
+@import "./../actions/actionBase";
 
 table {
   border-collapse: collapse;

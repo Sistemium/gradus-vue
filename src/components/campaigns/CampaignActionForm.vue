@@ -10,29 +10,30 @@ el-form.campaign-action-form(
     el-input(v-model="model.name")
 
   el-form-item.comment(prop="commentText")
-    el-input(v-model="model.commentText" type="textarea" placeholder="Комментарий")
+    el-input(v-model="model.commentText" type="textarea" placeholder="Комментарий" autosize)
 
-  el-form-item.discount.own(label="% комм." prop="discountOwn")
-    el-input-number(v-model="model.discountOwn" :precision="2" :step="0.1" :max="100" :min="0")
+  action-discount-form(:discount="model")
 
-  el-form-item.discount.comp(label="% комп." prop="discountComp")
-    el-input-number(v-model="model.discountComp" :precision="2" :step="0.1" :max="100" :min="0")
-
-  section.required
-    h3.title Условия:
-    el-form-item.pcs(label="Бутылок" prop="required.pcs")
-      el-input-number(v-model="model.required.pcs" :step="1" :min="0")
-    el-form-item.volume(label="Литров" prop="required.volume")
-      el-input-number(v-model="model.required.volume" :step="1" :min="0")
-    el-form-item.pcs(label="SKU" prop="required.sku")
-      el-input-number(v-model="model.required.sku" :step="1" :min="0")
-    el-form-item.cost(label="Сумма" prop="required.cost")
-      el-input-number(v-model="model.required.cost" :step="1000" :min="0")
+  action-required-form(:required="model.required")
 
   .options
+    h3.title Варианты:
+    .option(v-for="(option, idx) in model.options")
+      .number
+        .idx {{ idx + 1 }}
+        .buttons
+          button-edit
+      .title
+        el-input(v-model="option.name" size="small" placeholder="Название")
+        el-input(v-model="option.commentText" type="textarea" placeholder="Комментарий" autosize)
+      .ranges(v-if="option.ranges")
+        .name(v-for="range in option.ranges") {{ range.name }}
 
 </template>
 <script>
+
+import ActionRequiredForm from '@/components/actions/ActionRequiredForm.vue';
+import ActionDiscountForm from '@/components/actions/ActionDiscountForm.vue';
 
 const NAME = 'CampaignActionForm';
 
@@ -47,6 +48,10 @@ const rules = {
 };
 
 export default {
+  components: {
+    ActionDiscountForm,
+    ActionRequiredForm,
+  },
   data() {
     return { rules };
   },
@@ -61,54 +66,30 @@ export default {
 
 @import "../../styles/variables";
 
-.discount {
-  display: flex;
-}
-
-.own {
-  grid-column: 1;
-  justify-content: flex-end;
-  padding-right: $margin-top;
-}
-
-.comp {
-  grid-column: 2;
-  justify-content: flex-end;
-}
-
-.name {
-  grid-column: 1 / span 2;
-}
-
-.comment {
-  grid-column: 1 / span 2;
-}
-
-.required {
-  grid-column: 1 / span 2;
-}
-
-.campaign-action-form {
+.option {
   display: grid;
-  grid-template-columns: 50% 50%;
-  grid-template-rows: auto auto auto auto;
-}
+  grid-template-columns: 35px auto;
+  border: $list-cell-borders;
+  border-radius: $border-radius;
+  padding: $padding;
+  background: $gray-background;
 
-.required {
-  display: grid;
-  grid-template-columns: 50% 50%;
-  grid-template-rows: auto auto auto;
-
-  > .title {
-    grid-column: 1 / span 2;
+  .title {
+    grid-column: 2;
   }
 
-  > .volume, > .cost, > .pcs, > .sku {
-    display: flex;
-    justify-content: flex-end;
+  .ranges {
+    grid-column: 2;
   }
-  > .pcs, > .sku {
-    padding-right: $margin-top;
+
+  .number {
+    font-size: small;
+    text-align: center;
+    padding: $padding $padding 0 0;
+  }
+
+  & + .option {
+    margin-top: $padding;
   }
 }
 

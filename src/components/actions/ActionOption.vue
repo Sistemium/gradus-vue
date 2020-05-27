@@ -19,9 +19,9 @@ td.action-option
 </template>
 <script>
 
-import actionBase from '@/components/campaigns/actionBase';
-import ActionRequired from '@/components/campaigns/ActionRequired.vue';
-import ActionDiscount from '@/components/campaigns/ActionDiscount.vue';
+import actionBase from './actionBase';
+import ActionRequired from './ActionRequired.vue';
+import ActionDiscount from './ActionDiscount.vue';
 
 const NAME = 'ActionOption';
 

@@ -1,6 +1,6 @@
 <template lang="pug">
 
-el-drawer(
+el-drawer.campaign-action-edit(
   :title="modelOrigin.name"
   :before-close="handleClose"
   :visible.sync="drawerOpen"
@@ -76,9 +76,10 @@ export default {
 @import "../../styles/variables";
 
 .content {
-  position: relative;
-  height: 100%;
-  padding: 0 $margin-right;
+  padding: 0 $margin-right 80px;
+}
+.campaign-action-edit /deep/ .el-drawer__body {
+  overflow-y: scroll;
 }
 
 </style>

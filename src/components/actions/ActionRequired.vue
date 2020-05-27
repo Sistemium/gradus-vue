@@ -9,7 +9,7 @@ td.action-required(v-if="required")
 </template>
 <script>
 
-import actionBase from '@/components/campaigns/actionBase';
+import actionBase from './actionBase';
 
 const NAME = 'ActionRequired';
 
