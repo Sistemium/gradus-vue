@@ -25,6 +25,10 @@ function arrayMatch(arr1, arr2) {
     return false;
   }
 
+  if (arr1.length !== arr2.length) {
+    return false;
+  }
+
   return findIndex(arr2, (elem, idx) => !matchesDeep(elem, arr2[idx])) === -1;
 
 }
@@ -44,11 +48,11 @@ function objectsMatch(obj1, obj2) {
 }
 
 function type(arg) {
-  if (isObject(arg)) {
-    return 'Object';
-  }
   if (Array.isArray(arg)) {
     return 'Array';
+  }
+  if (isObject(arg)) {
+    return 'Object';
   }
   return 'Primitive';
 }
