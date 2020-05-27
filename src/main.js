@@ -12,6 +12,7 @@ import SearchInput from '@/lib/SearchInput.vue';
 import Resize from '@/lib/Resize.vue';
 import ConfirmButton from '@/lib/ConfirmButton.vue';
 import ButtonEdit from '@/components/ButtonEdit.vue';
+import ButtonAdd from '@/components/ButtonAdd.vue';
 
 import './index.scss';
 
@@ -28,6 +29,7 @@ Vue.component('resize', Resize);
 Vue.component(ConfirmButton.name, ConfirmButton);
 Vue.component(SearchInput.name, SearchInput);
 Vue.component(ButtonEdit.name, ButtonEdit);
+Vue.component(ButtonAdd.name, ButtonAdd);
 Vue.use(VueScrollTo);
 
 new Vue({
