@@ -13,7 +13,13 @@ export default {
 
     hasRequired() {
       const { required } = this;
-      return required && Object.keys(required).length;
+      if (!required) {
+        return false;
+      }
+      const {
+        pcs, sku, volume, cost,
+      } = required;
+      return pcs || sku || volume || cost;
     },
 
     required() {

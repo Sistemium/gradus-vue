@@ -16,24 +16,21 @@ el-form.campaign-action-form(
 
   action-required-form(:required="model.required")
 
-  .options
+  .options(v-if="model.options")
     h3.title Варианты:
     .option(v-for="(option, idx) in model.options")
       .number
         .idx {{ idx + 1 }}
-        .buttons
-          button-edit
-      .title
-        el-input(v-model="option.name" size="small" placeholder="Название")
-        el-input(v-model="option.commentText" type="textarea" placeholder="Комментарий" autosize)
-      .ranges(v-if="option.ranges")
-        .name(v-for="range in option.ranges") {{ range.name }}
+      action-option-info(:action="option")
+      .buttons
+        button-edit(@click="$emit('editOption', option, idx)")
 
 </template>
 <script>
 
 import ActionRequiredForm from '@/components/actions/ActionRequiredForm.vue';
 import ActionDiscountForm from '@/components/actions/ActionDiscountForm.vue';
+import ActionOptionInfo from '@/components/actions/ActionOptionInfo.vue';
 
 const NAME = 'CampaignActionForm';
 
@@ -49,6 +46,7 @@ const rules = {
 
 export default {
   components: {
+    ActionOptionInfo,
     ActionDiscountForm,
     ActionRequiredForm,
   },
@@ -68,7 +66,7 @@ export default {
 
 .option {
   display: grid;
-  grid-template-columns: 35px auto;
+  grid-template-columns: 35px auto 35px;
   border: $list-cell-borders;
   border-radius: $border-radius;
   padding: $padding;
@@ -78,14 +76,16 @@ export default {
     grid-column: 2;
   }
 
-  .ranges {
-    grid-column: 2;
+  .buttons {
+    grid-column: 3;
+    text-align: right;
   }
 
   .number {
-    font-size: small;
     text-align: center;
-    padding: $padding $padding 0 0;
+    padding: $padding $padding $padding 0;
+    color: $primary-color;
+    font-weight: bold;
   }
 
   & + .option {

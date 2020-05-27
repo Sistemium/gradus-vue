@@ -1,6 +1,6 @@
 import log from 'sistemium-telegram/services/log';
-// import isMatch from 'lodash/isMatch';
-import matches from 'lodash/matches';
+import cloneDeep from 'lodash/cloneDeep';
+import matchesDeep from './matchesDeep';
 
 const { error } = log('DrawerEditor');
 
@@ -28,10 +28,12 @@ export default {
       return null;
     },
     changed() {
-      return !matches(this.model)(this.modelOrigin);
+      return !matchesDeep(this.model, this.modelOrigin);
     },
   },
   methods: {
+
+    cloneDeep,
 
     deleteClick() {
 
@@ -42,6 +44,10 @@ export default {
     },
 
     handleClose() {
+      if (!this.from) {
+        this.drawerOpen = false;
+        return;
+      }
       this.$router.replace(this.from)
         .catch(e => error('handleClose', e));
     },
@@ -81,7 +87,7 @@ export default {
 
     showLoading() {
       this.loadingMessage = this.$message({
-        message: 'Saugomas ...',
+        message: 'Сохранение ...',
         duration: 0,
       });
     },

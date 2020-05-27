@@ -1,6 +1,9 @@
 <template lang="pug">
 
 .action-discount-form
+
+  h3.title Скидки:
+
   el-form-item.own(label="% комм." prop="discountOwn")
     el-input-number(v-model="discount.discountOwn" :precision="2" :step="0.1" :max="100" :min="0")
 
@@ -30,6 +33,10 @@ export default {
 .action-discount-form {
   display: grid;
   grid-template-columns: 50% 50%;
+}
+
+.title {
+  grid-column: 1 / span 2;
 }
 
 .el-form-item {

@@ -5,11 +5,12 @@ el-drawer.campaign-action-edit(
   :before-close="handleClose"
   :visible.sync="drawerOpen"
   :append-to-body="true"
+  :destroy-on-close="true"
   ref="drawer"
-  size="450px"
+  size="490px"
 )
   section.content(v-if="model")
-    campaign-action-form.form(:model="model")
+    campaign-action-form.form(:model="model" @editOption="onEditOption")
     form-buttons(
       :loading="loading"
       :changed="changed"
@@ -18,12 +19,20 @@ el-drawer.campaign-action-edit(
       @saveClick="saveClick"
     )
 
+  action-option-edit(
+    v-if="editOption"
+    :option="editOption.option"
+    :title="editOption.title"
+    @closed="editOption = null"
+  )
+
 </template>
 <script>
 
 import DrawerEditor from '@/lib/DrawerEditor';
 import Action from '@/models/Action';
 import CampaignActionForm from '@/components/campaigns/CampaignActionForm.vue';
+import ActionOptionEdit from '@/components/actions/ActionOptionEdit.vue';
 import FormButtons from '@/lib/FormButtons.vue';
 import matchesDeep from '@/lib/matchesDeep';
 import cloneDeep from 'lodash/cloneDeep';
@@ -40,6 +49,12 @@ export default {
     },
   },
   methods: {
+    onEditOption(option, idx) {
+      this.editOption = {
+        option,
+        title: `${this.modelOrigin.name} / вариант №${idx + 1}`,
+      };
+    },
     modelInstance(actionId) {
       const record = actionId ? this.modelOrigin : {};
       return Action.mapper.createInstance({ required: {}, ...cloneDeep(record) });
@@ -55,7 +70,10 @@ export default {
     },
   },
   data() {
-    return { model: null };
+    return {
+      model: null,
+      editOption: null,
+    };
   },
   created() {
     this.$watch('actionId', actionId => {
@@ -65,6 +83,7 @@ export default {
   components: {
     FormButtons,
     CampaignActionForm,
+    ActionOptionEdit,
   },
   mixins: [DrawerEditor],
   name: NAME,
@@ -78,6 +97,7 @@ export default {
 .content {
   padding: 0 $margin-right 80px;
 }
+
 .campaign-action-edit /deep/ .el-drawer__body {
   overflow-y: scroll;
 }
