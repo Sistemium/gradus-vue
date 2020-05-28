@@ -8,7 +8,7 @@
     el-input-number(v-model="required.volume" :step="1" :min="0")
   el-form-item.pcs(label="SKU" prop="required.sku")
     el-input-number(v-model="required.sku" :step="1" :min="0")
-  el-form-item.cost(label="Сумма" prop="required.cost")
+  el-form-item.cost(label="Сумма ₽" prop="required.cost")
     el-input-number(v-model="required.cost" :step="1000" :min="0")
 
 </template>
