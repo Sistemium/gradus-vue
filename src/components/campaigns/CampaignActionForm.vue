@@ -12,6 +12,9 @@ el-form.campaign-action-form(
   el-form-item.comment(prop="commentText")
     el-input(v-model="model.commentText" type="textarea" placeholder="комментарий" autosize)
 
+  el-form-item.territory
+    el-input(v-model="model.territory" placeholder="ограничение по территории" :clearable="true")
+
   .ranges(v-if="model.ranges")
     .header
       h3.title Ассортимент

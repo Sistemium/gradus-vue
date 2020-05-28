@@ -4,7 +4,8 @@
 
   .header
     .name {{ action.name }}
-      .comment(v-if="action.commentText") ({{ action.commentText }})
+      .comment(v-if="action.commentText") {{ action.commentText }}
+      .territory(v-if="action.territory") Территория: {{ action.territory }}
     .buttons
       button-edit.edit(@click="onEditClick")
 
@@ -162,4 +163,8 @@ table {
   width: 100%;
 }
 
+.comment, .territory {
+  font-weight: normal;
+  margin-top: $padding;
+}
 </style>
