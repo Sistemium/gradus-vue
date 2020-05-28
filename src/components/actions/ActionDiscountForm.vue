@@ -4,11 +4,11 @@
 
   h3.title Скидки:
 
-  el-form-item.own(label="% комм." prop="discountOwn")
-    el-input-number(v-model="discount.discountOwn" :precision="3" :step="1" :max="100" :min="0")
-
   el-form-item.comp(label="% комп." prop="discountComp")
     el-input-number(v-model="discount.discountComp" :precision="3" :step="1" :max="100" :min="0")
+
+  el-form-item.own(label="% комм." prop="discountOwn")
+    el-input-number(v-model="discount.discountOwn" :precision="3" :step="1" :max="100" :min="0")
 
 </template>
 <script>
@@ -44,13 +44,13 @@ export default {
 }
 
 .own {
-  grid-column: 1;
+  grid-column: 2;
   justify-content: flex-end;
   padding-right: $margin-top;
 }
 
 .comp {
-  grid-column: 2;
+  grid-column: 1;
   justify-content: flex-end;
 }
 

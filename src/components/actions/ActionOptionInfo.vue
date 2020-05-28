@@ -11,8 +11,8 @@
   .discount(v-if="discount")
     label Скидка
     span.total(v-if="discount.own && discount.comp") {{ discount.own + discount.comp }} %
-    span.own(v-if="discount.own") {{ discount.own || 0 }}% комм.
     span.comp(v-if="discount.comp") {{ discount.comp || 0 }}% комп.
+    span.own(v-if="discount.own") {{ discount.own || 0 }}% комм.
 
 </template>
 <script>
@@ -69,7 +69,7 @@ export default {
   }
 }
 
-.own + .comp:before {
+.comp + .own:before {
   content: "+";
   margin: 0 $margin-right;
 }

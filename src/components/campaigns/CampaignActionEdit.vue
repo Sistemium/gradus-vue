@@ -56,7 +56,7 @@ export default {
       return {
         options: [],
         required: {},
-        ...(this.actionId ? Action.get(this.actionId) : { campaignId: this.campaignId }),
+        ...(this.actionId ? Action.get(this.actionId).toJSON() : { campaignId: this.campaignId }),
       };
     },
     changed() {

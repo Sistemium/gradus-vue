@@ -32,7 +32,7 @@ el-container.campaigns-with-aside
       type="info"
     )
 
-    router-view
+    router-view(v-if="currentCampaign")
 
 </template>
 <script>

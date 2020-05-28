@@ -29,13 +29,13 @@ export default new Model({
         res.comp = maxBy(optionsInfo, 'comp').comp;
       }
       return filter([
-        res.own && {
-          title: '% комм.',
-          name: 'discountOwn',
-        },
         res.comp && {
           title: '% комп.',
           name: 'discountComp',
+        },
+        res.own && {
+          title: '% комм.',
+          name: 'discountOwn',
         },
       ]);
     },

@@ -4,7 +4,7 @@ el-form.campaign-action-form(
   :rules="rules"
   :model="model"
   ref="form"
-  size="small"
+  size="mini"
 )
   el-form-item.name(label="Название" prop="name")
     el-input(v-model="model.name" :placeholder="namePlaceholder")
