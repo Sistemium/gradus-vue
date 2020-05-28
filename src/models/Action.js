@@ -12,12 +12,12 @@ export default new Model({
   keepChangeHistory: false,
 
   relations: {
-    // hasMany: {
-    //   Campaign: {
-    //     localField: 'campaigns',
-    //     foreignKey: 'actionIds',
-    //   },
-    // },
+    belongsTo: {
+      Campaign: {
+        localField: 'campaign',
+        localKey: 'campaignId',
+      },
+    },
   },
 
   methods: {

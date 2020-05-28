@@ -42,9 +42,9 @@ export async function campaignsData(month, searchText) {
     with: ['CampaignPicture'],
   });
 
-  const actionIds = filter(flatten(map(campaigns, 'actionIds')));
+  const campaignIds = filter(flatten(map(campaigns, 'id')));
 
-  await findByMany(Action, actionIds);
+  await findByMany(Action, campaignIds, { field: 'campaignId' });
 
   return campaignsFilter(month, searchText);
 

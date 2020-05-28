@@ -10,7 +10,12 @@ el-drawer.campaign-action-edit(
   size="490px"
 )
   section.content(v-if="model")
-    campaign-action-form.form(:model="model" @editOption="onEditOption")
+    campaign-action-form.form(
+      :model="model"
+      :rules="campaignActionRules"
+      @editOption="onEditOption"
+      @addOption="onAddOption"
+    )
     form-buttons(
       :loading="loading"
       :changed="changed"
@@ -51,6 +56,14 @@ export default {
     },
   },
   methods: {
+    onAddOption() {
+      const idx = this.model.options.length;
+      this.editOption = {
+        idx,
+        option: { ranges: [] },
+        title: `${this.modelOrigin.name} / вариант №${idx + 1}`,
+      };
+    },
     onEditOption(option, idx) {
       this.editOption = {
         idx,
@@ -87,6 +100,15 @@ export default {
     return {
       model: null,
       editOption: null,
+      campaignActionRules: {
+        name: [
+          {
+            required: true,
+            message: 'Название нужно указать',
+            trigger: 'change',
+          },
+        ],
+      },
     };
   },
   created() {

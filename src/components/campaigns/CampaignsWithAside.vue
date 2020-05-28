@@ -16,14 +16,6 @@ el-container.campaigns-with-aside
     )
       template(v-slot:buttons)
         el-button.edit(@click="onEditCampaign" size="mini" icon="el-icon-edit" circle)
-      //template(v-slot:footer)
-        campaigns-picture-gallery(
-          v-if="currentCampaign"
-          :new-image-properties="{ campaignId: currentCampaign.id }"
-          carousel-type=""
-          :show-empty="false"
-          @uploaded="setPictures(currentCampaign)"
-        )
 
     el-alert(
       v-if="!currentCampaign && campaigns.length"

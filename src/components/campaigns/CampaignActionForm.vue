@@ -7,14 +7,10 @@ el-form.campaign-action-form(
   size="small"
 )
   el-form-item.name(label="Название" prop="name")
-    el-input(v-model="model.name")
+    el-input(v-model="model.name" :placeholder="namePlaceholder")
 
   el-form-item.comment(prop="commentText")
-    el-input(v-model="model.commentText" type="textarea" placeholder="Комментарий" autosize)
-
-  action-discount-form(:discount="model")
-
-  action-required-form(:required="model.required")
+    el-input(v-model="model.commentText" type="textarea" placeholder="комментарий" autosize)
 
   .ranges(v-if="model.ranges")
     .header
@@ -32,11 +28,15 @@ el-form.campaign-action-form(
       )
         template(slot="prepend") {{ idx+1 }}
 
+  action-discount-form(:discount="model")
+
+  action-required-form(:required="model.required")
+
   .options(v-if="model.options")
     .header
       h3.title Варианты:
       .buttons
-        button-add(@click="addOptionClick")
+        button-add(@click="$emit('addOption')")
 
     .option(v-for="(option, idx) in model.options" :key="idx")
       .number
@@ -54,21 +54,8 @@ import ActionOptionInfo from '@/components/actions/ActionOptionInfo.vue';
 
 const NAME = 'CampaignActionForm';
 
-const rules = {
-  name: [
-    {
-      required: true,
-      message: 'Название нужно указать',
-      trigger: 'change',
-    },
-  ],
-};
-
 export default {
   methods: {
-    addOptionClick() {
-      this.model.options.push({});
-    },
     validate(cb) {
       this.$refs.form.validate(cb);
     },
@@ -79,16 +66,24 @@ export default {
       this.model.ranges.splice(idx, 1);
     },
   },
+  computed: {
+    namePlaceholder() {
+      const { name: { required } = {} } = this.rules || {};
+      return required ? '' : 'необязательный заголовок';
+    },
+  },
   components: {
     ActionOptionInfo,
     ActionDiscountForm,
     ActionRequiredForm,
   },
-  data() {
-    return { rules };
-  },
   props: {
     model: Object,
+    rules: {
+      type: Object,
+      default: () => {
+      },
+    },
   },
   name: NAME,
 };

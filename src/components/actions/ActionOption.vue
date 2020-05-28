@@ -49,6 +49,7 @@ export default {
 .comment {
   color: $dark-gray;
   font-size: smaller;
+  white-space: pre-line;
 }
 
 .name + .name {

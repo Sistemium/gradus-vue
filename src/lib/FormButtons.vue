@@ -49,6 +49,7 @@ export default {
   left: 0;
   right: 0;
   background-color: $gray-background;
+  z-index: 2;
 
   > * + * {
     margin-left: $margin-right;

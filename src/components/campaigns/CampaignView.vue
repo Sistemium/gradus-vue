@@ -48,9 +48,6 @@ export default {
   },
 
   methods: {
-    delCampaign() {
-      this.$emit('removeCampaign', this.campaign);
-    },
     editCampaignClick() {
       this.$emit('editCampaign', this.campaign);
     },
@@ -60,8 +57,8 @@ export default {
   },
 
   created() {
-    this.$watch('campaign.actionIds', actionIds => {
-      this.$bindToModelFilter(Action, { where: { id: { in: actionIds || [] } } }, 'actions');
+    this.$watch('campaign.id', campaignId => {
+      this.$bindToModelFilter(Action, { campaignId }, 'actions');
     }, { immediate: true });
   },
 

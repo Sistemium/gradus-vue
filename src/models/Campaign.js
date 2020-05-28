@@ -1,5 +1,5 @@
 import Model from 'sistemium-vue/jsdata/Model';
-import Action from './Action';
+import './Action';
 
 export default new Model({
 
@@ -15,13 +15,10 @@ export default new Model({
         localField: 'pictures',
         foreignKey: 'campaignId',
       },
-    },
-  },
-
-  methods: {
-    actions() {
-      const { actionIds } = this;
-      return actionIds ? Action.getMany(actionIds) : [];
+      Action: {
+        localField: 'actions',
+        foreignKey: 'campaignId',
+      },
     },
   },
 
