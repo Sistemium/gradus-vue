@@ -30,11 +30,11 @@ export default new Model({
       }
       return filter([
         res.own && {
-          title: 'комм.',
+          title: '% комм.',
           name: 'discountOwn',
         },
         res.comp && {
-          title: 'комп.',
+          title: '% комп.',
           name: 'discountComp',
         },
       ]);

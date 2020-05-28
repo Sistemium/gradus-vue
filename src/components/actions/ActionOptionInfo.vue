@@ -1,7 +1,10 @@
 <template lang="pug">
 
 .action-option-info
-  action-option.title(:action="action")
+  action-option.title(
+    :action="action"
+    v-if="action.name || action.commentText || action.ranges.length"
+  )
   .required(v-if="hasRequired")
     label Условия
     action-required(:action="action")

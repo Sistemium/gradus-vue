@@ -56,11 +56,14 @@ export default {
       return {
         options: [],
         required: {},
-        ...(this.actionId ? Action.get(this.actionId) : {}),
+        ...(this.actionId ? Action.get(this.actionId) : { campaignId: this.campaignId }),
       };
     },
     changed() {
       return !matchesDeep(this.model, this.modelOrigin);
+    },
+    campaignId() {
+      return this.$route.params.campaignId;
     },
   },
   methods: {
@@ -69,7 +72,7 @@ export default {
       this.editOption = {
         idx,
         option: { ranges: [] },
-        title: `${this.modelOrigin.name} / вариант №${idx + 1}`,
+        title: `${this.title} / вариант №${idx + 1}`,
       };
     },
     onEditOption(option, idx) {

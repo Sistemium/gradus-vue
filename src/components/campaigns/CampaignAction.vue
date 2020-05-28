@@ -12,7 +12,7 @@
     thead
       tr.headers
         th.number(rowspan="2")
-        th.options(rowspan="2") Ассортимент
+        th.options(rowspan="2" v-if="hasRanges") Ассортимент
         th.required(rowspan="2") Условия
         th.discount(:colspan="discountHeaders.length") Скидка
       tr
@@ -20,7 +20,7 @@
     tbody
       tr.option(v-for="(option, idx) in hasOptions")
         td.number {{ idx + 1 }}
-        action-option.ranges(:action="option")
+        action-option.ranges(:action="option" v-if="hasRanges")
         action-required(
           v-if="hasRequired && idx === 0"
           :action="action" :rowspan="hasOptions.length"
@@ -59,6 +59,12 @@ export default {
   computed: {
     discountHeaders() {
       return this.action.discountHeaders();
+    },
+    hasRanges() {
+      return this.action.options.filter(option => {
+        const { name, ranges = [] } = option;
+        return name || ranges.length;
+      }).length;
     },
   },
   methods: {
