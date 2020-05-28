@@ -111,7 +111,7 @@ th, td {
   > .number {
     min-width: 25px;
     font-weight: bold;
-    color: $primary-color;
+    // color: $green;
     text-align: center;
   }
 

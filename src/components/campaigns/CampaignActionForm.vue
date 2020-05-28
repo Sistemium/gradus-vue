@@ -122,7 +122,7 @@ export default {
   .number {
     text-align: center;
     padding: $padding $padding $padding 0;
-    color: $primary-color;
+    // color: $primary-color;
     font-weight: bold;
   }
 
