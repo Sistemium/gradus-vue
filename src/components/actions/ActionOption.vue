@@ -3,18 +3,11 @@
 td.action-option
 
   .name(v-if="action.name") {{ action.name }}
-    .comment(v-if="action.commentText") {{ action.commentText }}
 
   .ranges(v-if="action.ranges")
     .name(v-for="range in action.ranges") {{ range.name }}
 
-  //.conditions
-  //.options(v-if="hasOptions")
-    .option(v-for="option in hasOptions")
-      action-option(:action="option")
-
-  // action-required(:action="action" ref="required")
-  // action-discount(:action="action" ref="discount")
+  .comment(v-if="action.commentText") {{ action.commentText }}
 
 </template>
 <script>

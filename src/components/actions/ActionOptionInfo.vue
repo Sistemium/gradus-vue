@@ -10,8 +10,9 @@
     action-required(:action="action")
   .discount(v-if="discount")
     label Скидка
-    .own {{ discount.own || 0 }}% комм.
-    .comp {{ discount.comp || 0 }}% комп.
+    span.total(v-if="discount.own && discount.comp") {{ discount.own + discount.comp }} %
+    span.own(v-if="discount.own") {{ discount.own || 0 }}% комм.
+    span.comp(v-if="discount.comp") {{ discount.comp || 0 }}% комп.
 
 </template>
 <script>
@@ -68,8 +69,13 @@ export default {
   }
 }
 
-.comp:before {
+.own + .comp:before {
   content: "+";
+  margin: 0 $margin-right;
+}
+
+.discount .total:after {
+  content: "=";
   margin: 0 $margin-right;
 }
 

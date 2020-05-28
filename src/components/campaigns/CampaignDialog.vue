@@ -12,6 +12,7 @@ top="4vh"
   :model="newCampaign"
   ref="newCampaign"
   :rules="rules"
+  size="mini"
   )
 
     el-form-item(label="Название" prop="name")
