@@ -40,7 +40,6 @@
 
   //.restrictions(v-if="hasRestrictions")
     action-option(v-for="restriction in hasRestrictions" :action="restriction")
-  router-view
 
 </template>
 <script>

@@ -1,7 +1,7 @@
 <template lang="pug">
 
 el-drawer.campaign-action-edit(
-  :title="modelOrigin.name"
+  :title="title"
   :before-close="handleClose"
   :visible.sync="drawerOpen"
   :append-to-body="true"
@@ -15,6 +15,7 @@ el-drawer.campaign-action-edit(
       :rules="campaignActionRules"
       @editOption="onEditOption"
       @addOption="onAddOption"
+      ref="form"
     )
     form-buttons(
       :loading="loading"
@@ -48,8 +49,15 @@ const NAME = 'CampaignActionEdit';
 
 export default {
   computed: {
+    title() {
+      return this.actionId ? this.modelOrigin.name : 'Новый вариант акции';
+    },
     modelOrigin() {
-      return { required: {}, ...Action.get(this.actionId) };
+      return {
+        options: [],
+        required: {},
+        ...(this.actionId ? Action.get(this.actionId) : {}),
+      };
     },
     changed() {
       return !matchesDeep(this.model, this.modelOrigin);
@@ -71,12 +79,19 @@ export default {
         title: `${this.modelOrigin.name} / вариант №${idx + 1}`,
       };
     },
-    modelInstance(actionId) {
-      const record = actionId ? this.modelOrigin : {};
-      return Action.mapper.createInstance({ required: {}, ...cloneDeep(record) });
+    modelInstance() {
+      return Action.mapper.createInstance({ required: {}, ...cloneDeep(this.modelOrigin) });
     },
     saveClick() {
-      this.performOperation(() => Action.create(this.model));
+      this.performOperation(() => new Promise((resolve, reject) => {
+        this.$refs.form.validate(isValid => {
+          if (!isValid) {
+            reject(new Error('Форма не заполнена корректно'));
+          }
+          Action.create(this.model)
+            .then(resolve, reject);
+        });
+      }));
     },
     onOptionDelete() {
       const { idx } = this.editOption;
@@ -93,7 +108,6 @@ export default {
   props: {
     actionId: {
       type: String,
-      required: true,
     },
   },
   data() {
@@ -112,8 +126,8 @@ export default {
     };
   },
   created() {
-    this.$watch('actionId', actionId => {
-      this.model = this.modelInstance(actionId);
+    this.$watch('actionId', () => {
+      this.model = this.modelInstance();
     }, { immediate: true });
   },
   components: {

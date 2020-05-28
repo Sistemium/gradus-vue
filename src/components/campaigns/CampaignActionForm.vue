@@ -68,7 +68,7 @@ export default {
   },
   computed: {
     namePlaceholder() {
-      const { name: { required } = {} } = this.rules || {};
+      const { name: [{ required }] = [{}] } = this.rules || {};
       return required ? '' : 'необязательный заголовок';
     },
   },

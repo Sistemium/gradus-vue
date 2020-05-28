@@ -15,13 +15,16 @@ el-container.campaigns-with-aside
       @campaignPictureClick="campaignPictureClick"
     )
       template(v-slot:buttons)
-        el-button.edit(@click="onEditCampaign" size="mini" icon="el-icon-edit" circle)
+        button-edit(@click="onEditCampaign")
+        button-add(@click="onAddAction")
 
     el-alert(
       v-if="!currentCampaign && campaigns.length"
       title="👈 Выберите акцию из списка"
       type="info"
     )
+
+    router-view
 
 </template>
 <script>
@@ -92,6 +95,13 @@ export default {
     }),
     onEditCampaign() {
       this.$emit('editCampaign', this.currentCampaign);
+    },
+    onAddAction() {
+      const { params } = this.$route;
+      this.$router.push({
+        name: 'campaignActionCreate',
+        params: { ...params },
+      });
     },
     scrollToCampaign(campaign) {
       if (!campaign) {
