@@ -28,6 +28,7 @@ el-form.campaign-action-form(
         :clearable="true"
         @clear="clearRangeClick(idx)"
         placeholder="описание ассортимента"
+        :ref="`range${idx}`"
       )
         template(slot="prepend") {{ idx+1 }}
 
@@ -64,6 +65,9 @@ export default {
     },
     addRangeClick() {
       this.model.ranges.push({ name: '' });
+      this.$nextTick(() => {
+        this.$refs[`range${this.model.ranges.length - 1}`][0].$refs.input.focus();
+      });
     },
     clearRangeClick(idx) {
       this.model.ranges.splice(idx, 1);
@@ -144,6 +148,11 @@ export default {
   .range {
     margin-top: $padding;
   }
+}
+
+.campaign-action-form /deep/ h3 {
+  font-weight: 500;
+  font-size: 13px;
 }
 
 </style>

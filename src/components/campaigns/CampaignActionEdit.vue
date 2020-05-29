@@ -50,7 +50,7 @@ const NAME = 'CampaignActionEdit';
 export default {
   computed: {
     title() {
-      return this.actionId ? this.modelOrigin.name : 'Новый вариант акции';
+      return this.actionId ? this.modelOrigin.name : 'Новая механиика';
     },
     modelOrigin() {
       return {
