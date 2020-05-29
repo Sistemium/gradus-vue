@@ -25,6 +25,9 @@ export default new Model({
       const res = discountInfo(this) || {};
       if (!res.total) {
         const optionsInfo = filter(map(this.options, option => discountInfo(option)));
+        if (!optionsInfo.length) {
+          return [];
+        }
         res.own = maxBy(optionsInfo, 'own').own;
         res.comp = maxBy(optionsInfo, 'comp').comp;
       }

@@ -17,7 +17,7 @@ el-form.campaign-action-form(
       autosize
     )
 
-  el-form-item.territory
+  el-form-item.territory(v-if="model.options")
     el-input(
       v-model="model.territory" placeholder="ограничение по территории" :clearable="true"
     )

@@ -99,9 +99,14 @@ export default {
           reject(new Error('Нужно добавить хотя бы один вариант'));
           return;
         }
+        if (!this.model.discountHeaders().length) {
+          reject(new Error('Нужно добавить хотя бы одну скидку'));
+          return;
+        }
         this.$refs.form.validate(isValid => {
           if (!isValid) {
             reject(new Error('Форма не заполнена корректно'));
+            return;
           }
           Action.create(this.model)
             .then(resolve, reject);
