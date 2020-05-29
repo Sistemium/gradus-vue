@@ -5,8 +5,11 @@
 //}
 
 .comment:before {
-  content: "✴️ ";
+  font-family: element-icons !important;
+  content: "\e7a3";
+  color: $orange;
   font-size: small;
+  margin-right: $padding;
 }
 
 //.action-discount, .action-required {

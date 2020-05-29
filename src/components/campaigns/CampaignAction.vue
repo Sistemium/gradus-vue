@@ -41,8 +41,12 @@
     tfoot(v-if="hasFooter")
       tr
         td(colspan="5")
-          span.oneTime(v-if="action.oneTime") ✅ Единовременная
-          span.repeatable(v-if="action.repeatable") ✅ Многократная
+          span.oneTime(v-if="action.oneTime")
+            i.el-icon-success
+            span Единовременная
+          span.repeatable(v-if="action.repeatable")
+            i.el-icon-success
+            span Многократная
 
   //.restrictions(v-if="hasRestrictions")
     action-option(v-for="restriction in hasRestrictions" :action="restriction")
@@ -182,6 +186,11 @@ tfoot td > * + * {
 
 tfoot td {
   text-align: left;
+}
+
+.el-icon-success {
+  color: $orange;
+  margin-right: $padding;
 }
 
 </style>
