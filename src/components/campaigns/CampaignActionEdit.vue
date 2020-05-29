@@ -56,6 +56,7 @@ export default {
       return {
         options: [],
         required: {},
+        ranges: [],
         ...(this.actionId ? Action.get(this.actionId)
           .toJSON() : {
           campaignId: this.campaignId,
@@ -88,7 +89,9 @@ export default {
       };
     },
     modelInstance() {
-      return Action.mapper.createInstance({ required: {}, ...cloneDeep(this.modelOrigin) });
+      return Action.mapper.createInstance({
+        required: {}, ...cloneDeep(this.modelOrigin),
+      });
     },
     saveClick() {
       this.performOperation(async () => new Promise((resolve, reject) => {

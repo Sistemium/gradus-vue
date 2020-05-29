@@ -21,7 +21,9 @@
     tbody
       tr.option(v-for="(option, idx) in hasOptions")
         td.number {{ idx + 1 }}
-        action-option.ranges(:action="option" v-if="hasRanges")
+        td.ranges(:action="action" v-if="hasRanges && !idx" :rowspan="hasOptions.length")
+          .name(v-for="range in action.ranges") {{ range.name }}
+        action-option.ranges(:action="option" v-if="!hasRanges")
         action-required(
           v-if="hasRequired && idx === 0"
           :action="action" :rowspan="hasOptions.length"
@@ -71,10 +73,12 @@ export default {
       return this.action.discountHeaders();
     },
     hasRanges() {
-      return this.action.options.filter(option => {
-        const { name, ranges = [] } = option;
-        return name || ranges.length;
-      }).length;
+      // return this.action.options.filter(option => {
+      //   const { name, ranges = [] } = option;
+      //   return name || ranges.length;
+      // }).length;
+      const { ranges = [] } = this.action;
+      return ranges.length;
     },
     hasFooter() {
       return this.action.oneTime || this.action.repeatable;
