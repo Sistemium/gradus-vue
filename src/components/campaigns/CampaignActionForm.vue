@@ -10,10 +10,19 @@ el-form.campaign-action-form(
     el-input(v-model="model.name" :placeholder="namePlaceholder")
 
   el-form-item.comment(prop="commentText")
-    el-input(v-model="model.commentText" type="textarea" placeholder="комментарий" autosize)
+    el-input(
+      v-model="model.commentText"
+      type="textarea"
+      placeholder="комментарий"
+      autosize
+    )
 
   el-form-item.territory
-    el-input(v-model="model.territory" placeholder="ограничение по территории" :clearable="true")
+    el-input(
+      v-model="model.territory" placeholder="ограничение по территории" :clearable="true"
+    )
+      template(slot="prepend")
+         i.el-icon-location
 
   .switches(v-if="model.options")
     el-switch(v-model="model.oneTime" inactive-text="Единовременная")

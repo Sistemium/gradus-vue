@@ -5,7 +5,6 @@
   .header
     .name {{ action.name }}
       .comment(v-if="action.commentText") {{ action.commentText }}
-      .territory(v-if="action.territory") Территория: {{ action.territory }}
     .buttons
       button-edit.edit(@click="onEditClick")
 
@@ -44,11 +43,15 @@
       tr
         td(colspan="5")
           span.oneTime(v-if="action.oneTime")
-            i.el-icon-success
+            i.el-icon-circle-check
             span Единовременная
           span.repeatable(v-if="action.repeatable")
-            i.el-icon-success
+            i.el-icon-circle-check
             span Многократная
+          span.territory(v-if="action.territory")
+            i.el-icon-location
+            span {{ action.territory }}
+
 
   //.restrictions(v-if="hasRestrictions")
     action-option(v-for="restriction in hasRestrictions" :action="restriction")
@@ -190,11 +193,11 @@ tfoot td > * + * {
 
 tfoot td {
   text-align: left;
+  i {
+    color: $orange;
+    margin-right: $padding;
+  }
 }
 
-.el-icon-success {
-  color: $orange;
-  margin-right: $padding;
-}
 
 </style>
