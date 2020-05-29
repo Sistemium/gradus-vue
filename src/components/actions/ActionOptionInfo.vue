@@ -5,14 +5,15 @@
     :action="action"
     v-if="action.name || action.commentText || action.ranges.length"
   )
-  .required(v-if="hasRequired")
-    label Условия
-    action-required(:action="action")
-  .discount(v-if="discount")
-    label Скидка
-    span.total(v-if="discount.own && discount.comp") {{ discount.own + discount.comp }} %
-    span.comp(v-if="discount.comp") {{ discount.comp || 0 }}% комп.
-    span.own(v-if="discount.own") {{ discount.own || 0 }}% комм.
+  .other(v-if="hasRequired || discount")
+    .required(v-if="hasRequired")
+      label Условия
+      action-required(:action="action")
+    .discount(v-if="discount")
+      label Скидка
+      span.total(v-if="discount.own && discount.comp") {{ discount.own + discount.comp }} %
+      span.comp(v-if="discount.comp") {{ discount.comp || 0 }}% комп.
+      span.own(v-if="discount.own") {{ discount.own || 0 }}% комм.
 
 </template>
 <script>
@@ -38,25 +39,30 @@ export default {
 @import "../../styles/variables";
 
 .action-option-info {
-
   display: flex;
-  flex-wrap: wrap;
-  // grid-template-columns: auto auto;
-
+  flex-direction: column;
+  justify-content: center;
+  > * + * {
+    margin-top: $padding;
+  }
 }
 
 .title {
-  // grid-column: 1 / span 2;
   display: block;
   min-width: 100%;
 }
 
-.discount, .required {
-  margin: $padding $margin-right 0 0;
+.other {
   display: flex;
   padding: $padding;
   background: white;
   border-radius: $border-radius;
+  flex-wrap: wrap;
+}
+
+.discount, .required {
+  margin-right: $margin-right;
+  display: flex;
 }
 
 .action-required {
