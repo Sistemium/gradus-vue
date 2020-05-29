@@ -12,7 +12,7 @@
     thead
       tr.headers
         th.number(rowspan="2")
-        th.options(rowspan="2" v-if="hasRanges") Ассортимент
+        th.options(rowspan="2") Ассортимент
         th.required(rowspan="2") Условия
         th.discount(:colspan="discountHeaders.length") Скидка
       tr
