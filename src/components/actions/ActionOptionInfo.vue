@@ -11,7 +11,8 @@
       action-required(:action="action")
     .discount(v-if="discount")
       label Скидка
-      span.total(v-if="discount.own && discount.comp") {{ discount.own + discount.comp }} %
+      span.total(v-if="discount.own && discount.comp")
+        | {{ discount.own + discount.comp | number(3) }} %
       span.comp(v-if="discount.comp") {{ discount.comp || 0 }}% комп.
       span.own(v-if="discount.own") {{ discount.own || 0 }}% комм.
 
@@ -42,6 +43,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+
   > * + * {
     margin-top: $padding;
   }

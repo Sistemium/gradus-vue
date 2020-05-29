@@ -5,6 +5,7 @@ import '@/lib/element-ui';
 import 'intersection-observer';
 import '@/lib/v-select';
 import '@/lib/virtual-scroll';
+import '@/lib/numberFilter';
 
 import { AUTH_INIT } from 'sistemium-vue/store/auth/actions';
 
