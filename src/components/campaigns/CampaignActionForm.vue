@@ -15,6 +15,10 @@ el-form.campaign-action-form(
   el-form-item.territory
     el-input(v-model="model.territory" placeholder="ограничение по территории" :clearable="true")
 
+  .switches(v-if="model.options")
+    el-switch(v-model="model.oneTime" inactive-text="Единовременная")
+    el-switch(v-model="model.repeatable" inactive-text="Многократная")
+
   .ranges(v-if="model.ranges")
     .header
       h3.title Ассортимент
@@ -99,6 +103,19 @@ export default {
 <style scoped lang="scss">
 
 @import "../../styles/variables";
+
+.switches {
+  margin-bottom: 18px;
+
+  > * + * {
+    margin-left: $margin-right;
+  }
+
+  /deep/ .el-switch__label {
+    font-weight: normal;
+    color: $gray;
+  }
+}
 
 .option {
   display: grid;

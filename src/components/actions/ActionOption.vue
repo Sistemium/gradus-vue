@@ -35,8 +35,14 @@ export default {
 @import "../../styles/variables";
 @import "./actionBase";
 
-.condition, .action-option {
-//  display: flex;
+.action-option {
+  > * + * {
+    margin-top: $padding;
+  }
+
+  > .name {
+    font-weight: 500;
+  }
 }
 
 .comment {

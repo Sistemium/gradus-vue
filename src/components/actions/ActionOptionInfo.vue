@@ -54,6 +54,9 @@ export default {
 .discount, .required {
   margin: $padding $margin-right 0 0;
   display: flex;
+  padding: $padding;
+  background: white;
+  border-radius: $border-radius;
 }
 
 .action-required {

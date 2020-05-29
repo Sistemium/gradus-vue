@@ -46,12 +46,12 @@ export default {
 .own {
   grid-column: 2;
   justify-content: flex-end;
-  padding-right: $margin-top;
 }
 
 .comp {
   grid-column: 1;
   justify-content: flex-end;
+  padding-right: $margin-top;
 }
 
 </style>

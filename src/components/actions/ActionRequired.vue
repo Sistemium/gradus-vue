@@ -1,6 +1,6 @@
 <template lang="pug">
 
-td.action-required(v-if="required")
+td.action-required(v-if="hasRequired || always")
   .pcs(v-if="required.pcs") {{ required.pcs }} б.
   .volume(v-if="required.volume") {{ required.volume }} л.
   .sku(v-if="required.sku") {{ required.sku }} SKU
@@ -17,7 +17,13 @@ export default {
   name: NAME,
   computed: {
     required() {
-      return this.action.required;
+      return this.action.required || {};
+    },
+  },
+  props: {
+    always: {
+      type: Boolean,
+      default: false,
     },
   },
   mixins: [actionBase],

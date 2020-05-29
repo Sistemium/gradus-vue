@@ -79,8 +79,8 @@ export default {
     showError(e) {
       return this.$message.error({
         message: e.message,
-        offset: 1,
-        duration: 15000,
+        // offset: 20,
+        duration: 7500,
         showClose: true,
       });
     },

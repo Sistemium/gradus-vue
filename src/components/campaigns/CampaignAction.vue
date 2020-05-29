@@ -26,7 +26,7 @@
           v-if="hasRequired && idx === 0"
           :action="action" :rowspan="hasOptions.length"
         )
-        action-required(v-if="!hasRequired" :action="option")
+        action-required(v-if="!hasRequired" :action="option" :always="true")
         template(v-if="discount && idx === 0")
           td(
             v-for="discountHeader in discountHeaders"
@@ -38,6 +38,11 @@
           td(
             v-for="discountHeader in discountHeaders"
           ) {{ option[discountHeader.name] }}
+    tfoot(v-if="hasFooter")
+      tr
+        td(colspan="5")
+          span.oneTime(v-if="action.oneTime") ✅ Единовременная
+          span.repeatable(v-if="action.repeatable") ✅ Многократная
 
   //.restrictions(v-if="hasRestrictions")
     action-option(v-for="restriction in hasRestrictions" :action="restriction")
@@ -66,6 +71,9 @@ export default {
         const { name, ranges = [] } = option;
         return name || ranges.length;
       }).length;
+    },
+    hasFooter() {
+      return this.action.oneTime || this.action.repeatable;
     },
   },
   methods: {
@@ -167,4 +175,13 @@ table {
   font-weight: normal;
   margin-top: $padding;
 }
+
+tfoot td > * + * {
+  margin-left: $margin-right;
+}
+
+tfoot td {
+  text-align: left;
+}
+
 </style>

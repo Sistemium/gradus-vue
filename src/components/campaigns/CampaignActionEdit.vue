@@ -56,7 +56,12 @@ export default {
       return {
         options: [],
         required: {},
-        ...(this.actionId ? Action.get(this.actionId).toJSON() : { campaignId: this.campaignId }),
+        ...(this.actionId ? Action.get(this.actionId)
+          .toJSON() : {
+          campaignId: this.campaignId,
+          oneTime: true,
+          repeatable: true,
+        }),
       };
     },
     changed() {
@@ -86,7 +91,11 @@ export default {
       return Action.mapper.createInstance({ required: {}, ...cloneDeep(this.modelOrigin) });
     },
     saveClick() {
-      this.performOperation(() => new Promise((resolve, reject) => {
+      this.performOperation(async () => new Promise((resolve, reject) => {
+        if (!this.model.options.length) {
+          reject(new Error('Нужно добавить хотя бы один вариант'));
+          return;
+        }
         this.$refs.form.validate(isValid => {
           if (!isValid) {
             reject(new Error('Форма не заполнена корректно'));
