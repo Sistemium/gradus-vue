@@ -93,6 +93,14 @@ export default {
         required: {}, ...cloneDeep(this.modelOrigin),
       });
     },
+    deleteClick() {
+      this.performOperation(async () => {
+        if (!this.model.id) {
+          return;
+        }
+        await Action.destroy(this.model);
+      });
+    },
     saveClick() {
       this.performOperation(async () => new Promise((resolve, reject) => {
         if (!this.model.options.length) {
