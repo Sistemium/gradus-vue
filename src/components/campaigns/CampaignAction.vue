@@ -122,7 +122,6 @@ th, td {
   /*align-items: center;*/
 
   > .number {
-    min-width: 25px;
     font-weight: bold;
     // color: $green;
     text-align: center;
@@ -197,6 +196,10 @@ tfoot td {
 td.discount, th.discount, th.required, td.action-required {
   width: 70px;
   /*min-width: 70px;*/
+}
+
+th.number {
+  width: 30px;
 }
 
 @media print {

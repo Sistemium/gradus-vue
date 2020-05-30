@@ -11,7 +11,7 @@ el-container.campaigns(
 
     layout-select(v-model="layout")
 
-    el-button.add-campaign(type="primary" @click="addCampaignClick")
+    el-button.add-campaign(type="" @click="addCampaignClick" :round="true")
       i.el-icon-document-add
       span Добавить акцию
 
@@ -203,7 +203,7 @@ export default {
     span {
       display: none;
     }
-    padding: $padding;
+    padding: $padding + 2;
   }
 
   @include responsive-only(gt-sm) {
@@ -213,7 +213,7 @@ export default {
   }
 
   i {
-    font-size: 25px;
+    font-size: 15px;
   }
 
 }
