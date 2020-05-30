@@ -213,4 +213,9 @@ td.discount, th.discount, th.required, td.action-required {
   }
 }
 
+th {
+  font-weight: 500;
+  color: $gray;
+}
+
 </style>
