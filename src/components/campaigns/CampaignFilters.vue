@@ -5,6 +5,7 @@
   .period
     label Период:
     month-select(:months="lastYearMonths" v-model="selectedMonth")
+  campaign-group-select(v-model="campaignGroup" placeholder="все группы")
 
   search-input(v-model="searchText" :debounce="100")
 
@@ -16,6 +17,7 @@ import { monthGenerator } from 'sistemium-telegram/services/moments';
 import * as getters from '@/vuex/campaigns/getters';
 import * as actions from '@/vuex/campaigns/actions';
 import MonthSelect from '@/components/MonthSelect.vue';
+import CampaignGroupSelect from '@/components/campaigns/CampaignGroupSelect.vue';
 
 const { mapActions, mapGetters } = createNamespacedHelpers('campaigns');
 
@@ -29,6 +31,23 @@ export default {
 
     lastYearMonths() {
       return monthGenerator(12, Date());
+    },
+
+    campaignGroup: {
+      get() {
+        return this.$route.query.campaignGroup || null;
+      },
+      set(campaignGroup) {
+        const { name, params, query } = this.$route;
+        this.$router.push({
+          name,
+          params,
+          query: {
+            ...query,
+            campaignGroup: campaignGroup || undefined,
+          },
+        });
+      },
     },
 
     selectedMonth: {
@@ -59,7 +78,10 @@ export default {
     },
   },
 
-  components: { MonthSelect },
+  components: {
+    CampaignGroupSelect,
+    MonthSelect,
+  },
 
 };
 
@@ -103,6 +125,10 @@ export default {
         display: none;
       }
     }
+  }
+
+  .campaign-group-select {
+    margin-left: $padding;
   }
 
 }

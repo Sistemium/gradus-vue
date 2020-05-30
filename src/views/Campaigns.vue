@@ -20,9 +20,9 @@ el-container.campaigns(
     element-loading-text="Загрузка данных ..."
   )
 
-    resize.resize(:padding="30" v-if="layout==='table'")
-      campaigns-table(v-if="!loading" :campaigns="campaigns" @cell-click="campaignClick")
-    campaigns-with-aside(:campaigns="campaigns" v-else @editCampaign="campaignClick")
+    resize.resize#campaigns-scroll-container(:padding="30" v-if="layout==='table'")
+      campaigns-table(v-if="!loading" :campaigns="filteredCampaigns" @cell-click="campaignClick")
+    campaigns-with-aside(:campaigns="filteredCampaigns" v-else @editCampaign="campaignClick")
 
   campaign-dialog(
     v-if="campaign"
@@ -43,10 +43,11 @@ el-container.campaigns(
 
 <script>
 
+import filter from 'lodash/filter';
 import { createNamespacedHelpers } from 'vuex';
 import CampaignPicturesDialog from '@/components/campaigns/CampaignPicturesDialog.vue';
 import CampaignDialog from '@/components/campaigns/CampaignDialog.vue';
-import CampaignsTable from '@/components/campaigns/CampaignsTable.vue';
+import CampaignsTable from '@/components/campaigns/CampaignsActionsTable.vue';
 import CampaignFilters from '@/components/campaigns/CampaignFilters.vue';
 import * as getters from '@/vuex/campaigns/getters';
 import * as actions from '@/vuex/campaigns/actions';
@@ -77,6 +78,14 @@ export default {
       galleryCampaign: getters.GALLERY_CAMPAIGN,
       busy: getters.BUSY,
     }),
+
+    filteredCampaigns() {
+      const { campaignGroup: groupCode } = this.$route.query;
+      if (!groupCode) {
+        return this.campaigns;
+      }
+      return filter(this.campaigns, { groupCode });
+    },
 
   },
 
@@ -188,14 +197,14 @@ export default {
 
 .add-campaign {
 
-  @include responsive-only(lt-sm) {
+  @include responsive-only(lt-md) {
     span {
       display: none;
     }
     padding: $padding;
   }
 
-  @include responsive-only(gt-xs) {
+  @include responsive-only(gt-sm) {
     i {
       display: none;
     }
