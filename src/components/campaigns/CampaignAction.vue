@@ -14,9 +14,9 @@
         th.number(rowspan="2")
         th.options(rowspan="2") Ассортимент
         th.required(rowspan="2") Условия
-        th.discount(:colspan="discountHeaders.length") Скидка
+        th(:colspan="discountHeaders.length") Скидка %
       tr
-        th(v-for="discountHeader in discountHeaders") {{ discountHeader.title }}
+        th.discount(v-for="discountHeader in discountHeaders") {{ discountHeader.title }}
     tbody
       tr.option(v-for="(option, idx) in hasOptions")
         td.number {{ idx + 1 }}
@@ -29,16 +29,16 @@
         )
         action-required(v-if="!hasRequired" :action="option" :always="true")
         template(v-if="discount && idx === 0")
-          td(
+          td.discount(
             v-for="discountHeader in discountHeaders"
             :rowspan="hasOptions.length"
-          ) {{ action[discountHeader.name] }}
+          ) {{ action[discountHeader.name] || '-' }}
         // action-discount(
         // v-if="discount && idx === 0" :action="action" :rowspan="hasOptions.length")
         template(v-if="!discount")
-          td(
+          td.discount(
             v-for="discountHeader in discountHeaders"
-          ) {{ option[discountHeader.name] }}
+          ) {{ option[discountHeader.name] || '-' }}
     tfoot(v-if="hasFooter")
       tr
         td(colspan="5")
@@ -155,7 +155,7 @@ th, td {
 
 .campaign-action {
 
-  margin-top: $margin-top;
+  // margin-top: $margin-top;
 
   > .header {
     border: $list-cell-borders;
@@ -199,5 +199,18 @@ tfoot td {
   }
 }
 
+td.discount, th.discount, th.required, td.action-required {
+  width: 70px;
+  /*min-width: 70px;*/
+}
+
+@media print {
+  .campaign-action {
+    page-break-inside: avoid;
+  }
+  @page {
+    /*size: landscape;*/
+  }
+}
 
 </style>

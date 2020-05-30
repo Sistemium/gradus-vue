@@ -32,12 +32,12 @@ export default new Model({
         res.comp = maxBy(optionsInfo, 'comp').comp;
       }
       return filter([
-        res.comp && {
-          title: '% комп.',
+        {
+          title: 'комп.',
           name: 'discountComp',
         },
-        res.own && {
-          title: '% комм.',
+        {
+          title: 'комм.',
           name: 'discountOwn',
         },
       ]);

@@ -67,4 +67,10 @@ export default {
   padding-top: $margin-top/2;
 }
 
+@media print {
+  .el-header {
+    display: none;
+  }
+}
+
 </style>

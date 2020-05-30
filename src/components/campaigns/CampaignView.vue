@@ -142,4 +142,10 @@ export default {
   float: right;
 }
 
+.actions {
+  .campaign-action {
+    margin-top: $margin-top;
+  }
+}
+
 </style>

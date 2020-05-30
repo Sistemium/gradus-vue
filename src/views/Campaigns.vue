@@ -216,4 +216,13 @@ export default {
 
 }
 
+@media print {
+  .el-header {
+    display: none;
+  }
+  #campaigns-scroll-container {
+    max-height: none !important;
+  }
+}
+
 </style>
