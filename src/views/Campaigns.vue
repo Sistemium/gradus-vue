@@ -11,7 +11,7 @@ el-container.campaigns(
 
     layout-select(v-model="layout")
 
-    el-button.add-campaign(type="primary" @click="campaign = {}")
+    el-button.add-campaign(type="primary" @click="addCampaignClick")
       i.el-icon-document-add
       span Добавить акцию
 
@@ -102,6 +102,10 @@ export default {
         .then(() => {
           // this.$router.push({ name: 'campaignGallery' });
         });
+    },
+
+    addCampaignClick() {
+      this.campaign = { groupCode: this.$route.query.campaignGroup || null };
     },
 
     editCampaignClose() {
