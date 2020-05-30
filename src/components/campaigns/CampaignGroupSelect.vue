@@ -1,7 +1,7 @@
 <template lang="pug">
 
 .campaign-group-select(v-if="readonly") {{ label }}
-el-select.campaign-group-select(v-model="model" placeholder="выберите группу" v-else)
+el-select.campaign-group-select(v-model="model" :placeholder="placeholder" v-else :clearable="true")
   el-option(
     v-for="option in options" :key="option.value"
     :label="option.label"
@@ -23,6 +23,10 @@ export default {
     readonly: {
       type: Boolean,
       default: false,
+    },
+    placeholder: {
+      type: String,
+      default: 'выберите группу',
     },
   },
   data() {
