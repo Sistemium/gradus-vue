@@ -114,14 +114,7 @@ export default {
         ...campaign,
         isActive: true,
       })
-        .then(({ id: campaignId }) => {
-          if (campaignId === this.$route.params.campaignId) {
-            return;
-          }
-          const location = { ...this.$route };
-          location.params.campaignId = campaignId;
-          this.$router.push(location);
-        });
+        .then(({ id }) => this.updateRouteParams({ campaignId: id }));
 
     },
 

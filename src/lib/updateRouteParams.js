@@ -3,13 +3,13 @@ import Vue from 'vue';
 
 Vue.mixin({
   methods: {
-    async updateRouteParams(updateParams = {}, updateQuery = {}) {
+    async updateRouteParams(updateParams = {}, updateQuery = {}, updateName) {
       const { name, params = {}, query } = this.$route;
-      if (matches(updateParams)(params) && matches(updateQuery)(query)) {
+      if (matches(updateParams)(params) && matches(updateQuery)(query) && !updateName) {
         return;
       }
       await this.$router.push({
-        name,
+        name: updateName || name,
         params: {
           ...params,
           ...updateParams,

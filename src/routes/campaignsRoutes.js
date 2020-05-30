@@ -8,11 +8,12 @@ export default {
   children: [{
     name: 'campaignActionCreate',
     path: 'action/create',
-    props: ({ params }) => ({
+    props: ({ params, query }) => ({
       // actionId: params.actionId,
       from: {
         name: 'campaigns',
         params: { ...params },
+        query: { ...query },
       },
     }),
     component: () =>
@@ -20,11 +21,12 @@ export default {
   }, {
     name: 'campaignActionEdit',
     path: 'action/:actionId/edit',
-    props: ({ params }) => ({
+    props: ({ params, query }) => ({
       actionId: params.actionId,
       from: {
         name: 'campaigns',
         params: { ...params },
+        query: { ...query },
       },
     }),
     component: () =>

@@ -105,11 +105,7 @@ export default {
       this.$emit('editCampaign', this.currentCampaign);
     },
     onAddAction() {
-      const { params } = this.$route;
-      this.$router.push({
-        name: 'campaignActionCreate',
-        params: { ...params },
-      });
+      this.updateRouteParams({}, {}, 'campaignActionCreate');
     },
     scrollToCampaign(campaign) {
       if (!campaign) {

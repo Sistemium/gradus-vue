@@ -89,14 +89,8 @@ export default {
   },
   methods: {
     onEditClick() {
-      const { params } = this.$route;
-      this.$router.push({
-        name: 'campaignActionEdit',
-        params: {
-          ...params,
-          actionId: this.action.id,
-        },
-      });
+      const { id: actionId } = this.action;
+      this.updateRouteParams({ actionId }, {}, 'campaignActionEdit');
     },
   },
   mixins: [actionBase],
@@ -193,6 +187,7 @@ tfoot td > * + * {
 
 tfoot td {
   text-align: left;
+
   i {
     color: $orange;
     margin-right: $padding;
