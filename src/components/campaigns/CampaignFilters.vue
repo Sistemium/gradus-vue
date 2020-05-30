@@ -38,15 +38,7 @@ export default {
         return this.$route.query.campaignGroup || null;
       },
       set(campaignGroup) {
-        const { name, params, query } = this.$route;
-        this.$router.push({
-          name,
-          params,
-          query: {
-            ...query,
-            campaignGroup: campaignGroup || undefined,
-          },
-        });
+        this.updateRouteParams({}, { campaignGroup: campaignGroup || undefined });
       },
     },
 
