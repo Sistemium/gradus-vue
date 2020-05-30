@@ -8,11 +8,13 @@
     .name() {{ campaign.name }}
     .actions
       campaign-action(v-for="action in campaign.actions" :action="action" :key="action.id")
+  router-view
 
 </template>
 <script>
 
 import filter from 'lodash/filter';
+import Action from '@/models/Action';
 import CampaignAction from '@/components/campaigns/CampaignAction.vue';
 
 const NAME = 'CampaignsActionsTable';
@@ -40,6 +42,7 @@ export default {
         this.scrollToCampaign(campaignId);
       });
     }, { immediate: true });
+    this.$bindToModel(Action);
   },
   props: {
     campaigns: Array,
