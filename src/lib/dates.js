@@ -13,19 +13,26 @@ export function currentMonth() {
 
 export function monthToWhere(monthId) {
 
-  const monthB = `${monthId}-01`;
-  const monthE = dayjs(monthB)
+  const {
+    dateE,
+    dateB,
+  } = dateBE(monthId);
+
+  return {
+    dateB: { '<=': dateE },
+    dateE: { '>=': dateB },
+  };
+
+}
+
+export function dateBE(monthId) {
+  const dateB = `${monthId}-01`;
+  const dateE = dayjs(dateB)
     .add(1, 'month')
     .add(-1, 'day')
     .format('YYYY-MM-DD');
-
   return {
-    dateB: {
-      '<=': monthE,
-    },
-    dateE: {
-      '>=': monthB,
-    },
+    dateE,
+    dateB,
   };
-
 }

@@ -53,6 +53,7 @@ import * as getters from '@/vuex/campaigns/getters';
 import * as actions from '@/vuex/campaigns/actions';
 import CampaignsWithAside from '@/components/campaigns/CampaignsWithAside.vue';
 import LayoutSelect from '@/components/LayoutSelect.vue';
+import { dateBE } from '@/lib/dates';
 // import log from 'sistemium-telegram/services/log';
 
 // const { debug } = log('Campaigns');
@@ -77,6 +78,7 @@ export default {
       campaigns: getters.CAMPAIGNS,
       galleryCampaign: getters.GALLERY_CAMPAIGN,
       busy: getters.BUSY,
+      selectedMonth: getters.SELECTED_MONTH,
     }),
 
     filteredCampaigns() {
@@ -105,7 +107,10 @@ export default {
     },
 
     addCampaignClick() {
-      this.campaign = { groupCode: this.$route.query.campaignGroup || null };
+      this.campaign = {
+        groupCode: this.$route.query.campaignGroup || null,
+        ...dateBE(this.selectedMonth),
+      };
     },
 
     editCampaignClose() {
