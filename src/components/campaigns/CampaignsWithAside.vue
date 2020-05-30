@@ -3,7 +3,7 @@
 el-container.campaigns-with-aside
 
   el-aside
-    resize#campaigns-list-container(:padding="30")
+    resize#campaigns-scroll-container(:padding="30")
       campaigns-list(:campaigns="campaigns" v-model="currentCampaign")
 
   el-main
@@ -93,7 +93,7 @@ export default {
 
   mounted() {
     this.$nextTick(() => {
-      this.scrollToCampaign(this.currentCampaign);
+      // this.scrollToCampaign(this.currentCampaign);
     });
   },
 
@@ -116,7 +116,7 @@ export default {
         return;
       }
       this.$scrollTo(`#c-${campaign.id}`, 500, {
-        container: '#campaigns-list-container',
+        container: '#campaigns-scroll-container',
         force: false,
       });
     },
