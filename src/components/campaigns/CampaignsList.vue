@@ -1,9 +1,10 @@
 <template lang="pug">
 
 .campaigns-list
-  .list-group(ref="listGroup")
+  .list-group(v-for="group in groupedCampaigns" :key="group.code")
+    .list-group-header(:key="group.code") {{ group.label }}
     .list-group-item(
-      v-for="item in campaigns" :key="item.id"
+      v-for="item in group.campaigns" :key="item.id"
       :id="`c-${item.id}`"
       @click.prevent="itemClick(item)"
       :class="value && value.id === item.id && 'active'"
@@ -17,6 +18,11 @@
 </template>
 <script>
 
+import groupBy from 'lodash/groupBy';
+import map from 'lodash/map';
+import orderBy from 'lodash/orderBy';
+import filter from 'lodash/filter';
+import { campaignGroups } from '@/services/campaigns';
 import CampaignPicture from '@/models/CampaignPicture';
 
 const NAME = 'CampaignsList';
@@ -26,6 +32,22 @@ export default {
   props: {
     campaigns: Array,
     value: Object,
+  },
+  computed: {
+    groupedCampaigns() {
+      const grouped = groupBy(this.campaigns, ({ groupCode }) => groupCode || 'Без группы');
+      const groups = [...campaignGroups(), {
+        value: 'Без группы',
+        label: 'Без группы',
+        order: -1,
+      }];
+      return filter(orderBy(map(groups, ({ value, label, order }) => ({
+        value,
+        label,
+        order,
+        campaigns: grouped[value],
+      })), 'order'), 'campaigns');
+    },
   },
   methods: {
     itemClick(item) {

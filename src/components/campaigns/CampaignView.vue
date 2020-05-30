@@ -5,10 +5,12 @@
   .buttons
     slot(name="buttons")
       button-edit.edit(@click="editCampaignClick()")
-      // confirm-button.del(type="text" @confirm="delCampaign()" text="Удалить" size="mini")
 
   .fields
-    .name(v-text="campaign.name")
+
+    .name
+      campaign-group-select(v-model="campaign.groupCode" :readonly="true" v-if="campaign.groupCode")
+      span(v-text="campaign.name")
     .period
       .date-b {{ campaign.dateB | ruDate }}
       .date-e {{ campaign.dateE | ruDate }}
@@ -33,6 +35,7 @@
 
 import Action from '@/models/Action';
 import CampaignAction from '@/components/campaigns/CampaignAction.vue';
+import CampaignGroupSelect from '@/components/campaigns/CampaignGroupSelect.vue';
 
 const NAME = 'CampaignView';
 
@@ -64,6 +67,7 @@ export default {
 
   name: NAME,
   components: {
+    CampaignGroupSelect,
     CampaignAction,
   },
 
@@ -99,9 +103,14 @@ export default {
 }
 
 .name {
+  display: flex;
   font-size: large;
   font-weight: bold;
   white-space: pre-line;
+
+  > * + * {
+    margin-left: $padding;
+  }
 }
 
 .period {

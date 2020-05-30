@@ -14,6 +14,9 @@ top="4vh"
   :rules="rules"
   size="mini"
   )
+    el-form-item(label="Группа" prop="groupCode")
+
+      campaign-group-select(v-model="newCampaign.groupCode")
 
     el-form-item(label="Название" prop="name")
 
@@ -51,23 +54,25 @@ top="4vh"
 
     el-form-item
       .buttons
-        .editButtons
-          el-button(@click="closeDialog") Отмена
-          el-button(type="primary" @click="submitDialog('newCampaign')") Готово
         confirm-button.remove(
         v-if="isEdit()"
         text="Удалить" confirm-text="Точно удалить?"
         @confirm="removeClick"
         )
+        .editButtons
+          el-button(@click="closeDialog") Отмена
+          el-button(type="primary" @click="submitDialog('newCampaign')") Готово
 
 </template>
 
 <script>
 
+import CampaignGroupSelect from '@/components/campaigns/CampaignGroupSelect.vue';
+
 export default {
 
   name: 'CampaignDialog',
-
+  components: { CampaignGroupSelect },
   props: {
     campaign: Object,
   },
@@ -81,6 +86,13 @@ export default {
         commentText: '',
       },
       rules: {
+        groupCode: [
+          {
+            required: true,
+            message: 'Укажите группу акций',
+            trigger: 'blur',
+          },
+        ],
         name: [
           {
             required: true,

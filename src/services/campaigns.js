@@ -125,3 +125,23 @@ export function removeCampaign(campaign) {
   return Campaign.destroy(campaign);
 
 }
+
+export function campaignGroups() {
+  return [
+    {
+      label: 'ОП',
+      value: 'op',
+      order: 1,
+    },
+    {
+      label: 'МВЗ',
+      value: 'mvz',
+      order: 2,
+    },
+    {
+      label: 'Общие',
+      value: 'common',
+      order: 0,
+    },
+  ];
+}
