@@ -1,7 +1,7 @@
 <template lang="pug">
 
 .action-required-form
-  h3.title Условия:
+  h3.title Объем закупки:
   el-form-item.pcs(label="Бутылок" prop="required.pcs")
     el-input-number(v-model="required.pcs" :step="1" :min="0")
   el-form-item.volume(label="Литров" prop="required.volume")
