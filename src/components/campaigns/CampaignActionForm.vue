@@ -27,6 +27,7 @@ el-form.campaign-action-form(
   .switches(v-if="model.options")
     el-switch(v-model="model.oneTime" inactive-text="Единовременная")
     el-switch(v-model="model.repeatable" inactive-text="Многократная")
+    el-switch(v-model="model.needPhoto" inactive-text="Фото-отчет")
 
   .ranges(v-if="model.ranges")
     .header

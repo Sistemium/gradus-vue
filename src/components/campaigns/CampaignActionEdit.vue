@@ -62,6 +62,7 @@ export default {
           campaignId: this.campaignId,
           oneTime: true,
           repeatable: true,
+          needPhoto: false,
         }),
       };
     },

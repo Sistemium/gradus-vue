@@ -33,11 +33,11 @@ export default new Model({
       }
       return filter([
         {
-          title: 'комп.',
+          title: '% комп.',
           name: 'discountComp',
         },
         {
-          title: 'комм.',
+          title: '% комм.',
           name: 'discountOwn',
         },
       ]);

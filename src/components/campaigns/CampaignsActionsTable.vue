@@ -1,19 +1,21 @@
 <template lang="pug">
 
 .campaigns-actions-table
+
   table.campaign(
     v-for="campaign in campaignsWithActions" :key="campaign.id"
     :id="`c-${campaign.id}`"
   )
     thead
       tr
-        td.name()
+        td.name
           i.el-icon-s-management
           span {{ campaign.name }}
     tbody.actions
       tr(v-for="action in campaign.actions" :key="action.id")
         td
           campaign-action(:action="action" )
+
   router-view
 
 </template>
@@ -77,6 +79,11 @@ export default {
 
 }
 
+.campaign-action {
+  margin-left: auto;
+  max-width: 800px;
+}
+
 table {
   border-spacing: 0;
   width: 100%;
@@ -84,6 +91,12 @@ table {
 
 tr + tr td {
   padding-top: $margin-top;
+}
+
+@media print {
+  table.campaign {
+    // page-break-inside: avoid;
+  }
 }
 
 </style>

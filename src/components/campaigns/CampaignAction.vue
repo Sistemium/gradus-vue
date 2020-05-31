@@ -2,7 +2,7 @@
 
 .campaign-action
 
-  .header
+  // .header
     .name {{ action.name }}
       .comment(v-if="action.commentText") {{ action.commentText }}
     .buttons
@@ -10,12 +10,14 @@
 
   table
     thead
-      tr.headers
-        th.number(rowspan="2")
-        th.options(rowspan="2") Ассортимент
-        th.required(rowspan="2") Условия
-        th(:colspan="discountHeaders.length") Скидка %
-      tr
+      tr.header
+        // th.number №
+        th.name(colspan="2")
+          .title
+            span {{ action.name }}
+            button-edit.edit(@click="onEditClick")
+        th.required условия
+        // th(:colspan="discountHeaders.length") Скидка %
         th.discount(v-for="discountHeader in discountHeaders") {{ discountHeader.title }}
     tbody
       tr.option(v-for="(option, idx) in hasOptions")
@@ -48,9 +50,13 @@
           span.repeatable(v-if="action.repeatable")
             i.el-icon-circle-check
             span Многократная
+          span.repeatable(v-if="action.needPhoto")
+            i.el-icon-camera
+            span Фото-отчет
           span.territory(v-if="action.territory")
             i.el-icon-location
             span {{ action.territory }}
+          .comment(v-if="action.commentText") {{ action.commentText }}
 
 
   //.restrictions(v-if="hasRestrictions")
@@ -76,15 +82,14 @@ export default {
       return this.action.discountHeaders();
     },
     hasRanges() {
-      // return this.action.options.filter(option => {
-      //   const { name, ranges = [] } = option;
-      //   return name || ranges.length;
-      // }).length;
       const { ranges = [] } = this.action;
       return ranges.length;
     },
     hasFooter() {
-      return this.action.oneTime || this.action.repeatable;
+      return this.action.oneTime
+        || this.action.repeatable
+        || this.action.commentText
+        || this.action.needPhoto;
     },
   },
   methods: {
@@ -118,12 +123,8 @@ th, td {
 
 .option {
 
-  /*display: flex;*/
-  /*align-items: center;*/
-
   > .number {
     font-weight: bold;
-    // color: $green;
     text-align: center;
   }
 
@@ -133,40 +134,12 @@ th, td {
 
 }
 
-.conditions {
+thead {
 
-  display: flex;
   background: $gray-background;
-  padding: 1px;
 
-}
-
-.action-required, .action-option, .action-discount {
-  background: white;
-  margin: 1px 0;
-}
-
-.campaign-action {
-
-  // margin-top: $margin-top;
-
-  > .header {
-    border: $list-cell-borders;
-    border-bottom-style: none;
-    border-top-left-radius: $border-radius;
-    border-top-right-radius: $border-radius;
-  }
-
-  > .header {
-    display: flex;
-
-    > .name {
-      flex: 1;
-    }
-
-    background: $gray-background;
+  th {
     padding: $padding * 2;
-    font-weight: 600;
   }
 
 }
@@ -175,13 +148,13 @@ table {
   width: 100%;
 }
 
-.comment, .territory {
-  font-weight: normal;
+.comment {
   margin-top: $padding;
+  white-space: pre-line;
 }
 
-tfoot td > * + * {
-  margin-left: $margin-right;
+tfoot td > * {
+  margin-right: $margin-right;
 }
 
 tfoot td {
@@ -195,10 +168,9 @@ tfoot td {
 
 td.discount, th.discount, th.required, td.action-required {
   width: 70px;
-  /*min-width: 70px;*/
 }
 
-th.number {
+th.number, td.number {
   width: 30px;
 }
 
@@ -206,14 +178,26 @@ th.number {
   .campaign-action {
     page-break-inside: avoid;
   }
-  @page {
-    /*size: landscape;*/
-  }
 }
 
 th {
   font-weight: 500;
-  color: $gray;
+  color: $light-gray;
+
+  &.name {
+    .title {
+      color: $black;
+      display: flex;
+      align-items: center;
+
+      span {
+        font-weight: 600;
+        flex: 1;
+      }
+
+    }
+
+  }
 }
 
 </style>
