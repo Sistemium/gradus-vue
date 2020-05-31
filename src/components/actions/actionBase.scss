@@ -1,27 +1,8 @@
 @import "../../styles/variables";
 
-//.options {
-//  flex: 1;
-//}
-
-.comment:before {
-  font-family: element-icons !important;
-  content: "\e7a3";
-  color: $orange;
-  font-size: small;
-  margin-right: $padding;
+.comment {
+  i {
+    margin-right: $padding;
+    color: $orange;
+  }
 }
-
-//.action-discount, .action-required {
-//
-//  display: flex;
-//
-//  > * {
-//    padding: $padding;
-//  }
-//
-//  > * {
-//    border-left: solid 2px $gray-background;
-//  }
-//
-//}

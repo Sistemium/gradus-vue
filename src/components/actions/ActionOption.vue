@@ -7,7 +7,9 @@ td.action-option
   .ranges(v-if="action.ranges")
     .name(v-for="range in action.ranges") {{ range.name }}
 
-  .comment(v-if="action.commentText") {{ action.commentText }}
+  .comment(v-if="action.commentText")
+    i.el-icon-info
+    span {{ action.commentText }}
 
 </template>
 <script>
@@ -52,8 +54,6 @@ export default {
 }
 
 .name + .name {
-  //flex: 1;
-  //padding: $padding;
   margin-top: $padding;
 }
 

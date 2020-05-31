@@ -44,19 +44,21 @@
     tfoot(v-if="hasFooter")
       tr
         td(colspan="5")
-          span.oneTime(v-if="action.oneTime")
+          .oneTime(v-if="action.oneTime")
             i.el-icon-circle-check
             span Единовременная
-          span.repeatable(v-if="action.repeatable")
+          .repeatable(v-if="action.repeatable")
             i.el-icon-circle-check
             span Многократная
-          span.repeatable(v-if="action.needPhoto")
+          .repeatable(v-if="action.needPhoto")
             i.el-icon-camera
             span Фото-отчет
-          span.territory(v-if="action.territory")
+          .territory(v-if="action.territory")
             i.el-icon-location
             span {{ action.territory }}
-          .comment(v-if="action.commentText") {{ action.commentText }}
+          .comment(v-if="action.commentText")
+            i.el-icon-info
+            span {{ action.commentText }}
 
 
   //.restrictions(v-if="hasRestrictions")
@@ -151,14 +153,20 @@ table {
 .comment {
   margin-top: $padding;
   white-space: pre-line;
+  display: block;
 }
 
 tfoot td > * {
   margin-right: $margin-right;
+  display: inline-block;
 }
 
 tfoot td {
   text-align: left;
+
+  span {
+    font-size: smaller;
+  }
 
   i {
     color: $orange;
