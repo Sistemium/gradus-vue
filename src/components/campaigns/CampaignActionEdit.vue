@@ -11,7 +11,7 @@ el-drawer.campaign-action-edit(
 )
   section.content(v-if="model")
     campaign-action-form.form(
-      :model="model"
+      :action="model"
       :rules="campaignActionRules"
       @editOption="onEditOption"
       @addOption="onAddOption"

@@ -11,7 +11,7 @@ el-drawer.campaign-action-edit(
   @closed="$emit('closed')"
 )
   section.content
-    campaign-action-form.form(:model="model" ref="form")
+    campaign-action-form.form(:action="model" ref="form")
   form-buttons(
     :loading="loading"
     :changed="changed"
