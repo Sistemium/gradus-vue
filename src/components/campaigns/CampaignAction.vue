@@ -201,7 +201,7 @@ th {
       span {
         text-align: left;
         font-weight: bold;
-        font-size: larger;
+        font-size: 16px;
         flex: 1;
       }
 
