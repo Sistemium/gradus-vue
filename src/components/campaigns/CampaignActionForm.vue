@@ -29,15 +29,15 @@ el-form.campaign-action-form(
     el-switch(v-model="action.repeatable" inactive-text="Многократная")
     el-switch(v-model="action.needPhoto" inactive-text="Фото-отчет")
 
+  action-options-form(:model="action" @editOption="editOption" @addOption="addOption")
+
   action-ranges-form(:model="action")
 
   el-collapse(v-model="activeZones")
-    el-collapse-item(title="Скидки" name="discounts")
-      action-discount-form(:discount="action")
     el-collapse-item(title="Объем закупки" name="required")
       action-required-form(:required="action.required")
-
-  action-options-form(:model="action" @editOption="editOption" @addOption="addOption")
+    el-collapse-item(title="Скидки" name="discounts")
+      action-discount-form(:discount="action")
 
 </template>
 <script>
@@ -109,7 +109,7 @@ export default {
 
 @import "../../styles/variables";
 
-.action-options-form {
+.action-ranges-form {
   margin-top: 7px;
 }
 

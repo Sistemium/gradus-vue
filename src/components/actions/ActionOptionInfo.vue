@@ -72,8 +72,9 @@ export default {
 
   > /deep/ * + * {
     margin-left: $margin-right;
+    margin-top: 0;
 
-    &:before {
+    &:not(.isMultiple):before {
       content: "+";
       margin-right: $margin-right;
     }

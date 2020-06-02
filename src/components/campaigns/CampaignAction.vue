@@ -41,7 +41,7 @@
           td.discount(
             v-for="discountHeader in discountHeaders"
           ) {{ option[discountHeader.name] || '-' }}
-    tfoot(v-if="hasFooter")
+    tfoot
       tr
         td(colspan="5")
           .oneTime(v-if="action.oneTime")
@@ -51,11 +51,11 @@
             i.el-icon-circle-check
             span Многократная
           .repeatable(v-if="action.needPhoto")
-            i.el-icon-camera
+            i.el-icon-camera-solid
             span Фото-отчет
-          .territory(v-if="action.territory")
+          .territory
             i.el-icon-location
-            span {{ action.territory }}
+            span {{ action.territory || 'Вся территория покрытия' }}
           .comment(v-if="action.commentText")
             i.el-icon-info
             span {{ action.commentText }}

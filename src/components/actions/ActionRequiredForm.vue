@@ -1,7 +1,13 @@
 <template lang="pug">
 
 .action-required-form
+
   h3.title Объем закупки:
+
+  el-checkbox(
+    v-model="required.isMultiple"
+  ) Кратно
+
   el-form-item.pcs(label="Бутылок" prop="required.pcs")
     el-input-number(v-model="required.pcs" :step="1" :min="0")
   el-form-item.volume(label="Литров" prop="required.volume")
@@ -34,10 +40,14 @@ export default {
 .action-required-form {
   display: grid;
   grid-template-columns: 50% 50%;
-  grid-template-rows: auto auto auto;
+  //grid-template-rows: auto auto auto;
 
-  > .title {
+  > .title, .el-checkbox {
     grid-column: 1 / span 2;
+  }
+
+  .el-checkbox {
+    margin-bottom: $margin-top;
   }
 
   > .volume, > .cost, > .pcs, > .sku {

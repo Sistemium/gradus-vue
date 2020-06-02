@@ -40,7 +40,7 @@ export default {
   methods: {
     getModel() {
       return {
-        required: {},
+        required: { isMultiple: false },
         ranges: [],
         ...this.cloneDeep(this.option),
       };

@@ -55,7 +55,7 @@ export default {
     modelOrigin() {
       return {
         options: [],
-        required: {},
+        required: { isMultiple: false },
         ranges: [],
         ...(this.actionId ? Action.get(this.actionId)
           .toJSON() : {
@@ -91,7 +91,8 @@ export default {
     },
     modelInstance() {
       return Action.mapper.createInstance({
-        required: {}, ...cloneDeep(this.modelOrigin),
+        required: { isMultiple: false },
+        ...cloneDeep(this.modelOrigin),
       });
     },
     deleteClick() {
