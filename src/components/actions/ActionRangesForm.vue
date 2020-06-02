@@ -3,7 +3,7 @@
 .action-ranges-form(v-if="model.ranges")
 
   .header
-    h3.title Ассортимент
+    h3.title {{ title }}
     .buttons
       button-add(@click="addRangeClick")
 
@@ -28,6 +28,10 @@ export default {
   name: NAME,
   props: {
     model: Object,
+    title: {
+      type: String,
+      default: 'Ассортимент',
+    },
   },
   methods: {
     clearRangeClick(idx) {

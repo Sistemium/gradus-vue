@@ -199,7 +199,9 @@ th {
       align-items: center;
 
       span {
-        font-weight: 600;
+        text-align: left;
+        font-weight: 500;
+        font-size: larger;
         flex: 1;
       }
 

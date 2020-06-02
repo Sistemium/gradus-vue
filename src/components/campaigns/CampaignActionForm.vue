@@ -31,7 +31,7 @@ el-form.campaign-action-form(
 
   action-options-form(:model="action" @editOption="editOption" @addOption="addOption")
 
-  action-ranges-form(:model="action")
+  action-ranges-form(:model="action" :title="action.options ? 'Общий ассортимент' : undefined")
 
   el-collapse(v-model="activeZones")
     el-collapse-item(title="Объем закупки" name="required")
