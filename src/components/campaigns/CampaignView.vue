@@ -14,12 +14,14 @@
     .period
       .date-b {{ campaign.dateB | ruDate }}
       .date-e {{ campaign.dateE | ruDate }}
-    .comment-text(v-text="campaign.commentText" v-if="campaign.commentText")
+    .comment-text(v-if="campaign.commentText")
+      i.el-icon-info
+      span {{ campaign.commentText }}
 
   resize(:padding="50")
 
     .actions
-      campaign-action(v-for="action in actions" :action="action" :key="action.id")
+      campaign-action(v-for="action in sortedActions" :action="action" :key="action.id")
 
     .pictures()
       .thumbnail(
@@ -33,6 +35,7 @@
 </template>
 <script>
 
+import orderBy from 'lodash/orderBy';
 import Action from '@/models/Action';
 import CampaignAction from '@/components/campaigns/CampaignAction.vue';
 import CampaignGroupSelect from '@/components/campaigns/CampaignGroupSelect.vue';
@@ -56,6 +59,12 @@ export default {
     },
     campaignThumbnailClick(picture) {
       this.$emit('campaignPictureClick', picture);
+    },
+  },
+
+  computed: {
+    sortedActions() {
+      return orderBy(this.actions, 'name');
     },
   },
 
@@ -132,8 +141,8 @@ export default {
     margin-top: $margin-top;
   }
 
-  .comment-text:before {
-    content: "ℹ️";
+  .comment-text i {
+    color: $orange;
     margin-right: $padding;
   }
 }

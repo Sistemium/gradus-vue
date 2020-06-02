@@ -53,6 +53,18 @@ export default {
     saveClick() {
       this.performOperation(() => {
         remove(this.model.ranges, ({ name }) => !name);
+        const { required } = this.model;
+        if (required) {
+          const { volume, volumeTo } = required;
+          if (volumeTo < volume) {
+            throw new Error('"Литров до" должно быть больше чем "Литров"');
+          }
+          const { cost, costTo } = required;
+          if (costTo < cost) {
+            throw new Error('"Сумма до" должна быть больше чем "Сумма"');
+          }
+        }
+
         this.$emit('save', this.model);
         // this.$refs.form.validate((isValid, invalidFields) => {
         //   console.log(isValid, invalidFields); // eslint-disable-line

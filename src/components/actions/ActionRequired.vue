@@ -5,10 +5,16 @@ td.action-required(v-if="hasRequired || always")
     span.from(v-if="!required.isMultiple") от
     span {{ required.pcs }} бут.
   .volume(v-if="required.volume")
+    span.from(v-if="!required.isMultiple || required.volumeTo") от
+    span {{ required.volume }}
+    span(v-if="required.volumeTo") до {{ required.volumeTo }}
+    span л.
+  .cost(v-if="required.cost")
     span.from(v-if="!required.isMultiple") от
-    span {{ required.volume }} л.
+    span {{ required.cost }}
+    span(v-if="required.costTo") до {{ required.costTo }}
+    span ₽
   .sku(v-if="required.sku") {{ required.sku }} SKU
-  .cost(v-if="required.cost") {{ required.cost }} ₽
   .isMultiple(v-if="required.isMultiple") (кратно)
 
 </template>
@@ -42,6 +48,10 @@ export default {
 .isMultiple {
   font-size: small;
   // color: $light-gray;
+}
+
+.sku {
+  color: $orange;
 }
 
 .action-required > * {
