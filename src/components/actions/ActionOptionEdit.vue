@@ -52,8 +52,11 @@ export default {
     },
     saveClick() {
       this.performOperation(() => {
+
         remove(this.model.ranges, ({ name }) => !name);
+
         const { required } = this.model;
+
         if (required) {
           const { volume, volumeTo } = required;
           if (volumeTo < volume) {
@@ -66,12 +69,7 @@ export default {
         }
 
         this.$emit('save', this.model);
-        // this.$refs.form.validate((isValid, invalidFields) => {
-        //   console.log(isValid, invalidFields); // eslint-disable-line
-        //   if (!isValid) {
-        //     throw new Error('Данные некорректны');
-        //   }
-        // });
+
       });
     },
   },
