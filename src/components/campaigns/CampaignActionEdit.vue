@@ -16,6 +16,7 @@ el-drawer.campaign-action-edit(
       @editOption="onEditOption"
       @addOption="onAddOption"
       ref="form"
+      :is-root="true"
     )
     form-buttons(
       :loading="loading"

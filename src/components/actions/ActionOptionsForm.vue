@@ -3,7 +3,7 @@
 .action-options-form(v-if="model.options")
 
   .header
-    .title Варианты
+    .title {{ title }}
     .buttons
       button-add(@click="$emit('addOption')")
 
@@ -26,6 +26,10 @@ export default {
   components: { ActionOptionInfo },
   props: {
     model: Object,
+    title: {
+      type: String,
+      default: 'Варианты',
+    },
   },
 };
 

@@ -17,21 +17,26 @@ el-form.campaign-action-form(
       autosize
     )
 
-  el-form-item.territory(v-if="action.options")
+  el-form-item.territory(v-if="isRoot")
     el-input(
       v-model="action.territory" placeholder="ограничение по территории" :clearable="true"
     )
       template(slot="prepend")
         i.el-icon-location
 
-  .switches(v-if="action.options")
+  .switches(v-if="isRoot")
     el-switch(v-model="action.oneTime" inactive-text="Единовременная")
     el-switch(v-model="action.repeatable" inactive-text="Многократная")
     el-switch(v-model="action.needPhoto" inactive-text="Фото-отчет")
 
-  action-options-form(:model="action" @editOption="editOption" @addOption="addOption")
+  action-options-form(
+    v-if="mayHaveOptions"
+    :model="action"
+    :title="isRoot ? 'Варианты' : 'Дополнения'"
+    @editOption="editOption" @addOption="addOption"
+  )
 
-  action-ranges-form(:model="action" :title="action.options ? 'Общий ассортимент' : undefined")
+  action-ranges-form(:model="action" :title="isRoot ? 'Общий ассортимент' : undefined")
 
   el-collapse(v-model="activeZones")
     el-collapse-item(title="Объем закупки" name="required")
@@ -98,6 +103,14 @@ export default {
       type: Object,
       default: () => {
       },
+    },
+    isRoot: {
+      type: Boolean,
+      default: false,
+    },
+    mayHaveOptions: {
+      type: Boolean,
+      default: true,
     },
   },
   mixins: [actionBase],
