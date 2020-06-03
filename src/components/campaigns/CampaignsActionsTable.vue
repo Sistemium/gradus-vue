@@ -10,7 +10,8 @@
       tr
         td.name
           i.el-icon-s-management
-          span {{ campaign.name }}
+          a(@click="campaignClick(campaign)")
+            span {{ campaign.name }}
     tbody.actions
       tr(v-for="action in campaign.actions" :key="action.id")
         td
@@ -42,6 +43,9 @@ export default {
         container: '#campaigns-scroll-container',
         force: false,
       });
+    },
+    campaignClick({ id: campaignId }) {
+      this.updateRouteParams({ campaignId });
     },
   },
   created() {
@@ -81,7 +85,7 @@ export default {
 
 .campaign-action {
   margin-left: auto;
-  max-width: 800px;
+  max-width: 900px;
 }
 
 table {
@@ -97,6 +101,10 @@ tr + tr td {
   table.campaign {
     // page-break-inside: avoid;
   }
+}
+
+a {
+  cursor: pointer;
 }
 
 </style>
