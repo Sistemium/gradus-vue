@@ -6,9 +6,6 @@
 @import "styles/print";
 
 body {
-  //background: $gray-background;
-}
-
-#app-view {
-  //margin-top: 20px;
+  max-width: 1300px;
+  margin: 0 auto;
 }
