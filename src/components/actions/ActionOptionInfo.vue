@@ -1,10 +1,20 @@
 <template lang="pug">
 
 .action-option-info
-  action-option.title(
-    :action="action"
-    v-if="action.name || action.commentText || action.ranges.length"
-  )
+  //action-option.title(
+  //  :action="action"
+  //  v-if="action.name || action.commentText || action.ranges.length || action.options"
+  //)
+
+  .name(v-if="action.name") {{ action.name }}
+
+  .ranges(v-if="action.ranges")
+    .name(v-for="range in action.ranges") {{ range.name }}
+
+  .comment(v-if="action.commentText")
+    i.el-icon-info
+    span {{ action.commentText }}
+
   .other(v-if="hasRequired || discount")
     .required(v-if="hasRequired")
       label Условия
@@ -15,6 +25,8 @@
         | {{ discount.own + discount.comp | number(3) }} %
       span.comp(v-if="discount.comp") {{ discount.comp || 0 }}% комп.
       span.own(v-if="discount.own") {{ discount.own || 0 }}% комм.
+
+  action-option-info(v-for="option in action.options" :action="option")
 
 </template>
 <script>
@@ -38,6 +50,7 @@ export default {
 <style scoped lang="scss">
 
 @import "../../styles/variables";
+@import "./actionBase";
 
 .action-option-info {
   display: flex;

@@ -1,8 +1,23 @@
 @import "../../styles/variables";
 
 .comment {
+  color: $dark-gray;
+  font-size: smaller;
+  white-space: pre-line;
   i {
     margin-right: $padding;
     color: $orange;
   }
+}
+
+td > .action-option, .action-option-info {
+
+  .self > .name {
+    font-weight: 500;
+  }
+
+}
+
+.name + .name {
+  margin-top: $padding;
 }

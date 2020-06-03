@@ -21,26 +21,31 @@
         th.discount(v-for="discountHeader in discountHeaders") {{ discountHeader.title }}
     tbody
       tr.option(v-for="(option, idx) in hasOptions")
+
         td.number {{ idx + 1 }}
+
         td.ranges(:action="action" v-if="hasRanges && !idx" :rowspan="hasOptions.length")
           .name(v-for="range in action.ranges") {{ range.name }}
-        action-option.ranges(:action="option" v-if="!hasRanges")
-        action-required(
-          v-if="hasRequired && idx === 0"
-          :action="action" :rowspan="hasOptions.length"
-        )
-        action-required(v-if="!hasRequired" :action="option" :always="true")
-        template(v-if="discount && idx === 0")
-          td.discount(
-            v-for="discountHeader in discountHeaders"
-            :rowspan="hasOptions.length"
-          ) {{ action[discountHeader.name] || '-' }}
-        // action-discount(
-        // v-if="discount && idx === 0" :action="action" :rowspan="hasOptions.length")
-        template(v-if="!discount")
-          td.discount(
-            v-for="discountHeader in discountHeaders"
-          ) {{ option[discountHeader.name] || '-' }}
+        td.complex(:colspan="optionColSpan(option)" v-if="!hasRanges")
+          action-option.ranges(:action="option")
+
+        template(v-if="!optionColSpan(option)")
+          action-required(
+            v-if="hasRequired && idx === 0"
+            :action="action" :rowspan="hasOptions.length"
+          )
+          action-required(v-if="!hasRequired" :action="option" :always="true")
+
+          template(v-if="discount && idx === 0")
+            td.discount(
+              v-for="discountHeader in discountHeaders"
+              :rowspan="hasOptions.length"
+            ) {{ action[discountHeader.name] || '-' }}
+          template(v-if="!discount")
+            td.discount(
+              v-for="discountHeader in discountHeaders"
+            ) {{ option[discountHeader.name] || '-' }}
+
     tfoot
       tr
         td(colspan="5")
@@ -95,6 +100,9 @@ export default {
     },
   },
   methods: {
+    optionColSpan(option) {
+      return option.options && option.options.length ? 4 : undefined;
+    },
     onEditClick() {
       const { id: actionId } = this.action;
       this.updateRouteParams({ actionId }, {}, 'campaignActionEdit');
@@ -118,6 +126,13 @@ th, td {
   text-align: center;
   padding: $padding;
 }
+
+tbody {
+  td.complex {
+    padding: 0;
+  }
+}
+
 
 .ranges {
   text-align: left;
@@ -162,6 +177,8 @@ tfoot td > * {
 }
 
 tfoot td {
+
+  padding: $padding;
   text-align: left;
 
   span {
