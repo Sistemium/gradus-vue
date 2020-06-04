@@ -10,9 +10,9 @@
   }
 }
 
-td > .action-option, .action-option-info {
+td > .action-option > .self, .action-option-info {
 
-  .self > .name {
+  > .name {
     font-weight: 500;
   }
 
