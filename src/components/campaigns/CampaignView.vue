@@ -144,6 +144,7 @@ export default {
   .comment-text i {
     color: $orange;
     margin-right: $padding;
+    white-space: pre-line;
   }
 }
 

@@ -102,7 +102,10 @@ export function saveCampaign(campaign) {
 }
 
 export function getCampaignPicturesByCampaign(campaign, force = false) {
-  return CampaignPicture.findAll({ campaignId: campaign.id }, { force });
+  return CampaignPicture.findAll({
+    where: { campaignId: { '==': campaign && campaign.id } },
+    orderBy: [['ts', 'ASC'], ['id', 'ASC']],
+  }, { force });
 }
 
 /**

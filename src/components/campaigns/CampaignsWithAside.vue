@@ -118,13 +118,16 @@ export default {
     },
     setPictures(campaign) {
       // this.currentCampaignPictures = campaign ? campaign.pictures : [];
-      const query = { campaignId: campaign && campaign.id };
+      const query = {
+        where: { campaignId: { '==': campaign && campaign.id } },
+        orderBy: [['ts', 'ASC'], ['id', 'ASC']],
+      };
       CampaignPicture.bindAll(this, query, 'currentCampaignPictures');
       if (!campaign) {
         return;
       }
       this.loading = true;
-      svc.getCampaignPicturesByCampaign(campaign, true)
+      svc.getCampaignPicturesByCampaign(campaign)
         .finally(() => {
           this.loading = false;
         });
