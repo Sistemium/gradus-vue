@@ -141,9 +141,12 @@ export default {
     margin-top: $margin-top;
   }
 
-  .comment-text i {
-    color: $orange;
-    margin-right: $padding;
+  .comment-text {
+    i {
+      color: $orange;
+      margin-right: $padding;
+    }
+
     white-space: pre-line;
   }
 }
