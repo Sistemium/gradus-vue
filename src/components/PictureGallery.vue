@@ -122,7 +122,7 @@ export default {
 
   watch: {
     activeId(id) {
-      this.$nextTick(() => this.$refs.carousel.setActiveItem(id));
+      this.$nextTick(() => this.setActiveItemById(id));
     },
     carouselItem(item) {
       console.info(item); // eslint-disable-line
@@ -183,13 +183,19 @@ export default {
 
     },
 
+    setActiveItemById(id) {
+      const initial = findIndex(this.images, { id });
+      if (initial > -1) {
+        this.$refs.carousel.setActiveItem(initial);
+      }
+    },
+
   },
 
   created() {
-    const isInitial = ({ id }) => id === this.initialId || this.avatarId;
-    const initial = findIndex(this.images, isInitial);
-    if (initial > -1) {
-      this.carouselItem = initial;
+    const id = this.initialId || this.avatarId;
+    if (id) {
+      this.$nextTick(() => this.setActiveItemById(id));
     }
   },
 
