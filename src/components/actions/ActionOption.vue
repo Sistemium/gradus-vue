@@ -17,7 +17,7 @@
       v-for="req in ownRequirements"
       :class="req.cls"
       :style="hasOptions && { 'grid-row-end': `span ${action.options.length}` }"
-    ) {{ req.value }}
+    ) {{ req.value || '-' }}
 
     .discount.comp(
       v-if="!hasOptions"
