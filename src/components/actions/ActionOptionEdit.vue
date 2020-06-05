@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     onAddOption() {
-      const { options: { length: idx } = [] } = this.option;
+      const { options: { length: idx } = [] } = this.model;
       this.editOption = {
         idx,
         option: { ranges: [] },
