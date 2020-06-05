@@ -2,12 +2,6 @@
 
 .campaign-action
 
-  // .header
-    .name {{ action.name }}
-      .comment(v-if="action.commentText") {{ action.commentText }}
-    .buttons
-      button-edit.edit(@click="onEditClick")
-
   table
     thead
       tr.header
@@ -16,8 +10,7 @@
           .title
             span {{ action.name }}
             button-edit.edit(@click="onEditClick")
-        th.required условия
-        // th(:colspan="discountHeaders.length") Скидка %
+        th.required(v-for="req in requirements" :class="req.cls") {{ req.title }}
         th.discount(v-for="discountHeader in discountHeaders") {{ discountHeader.title }}
     tbody
       tr.option(v-for="(option, idx) in hasOptions")
@@ -27,28 +20,26 @@
         td.ranges(:action="action" v-if="hasRanges && !idx" :rowspan="hasOptions.length")
           .name(v-for="range in action.ranges") {{ range.name }}
         td.complex(:colspan="optionColSpan(option)" v-if="!hasRanges")
-          action-option.ranges(:action="option")
+          action-option.ranges(:action="option" :show-conditions="optionColSpan(option)")
 
         template(v-if="!optionColSpan(option)")
-          action-required(
-            v-if="hasRequired && idx === 0"
-            :action="action" :rowspan="hasOptions.length"
-          )
-          action-required(v-if="!hasRequired" :action="option" :always="true")
 
-          template(v-if="discount && idx === 0")
-            td.discount(
-              v-for="discountHeader in discountHeaders"
-              :rowspan="hasOptions.length"
-            ) {{ action[discountHeader.name] || '-' }}
-          template(v-if="!discount")
-            td.discount(
-              v-for="discountHeader in discountHeaders"
-            ) {{ option[discountHeader.name] || '-' }}
+          td(
+            v-for="req in requirements"
+            v-if="!req.fn(action) || idx === 0"
+            :rowspan="req.fn(action) && hasOptions.length || undefined"
+            :class="req.cls"
+          ) {{ req.fn(action) || req.fn(option) }}
+
+          td.discount(
+            v-if="!discount || idx == 0"
+            v-for="discountHeader in discountHeaders"
+            :rowspan="discount && hasOptions.length"
+          ) {{ action[discountHeader.name] || option[discountHeader.name] || '-' }}
 
     tfoot
       tr
-        td(colspan="5")
+        td(colspan="6")
           .oneTime(v-if="action.oneTime")
             i.el-icon-circle-check
             span Единовременная
@@ -101,7 +92,7 @@ export default {
   },
   methods: {
     optionColSpan(option) {
-      return option.options && option.options.length ? 4 : undefined;
+      return (option.options && option.options.length) ? 5 : undefined;
     },
     onEditClick() {
       const { id: actionId } = this.action;
@@ -191,12 +182,22 @@ tfoot td {
   }
 }
 
-td.discount, th.discount, th.required, td.action-required {
-  width: 70px;
+td.discount, th.discount {
+  width: 90px;
+}
+
+th.volume, td.volume {
+  width: 90px;
+  max-width: 90px;
+}
+
+th.sku, td.sku {
+  width: 60px;
+  max-width: 60px;
 }
 
 th.number, td.number {
-  width: 30px;
+  width: 40px;
 }
 
 @media print {
@@ -205,7 +206,12 @@ th.number, td.number {
   }
 }
 
+th, td {
+  box-sizing: border-box;
+}
+
 th {
+
   font-weight: 500;
   color: $light-gray;
 

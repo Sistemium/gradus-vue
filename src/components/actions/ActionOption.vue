@@ -1,32 +1,42 @@
 <template lang="pug">
 
-.action-option(:class="(hasOptions || showConditions) && 'grid'")
+.action-option(:class="hasOptions && 'grid'")
 
-  .self
+  .self(v-if="action.name || action.ranges && action.ranges.length || action.commentText")
     .name(v-if="action.name") {{ action.name }}
 
     .ranges(v-if="action.ranges")
-      .name(v-for="range in action.ranges") {{ range.name }}
+      .range(v-for="range in action.ranges") {{ range.name }}
 
     .comment(v-if="action.commentText")
       i.el-icon-info
       span {{ action.commentText }}
 
-  template(v-if="hasOptions || showConditions")
-    action-required(
-      :action="action"
-    )
+  template(v-if="showConditions")
+    .action-required(
+      v-for="req in ownRequirements"
+      :class="req.cls"
+      :style="hasOptions && { 'grid-row-end': `span ${action.options.length}` }"
+    ) {{ req.value }}
 
-    template(v-if="discount")
-      .discount(
-        v-for="discountHeader in discountHeaders"
-      ) {{ action[discountHeader.name] || '-' }}
-    template(v-if="!discount")
-      .discount(
-        v-for="discountHeader in discountHeaders"
-      ) {{ option[discountHeader.name] || '-' }}
+    .discount.comp(
+      v-if="!hasOptions"
+      v-for="discountHeader in discountHeaders"
+    ) {{ action[discountHeader.name] || '-' }}
 
-  action-option(v-for="option in action.options" :action="option" :show-conditions="true")
+  template(v-for="(option, idx) in action.options" :action="option")
+    .option
+      .name() {{ option.name }}
+      template(v-if="option.ranges")
+        .range(v-for="range in option.ranges") {{ range.name }}
+    .option-required(
+      v-for="req in optionRequirements(option)" :class="req.cls" :key="`${req.cls}${idx}`"
+    ) {{ req.value }}
+    .discount(
+      v-for="discountHeader in discountHeaders"
+      :class="discountHeader.cls"
+    ) {{ option[discountHeader.name] || '-' }}
+  //template(v-for="(option, idx) in action.options" :action="option")
 
 </template>
 <script>
@@ -50,10 +60,12 @@ export default {
         {
           title: '% комп.',
           name: 'discountComp',
+          cls: 'comp',
         },
         {
           title: '% комм.',
           name: 'discountOwn',
+          cls: 'own',
         },
       ];
     },
@@ -77,16 +89,37 @@ export default {
 
   display: grid;
   grid-gap: 1px;
-  grid-template-columns: auto 90px 90px 90px;
+  grid-template-columns: auto 89px 59px 89px 89px;
+  grid-template-rows: auto auto;
   background: $gray-border-color;
 
   > .action-option {
-    grid-column: 1 / span 4;
+    grid-column: 1 / span 5;
   }
 
 }
 
-.discount, .action-required {
+.option {
+  grid-column: 1;
+}
+
+.sku {
+  grid-column: 3;
+}
+
+.action-option > .action-required {
+  grid-row-start: 1;
+}
+
+.comp {
+  grid-column: 4;
+}
+
+.own {
+  grid-column: 5;
+}
+
+.discount, .action-required, .option, .option-required {
   text-align: center;
   background: white;
   padding: $padding;
@@ -96,13 +129,28 @@ export default {
   flex-direction: column;
 }
 
+.option {
+  align-items: flex-start;
+
+  > * + * {
+    margin-top: $padding;
+  }
+}
+
 .self {
+
+  grid-column: 1;
+
   background: white;
   padding: $padding;
 
   > * + * {
     margin-top: $padding;
   }
+}
+
+.name {
+  font-weight: bold;
 }
 
 </style>

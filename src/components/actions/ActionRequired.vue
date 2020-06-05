@@ -1,6 +1,6 @@
 <template lang="pug">
 
-td.action-required(v-if="hasRequired || always")
+.action-required(v-if="hasRequired || always")
   .pcs(v-if="required.pcs")
     span.from(v-if="!required.isMultiple") от
     span {{ required.pcs }} бут.
@@ -35,6 +35,9 @@ export default {
     always: {
       type: Boolean,
       default: false,
+    },
+    parentAction: {
+      type: Object,
     },
   },
   mixins: [actionBase],

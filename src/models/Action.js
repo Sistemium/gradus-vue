@@ -1,7 +1,7 @@
 import Model from 'sistemium-vue/jsdata/Model';
-import map from 'lodash/map';
+// import map from 'lodash/map';
 import filter from 'lodash/filter';
-import maxBy from 'lodash/maxBy';
+// import maxBy from 'lodash/maxBy';
 
 export default new Model({
 
@@ -22,15 +22,15 @@ export default new Model({
 
   methods: {
     discountHeaders() {
-      const res = discountInfo(this) || {};
-      if (!res.total) {
-        const optionsInfo = filter(map(this.options, option => discountInfo(option)));
-        if (!optionsInfo.length) {
-          return [];
-        }
-        res.own = maxBy(optionsInfo, 'own').own;
-        res.comp = maxBy(optionsInfo, 'comp').comp;
-      }
+      // const res = discountInfo(this) || {};
+      // if (!res.total) {
+      //   const optionsInfo = filter(map(this.options, option => discountInfo(option)));
+      //   if (!optionsInfo.length) {
+      //     return [];
+      //   }
+      //   res.own = maxBy(optionsInfo, 'own').own;
+      //   res.comp = maxBy(optionsInfo, 'comp').comp;
+      // }
       return filter([
         {
           title: '% комп.',
@@ -49,9 +49,9 @@ export default new Model({
 export function discountInfo(action) {
   const { discountOwn: own = 0, discountComp: comp = 0 } = action;
   const total = comp + own;
-  return total && {
+  return total ? {
     total,
     own,
     comp,
-  };
+  } : undefined;
 }

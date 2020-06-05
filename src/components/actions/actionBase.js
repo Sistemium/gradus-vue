@@ -1,3 +1,4 @@
+import filter from 'lodash/filter';
 import { discountInfo } from '@/models/Action';
 
 export default {
@@ -11,6 +12,55 @@ export default {
 
   computed: {
 
+    requirements() {
+      return [
+        {
+          title: 'Объем',
+          cls: 'volume',
+          fn(option) {
+            const { pcs, volume, volumeTo } = option.required || {};
+            const { cost, costTo, isMultiple } = option.required || {};
+            const res = filter([
+              pcs && filter([
+                !isMultiple && 'от',
+                `${pcs} бут.`,
+              ])
+                .join(' '),
+              volume && filter([
+                !isMultiple && 'от',
+                `${volume} л.`,
+                volumeTo && `до ${volumeTo}`,
+              ])
+                .join(' '),
+              cost && filter([
+                !isMultiple && 'от',
+                `${cost} ₽`,
+                costTo && `до ${costTo}`,
+              ])
+                .join(' '),
+            ])
+              .join('+');
+
+            if (!res) {
+              return undefined;
+            }
+
+            return filter([res, isMultiple && '(кратно)'])
+              .join(' ');
+
+          },
+        },
+        {
+          title: 'SKU',
+          cls: 'sku',
+          fn(option) {
+            const { sku } = option.required || {};
+            return sku;
+          },
+        },
+      ];
+    },
+
     hasRequired() {
       const { required } = this;
       if (!required) {
@@ -20,6 +70,17 @@ export default {
         pcs, sku, volume, cost,
       } = required;
       return pcs || sku || volume || cost;
+    },
+
+    ownRequirements() {
+      return filter(this.requirements
+        .map(({ fn, cls }) => {
+          const value = fn(this.action);
+          return value && {
+            cls,
+            value,
+          };
+        }));
     },
 
     required() {
@@ -40,6 +101,19 @@ export default {
       return restrictions && restrictions.length && restrictions;
     },
 
+  },
+
+  methods: {
+    optionRequirements(option) {
+      return filter(this.requirements
+        .map(({ fn, cls }) => {
+          const value = fn(option);
+          return value && {
+            cls,
+            value,
+          };
+        }));
+    },
   },
 
 };

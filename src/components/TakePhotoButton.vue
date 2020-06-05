@@ -9,6 +9,7 @@
     @imageuploaded="imageUploaded"
     @imagechanged="imageChanged"
     @errorhandle="onError"
+    :multiple="false"
     :data="imageData"
     :max-file-size="maxFileSize"
     :headers="uploadHeaders"
