@@ -29,7 +29,7 @@
             v-if="!req.fn(action) || idx === 0"
             :rowspan="req.fn(action) && hasOptions.length || undefined"
             :class="req.cls"
-          ) {{ req.fn(action) || req.fn(option) }}
+          ) {{ req.fn(action) || req.fn(option) || '-' }}
 
           td.discount(
             v-if="!discount || idx == 0"
@@ -49,9 +49,9 @@
           .repeatable(v-if="action.needPhoto")
             i.el-icon-camera-solid
             span Фото-отчет
-          .territory
+          .territory(v-if="action.territory")
             i.el-icon-location
-            span {{ action.territory || 'Вся территория покрытия' }}
+            span {{ action.territory }}
           .comment(v-if="action.commentText")
             i.el-icon-info
             span {{ action.commentText }}
