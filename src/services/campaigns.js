@@ -5,6 +5,7 @@ import escapeRegExp from 'lodash/escapeRegExp';
 import filter from 'lodash/filter';
 import orderBy from 'lodash/orderBy';
 import map from 'lodash/map';
+import find from 'lodash/find';
 import flatten from 'lodash/flatten';
 import chunk from 'lodash/chunk';
 import uniq from 'lodash/uniq';
@@ -57,11 +58,21 @@ function campaignsFilter(monthId, searchText) {
   const monthB = `${monthId}-01`;
   const monthE = `${monthId}-31`;
 
-  return filter(campaigns, ({ dateB, dateE, name }) => {
+  return filter(campaigns, campaign => {
+
+    const { dateB, dateE, name } = campaign;
+
     if (dateB > monthE || dateE < monthB) {
       return false;
     }
-    return !re || re.test(name);
+
+    let res = !re || re.test(name);
+
+    if (!res) {
+      res = !!find(campaign.actions, a => re.test(a.name));
+    }
+
+    return res;
   });
 
 }
