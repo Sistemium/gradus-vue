@@ -2,7 +2,7 @@
 
 .action-option(:class="hasOptions && 'grid'")
 
-  .self(v-if="action.name || action.ranges && action.ranges.length || action.commentText")
+  .self(v-if="hasSelfRow")
     .name(v-if="action.name") {{ action.name }}
 
     .ranges(v-if="action.ranges")
@@ -16,7 +16,7 @@
     .action-required(
       v-for="req in ownRequirements"
       :class="req.cls"
-      :style="hasOptions && { 'grid-row-end': `span ${action.options.length}` }"
+      :style="requiredStyle"
     ) {{ req.value || '-' }}
 
     .discount.comp(
@@ -55,6 +55,12 @@ export default {
     ActionRequired,
   },
   computed: {
+    requiredStyle() {
+      return this.hasOptions && {
+        'grid-row-start': this.hasSelfRow ? 2 : 1,
+        'grid-row-end': `span ${this.action.options.length}`,
+      };
+    },
     discountHeaders() {
       return [
         {
@@ -68,6 +74,10 @@ export default {
           cls: 'own',
         },
       ];
+    },
+    hasSelfRow() {
+      const { action } = this;
+      return action.name || (action.ranges && action.ranges.length) || action.commentText;
     },
   },
   mixins: [actionBase],
@@ -90,17 +100,25 @@ export default {
   display: grid;
   grid-gap: 1px;
   grid-template-columns: auto 89px 59px 89px 89px;
-  grid-template-rows: auto auto;
+  //grid-template-rows: auto auto;
   background: $gray-border-color;
 
   > .action-option {
     grid-column: 1 / span 5;
   }
 
+  > .self {
+    grid-column-end: 6;
+  }
+
 }
 
 .option {
   grid-column: 1;
+}
+
+.volume {
+  grid-column: 2;
 }
 
 .sku {

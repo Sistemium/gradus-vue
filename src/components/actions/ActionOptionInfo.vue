@@ -11,9 +11,8 @@
   .ranges(v-if="action.ranges")
     .name(v-for="range in action.ranges") {{ range.name }}
 
-  .comment(v-if="action.commentText")
-    i.el-icon-info
-    span {{ action.commentText }}
+  .options
+    action-option-info(v-for="option in action.options" :action="option")
 
   .other(v-if="hasRequired || discount")
     .required(v-if="hasRequired")
@@ -26,7 +25,9 @@
       span.comp(v-if="discount.comp") {{ discount.comp || 0 }}% комп.
       span.own(v-if="discount.own") {{ discount.own || 0 }}% комм.
 
-  action-option-info(v-for="option in action.options" :action="option")
+  .comment(v-if="action.commentText")
+    i.el-icon-info
+    span {{ action.commentText }}
 
 </template>
 <script>
@@ -111,6 +112,15 @@ label {
   &:after {
     content: ":";
   }
+}
+
+.options > .action-option-info  {
+  & + .action-option-info {
+    margin-top: $padding;
+  }
+  padding: $padding;
+  border: solid 2px white;
+  border-radius: $border-radius;
 }
 
 </style>
