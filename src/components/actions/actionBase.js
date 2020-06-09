@@ -73,14 +73,22 @@ export default {
     },
 
     ownRequirements() {
-      return filter(this.requirements
+
+      const res = this.requirements
         .map(({ fn, cls }) => {
           const value = fn(this.action);
-          return value && {
+          return {
             cls,
             value,
           };
-        }));
+        });
+
+      if (!filter(res, 'value').length) {
+        return [];
+      }
+
+      return res;
+
     },
 
     required() {
@@ -108,7 +116,7 @@ export default {
       return filter(this.requirements
         .map(({ fn, cls }) => {
           const value = fn(option);
-          return value && {
+          return {
             cls,
             value,
           };

@@ -9,7 +9,7 @@
   .name(v-if="action.name") {{ action.name }}
 
   .ranges(v-if="action.ranges")
-    .name(v-for="range in action.ranges") {{ range.name }}
+    .range(v-for="range in action.ranges") {{ range.name }}
 
   .options
     action-option-info(v-for="option in action.options" :action="option")

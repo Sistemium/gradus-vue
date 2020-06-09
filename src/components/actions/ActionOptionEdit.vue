@@ -34,6 +34,7 @@ el-drawer.campaign-action-edit(
     v-if="editOption"
     :option="editOption.option"
     :title="editOption.title"
+    :force-modified="editOption.forceModified"
     @save="onOptionSave"
     @delete="onOptionDelete"
     @closed="editOption = null"
@@ -73,14 +74,15 @@ export default {
         this.$message('Нет скопированного варианта');
         return;
       }
-      this.onAddOption(option);
+      this.onAddOption(option, true);
     },
-    onAddOption(option = { ranges: [] }) {
+    onAddOption(option = { ranges: [] }, forceModified = false) {
       const { options: { length: idx } = [] } = this.model;
       this.editOption = {
         idx,
         option,
         title: `${this.title} / дополнение №${idx + 1}`,
+        forceModified,
       };
     },
     onEditOption(option, idx) {

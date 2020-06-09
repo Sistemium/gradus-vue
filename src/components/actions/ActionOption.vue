@@ -8,10 +8,6 @@
     .ranges(v-if="action.ranges")
       .range(v-for="range in action.ranges") {{ range.name }}
 
-    .comment(v-if="action.commentText")
-      i.el-icon-info
-      span {{ action.commentText }}
-
   template(v-if="showConditions")
     .action-required(
       v-for="req in ownRequirements"
@@ -29,14 +25,22 @@
       .name() {{ option.name }}
       template(v-if="option.ranges")
         .range(v-for="range in option.ranges") {{ range.name }}
+      .comment(v-if="option.commentText")
+        i.el-icon-info
+        span {{ option.commentText }}
     .option-required(
+      v-if="!ownRequirements.length"
       v-for="req in optionRequirements(option)" :class="req.cls" :key="`${req.cls}${idx}`"
-    ) {{ req.value }}
+    ) {{ req.value || '-' }}
     .discount(
       v-for="discountHeader in discountHeaders"
       :class="discountHeader.cls"
-    ) {{ option[discountHeader.name] || '-' }}
-  //template(v-for="(option, idx) in action.options" :action="option")
+    ) {{ option[discountHeader.name] || action[discountHeader.name] || '-' }}
+
+  .comment(v-if="action.commentText")
+    i.el-icon-info
+    span {{ action.commentText }}
+
 
 </template>
 <script>
@@ -77,7 +81,7 @@ export default {
     },
     hasSelfRow() {
       const { action } = this;
-      return action.name || (action.ranges && action.ranges.length) || action.commentText;
+      return action.name || (action.ranges && action.ranges.length);
     },
   },
   mixins: [actionBase],
@@ -95,6 +99,10 @@ export default {
 @import "../../styles/variables";
 @import "./actionBase";
 
+.range {
+  text-align: left;
+}
+
 .action-option.grid {
 
   display: grid;
@@ -107,7 +115,7 @@ export default {
     grid-column: 1 / span 5;
   }
 
-  > .self {
+  > .self, > .comment {
     grid-column-end: 6;
   }
 
@@ -155,7 +163,7 @@ export default {
   }
 }
 
-.self {
+.self, .action-option > .comment {
 
   grid-column: 1;
 

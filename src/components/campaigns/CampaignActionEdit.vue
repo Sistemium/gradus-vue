@@ -32,6 +32,7 @@ el-drawer.campaign-action-edit(
     v-if="editOption"
     :option="editOption.option"
     :title="editOption.title"
+    :force-modified="editOption.forceModified"
     @save="onOptionSave"
     @delete="onOptionDelete"
     @closed="editOption = null"
@@ -86,16 +87,17 @@ export default {
         this.$message('Нет скопированного варианта');
         return;
       }
-      this.onAddOption(option);
+      this.onAddOption(option, true);
     },
-    onAddOption(option = { ranges: [] }) {
-      this.onEditOption(option, this.model.options.length);
+    onAddOption(option = { ranges: [] }, forceModified = false) {
+      this.onEditOption(option, this.model.options.length, forceModified);
     },
-    onEditOption(option, idx) {
+    onEditOption(option, idx, forceModified = false) {
       this.editOption = {
         idx,
         option,
         title: `${this.title} / вариант №${idx + 1}`,
+        forceModified,
       };
     },
     modelInstance() {
@@ -141,7 +143,7 @@ export default {
         throw new Error('Undefined option onOptionSave');
       }
       const { idx } = this.editOption;
-      this.$set(this.model.options, idx, option);
+      this.$set(this.model.options, idx, cloneDeep(option));
     },
   },
   props: {

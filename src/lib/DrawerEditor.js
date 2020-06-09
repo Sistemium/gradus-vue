@@ -7,6 +7,7 @@ const { error } = log('DrawerEditor');
 export default {
   props: {
     from: Object,
+    forceModified: Boolean,
   },
   data() {
     return {
@@ -28,7 +29,7 @@ export default {
       return null;
     },
     changed() {
-      return !matchesDeep(this.model, this.modelOrigin);
+      return this.forceModified || !matchesDeep(this.model, this.modelOrigin);
     },
   },
   methods: {
