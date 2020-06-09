@@ -33,7 +33,11 @@ el-form.campaign-action-form(
     v-if="mayHaveOptions"
     :model="action"
     :title="isRoot ? 'Варианты' : 'Дополнения'"
-    @editOption="editOption" @addOption="addOption"
+    :has-paste="!!optionCopy"
+    @editOption="editOption"
+    @addOption="addOption"
+    @copyOption="copyOption"
+    @pasteOption="pasteOption"
   )
 
   action-ranges-form(:model="action" :title="isRoot ? 'Общий ассортимент' : undefined")
@@ -53,6 +57,7 @@ import ActionDiscountForm from '@/components/actions/ActionDiscountForm.vue';
 import ActionOptionsForm from '@/components/actions/ActionOptionsForm.vue';
 import ActionRangesForm from '@/components/actions/ActionRangesForm.vue';
 import actionBase from '@/components/actions/actionBase';
+import optionEditing from '@/components/actions/optionEditing';
 
 const NAME = 'CampaignActionForm';
 
@@ -72,8 +77,14 @@ export default {
     editOption(option, idx) {
       this.$emit('editOption', option, idx);
     },
+    copyOption(option) {
+      this.$emit('copyOption', option);
+    },
+    pasteOption(option) {
+      this.$emit('pasteOption', option);
+    },
     initZones() {
-      const isRoot = !!this.action.options;
+      const { isRoot } = this;
       return filter([
         (!isRoot || this.hasRequired) && 'required',
         (!isRoot || this.discount) && 'discounts',
@@ -113,7 +124,7 @@ export default {
       default: true,
     },
   },
-  mixins: [actionBase],
+  mixins: [actionBase, optionEditing],
   name: NAME,
 };
 

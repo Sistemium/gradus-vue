@@ -11,7 +11,16 @@ export const SET_GALLERY_PICTURES = `SET_${g.GALLERY_PICTURES}`;
 
 export const SET_GALLERY_PICTURE = `SET_${g.ACTIVE_GALLERY_PICTURE}`;
 
+export const SET_ACTION_OPTION_COPY = `SET_${g.ACTION_OPTION_COPY}`;
+
 export default {
+
+  [SET_ACTION_OPTION_COPY](state, option) {
+    state[g.ACTION_OPTION_COPY] = {
+      ...option,
+      _id: undefined,
+    };
+  },
 
   [SET_BUSY](state, isBusy) {
     state[g.BUSY] = !!isBusy;

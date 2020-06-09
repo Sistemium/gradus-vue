@@ -5,6 +5,12 @@
   .header
     .title {{ title }}
     .buttons
+      el-button(
+        v-if="hasPaste"
+        @click="$emit('pasteOption')"
+        icon="el-icon-suitcase"
+        size="mini" circle
+      )
       button-add(@click="$emit('addOption')")
 
   .option(v-for="(option, idx) in model.options" :key="idx")
@@ -13,6 +19,11 @@
     action-option-info(:action="option")
     .buttons
       button-edit(@click="$emit('editOption', option, idx)")
+      el-button(
+        @click="$emit('copyOption', option)"
+        icon="el-icon-copy-document"
+        size="mini" circle
+      )
 
 </template>
 <script>
@@ -30,6 +41,7 @@ export default {
       type: String,
       default: 'Варианты',
     },
+    hasPaste: Boolean,
   },
 };
 
@@ -49,7 +61,13 @@ export default {
 
   .buttons {
     grid-column: 3;
-    text-align: right;
+    align-items: flex-end;
+    display: flex;
+    flex-direction: column;
+
+    > * + * {
+      margin-top: $padding;
+    }
   }
 
   .number {

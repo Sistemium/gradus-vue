@@ -18,6 +18,8 @@ el-drawer.campaign-action-edit(
       ref="form"
       @editOption="onEditOption"
       @addOption="onAddOption"
+      @copyOption="onCopyOption"
+      @pasteOption="onPasteOption"
     )
 
   form-buttons(
@@ -45,6 +47,7 @@ import DrawerEditor from '@/lib/DrawerEditor';
 import CampaignActionForm from '@/components/campaigns/CampaignActionForm.vue';
 import FormButtons from '@/lib/FormButtons.vue';
 import remove from 'lodash/remove';
+import optionEditing from '@/components/actions/optionEditing';
 
 const NAME = 'ActionOptionEdit';
 
@@ -64,11 +67,19 @@ export default {
     },
   },
   methods: {
-    onAddOption() {
+    onPasteOption() {
+      const { optionCopy: option } = this;
+      if (!option) {
+        this.$message('Нет скопированного варианта');
+        return;
+      }
+      this.onAddOption(option);
+    },
+    onAddOption(option = { ranges: [] }) {
       const { options: { length: idx } = [] } = this.model;
       this.editOption = {
         idx,
-        option: { ranges: [] },
+        option,
         title: `${this.title} / дополнение №${idx + 1}`,
       };
     },
@@ -143,7 +154,7 @@ export default {
     FormButtons,
     CampaignActionForm,
   },
-  mixins: [DrawerEditor],
+  mixins: [DrawerEditor, optionEditing],
 };
 
 </script>

@@ -15,6 +15,8 @@ el-drawer.campaign-action-edit(
       :rules="campaignActionRules"
       @editOption="onEditOption"
       @addOption="onAddOption"
+      @copyOption="onCopyOption"
+      @pasteOption="onPasteOption"
       ref="form"
       :is-root="true"
     )
@@ -46,10 +48,13 @@ import FormButtons from '@/lib/FormButtons.vue';
 import matchesDeep from '@/lib/matchesDeep';
 import cloneDeep from 'lodash/cloneDeep';
 
+import optionEditing from '@/components/actions/optionEditing';
+
 const NAME = 'CampaignActionEdit';
 
 export default {
   computed: {
+
     title() {
       return this.actionId ? this.modelOrigin.name : 'Новая механика акции';
     },
@@ -75,19 +80,22 @@ export default {
     },
   },
   methods: {
-    onAddOption() {
-      const idx = this.model.options.length;
-      this.editOption = {
-        idx,
-        option: { ranges: [] },
-        title: `${this.title} / вариант №${idx + 1}`,
-      };
+    onPasteOption() {
+      const { optionCopy: option } = this;
+      if (!option) {
+        this.$message('Нет скопированного варианта');
+        return;
+      }
+      this.onAddOption(option);
+    },
+    onAddOption(option = { ranges: [] }) {
+      this.onEditOption(option, this.model.options.length);
     },
     onEditOption(option, idx) {
       this.editOption = {
         idx,
         option,
-        title: `${this.modelOrigin.name} / вариант №${idx + 1}`,
+        title: `${this.title} / вариант №${idx + 1}`,
       };
     },
     modelInstance() {
@@ -166,7 +174,7 @@ export default {
     CampaignActionForm,
     ActionOptionEdit,
   },
-  mixins: [DrawerEditor],
+  mixins: [DrawerEditor, optionEditing],
   name: NAME,
 };
 
