@@ -173,7 +173,7 @@ tfoot td {
   text-align: left;
 
   span {
-    font-size: smaller;
+    font-size: 12px;
   }
 
   i {

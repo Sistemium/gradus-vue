@@ -175,6 +175,10 @@ export default {
   }
 }
 
+.action-option > .comment {
+  background: $light-green;
+}
+
 .name {
   font-weight: bold;
 }
