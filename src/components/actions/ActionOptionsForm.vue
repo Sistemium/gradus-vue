@@ -13,17 +13,22 @@
       )
       button-add(@click="$emit('addOption')")
 
-  .option(v-for="(option, idx) in model.options" :key="idx")
-    .number
-      .idx {{ idx + 1 }}
-    action-option-info(:action="option")
-    .buttons
-      button-edit(@click="$emit('editOption', option, idx)")
-      el-button(
-        @click="$emit('copyOption', option)"
-        icon="el-icon-copy-document"
-        size="mini" circle
-      )
+  transition-group(name="flip-list")
+    .option(v-for="(option, idx) in model.options" :key="option._id || option.id")
+      .number
+        a(@click="reorder(idx, -1)" v-if="idx > 0")
+          i.el-icon-arrow-up
+        .idx {{ idx + 1 }}
+        a(@click="reorder(idx, 1)" v-if="model.options.length > idx + 1")
+          i.el-icon-arrow-down
+      action-option-info(:action="option")
+      .buttons
+        button-edit(@click="$emit('editOption', option, idx)")
+        el-button(
+          @click="$emit('copyOption', option)"
+          icon="el-icon-copy-document"
+          size="mini" circle
+        )
 
 </template>
 <script>
@@ -42,6 +47,19 @@ export default {
       default: 'Варианты',
     },
     hasPaste: Boolean,
+  },
+  methods: {
+    reorder(idx, dir) {
+      const { options } = this.model;
+      const option = options[idx];
+      const newIdx = idx + dir;
+      if (newIdx < 0 || newIdx >= options.length) {
+        return;
+      }
+      const option2 = options[newIdx];
+      this.$set(options, newIdx, option);
+      this.$set(options, idx, option2);
+    },
   },
 };
 
@@ -74,6 +92,8 @@ export default {
     text-align: center;
     padding: $padding $padding $padding 0;
     font-weight: bold;
+    display: flex;
+    flex-direction: column;
   }
 
 }
@@ -90,6 +110,10 @@ export default {
     flex: 1;
     color: #303133;
   }
+}
+
+.flip-list-move {
+  transition: transform 0.5s;
 }
 
 </style>

@@ -41,6 +41,7 @@ el-drawer.campaign-action-edit(
 </template>
 <script>
 
+import { v4 } from 'uuid';
 import DrawerEditor from '@/lib/DrawerEditor';
 import Action from '@/models/Action';
 import CampaignActionForm from '@/components/campaigns/CampaignActionForm.vue';
@@ -143,7 +144,7 @@ export default {
         throw new Error('Undefined option onOptionSave');
       }
       const { idx } = this.editOption;
-      this.$set(this.model.options, idx, cloneDeep(option));
+      this.$set(this.model.options, idx, { id: v4(), ...option });
     },
   },
   props: {
