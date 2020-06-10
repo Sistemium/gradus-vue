@@ -4,4 +4,7 @@
   .el-carousel__arrow, .el-button, .el-dialog__close {
     display: none;
   }
+  a {
+    color: $dark-gray;
+  }
 }
