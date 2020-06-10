@@ -24,6 +24,10 @@
         | {{ discount.own + discount.comp | number(3) }} %
       span.comp(v-if="discount.comp") {{ discount.comp || 0 }}% комп.
       span.own(v-if="discount.own") {{ discount.own || 0 }}% комм.
+    .cash(v-if="action.discountCash")
+      label Бонус
+      strong {{ action.discountCash }}
+      span ₽
 
   .comment(v-if="action.commentText")
     i.el-icon-info
@@ -78,9 +82,10 @@ export default {
   flex-wrap: wrap;
 }
 
-.discount, .required {
+.discount, .required, .cash {
   margin-right: $margin-right;
   display: flex;
+  align-items: center;
 }
 
 .action-required {

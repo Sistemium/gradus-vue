@@ -32,10 +32,21 @@
           ) {{ req.fn(action) || req.fn(option) || '-' }}
 
           td.discount(
-            v-if="!discount || idx == 0"
+            v-if="!(action.discountCash || option.discountCash) && (!discount || idx === 0)"
             v-for="discountHeader in discountHeaders"
             :rowspan="discount && hasOptions.length"
           ) {{ action[discountHeader.name] || option[discountHeader.name] || '-' }}
+
+          td.discountCash(
+            v-if="action.discountCash && idx === 0"
+            colspan="2"
+            :rowspan="hasOptions.length"
+          ) Бонус {{ action.discountCash }} ₽
+
+          td.discountCash(
+            v-if="option.discountCash"
+            colspan="2"
+          ) Бонус {{ option.discountCash }} ₽
 
     tfoot
       tr

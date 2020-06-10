@@ -47,7 +47,10 @@ export default new Model({
 });
 
 export function discountInfo(action) {
-  const { discountOwn: own = 0, discountComp: comp = 0 } = action;
+  const {
+    discountOwn: own = 0,
+    discountComp: comp = 0,
+  } = action;
   const total = comp + own;
   return total ? {
     total,

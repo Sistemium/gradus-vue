@@ -10,6 +10,9 @@
   el-form-item.own(label="% комм." prop="discountOwn")
     el-input-number(v-model="discount.discountOwn" :precision="3" :step="1" :max="100" :min="0")
 
+  el-form-item.cash(label="Бонус ₽" prop="discountCash")
+    el-input-number(v-model="discount.discountCash" :step="1000" :min="0")
+
 </template>
 <script>
 
@@ -48,7 +51,7 @@ export default {
   justify-content: flex-end;
 }
 
-.comp {
+.comp, .cash {
   grid-column: 1;
   justify-content: flex-end;
   padding-right: $margin-top;
