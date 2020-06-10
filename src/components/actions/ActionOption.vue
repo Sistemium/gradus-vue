@@ -23,7 +23,7 @@
   template(v-for="(option, idx) in action.options" :action="option")
     .option
       .name() {{ option.name }}
-      template(v-if="option.ranges")
+      .ranges(v-if="option.ranges")
         .range(v-for="range in option.ranges") {{ range.name }}
       .comment(v-if="option.commentText")
         i.el-icon-info
@@ -156,7 +156,7 @@ export default {
   white-space: pre-line;
 }
 
-.option {
+.option, .ranges {
   align-items: flex-start;
 
   > * + * {
