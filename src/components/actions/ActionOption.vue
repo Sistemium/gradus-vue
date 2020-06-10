@@ -5,7 +5,7 @@
   .self(v-if="hasSelfRow")
     .name(v-if="action.name") {{ action.name }}
 
-    .ranges(v-if="action.ranges")
+    template(v-if="action.ranges")
       .range(v-for="range in action.ranges") {{ range.name }}
 
   template(v-if="showConditions")
@@ -22,8 +22,8 @@
 
   template(v-for="(option, idx) in action.options" :action="option")
     .option
-      .name() {{ option.name }}
-      .ranges(v-if="option.ranges")
+      .name(v-if="option.name") {{ option.name }}
+      template(v-if="option.ranges")
         .range(v-for="range in option.ranges") {{ range.name }}
       .comment(v-if="option.commentText")
         i.el-icon-info
@@ -100,6 +100,10 @@ export default {
 @import "./actionBase";
 
 .range {
+  text-align: left;
+}
+
+.action-option {
   text-align: left;
 }
 
@@ -182,6 +186,7 @@ export default {
 
 .name {
   font-weight: bold;
+  text-align: left;
 }
 
 </style>

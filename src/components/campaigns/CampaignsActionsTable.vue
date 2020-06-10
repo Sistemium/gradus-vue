@@ -85,7 +85,9 @@ export default {
 
 .campaign-action {
   margin-left: auto;
-  max-width: 900px;
+  @media screen {
+    max-width: 900px;
+  }
 }
 
 table {

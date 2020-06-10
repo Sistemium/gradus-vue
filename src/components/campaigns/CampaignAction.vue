@@ -20,7 +20,7 @@
         td.ranges(:action="action" v-if="hasRanges && !idx" :rowspan="hasOptions.length")
           .name(v-for="range in action.ranges") {{ range.name }}
         td.complex(:colspan="optionColSpan(option)" v-if="!hasRanges")
-          action-option.ranges(:action="option" :show-conditions="!!optionColSpan(option)")
+          action-option(:action="option" :show-conditions="!!optionColSpan(option)")
 
         template(v-if="!optionColSpan(option)")
 
