@@ -14,6 +14,7 @@
     span {{ required.cost }}
     span(v-if="required.costTo") до {{ required.costTo }}
     span ₽
+  .etc(v-if="required.etc") {{ required.etc }}
   .sku(v-if="required.sku") {{ required.sku }} SKU
   .isMultiple(v-if="required.isMultiple") (кратно)
 

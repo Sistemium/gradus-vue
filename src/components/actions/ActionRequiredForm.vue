@@ -4,10 +4,6 @@
 
   h3.title Объем закупки:
 
-  el-checkbox.isMultiple(
-    v-model="required.isMultiple"
-  ) Кратно
-
   el-form-item.pcs(label="Бутылок")
     el-input-number(v-model="required.pcs" :step="1" :min="0")
   el-form-item.sku(label="SKU")
@@ -22,6 +18,14 @@
     el-input-number(v-model="required.cost" :step="1000" :min="0")
   el-form-item.costTo(label="Сумма до")
     el-input-number(v-model="required.costTo" :step="1000" :min="0")
+
+  el-form-item.isMultiple
+    el-checkbox(
+      v-model="required.isMultiple"
+    ) Кратно
+
+  el-form-item.etc(label="Прочее" prop="etc")
+    el-input(v-model="required.etc")
 
 </template>
 <script>
@@ -48,17 +52,17 @@ export default {
   grid-template-columns: 50% 50%;
   //grid-template-rows: auto auto auto;
 
-  > .title, .isMultiple {
+  > .title {
     grid-column: 1 / span 2;
-  }
-
-  .isMultiple {
-    margin-bottom: $margin-top;
   }
 
   .el-form-item {
     display: flex;
     justify-content: flex-end;
+  }
+
+  .isMultiple {
+    justify-content: center;
   }
 
   > .pcs, > .volume, > .cost {

@@ -18,8 +18,9 @@ export default {
           title: 'Объем',
           cls: 'volume',
           fn(option) {
-            const { pcs, volume, volumeTo } = option.required || {};
-            const { cost, costTo, isMultiple } = option.required || {};
+            const { required = {} } = option;
+            const { pcs, volume, volumeTo } = required;
+            const { cost, costTo, isMultiple } = required;
             const res = filter([
               pcs && filter([
                 !isMultiple && 'от',
@@ -39,14 +40,16 @@ export default {
               ])
                 .join(' '),
             ])
-              .join('+');
+              .join('\n+');
 
             if (!res) {
               return undefined;
             }
 
-            return filter([res, isMultiple && '(кратно)'])
-              .join(' ');
+            return filter([
+              res, isMultiple && '(кратно)', required.etc,
+            ])
+              .join('\n');
 
           },
         },
@@ -67,9 +70,9 @@ export default {
         return false;
       }
       const {
-        pcs, sku, volume, cost,
+        pcs, sku, volume, cost, etc,
       } = required;
-      return pcs || sku || volume || cost;
+      return pcs || sku || volume || cost || etc;
     },
 
     ownRequirements() {
