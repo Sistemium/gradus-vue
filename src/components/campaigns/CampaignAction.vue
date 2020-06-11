@@ -24,12 +24,13 @@
 
         template(v-if="!optionColSpan(option)")
 
-          td(
+          td.option-required(
             v-for="req in requirements"
             v-if="!req.fn(action) || idx === 0"
             :rowspan="req.fn(action) && hasOptions.length || undefined"
             :class="req.cls"
-          ) {{ req.fn(action) || req.fn(option) || '-' }}
+            v-html="req.fn(action) || req.fn(option) || '-'"
+          )
 
           td.discount(
             v-if="!(action.discountCash || option.discountCash) && (!discount || idx === 0)"

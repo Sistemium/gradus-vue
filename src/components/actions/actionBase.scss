@@ -21,3 +21,15 @@ td > .action-option > .self, .action-option-info {
 .name + .name {
   margin-top: $padding;
 }
+
+.action-required, .option-required {
+  /deep/ > * + * {
+    margin-top: $padding;
+    display: inline-block;
+  }
+
+  /deep/ em {
+    color: $orange;
+    font-style: normal;
+  }
+}

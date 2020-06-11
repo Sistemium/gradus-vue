@@ -47,9 +47,11 @@ export default {
             }
 
             return filter([
-              res, isMultiple && '(кратно)', required.etc,
+              `<span>${res}</span>`,
+              isMultiple && '<small>(кратно)</small>',
+              required.etc && `<em>${required.etc}</em>`,
             ])
-              .join('\n');
+              .join('');
 
           },
         },

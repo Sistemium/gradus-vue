@@ -13,7 +13,8 @@
       v-for="req in ownRequirements"
       :class="req.cls"
       :style="requiredStyle"
-    ) {{ req.value || '-' }}
+      v-html="req.value || '-'"
+    )
 
     .discount.comp(
       v-if="!hasOptions"
@@ -31,7 +32,8 @@
     .option-required(
       v-if="!ownRequirements.length"
       v-for="req in optionRequirements(option)" :class="req.cls" :key="`${req.cls}${idx}`"
-    ) {{ req.value || '-' }}
+      v-html="req.value || '-'"
+    )
     .discount(
       v-for="discountHeader in discountHeaders"
       :class="discountHeader.cls"
