@@ -20,29 +20,25 @@
         td.ranges(:action="action" v-if="hasRanges && !idx" :rowspan="hasOptions.length")
           .name(v-for="range in action.ranges") {{ range.name }}
         td.complex(:colspan="optionColSpan(option)" v-if="!hasRanges")
-          action-option(:action="option" :show-conditions="!!optionColSpan(option)")
+          action-option(
+            :action="option"
+            :show-conditions="!!optionColSpan(option)"
+            :parent="action"
+          )
 
         template(v-if="!optionColSpan(option)")
 
           td.option-required(
             v-for="req in requirements"
-            v-if="!req.fn(action) || idx === 0"
-            :rowspan="req.fn(action) && hasOptions.length || undefined"
             :class="req.cls"
-            v-html="req.fn(action) || req.fn(option) || '-'"
+            v-html="req.fn(option) || '-'"
           )
 
           td.discount(
-            v-if="!(action.discountCash || option.discountCash) && (!discount || idx === 0)"
+            v-if="!option.discountCash"
             v-for="discountHeader in discountHeaders"
             :rowspan="discount && hasOptions.length"
-          ) {{ action[discountHeader.name] || option[discountHeader.name] || '-' }}
-
-          td.discountCash(
-            v-if="action.discountCash && idx === 0"
-            colspan="2"
-            :rowspan="hasOptions.length"
-          ) Бонус {{ action.discountCash }} ₽
+          ) {{ option[discountHeader.name] || '-' }}
 
           td.discountCash(
             v-if="option.discountCash"
@@ -75,6 +71,7 @@
 </template>
 <script>
 
+import find from 'lodash/find';
 import ActionOption from '@/components/actions/ActionOption.vue';
 import ActionRequired from '@/components/actions/ActionRequired.vue';
 import actionBase from '@/components/actions/actionBase';
@@ -93,7 +90,11 @@ export default {
     },
     hasRanges() {
       const { ranges = [] } = this.action;
-      return ranges.length;
+      return ranges.length && !this.hasDetailedOptions;
+    },
+    hasDetailedOptions() {
+      const { options } = this.action;
+      return find(options, 'commentText');
     },
     hasFooter() {
       return this.action.oneTime

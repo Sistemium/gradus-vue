@@ -42,7 +42,7 @@ el-form.campaign-action-form(
 
   action-ranges-form(:model="action" :title="isRoot ? 'Общий ассортимент' : undefined")
 
-  el-collapse(v-model="activeZones")
+  el-collapse(v-model="activeZones" v-if="!isRoot")
     el-collapse-item(title="Объем закупки" name="required")
       action-required-form(:required="action.required")
     el-collapse-item(title="Скидки" name="discounts")

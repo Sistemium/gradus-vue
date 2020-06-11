@@ -3,10 +3,8 @@
 .action-option(:class="hasOptions && 'grid'")
 
   .self(v-if="hasSelfRow")
-    .name(v-if="action.name") {{ action.name }}
-
-    template(v-if="action.ranges")
-      .range(v-for="range in action.ranges") {{ range.name }}
+    .name(v-if="name") {{ name }}
+    .range(v-for="range in ranges") {{ range.name }}
 
   template(v-if="showConditions")
     .action-required(
@@ -61,6 +59,17 @@ export default {
     ActionRequired,
   },
   computed: {
+
+    name() {
+      const { action } = this;
+      return action.name;
+    },
+
+    ranges() {
+      const { parent, action } = this;
+      return action.ranges && action.ranges.length ? action.ranges : (parent && parent.ranges);
+    },
+
     requiredStyle() {
       return this.hasOptions && {
         'grid-row-start': this.hasSelfRow ? 2 : 1,
@@ -82,8 +91,8 @@ export default {
       ];
     },
     hasSelfRow() {
-      const { action } = this;
-      return action.name || (action.ranges && action.ranges.length);
+      const { ranges, name } = this;
+      return name || (ranges && ranges.length);
     },
   },
   mixins: [actionBase],

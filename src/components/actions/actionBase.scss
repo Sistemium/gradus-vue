@@ -28,8 +28,13 @@ td > .action-option > .self, .action-option-info {
     display: inline-block;
   }
 
+  /deep/ small {
+    color: $gray;
+  }
+
   /deep/ em {
     color: $orange;
     font-style: normal;
+    font-size: $small-font-size;
   }
 }

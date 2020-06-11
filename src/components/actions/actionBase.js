@@ -8,6 +8,9 @@ export default {
       type: Object,
       required: true,
     },
+    parent: {
+      type: Object,
+    },
   },
 
   computed: {
