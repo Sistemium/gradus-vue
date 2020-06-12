@@ -130,10 +130,6 @@ export default {
     grid-column: 1 / span 5;
   }
 
-  > .self, > .comment {
-    grid-column-end: 6;
-  }
-
 }
 
 .option {
@@ -192,6 +188,7 @@ export default {
 }
 
 .action-option > .comment {
+  grid-column-end: 6;
   background: $light-green;
 }
 

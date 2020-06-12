@@ -35,10 +35,10 @@
           )
 
           td.discount(
-            v-if="!option.discountCash"
+            v-if="!(action.discountCash || option.discountCash) && (!discount || idx === 0)"
             v-for="discountHeader in discountHeaders"
             :rowspan="discount && hasOptions.length"
-          ) {{ option[discountHeader.name] || '-' }}
+          ) {{ action[discountHeader.name] || option[discountHeader.name] || '-' }}
 
           td.discountCash(
             v-if="option.discountCash"
