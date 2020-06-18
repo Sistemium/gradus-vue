@@ -112,8 +112,4 @@ export default {
   }
 }
 
-.flip-list-move {
-  transition: transform 0.5s;
-}
-
 </style>

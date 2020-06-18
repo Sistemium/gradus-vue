@@ -121,7 +121,7 @@ export default {
 .action-option.grid {
 
   display: grid;
-  grid-gap: 1px;
+  gap: 1px;
   grid-template-columns: auto 89px 59px 89px 89px;
   //grid-template-rows: auto auto;
   background: $gray-border-color;
