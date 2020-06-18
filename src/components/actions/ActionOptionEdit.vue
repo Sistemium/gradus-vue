@@ -122,7 +122,7 @@ export default {
 
         remove(this.model.ranges, ({ name }) => !name);
 
-        const { required } = this.model;
+        const { required, discountMatrix } = this.model;
 
         if (required) {
           const { volume, volumeTo } = required;
@@ -132,6 +132,13 @@ export default {
           const { cost, costTo } = required;
           if (costTo < cost) {
             throw new Error('"Сумма до" должна быть больше чем "Сумма"');
+          }
+        }
+
+        if (discountMatrix) {
+          const { axisY = [], axisX = [] } = discountMatrix;
+          if (!axisX.length && !axisY.length) {
+            this.model.discountMatrix = null;
           }
         }
 

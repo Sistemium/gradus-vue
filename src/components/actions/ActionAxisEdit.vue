@@ -57,6 +57,9 @@ export default {
       const ofName = this.name === 'axisY' ? 'строкам' : 'столбцам';
       return `Условие по ${ofName}`;
     },
+    modelOrigin() {
+      return this.axis;
+    },
   },
   methods: {
     deleteItem(idx) {
@@ -71,6 +74,9 @@ export default {
       });
     },
     deleteClick() {
+      this.performOperation(() => {
+        this.$emit('delete');
+      });
     },
     reorder(idx, dir) {
       const options = this.model;

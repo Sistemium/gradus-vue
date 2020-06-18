@@ -5,10 +5,12 @@
   .buttons
     .add-x
       button-edit(@click="editAxisClick(discountMatrix.axisY, 'axisY')")
-      label Строки
+      label(v-if="discountMatrix.axisY.length") Строки
+      label.warning(v-else) Добавить строки
     .add-y
       button-edit(@click="editAxisClick(discountMatrix.axisX, 'axisX')")
-      label Столбцы
+      label(v-if="discountMatrix.axisX.length") Столбцы
+      label.warning(v-else) Добавить столбцы
 
   .matrix(:style="matrixStyle" v-if="hasAxes")
     .cell.empty
@@ -52,7 +54,7 @@ export default {
   computed: {
     hasAxes() {
       const { axisX = [], axisY = [] } = this.discountMatrix;
-      return axisY.length && axisX.length;
+      return axisY.length || axisX.length;
     },
     values() {
       const { values, axisX, axisY } = this.discountMatrix;
@@ -154,12 +156,17 @@ export default {
 
 .buttons {
   display: flex;
+  justify-content: space-between;
 
   > * + *, label {
     margin-left: $margin-right;
   }
 
   margin-bottom: $margin-top;
+}
+
+.warning {
+  color: $orange;
 }
 
 </style>

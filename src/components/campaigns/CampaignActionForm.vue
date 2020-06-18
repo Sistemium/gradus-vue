@@ -47,8 +47,15 @@ el-form.campaign-action-form(
       action-required-form(:required="action.required")
     el-collapse-item(title="Скидки" name="discounts")
       action-discount-form(:discount="action")
-    el-collapse-item(title="Куб" name="discountMatrix" v-if="action.discountMatrix")
-      action-discount-matrix-form(:discount-matrix="action.discountMatrix")
+    el-collapse-item.matrix(title="Куб" name="discountMatrix" v-if="!isRoot && mayHaveOptions")
+      action-discount-matrix-form(
+        :discount-matrix="action.discountMatrix"
+        v-if="action.discountMatrix"
+      )
+      el-button.add-matrix(
+        v-else size="mini" @click="addMatrixClick"
+        type="primary"
+      ) Добавить условия
 
 </template>
 <script>
@@ -71,6 +78,13 @@ export default {
     };
   },
   methods: {
+    addMatrixClick() {
+      this.action.discountMatrix = {
+        axisY: [],
+        axisX: [],
+        values: [],
+      };
+    },
     validate(cb) {
       this.$refs.form.validate(cb);
     },
@@ -169,6 +183,19 @@ export default {
 .campaign-action-form /deep/ h3 {
   font-weight: 500;
   font-size: 13px;
+}
+
+.el-collapse-item.matrix {
+  text-align: center;
+  padding-bottom: $margin-top;
+}
+
+.el-button.add-matrix {
+  margin: 0 auto $margin-top;
+}
+
+.el-collapse {
+  border-bottom: none;
 }
 
 </style>
