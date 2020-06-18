@@ -47,6 +47,8 @@ el-form.campaign-action-form(
       action-required-form(:required="action.required")
     el-collapse-item(title="Скидки" name="discounts")
       action-discount-form(:discount="action")
+    el-collapse-item(title="Куб" name="discountMatrix" v-if="action.discountMatrix")
+      action-discount-matrix-form(:discount-matrix="action.discountMatrix")
 
 </template>
 <script>
@@ -58,6 +60,7 @@ import ActionOptionsForm from '@/components/actions/ActionOptionsForm.vue';
 import ActionRangesForm from '@/components/actions/ActionRangesForm.vue';
 import actionBase from '@/components/actions/actionBase';
 import optionEditing from '@/components/actions/optionEditing';
+import ActionDiscountMatrixForm from '@/components/actions/ActionDiscountMatrixForm.vue';
 
 const NAME = 'CampaignActionForm';
 
@@ -84,10 +87,12 @@ export default {
       this.$emit('pasteOption', option);
     },
     initZones() {
-      const { isRoot } = this;
+      const { isRoot, action: { discountMatrix } } = this;
+      const byDefault = !isRoot && !discountMatrix;
       return filter([
-        (!isRoot || this.hasRequired) && 'required',
-        (!isRoot || this.discount) && 'discounts',
+        (byDefault || this.hasRequired) && 'required',
+        (byDefault || this.discount) && 'discounts',
+        discountMatrix && 'discountMatrix',
       ]);
     },
   },
@@ -103,6 +108,7 @@ export default {
     }, { immediate: true });
   },
   components: {
+    ActionDiscountMatrixForm,
     ActionRangesForm,
     ActionOptionsForm,
     ActionDiscountForm,
