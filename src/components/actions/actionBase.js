@@ -1,5 +1,7 @@
 import filter from 'lodash/filter';
 import { discountInfo } from '@/models/Action';
+import minBy from 'lodash/minBy';
+import min from 'lodash/min';
 
 export default {
 
@@ -20,50 +22,14 @@ export default {
         {
           title: 'Объем',
           cls: 'volume',
-          fn(option) {
-            const { required = {} } = option;
-            const { pcs, volume, volumeTo } = required;
-            const { cost, costTo, isMultiple } = required;
-            const res = filter([
-              pcs && filter([
-                !isMultiple && 'от',
-                `${pcs} бут.`,
-              ])
-                .join(' '),
-              volume && filter([
-                !isMultiple && 'от',
-                `${volume} л.`,
-                volumeTo && `до ${volumeTo}`,
-              ])
-                .join(' '),
-              cost && filter([
-                !isMultiple && 'от',
-                `${cost} ₽`,
-                costTo && `до ${costTo}`,
-              ])
-                .join(' '),
-            ])
-              .join('\n+');
-
-            if (!res) {
-              return undefined;
-            }
-
-            return filter([
-              `<span>${res}</span>`,
-              isMultiple && '<small>(кратно)</small>',
-              required.etc && `<em>${required.etc}</em>`,
-            ])
-              .join('');
-
-          },
+          fn: optionRequirementsInfo,
         },
         {
           title: 'SKU',
           cls: 'sku',
           fn(option) {
             const { sku } = option.required || {};
-            return sku;
+            return sku || matrixSkuMin(option);
           },
         },
       ];
@@ -107,6 +73,10 @@ export default {
       return discountInfo(this.action);
     },
 
+    isGrid() {
+      return this.hasOptions || this.action.discountMatrix;
+    },
+
     hasOptions() {
       const { options } = this.action;
       return options && options.length && options;
@@ -133,3 +103,69 @@ export default {
   },
 
 };
+
+function matrixSkuMin({ discountMatrix }) {
+  if (!discountMatrix) {
+    return null;
+  }
+  const { axisY, axisX } = discountMatrix;
+  const { sku: minY } = minBy(axisY, 'sku') || {};
+  const { sku: minX } = minBy(axisX, 'sku') || {};
+  const res = min(filter([minX, minY]));
+  return res && `от ${res}`;
+}
+
+function volumeRequirements(required) {
+
+  const { pcs, volume, volumeTo } = required;
+  const { cost, costTo, isMultiple } = required;
+
+  const res = filter([
+    pcs && filter([
+      !isMultiple && 'от',
+      `${pcs} бут.`,
+    ])
+      .join(' '),
+    volume && filter([
+      !isMultiple && 'от',
+      `${volume} л.`,
+      volumeTo && `до ${volumeTo}`,
+    ])
+      .join(' '),
+    cost && filter([
+      !isMultiple && 'от',
+      `${cost} ₽`,
+      costTo && `до ${costTo}`,
+    ])
+      .join(' '),
+  ])
+    .join('\n+');
+
+  if (!res) {
+    return undefined;
+  }
+
+  return filter([
+    `<span>${res}</span>`,
+    isMultiple && '<small>(кратно)</small>',
+    required.etc && `<em>${required.etc}</em>`,
+  ])
+    .join('');
+
+}
+
+function optionRequirementsInfo(option) {
+
+  const { required = {}, discountMatrix } = option;
+  const base = discountMatrix ? discountMatrixMinVolumes(discountMatrix) : required;
+  return volumeRequirements(base);
+
+}
+
+function discountMatrixMinVolumes(discountMatrix, field = 'pcs') {
+  const { axisY, axisX } = discountMatrix;
+  const { [field]: minY } = minBy(axisY, field) || {};
+  const { [field]: minX } = minBy(axisX, field) || {};
+  const res = min(filter([minX, minY]));
+  return { [field]: res };
+}

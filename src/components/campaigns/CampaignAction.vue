@@ -105,7 +105,7 @@ export default {
   },
   methods: {
     optionColSpan(option) {
-      return (option.options && option.options.length) ? 5 : undefined;
+      return ((option.options && option.options.length) || option.discountMatrix) ? 5 : undefined;
     },
     onEditClick() {
       const { id: actionId } = this.action;

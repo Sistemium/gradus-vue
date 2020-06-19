@@ -1,6 +1,6 @@
 <template lang="pug">
 
-.action-option(:class="hasOptions && 'grid'")
+.action-option(:class="isGrid && 'grid'")
 
   .self(v-if="hasSelfRow")
     .name(v-if="name") {{ name }}
@@ -14,9 +14,10 @@
       v-html="req.value || '-'"
     )
 
-    .discount.comp(
+    .discount(
       v-if="!hasOptions"
       v-for="discountHeader in discountHeaders"
+      :class="discountHeader.cls"
     ) {{ action[discountHeader.name] || '-' }}
 
   template(v-for="(option, idx) in action.options" :action="option")
@@ -29,13 +30,17 @@
         span {{ option.commentText }}
     .option-required(
       v-if="!ownRequirements.length"
-      v-for="req in optionRequirements(option)" :class="req.cls" :key="`${req.cls}${idx}`"
+      v-for="req in optionRequirements(option)" :key="`${req.cls}${idx}`"
+      :class="req.cls"
       v-html="req.value || '-'"
     )
     .discount(
       v-for="discountHeader in discountHeaders"
       :class="discountHeader.cls"
     ) {{ option[discountHeader.name] || action[discountHeader.name] || '-' }}
+
+  .discount-matrix(v-if="action.discountMatrix")
+    discount-matrix-info(:discount-matrix="action.discountMatrix")
 
   .comment(v-if="action.commentText")
     i.el-icon-info
@@ -45,6 +50,7 @@
 </template>
 <script>
 
+import DiscountMatrixInfo from '@/components/actions/DiscountMatrixInfo.vue';
 import actionBase from './actionBase';
 import ActionRequired from './ActionRequired.vue';
 import ActionDiscount from './ActionDiscount.vue';
@@ -55,6 +61,7 @@ export default {
 
   name: NAME,
   components: {
+    DiscountMatrixInfo,
     ActionDiscount,
     ActionRequired,
   },
@@ -195,6 +202,21 @@ export default {
 .name {
   font-weight: bold;
   text-align: left;
+}
+
+.discount-matrix {
+  // padding-top: $margin-top;
+  grid-column: 1 / span 5;
+  background: white;
+  display: flex;
+  .discount-matrix-info {
+    border-top: none;
+    border-bottom: none;
+    border-left: none;
+    margin: 0 auto 0 0;
+    min-width: 0;
+    width: auto;
+  }
 }
 
 </style>
