@@ -15,12 +15,12 @@
     )
 
     .discount(
-      v-if="!hasOptions"
+      v-if="!showOptions"
       v-for="discountHeader in discountHeaders"
       :class="discountHeader.cls"
     ) {{ discount[discountHeader.cls] || '-' }}
 
-  template(v-for="(option, idx) in action.options" :action="option")
+  template(v-if="showOptions" v-for="(option, idx) in action.options" :action="option")
     .option
       .name(v-if="option.name") {{ option.name }}
       template(v-if="option.ranges")
@@ -41,6 +41,14 @@
 
   .discount-matrix(v-if="action.discountMatrix")
     discount-matrix-info(:discount-matrix="action.discountMatrix")
+    .optional(v-if="!showOptions" v-for="option in action.options" :action="option")
+      .option
+        .name(v-if="option.name") {{ option.name }}
+        template(v-if="option.ranges")
+          .range(v-for="range in option.ranges") {{ range.name }}
+        .comment(v-if="option.commentText")
+          i.el-icon-info
+          span {{ option.commentText }}
 
   .comment(v-if="action.commentText")
     i.el-icon-info
@@ -77,8 +85,12 @@ export default {
       return action.ranges && action.ranges.length ? action.ranges : (parent && parent.ranges);
     },
 
+    showOptions() {
+      return this.hasOptions && !this.ranges;
+    },
+
     requiredStyle() {
-      return this.hasOptions && {
+      return this.showOptions && {
         'grid-row-start': this.hasSelfRow ? 2 : 1,
         'grid-row-end': `span ${this.action.options.length}`,
       };
@@ -209,6 +221,7 @@ export default {
   grid-column: 1 / span 5;
   background: white;
   display: flex;
+
   .discount-matrix-info {
     // border-top: none;
     // border-bottom: none;
@@ -217,6 +230,19 @@ export default {
     min-width: 0;
     width: auto;
   }
+
+  > * + * {
+    margin-left: $margin-top;
+  }
+
+  .optional > .option {
+    padding: 0;
+  }
+
+}
+
+.comment {
+  text-align: left;
 }
 
 </style>
