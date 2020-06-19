@@ -1,6 +1,7 @@
 import filter from 'lodash/filter';
 import { discountInfo } from '@/models/Action';
 import minBy from 'lodash/minBy';
+import maxBy from 'lodash/maxBy';
 import min from 'lodash/min';
 
 export default {
@@ -70,6 +71,10 @@ export default {
     },
 
     discount() {
+      const { discountMatrix } = this.action;
+      if (discountMatrix) {
+        return discountMatrixDiscountRange(discountMatrix);
+      }
       return discountInfo(this.action);
     },
 
@@ -168,4 +173,14 @@ function discountMatrixMinVolumes(discountMatrix, field = 'pcs') {
   const { [field]: minX } = minBy(axisX, field) || {};
   const res = min(filter([minX, minY]));
   return { [field]: res };
+}
+
+function discountMatrixDiscountRange(discountMatrix) {
+  const { values } = discountMatrix;
+  const { discountOwn: discountOwnMin } = minBy(values, 'discountOwn') || {};
+  const { discountOwn: discountOwnMax } = maxBy(values, 'discountOwn') || {};
+  if (!discountOwnMin && !discountOwnMax) {
+    return null;
+  }
+  return { own: `от ${discountOwnMin} до ${discountOwnMax}` };
 }

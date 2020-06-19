@@ -9,7 +9,7 @@
       action-required(:action="{ required: itemY }")
     template(v-for="(itemX, xIdx) in discountMatrix.axisX")
       .cell
-        span(v-text="values[xIdx][yIdx]")
+        span(v-if="values[xIdx][yIdx]") {{ values[xIdx][yIdx] }}%
 
 </template>
 <script>

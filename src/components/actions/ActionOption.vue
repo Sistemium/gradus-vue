@@ -18,7 +18,7 @@
       v-if="!hasOptions"
       v-for="discountHeader in discountHeaders"
       :class="discountHeader.cls"
-    ) {{ action[discountHeader.name] || '-' }}
+    ) {{ discount[discountHeader.cls] || '-' }}
 
   template(v-for="(option, idx) in action.options" :action="option")
     .option
@@ -205,14 +205,14 @@ export default {
 }
 
 .discount-matrix {
-  // padding-top: $margin-top;
+  padding: $margin-top;
   grid-column: 1 / span 5;
   background: white;
   display: flex;
   .discount-matrix-info {
-    border-top: none;
-    border-bottom: none;
-    border-left: none;
+    // border-top: none;
+    // border-bottom: none;
+    // border-left: none;
     margin: 0 auto 0 0;
     min-width: 0;
     width: auto;
