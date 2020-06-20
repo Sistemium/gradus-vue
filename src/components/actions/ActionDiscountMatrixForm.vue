@@ -41,6 +41,9 @@
 <script>
 
 import find from 'lodash/find';
+import filter from 'lodash/filter';
+import last from 'lodash/last';
+import map from 'lodash/map';
 import ActionRequired from '@/components/actions/ActionRequired.vue';
 import ActionAxisEdit from '@/components/actions/ActionAxisEdit.vue';
 import discountMatrixBase from '@/components/actions/discountMatrixBase';
@@ -79,6 +82,12 @@ export default {
       this.onAxisSave([]);
     },
     onAxisSave(axis) {
+      const { name } = this.editAxis;
+      const xy = last(name)
+        .toLowerCase();
+      const coords = map(axis, 'id');
+      const { values } = this.discountMatrix;
+      this.discountMatrix.values = filter(values, ({ [xy]: c }) => coords.includes(c));
       this.discountMatrix[this.editAxis.name] = axis;
     },
   },

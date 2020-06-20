@@ -20,7 +20,7 @@
       :class="discountHeader.cls"
     ) {{ discount[discountHeader.cls] || '-' }}
 
-  template(v-if="showOptions" v-for="(option, idx) in action.options" :action="option")
+  template(v-if="showOptions" v-for="(option, idx) in action.options")
     .option
       .name(v-if="option.name") {{ option.name }}
       template(v-if="option.ranges")
@@ -41,8 +41,8 @@
 
   .discount-matrix(v-if="action.discountMatrix")
     discount-matrix-info(:discount-matrix="action.discountMatrix")
-    .optional(v-if="!showOptions" v-for="option in action.options" :action="option")
-      .option
+    .optional(v-if="!showOptions && action.options.length")
+      .option(v-for="option in action.options" :key="option.id")
         .name(v-if="option.name") {{ option.name }}
         template(v-if="option.ranges")
           .range(v-for="range in option.ranges") {{ range.name }}
@@ -223,12 +223,9 @@ export default {
   display: flex;
 
   .discount-matrix-info {
-    // border-top: none;
-    // border-bottom: none;
-    // border-left: none;
-    margin: 0 auto 0 0;
-    min-width: 0;
-    width: auto;
+    // margin: 0 auto 0 0;
+    // min-width: 0;
+    // width: auto;
   }
 
   > * + * {
