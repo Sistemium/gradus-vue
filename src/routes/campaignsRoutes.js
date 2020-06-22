@@ -16,6 +16,10 @@ export default {
         query: { ...query },
       },
     }),
+    children: [{
+      path: 'paste',
+      name: 'campaignActionPaste',
+    }],
     component: () =>
       import(/* webpackChunkName: "campaigns" */ '../components/campaigns/CampaignActionEdit.vue'),
   }, {

@@ -118,8 +118,7 @@ export default {
       this.updateRouteParams({}, {}, 'campaignActionCreate');
     },
     onPasteAction() {
-      const { actionCopy: { id: actionId } } = this;
-      this.updateRouteParams({ actionId }, {}, 'campaignActionEdit');
+      this.updateRouteParams({}, {}, 'campaignActionPaste');
     },
     scrollToCampaign(campaign) {
       if (!campaign) {

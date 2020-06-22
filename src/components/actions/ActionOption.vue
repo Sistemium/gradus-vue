@@ -18,7 +18,7 @@
       v-if="!showOptions"
       v-for="discountHeader in discountHeaders"
       :class="discountHeader.cls"
-    ) {{ discount[discountHeader.cls] || '-' }}
+    ) {{ discount && discount[discountHeader.cls] || '-' }}
 
   template(v-if="showOptions" v-for="(option, idx) in action.options")
     .option
@@ -86,7 +86,7 @@ export default {
     },
 
     showOptions() {
-      return this.hasOptions && !this.ranges;
+      return this.hasOptions && !(this.ranges && this.ranges.length);
     },
 
     requiredStyle() {

@@ -66,11 +66,14 @@ export default {
     },
     modelOrigin() {
 
-      const { actionId, actionCopy } = this;
-      const useCopy = actionCopy && actionCopy.id === actionId && actionCopy;
+      const { actionCopy } = this;
+      const { name, params: { campaignId } } = this.$route;
+      const useCopy = actionCopy && name === 'campaignActionPaste' && {
+        ...actionCopy,
+        campaignId,
+      };
 
-      const action = this.actionId ? (useCopy || Action.get(this.actionId)
-        .toJSON()) : this.defaultPros;
+      const action = this.actionId ? this.getActionPlain() : (useCopy || this.defaultPros);
 
       return {
         options: [],
@@ -98,6 +101,10 @@ export default {
     }),
   },
   methods: {
+    getActionPlain() {
+      const action = Action.get(this.actionId);
+      return action && action.toJSON();
+    },
     onPasteOption() {
       const { optionCopy: option } = this;
       if (!option) {
