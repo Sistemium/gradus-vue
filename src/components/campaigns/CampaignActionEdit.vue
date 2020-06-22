@@ -42,6 +42,7 @@ el-drawer.campaign-action-edit(
 <script>
 
 import { v4 } from 'uuid';
+import { createNamespacedHelpers } from 'vuex';
 import DrawerEditor from '@/lib/DrawerEditor';
 import Action from '@/models/Action';
 import CampaignActionForm from '@/components/campaigns/CampaignActionForm.vue';
@@ -51,6 +52,9 @@ import matchesDeep from '@/lib/matchesDeep';
 import cloneDeep from 'lodash/cloneDeep';
 
 import optionEditing from '@/components/actions/optionEditing';
+import * as g from '@/vuex/campaigns/getters';
+
+const { mapGetters } = createNamespacedHelpers('campaigns');
 
 const NAME = 'CampaignActionEdit';
 
@@ -61,25 +65,37 @@ export default {
       return this.actionId ? this.modelOrigin.name : 'Новая механика акции';
     },
     modelOrigin() {
+
+      const { actionId, actionCopy } = this;
+      const useCopy = actionCopy && actionCopy.id === actionId && actionCopy;
+
+      const action = this.actionId ? (useCopy || Action.get(this.actionId)
+        .toJSON()) : this.defaultPros;
+
       return {
         options: [],
         required: { isMultiple: false },
         ranges: [],
-        ...(this.actionId ? Action.get(this.actionId)
-          .toJSON() : {
-          campaignId: this.campaignId,
-          oneTime: true,
-          repeatable: true,
-          needPhoto: false,
-        }),
+        ...action,
       };
     },
     changed() {
       return !matchesDeep(this.model, this.modelOrigin);
     },
+    defaultPros() {
+      return {
+        campaignId: this.campaignId,
+        oneTime: true,
+        repeatable: true,
+        needPhoto: false,
+      };
+    },
     campaignId() {
       return this.$route.params.campaignId;
     },
+    ...mapGetters({
+      actionCopy: g.ACTION_COPY,
+    }),
   },
   methods: {
     onPasteOption() {

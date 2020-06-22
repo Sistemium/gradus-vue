@@ -1,4 +1,5 @@
 import map from 'lodash/map';
+import { v4 } from 'uuid';
 import * as g from './getters';
 
 export const SET_BUSY = `SET_${g.BUSY}`;
@@ -12,6 +13,7 @@ export const SET_GALLERY_PICTURES = `SET_${g.GALLERY_PICTURES}`;
 export const SET_GALLERY_PICTURE = `SET_${g.ACTIVE_GALLERY_PICTURE}`;
 
 export const SET_ACTION_OPTION_COPY = `SET_${g.ACTION_OPTION_COPY}`;
+export const SET_ACTION_COPY = `SET_${g.ACTION_COPY}`;
 
 export default {
 
@@ -19,6 +21,14 @@ export default {
     state[g.ACTION_OPTION_COPY] = {
       ...option,
       _id: undefined,
+    };
+  },
+
+  [SET_ACTION_COPY](state, action) {
+    state[g.ACTION_COPY] = {
+      ...action,
+      _id: undefined,
+      id: v4(),
     };
   },
 

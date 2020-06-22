@@ -15,6 +15,12 @@ el-container.campaigns-with-aside
       @campaignPictureClick="campaignPictureClick"
     )
       template(v-slot:buttons)
+        el-button(
+          v-if="actionCopy"
+          @click="onPasteAction"
+          icon="el-icon-suitcase"
+          size="mini" circle
+        )
         button-edit(@click="onEditCampaign")
         button-add(@click="onAddAction")
       template(v-slot:footer)
@@ -42,12 +48,13 @@ import find from 'lodash/find';
 import CampaignPicture from '@/models/CampaignPicture';
 import * as svc from '@/services/campaigns';
 import * as actions from '@/vuex/campaigns/actions';
+import * as g from '@/vuex/campaigns/getters';
 import { createNamespacedHelpers } from 'vuex';
 import CampaignsPictureGallery from './CampaignsPictureGallery';
 import CampaignsList from './CampaignsList.vue';
 import CampaignView from './CampaignView.vue';
 
-const { mapActions } = createNamespacedHelpers('campaigns');
+const { mapActions, mapGetters } = createNamespacedHelpers('campaigns');
 
 const NAME = 'CampaignsWithAside';
 
@@ -81,6 +88,9 @@ export default {
       const { campaignId } = this.$route.params;
       return find(this.campaigns, { id: campaignId }) || null;
     },
+    ...mapGetters({
+      actionCopy: g.ACTION_COPY,
+    }),
   },
 
   created() {
@@ -106,6 +116,10 @@ export default {
     },
     onAddAction() {
       this.updateRouteParams({}, {}, 'campaignActionCreate');
+    },
+    onPasteAction() {
+      const { actionCopy: { id: actionId } } = this;
+      this.updateRouteParams({ actionId }, {}, 'campaignActionEdit');
     },
     scrollToCampaign(campaign) {
       if (!campaign) {

@@ -17,11 +17,16 @@ export const ADD_GALLERY_PICTURE = 'ADD_GALLERY_PICTURE';
 export const REMOVE_GALLERY_PICTURE = 'REMOVE_GALLERY_PICTURE';
 export const REMOVE_CAMPAIGN = 'REMOVE_CAMPAIGN';
 export const COPY_ACTION_OPTION = 'COPY_ACTION_OPTION';
+export const COPY_ACTION = 'COPY_ACTION';
 
 export default {
 
   [COPY_ACTION_OPTION]({ commit }, option) {
     commit(m.SET_ACTION_OPTION_COPY, option);
+  },
+
+  [COPY_ACTION]({ commit }, option) {
+    commit(m.SET_ACTION_COPY, option);
   },
 
   [SEARCH_TEXT_CHANGE]: debounce(async ({ commit, getters }, searchText) => {

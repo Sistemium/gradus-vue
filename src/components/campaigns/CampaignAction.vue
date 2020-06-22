@@ -9,6 +9,11 @@
         th.name(colspan="2")
           .title
             span {{ action.name }}
+            el-button(
+              @click="copyAction(action)"
+              icon="el-icon-copy-document"
+              size="mini" circle
+            )
             button-edit.edit(@click="onEditClick")
         th.required(v-for="req in requirements" :class="req.cls") {{ req.title }}
         th.discount(v-for="discountHeader in discountHeaders") {{ discountHeader.title }}
@@ -72,9 +77,13 @@
 <script>
 
 import find from 'lodash/find';
+import { createNamespacedHelpers } from 'vuex';
 import ActionOption from '@/components/actions/ActionOption.vue';
 import ActionRequired from '@/components/actions/ActionRequired.vue';
 import actionBase from '@/components/actions/actionBase';
+import { COPY_ACTION } from '@/vuex/campaigns/actions';
+
+const { mapActions } = createNamespacedHelpers('campaigns');
 
 const NAME = 'CampaignAction';
 
@@ -104,6 +113,9 @@ export default {
     },
   },
   methods: {
+    ...mapActions({
+      copyAction: COPY_ACTION,
+    }),
     optionColSpan(option) {
       return ((option.options && option.options.length) || option.discountMatrix) ? 5 : undefined;
     },
