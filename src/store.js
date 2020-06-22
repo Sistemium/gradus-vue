@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import auth from 'sistemium-vue/store/auth';
+import sharedMutations from 'vuex-shared-mutations';
 import catalogue from './vuex/catalogue';
 import campaigns from './vuex/campaigns';
 import territory from './vuex/territory';
@@ -21,5 +22,7 @@ export default new Vuex.Store({
     campaigns,
     territory,
   },
+
+  plugins: [sharedMutations({ predicate: ['campaigns/SET_ACTION_OPTION_COPY'] })],
 
 });
