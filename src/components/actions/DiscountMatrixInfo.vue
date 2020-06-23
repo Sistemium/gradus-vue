@@ -2,9 +2,9 @@
 
 .discount-matrix-info.matrix(:style="matrixStyle" v-if="hasAxes")
   .cell.empty
-  .cell.header(v-for="headerX in discountMatrix.axisX" :key="headerX.id")
+  .cell.header(v-for="headerX in axisXInfo" :key="headerX.id")
     action-required(:action="{ required: headerX }")
-  template(v-for="(itemY, yIdx) in discountMatrix.axisY")
+  template(v-for="(itemY, yIdx) in axisYInfo")
     .cell.header
       action-required(:action="{ required: itemY }")
     template(v-for="(itemX, xIdx) in discountMatrix.axisX")
@@ -24,6 +24,15 @@ export default {
   props: {
     discountMatrix: Object,
   },
+  computed: {
+    axisXInfo() {
+      const { axisX } = this.discountMatrix;
+      return this.axisInfo(axisX);
+    },
+    axisYInfo() {
+      return this.axisInfo(this.discountMatrix.axisY);
+    },
+  },
   components: { ActionRequired },
   mixins: [discountMatrixBase],
 };
@@ -32,5 +41,9 @@ export default {
 <style scoped lang="scss">
 
 @import "discountMatrixBase";
+
+.action-required /deep/ > * {
+  white-space: nowrap;
+}
 
 </style>

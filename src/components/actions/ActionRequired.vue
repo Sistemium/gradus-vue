@@ -3,7 +3,9 @@
 .action-required(v-if="hasRequired || always")
   .pcs(v-if="required.pcs")
     span.from(v-if="!required.isMultiple") от
-    span {{ required.pcs }} бут.
+    span {{ required.pcs }}
+    span.no-margin(v-if="required.pscTo") -{{ required.pscTo }}
+    span бут.
   .volume(v-if="required.volume")
     span.from(v-if="!required.isMultiple || required.volumeTo") от
     span {{ required.volume }}
@@ -15,7 +17,11 @@
     span(v-if="required.costTo") до {{ required.costTo }}
     span ₽
   .etc(v-if="required.etc") {{ required.etc }}
-  .sku(v-if="required.sku") {{ required.sku }} SKU
+  .sku(v-if="required.sku")
+    span.from(v-if="!required.skuTo && required.showFrom") от
+    span {{ required.sku }}
+    span.no-margin(v-if="required.skuTo > required.sku") -{{ required.skuTo }}
+    span SKU
   .isMultiple(v-if="required.isMultiple") (кратно)
 
 </template>
@@ -65,6 +71,9 @@ export default {
 
   > * + * {
     margin-left: 4px;
+  }
+  span.no-margin {
+    margin-left: 0;
   }
 }
 
