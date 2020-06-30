@@ -73,7 +73,7 @@ export default {
         campaignId,
       };
 
-      const action = this.actionId ? this.getActionPlain() : (useCopy || this.defaultPros);
+      const action = this.actionId ? this.getActionPlain() : (useCopy || this.defaultProps);
 
       return {
         options: [],
@@ -85,7 +85,7 @@ export default {
     changed() {
       return !matchesDeep(this.model, this.modelOrigin);
     },
-    defaultPros() {
+    defaultProps() {
       return {
         campaignId: this.campaignId,
         oneTime: true,
