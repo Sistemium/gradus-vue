@@ -5,6 +5,7 @@ prefix-icon="el-icon-search"
 v-model="searchText"
 :clearable="true"
 :placeholder="placeholder"
+:size="size"
 )
 
 </template>
@@ -17,6 +18,10 @@ export default {
   name: 'SearchInput',
 
   props: {
+    size: {
+      type: String,
+      default: 'normal',
+    },
     value: String,
     placeholder: {
       default: 'поиск',
