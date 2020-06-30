@@ -20,7 +20,7 @@ export default {
     state[g.ACTION_OPTION_COPY] = {
       ...option,
       _id: undefined,
-      id: null,
+      id: undefined,
     };
   },
 
@@ -28,7 +28,7 @@ export default {
     state[g.ACTION_COPY] = {
       ...action,
       _id: undefined,
-      id: null,
+      id: undefined,
       campaignId: null,
     };
   },
