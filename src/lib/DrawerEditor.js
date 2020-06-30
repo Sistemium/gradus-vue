@@ -59,7 +59,11 @@ export default {
         error('cancelClick', 'drawer ref is empty');
         return;
       }
-      drawer.closeDrawer();
+      if (drawer.closeDrawer) {
+        drawer.closeDrawer();
+      } else {
+        drawer.handleClose();
+      }
     },
 
     async performOperation(op) {
