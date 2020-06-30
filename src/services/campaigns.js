@@ -7,23 +7,9 @@ import orderBy from 'lodash/orderBy';
 import map from 'lodash/map';
 import find from 'lodash/find';
 import flatten from 'lodash/flatten';
-import chunk from 'lodash/chunk';
-import uniq from 'lodash/uniq';
+import { findByMany } from '@/lib/modelExtentions';
 import { monthToWhere } from '@/lib/dates';
 
-async function findByMany(model, ids, options = {}) {
-
-  const { chunkSize = 100, field = 'id' } = options;
-
-  const chunks = chunk(uniq(ids), chunkSize);
-
-  return Promise.all(chunks.map(chunkIds => {
-    const where = { [field]: { in: chunkIds } };
-    return model.findAll({ where });
-  }))
-    .then(flatten);
-
-}
 
 /**
  *
