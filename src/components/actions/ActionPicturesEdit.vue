@@ -14,7 +14,11 @@ el-dialog.action-pictures-edit(
 
     .selected
 
-      .selected-pictures(v-if="selectedPictures.length")
+      action-pictures(:article-picture-ids="model" v-if="model.length")
+        template(v-slot:etc="{ picture }")
+          .status(@click="removeSelected(picture)")
+            i.el-icon-remove
+      //.selected-pictures(v-if="selectedPictures.length")
         .picture(
           v-for="picture in selectedPictures" :key="picture.id"
         )
@@ -51,17 +55,21 @@ el-dialog.action-pictures-edit(
 </template>
 <script>
 
-import { searchArticlePictures, getManyArticlePictures } from '@/services/catalogue';
+import { searchArticlePictures } from '@/services/catalogue';
 import DrawerEditor from '@/lib/DrawerEditor';
 import FormButtons from '@/lib/FormButtons.vue';
 import Action from '@/models/Action';
+import ActionPictures from '@/components/actions/ActionPictures.vue';
 
 const NAME = 'ActionPicturesEdit';
 
 export default {
   name: NAME,
   mixins: [DrawerEditor],
-  components: { FormButtons },
+  components: {
+    ActionPictures,
+    FormButtons,
+  },
   props: {
     actionId: String,
   },
@@ -73,9 +81,9 @@ export default {
     };
   },
   computed: {
-    selectedPictures() {
-      return getManyArticlePictures(this.model);
-    },
+    // selectedPictures() {
+    //   return getManyArticlePictures(this.model);
+    // },
     modelOrigin() {
       return this.actionInstance().articlePictureIds || [];
     },
@@ -157,23 +165,6 @@ export default {
   min-height: 133px;
 }
 
-.selected-pictures {
-  display: flex;
-
-  img {
-    max-height: 120px;
-  }
-
-  .thumbnail {
-    width: auto;
-    padding: 0 $padding;
-  }
-
-  .status {
-    right: -5px;
-  }
-}
-
 .pictures .picture {
   & + .picture {
     border-top: $list-cell-borders;
@@ -182,6 +173,7 @@ export default {
 
 .status {
   position: absolute;
+  top: 0;
   font-size: 20px;
   color: $green;
 }

@@ -58,22 +58,24 @@
     tfoot
       tr
         td(colspan="6")
-          .oneTime(v-if="action.oneTime")
-            i.el-icon-circle-check
-            span Единовременная
-          .repeatable(v-if="action.repeatable")
-            i.el-icon-circle-check
-            span Многократная
-          .repeatable(v-if="action.needPhoto")
-            i.el-icon-camera-solid
-            span Фото-отчет
-          .territory(v-if="action.territory")
-            i.el-icon-location
-            span {{ action.territory }}
-          .comment(v-if="action.commentText")
-            i.el-icon-info
-            span {{ action.commentText }}
-
+          .footer
+            action-pictures(v-if="pictureIds" :article-picture-ids="pictureIds" size="small")
+            .other
+              .oneTime(v-if="action.oneTime")
+                i.el-icon-circle-check
+                span Единовременная
+              .repeatable(v-if="action.repeatable")
+                i.el-icon-circle-check
+                span Многократная
+              .repeatable(v-if="action.needPhoto")
+                i.el-icon-camera-solid
+                span Фото-отчет
+              .territory(v-if="action.territory")
+                i.el-icon-location
+                span {{ action.territory }}
+              .comment(v-if="action.commentText")
+                i.el-icon-info
+                span {{ action.commentText }}
 
   //.restrictions(v-if="hasRestrictions")
     action-option(v-for="restriction in hasRestrictions" :action="restriction")
@@ -85,6 +87,7 @@ import find from 'lodash/find';
 import { createNamespacedHelpers } from 'vuex';
 import ActionOption from '@/components/actions/ActionOption.vue';
 import ActionRequired from '@/components/actions/ActionRequired.vue';
+import ActionPictures from '@/components/actions/ActionPictures.vue';
 import actionBase from '@/components/actions/actionBase';
 import { COPY_ACTION } from '@/vuex/campaigns/actions';
 
@@ -95,10 +98,15 @@ const NAME = 'CampaignAction';
 export default {
   name: NAME,
   components: {
+    ActionPictures,
     ActionOption,
     ActionRequired,
   },
   computed: {
+    pictureIds() {
+      const { articlePictureIds } = this.action;
+      return articlePictureIds && articlePictureIds.length && articlePictureIds;
+    },
     discountHeaders() {
       return this.action.discountHeaders();
     },
@@ -196,24 +204,41 @@ table {
   display: block;
 }
 
-tfoot td > * {
-  margin-right: $margin-right;
-  display: inline-block;
-}
+tfoot {
 
-tfoot td {
-
-  padding: $padding;
-  text-align: left;
-
-  span {
-    font-size: $small-font-size;
+  .footer {
+    display: flex;
+    flex-direction: column;
   }
 
-  i {
-    color: $orange;
-    margin-right: $padding;
+  .action-pictures {
+    justify-content: flex-end;
   }
+
+  .other {
+    flex: 1;
+
+    > * {
+      margin-right: $margin-right;
+      display: inline-block;
+    }
+  }
+
+  td {
+
+    padding: $padding;
+    text-align: left;
+
+    span {
+      font-size: $small-font-size;
+    }
+
+    i {
+      color: $orange;
+      margin-right: $padding;
+    }
+  }
+
 }
 
 td.discount, th.discount {
