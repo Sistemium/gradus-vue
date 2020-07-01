@@ -34,7 +34,13 @@ export default {
   },
   methods: {
 
+    getPlainInstanceById(model, id) {
+      const action = model.get(id);
+      return action && action.toJSON();
+    },
+
     cloneDeep,
+    matchesDeep,
 
     deleteClick() {
 

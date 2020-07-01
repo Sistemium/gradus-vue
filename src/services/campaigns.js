@@ -9,6 +9,7 @@ import find from 'lodash/find';
 import flatten from 'lodash/flatten';
 import { findByMany } from '@/lib/modelExtentions';
 import { monthToWhere } from '@/lib/dates';
+import ArticlePicture from '@/models/ArticlePicture';
 
 
 /**
@@ -31,7 +32,11 @@ export async function campaignsData(month, searchText) {
 
   const campaignIds = filter(flatten(map(campaigns, 'id')));
 
-  await findByMany(Action, campaignIds, { field: 'campaignId' });
+  const actions = await findByMany(Action, campaignIds, { field: 'campaignId' });
+
+  const articlePictureIds = flatten(map(actions, 'articlePictureIds'));
+
+  await findByMany(ArticlePicture, articlePictureIds);
 
   return campaignsFilter(month, searchText);
 

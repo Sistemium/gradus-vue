@@ -10,6 +10,11 @@
           .title
             span {{ action.name }}
             el-button(
+              @click="onEditPicturesClick()"
+              icon="el-icon-picture-outline"
+              size="mini" circle
+            )
+            el-button(
               @click="copyAction(action)"
               icon="el-icon-copy-document"
               size="mini" circle
@@ -122,6 +127,10 @@ export default {
     onEditClick() {
       const { id: actionId } = this.action;
       this.updateRouteParams({ actionId }, {}, 'campaignActionEdit');
+    },
+    onEditPicturesClick() {
+      const { id: actionId } = this.action;
+      this.updateRouteParams({ actionId }, {}, 'actionPicturesEdit');
     },
   },
   mixins: [actionBase],

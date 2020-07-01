@@ -35,5 +35,18 @@ export default {
     }),
     component: () =>
       import(/* webpackChunkName: "campaigns" */ '../components/campaigns/CampaignActionEdit.vue'),
+  }, {
+    name: 'actionPicturesEdit',
+    path: 'action/:actionId/pictures',
+    props: ({ params, query }) => ({
+      actionId: params.actionId,
+      from: {
+        name: 'campaigns',
+        params: { ...params },
+        query: { ...query },
+      },
+    }),
+    component: () =>
+      import(/* webpackChunkName: "campaigns" */ '../components/actions/ActionPicturesEdit.vue'),
   }],
 };

@@ -4,6 +4,7 @@ import keyBy from 'lodash/keyBy';
 import flatten from 'lodash/flatten';
 import uniq from 'lodash/uniq';
 import map from 'lodash/map';
+// import find from 'lodash/find';
 import escapeRegExp from 'lodash/escapeRegExp';
 import orderBy from 'lodash/orderBy';
 
@@ -13,6 +14,8 @@ import ArticleGroup from '@/models/ArticleGroup';
 import Article from '@/models/Article';
 import ArticlePicture from '@/models/ArticlePicture';
 import ArticlePictureArticle from '@/models/ArticlePictureArticle';
+
+import { findByMany } from '@/lib/modelExtentions';
 
 import log from 'sistemium-telegram/services/log';
 
@@ -81,6 +84,10 @@ export function getArticle(id) {
 
 export function getArticles(ids) {
   return Article.getMany(ids);
+}
+
+export function getManyArticlePictures(ids) {
+  return ArticlePicture.getMany(ids);
 }
 
 
@@ -226,4 +233,22 @@ function filterArticles(articles, filters) {
     return stage1 && (!onlyNoAvatar || !a.avatarPicture);
   });
 
+}
+
+export async function searchArticlePictures(searchText) {
+  const where = {
+    name: { likei: `%${searchText}%` },
+    avatarPictureId: { '!=': null },
+  };
+  const articles = await Article.findAll({
+    where,
+    limit: 50,
+  });
+  const ids = map(articles, 'avatarPictureId');
+  // const apa = await findByMany(ArticlePictureArticle, ids, { field: 'articleId' });
+  const pictures = await findByMany(ArticlePicture, ids);
+  return pictures.map(picture => ({
+    ...picture,
+    articles: Article.filter({ avatarPictureId: picture.id }),
+  }));
 }
