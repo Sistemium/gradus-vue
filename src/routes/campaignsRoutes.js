@@ -15,6 +15,7 @@ export default {
         params: { ...params },
         query: { ...query },
       },
+      forceModified: true,
     }),
     children: [{
       path: 'paste',

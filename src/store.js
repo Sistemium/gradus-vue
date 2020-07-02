@@ -23,6 +23,11 @@ export default new Vuex.Store({
     territory,
   },
 
-  plugins: [sharedMutations({ predicate: ['campaigns/SET_ACTION_OPTION_COPY'] })],
+  plugins: [sharedMutations({
+    predicate: [
+      'campaigns/SET_ACTION_OPTION_COPY',
+      'campaigns/SET_ACTION_COPY',
+    ],
+  })],
 
 });

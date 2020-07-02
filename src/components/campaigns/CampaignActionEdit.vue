@@ -48,7 +48,6 @@ import Action from '@/models/Action';
 import CampaignActionForm from '@/components/campaigns/CampaignActionForm.vue';
 import ActionOptionEdit from '@/components/actions/ActionOptionEdit.vue';
 import FormButtons from '@/lib/FormButtons.vue';
-import matchesDeep from '@/lib/matchesDeep';
 import cloneDeep from 'lodash/cloneDeep';
 
 import optionEditing from '@/components/actions/optionEditing';
@@ -81,9 +80,6 @@ export default {
         ranges: [],
         ...action,
       };
-    },
-    changed() {
-      return !matchesDeep(this.model, this.modelOrigin);
     },
     defaultProps() {
       return {
