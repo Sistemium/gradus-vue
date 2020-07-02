@@ -9,6 +9,13 @@ el-container.campaigns(
 
     campaign-filters.filters
 
+    el-button.show-pictures(
+      :type="showPictures ? 'primary' : 'default'"
+      size="mini"
+      @click="toggleShowPictures"
+    )
+      i.el-icon-picture-outline
+
     layout-select(v-model="layout")
 
     el-button.add-campaign(type="" @click="addCampaignClick" :round="true")
@@ -75,6 +82,7 @@ export default {
   computed: {
 
     ...mapGetters({
+      showPictures: getters.SHOW_PICTURES,
       campaigns: getters.CAMPAIGNS,
       galleryCampaign: getters.GALLERY_CAMPAIGN,
       busy: getters.BUSY,
@@ -94,6 +102,7 @@ export default {
   methods: {
 
     ...mapActions({
+      toggleShowPictures: actions.TOGGLE_SHOW_PICTURES,
       campaignAvatarClickStore: actions.CAMPAIGN_AVATAR_CLICK,
       updateCampaign: actions.UPDATE_CAMPAIGN,
       removeCampaign: actions.REMOVE_CAMPAIGN,
@@ -225,6 +234,15 @@ export default {
   #campaigns-scroll-container {
     max-height: none !important;
   }
+}
+
+.show-pictures {
+  i {
+    font-size: large;
+  }
+
+  padding: 6px;
+
 }
 
 </style>

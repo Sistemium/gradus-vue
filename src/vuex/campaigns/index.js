@@ -17,6 +17,7 @@ export default {
     [states.ACTIVE_GALLERY_PICTURE]: false,
     [states.ACTION_OPTION_COPY]: null,
     [states.ACTION_COPY]: null,
+    [states.SHOW_PICTURES]: null,
   },
 
   mutations,

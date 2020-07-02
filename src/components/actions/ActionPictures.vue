@@ -42,7 +42,9 @@ export default {
 @import "../../styles/variables";
 
 .action-pictures {
+
   display: flex;
+  align-items: flex-end;
 
   img.thumbnail {
     max-height: 120px;

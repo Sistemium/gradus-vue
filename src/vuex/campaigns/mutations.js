@@ -14,7 +14,14 @@ export const SET_GALLERY_PICTURE = `SET_${g.ACTIVE_GALLERY_PICTURE}`;
 export const SET_ACTION_OPTION_COPY = `SET_${g.ACTION_OPTION_COPY}`;
 export const SET_ACTION_COPY = `SET_${g.ACTION_COPY}`;
 
+export const SET_SHOW_PICTURES = `SET_${g.SHOW_PICTURES}`;
+
+
 export default {
+
+  [SET_SHOW_PICTURES](state, value) {
+    state[g.SHOW_PICTURES] = !!value;
+  },
 
   [SET_ACTION_OPTION_COPY](state, option) {
     state[g.ACTION_OPTION_COPY] = {

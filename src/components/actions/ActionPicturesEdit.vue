@@ -10,20 +10,16 @@ el-dialog.action-pictures-edit(
   width="80%"
   top="4vh"
 )
-  section.content()
+  section.content(
+    v-loading="loading"
+    :element-loading-text="loadingMessage"
+    element-loading-spinner="el-icon-loading"
+  )
 
     .selected
 
       action-pictures(:article-picture-ids="model" v-if="model.length")
         template(v-slot:etc="{ picture }")
-          .status(@click="removeSelected(picture)")
-            i.el-icon-remove
-      //.selected-pictures(v-if="selectedPictures.length")
-        .picture(
-          v-for="picture in selectedPictures" :key="picture.id"
-        )
-          .thumbnail
-            img(:src="picture.thumbnailSrc")
           .status(@click="removeSelected(picture)")
             i.el-icon-remove
 
@@ -33,7 +29,11 @@ el-dialog.action-pictures-edit(
 
     search-input(v-model="searchText" :debounce="500" size="mini")
 
-    resize.pictures(:padding="140")
+    resize.pictures(
+      :padding="140"
+    )
+      el-alert(v-if="noMatchingPictures" :show-icon="true" type="warning")
+        span Нет подходящих изображений
       .picture(
         v-for="picture in pictures" :key="picture.id"
         @click="pictureClick(picture)"
@@ -75,15 +75,16 @@ export default {
   },
   data() {
     return {
+      // loading: false,
       model: [],
       searchText: '',
       pictures: [],
     };
   },
   computed: {
-    // selectedPictures() {
-    //   return getManyArticlePictures(this.model);
-    // },
+    noMatchingPictures() {
+      return this.searchText && !this.loading && !this.pictures.length;
+    },
     modelOrigin() {
       return this.actionInstance().articlePictureIds || [];
     },
@@ -120,7 +121,9 @@ export default {
         this.pictures = [];
         return;
       }
+      this.loadingMessage = 'Поиск изображений ...';
       this.pictures = await searchArticlePictures(text);
+      this.loadingMessage = '';
     },
   },
   created() {
@@ -165,9 +168,12 @@ export default {
   min-height: 133px;
 }
 
-.pictures .picture {
-  & + .picture {
-    border-top: $list-cell-borders;
+.pictures {
+  // min-height: 50px;
+  .picture {
+    & + .picture {
+      border-top: $list-cell-borders;
+    }
   }
 }
 

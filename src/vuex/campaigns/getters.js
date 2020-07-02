@@ -11,7 +11,14 @@ export const ACTIVE_GALLERY_PICTURE = 'activeGalleryPicture';
 export const ACTION_OPTION_COPY = 'ACTION_OPTION_COPY';
 export const ACTION_COPY = 'ACTION_COPY';
 
+export const SHOW_PICTURES = 'SHOW_PICTURES';
+
+
 export default {
+
+  [SHOW_PICTURES](state) {
+    return state[SHOW_PICTURES];
+  },
 
   [ACTION_OPTION_COPY](state) {
     return state[ACTION_OPTION_COPY];

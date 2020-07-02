@@ -10,6 +10,7 @@
           .title
             span {{ action.name }}
             el-button(
+              v-if="showPictures"
               @click="onEditPicturesClick()"
               icon="el-icon-picture-outline"
               size="mini" circle
@@ -59,7 +60,11 @@
       tr
         td(colspan="6")
           .footer
-            action-pictures(v-if="pictureIds" :article-picture-ids="pictureIds" size="small")
+            action-pictures(
+              v-if="showPictures && action.articlePictureIds"
+              :article-picture-ids="pictureIds"
+              size="small"
+            )
             .other
               .oneTime(v-if="action.oneTime")
                 i.el-icon-circle-check
@@ -90,8 +95,9 @@ import ActionRequired from '@/components/actions/ActionRequired.vue';
 import ActionPictures from '@/components/actions/ActionPictures.vue';
 import actionBase from '@/components/actions/actionBase';
 import { COPY_ACTION } from '@/vuex/campaigns/actions';
+import { SHOW_PICTURES } from '@/vuex/campaigns/getters';
 
-const { mapActions } = createNamespacedHelpers('campaigns');
+const { mapActions, mapGetters } = createNamespacedHelpers('campaigns');
 
 const NAME = 'CampaignAction';
 
@@ -103,6 +109,9 @@ export default {
     ActionRequired,
   },
   computed: {
+    ...mapGetters({
+      showPictures: SHOW_PICTURES,
+    }),
     pictureIds() {
       const { articlePictureIds } = this.action;
       return articlePictureIds && articlePictureIds.length && articlePictureIds;
@@ -213,6 +222,7 @@ tfoot {
 
   .action-pictures {
     justify-content: flex-end;
+    margin-top: $margin-top;
   }
 
   .other {

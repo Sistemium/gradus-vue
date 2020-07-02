@@ -18,8 +18,14 @@ export const REMOVE_GALLERY_PICTURE = 'REMOVE_GALLERY_PICTURE';
 export const REMOVE_CAMPAIGN = 'REMOVE_CAMPAIGN';
 export const COPY_ACTION_OPTION = 'COPY_ACTION_OPTION';
 export const COPY_ACTION = 'COPY_ACTION';
+export const TOGGLE_SHOW_PICTURES = 'TOGGLE_SHOW_PICTURES';
+
 
 export default {
+
+  [TOGGLE_SHOW_PICTURES]({ commit, getters }) {
+    commit(m.SET_SHOW_PICTURES, !getters[g.SHOW_PICTURES]);
+  },
 
   [COPY_ACTION_OPTION]({ commit }, option) {
     commit(m.SET_ACTION_OPTION_COPY, option);
