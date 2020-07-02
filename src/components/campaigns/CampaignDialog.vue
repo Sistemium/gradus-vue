@@ -22,6 +22,10 @@ top="4vh"
 
       el-input(v-model="newCampaign.name")
 
+    //el-form-item(label="Ограничение по территории" prop="territory")
+
+      el-input(v-model="newCampaign.territory")
+
     el-form-item(label="Дата начала" prop="dateB")
 
       el-date-picker(
