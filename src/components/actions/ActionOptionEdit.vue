@@ -176,4 +176,8 @@ export default {
   padding: 0 $margin-right 80px;
 }
 
+.campaign-action-edit /deep/ .el-drawer__body {
+  overflow-y: scroll;
+}
+
 </style>
