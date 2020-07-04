@@ -194,6 +194,10 @@ export default {
   }
 }
 
+.option {
+  // align-items: stretch;
+}
+
 .self, .action-option > .comment {
 
   grid-column: 1;
@@ -207,8 +211,13 @@ export default {
 }
 
 .action-option > .comment {
-  grid-column-end: 6;
-  background: $light-green;
+    grid-column-end: 6;
+}
+
+.action-option, .option {
+  > .comment {
+    background: $light-green;
+  }
 }
 
 .name {
