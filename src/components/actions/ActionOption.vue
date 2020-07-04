@@ -12,6 +12,7 @@
       :class="req.cls"
       :style="requiredStyle"
       v-html="req.value || '-'"
+      v-if="!hasOptionRequirements(req.cls)"
     )
 
     .discount(
@@ -29,8 +30,8 @@
         i.el-icon-info
         span {{ option.commentText }}
     .option-required(
-      v-if="!ownRequirements.length"
       v-for="req in optionRequirements(option)" :key="`${req.cls}${idx}`"
+      v-if="!ownRequirements.length || hasOptionRequirements(req.cls)"
       :class="req.cls"
       v-html="req.value || '-'"
     )
@@ -211,7 +212,7 @@ export default {
 }
 
 .action-option > .comment {
-    grid-column-end: 6;
+  grid-column-end: 6;
 }
 
 .action-option, .option {

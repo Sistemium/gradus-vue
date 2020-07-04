@@ -3,6 +3,7 @@ import { discountInfo } from '@/models/Action';
 import minBy from 'lodash/minBy';
 import maxBy from 'lodash/maxBy';
 import min from 'lodash/min';
+import find from 'lodash/find';
 
 export default {
 
@@ -104,6 +105,15 @@ export default {
             value,
           };
         }));
+    },
+    hasOptionRequirements(cls) {
+      const { hasOptions } = this;
+      if (!hasOptions) {
+        return null;
+      }
+      const res = hasOptions.map(option =>
+        find(this.optionRequirements(option), r => r.cls === cls));
+      return find(res, 'value');
     },
   },
 
