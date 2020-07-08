@@ -4,8 +4,11 @@ import minBy from 'lodash/minBy';
 import maxBy from 'lodash/maxBy';
 import min from 'lodash/min';
 import find from 'lodash/find';
+import campaignsAuth from '@/components/campaigns/campaignsAuth';
 
 export default {
+
+  mixins: [campaignsAuth],
 
   props: {
     action: {

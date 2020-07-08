@@ -5,6 +5,7 @@ import sharedMutations from 'vuex-shared-mutations';
 import catalogue from './vuex/catalogue';
 import campaigns from './vuex/campaigns';
 import territory from './vuex/territory';
+import authGetters from './vuex/auth/getters';
 
 Vue.use(Vuex);
 
@@ -17,7 +18,10 @@ export default new Vuex.Store({
   },
 
   modules: {
-    auth,
+    auth: {
+      ...auth,
+      getters: authGetters,
+    },
     catalogue,
     campaigns,
     territory,

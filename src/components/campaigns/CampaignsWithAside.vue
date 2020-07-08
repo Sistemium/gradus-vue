@@ -164,4 +164,8 @@ aside {
   margin-top: $margin-top;
 }
 
+main {
+  padding-right: 0;
+}
+
 </style>

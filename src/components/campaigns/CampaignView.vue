@@ -2,7 +2,7 @@
 
 .campaign-view
 
-  .buttons
+  .buttons(v-if="hasAuthoring")
     slot(name="buttons")
       button-edit.edit(@click="editCampaignClick()")
 
@@ -39,6 +39,7 @@ import orderBy from 'lodash/orderBy';
 import Action from '@/models/Action';
 import CampaignAction from '@/components/campaigns/CampaignAction.vue';
 import CampaignGroupSelect from '@/components/campaigns/CampaignGroupSelect.vue';
+import campaignsAuth from '@/components/campaigns/campaignsAuth';
 
 const NAME = 'CampaignView';
 
@@ -79,6 +80,7 @@ export default {
     CampaignGroupSelect,
     CampaignAction,
   },
+  mixins: [campaignsAuth],
 
 };
 

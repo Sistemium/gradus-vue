@@ -11,7 +11,11 @@ el-container.campaigns(
 
     layout-select(v-model="layout")
 
-    el-button.add-campaign(type="" @click="addCampaignClick" :round="true")
+    el-button.add-campaign(
+      @click="addCampaignClick"
+      :round="true"
+      v-if="hasAuthoring"
+    )
       i.el-icon-document-add
       span Добавить акцию
 
@@ -54,6 +58,7 @@ import * as actions from '@/vuex/campaigns/actions';
 import CampaignsWithAside from '@/components/campaigns/CampaignsWithAside.vue';
 import LayoutSelect from '@/components/LayoutSelect.vue';
 import { dateBE } from '@/lib/dates';
+import campaignsAuth from '@/components/campaigns/campaignsAuth';
 // import log from 'sistemium-telegram/services/log';
 
 // const { debug } = log('Campaigns');
@@ -161,6 +166,8 @@ export default {
       }
     },
   },
+
+  mixins: [campaignsAuth],
 
   components: {
     LayoutSelect,

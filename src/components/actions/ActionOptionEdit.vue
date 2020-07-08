@@ -23,6 +23,7 @@ el-drawer.campaign-action-edit(
     )
 
   form-buttons(
+    v-if="hasAuthoring"
     :loading="loading"
     :changed="changed"
     @deleteClick="deleteClick"

@@ -9,12 +9,13 @@
         th.name(colspan="2")
           .title
             span {{ action.name }}
-            el-button(
-              @click="copyAction(action)"
-              icon="el-icon-copy-document"
-              size="mini" circle
-            )
-            button-edit.edit(@click="onEditClick")
+            template(v-if="hasAuthoring")
+              el-button(
+                @click="copyAction(action)"
+                icon="el-icon-copy-document"
+                size="mini" circle
+              )
+              button-edit.edit(@click="onEditClick")
         th.required(v-for="req in requirements" :class="req.cls") {{ req.title }}
         th.discount(v-for="discountHeader in discountHeaders") {{ discountHeader.title }}
     tbody
