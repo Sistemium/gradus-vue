@@ -27,7 +27,7 @@
   .empty(v-else @click.prevent="$emit('image-click')")
     img(src="/images/placeholder.png" v-if="showEmpty")
 
-  .buttons(v-if="model")
+  .buttons(v-if="model && hasAuthoring")
 
     el-button.make-avatar(
       v-if="avatarId && images.length > 1"
@@ -74,6 +74,10 @@ export default {
 
   props: {
     // images: Array,
+    hasAuthoring: {
+      type: Boolean,
+      default: false,
+    },
     model: {
       type: Object,
       // required: true,

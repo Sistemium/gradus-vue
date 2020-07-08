@@ -86,6 +86,7 @@ import CatalogueArticleList from '@/components/catalogue/CatalogueArticleList.vu
 import CatalogueArticleDialog from '@/components/catalogue/CatalogueArticleDialog.vue';
 
 import ArticlePicture from '@/models/ArticlePicture';
+import catalogueAuth from '@/components/catalogue/catalogueAuth';
 
 const { mapActions, mapGetters } = createNamespacedHelpers('catalogue');
 
@@ -192,6 +193,8 @@ export default {
     CatalogueGroupList,
     CatalogueArticleList,
   },
+
+  mixins: [catalogueAuth],
 
 };
 

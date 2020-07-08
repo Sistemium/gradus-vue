@@ -25,7 +25,7 @@
     @remove-click="removeSameClick"
     )
 
-  .buttons
+  .buttons(v-if="hasAuthoring")
 
     el-button(
     v-if="isSelected && sharedArticles.length && !isSelectedToShare"
@@ -55,6 +55,7 @@ import Article from '@/models/Article';
 import { TOGGLE_ARTICLE_SHARE } from '@/vuex/catalogue/mutations';
 import { SHARED_ARTICLES, SELECTED_ARTICLE } from '@/vuex/catalogue/getters';
 import * as a from '@/vuex/catalogue/actions';
+import catalogueAuth from '@/components/catalogue/catalogueAuth';
 
 import AvatarPicture from '@/components/AvatarPicture.vue';
 import SameArticlesList from './SameArticlesList.vue';
@@ -154,7 +155,7 @@ export default {
     SameArticlesList,
   },
 
-  mixins: [ManagedComponent],
+  mixins: [ManagedComponent, catalogueAuth],
 
 };
 
