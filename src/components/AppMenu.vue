@@ -18,10 +18,10 @@
     el-menu-item(index="/campaigns")
       img(src="../assets/icons8-discount.svg")
       span Акции
-    el-menu-item(index="/targets")
+    //el-menu-item(index="/targets")
       img(src="../assets/icons8-goal.svg")
       span Задачи
-    el-menu-item(index="/possibleOutlets")
+    el-menu-item(index="/possibleOutlets" :disabled="!hasOutletsAuth")
       img(src="../assets/icons8-validation.svg")
       span Точки
     //el-menu-item(index="/about")
@@ -54,6 +54,10 @@ export default {
     ...mapState('auth', { account: 'account' }),
     defaultActive() {
       return this.$route.path.match(/^\/[^/]*/)[0];
+    },
+    hasOutletsAuth() {
+      return this.$hasAuthRole('possibleOutlets')
+        || this.$hasAuthRole('admin');
     },
   },
 
