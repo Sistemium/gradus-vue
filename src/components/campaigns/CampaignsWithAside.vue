@@ -30,6 +30,7 @@ el-container.campaigns-with-aside
           carousel-type=""
           :show-empty="false"
           @uploaded="setPictures(currentCampaign)"
+          :has-authoring="hasAuthoring"
         )
 
     el-alert(
@@ -49,6 +50,7 @@ import CampaignPicture from '@/models/CampaignPicture';
 import * as svc from '@/services/campaigns';
 import * as actions from '@/vuex/campaigns/actions';
 import * as g from '@/vuex/campaigns/getters';
+import campaignsAuth from '@/components/campaigns/campaignsAuth';
 import { createNamespacedHelpers } from 'vuex';
 import CampaignsPictureGallery from './CampaignsPictureGallery';
 import CampaignsList from './CampaignsList.vue';
@@ -153,6 +155,7 @@ export default {
     CampaignView,
     CampaignsList,
   },
+  mixins: [campaignsAuth],
 };
 
 </script>

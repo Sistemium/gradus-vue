@@ -1,23 +1,24 @@
 <template lang="pug">
 
 el-dialog(
-:fullscreen="true"
-:show-close="true"
-:visible.sync="visible"
-custom-class="el-dialog-gallery"
-@closed="closeDialog()"
-:append-to-body="true"
-center
+  :fullscreen="true"
+  :show-close="true"
+  :visible.sync="visible"
+  custom-class="el-dialog-gallery"
+  @closed="closeDialog()"
+  :append-to-body="true"
+  center
 )
   .title(slot="title") {{ campaign.name }}
   campaigns-picture-gallery(
-  v-loading="busy"
-  element-loading-text="Обработка изображения ..."
-  @image-click="closeDialog"
-  :model="this.pictureModel"
-  :new-image-properties="newImageProperties"
-  carousel-type=""
-  @uploaded="onUpload"
+    :has-authoring="hasAuthoring"
+    v-loading="busy"
+    element-loading-text="Обработка изображения ..."
+    @image-click="closeDialog"
+    :model="this.pictureModel"
+    :new-image-properties="newImageProperties"
+    carousel-type=""
+    @uploaded="onUpload"
   )
 
 </template>
@@ -31,6 +32,7 @@ import * as a from '@/vuex/campaigns/actions';
 import log from 'sistemium-telegram/services/log';
 
 import CampaignPicture from '@/models/CampaignPicture';
+import campaignsAuth from '@/components/campaigns/campaignsAuth';
 
 import CampaignsPictureGallery from './CampaignsPictureGallery';
 
@@ -44,6 +46,8 @@ export default {
   props: {
     campaign: Object,
   },
+
+  mixins: [campaignsAuth],
 
   data() {
     return {
