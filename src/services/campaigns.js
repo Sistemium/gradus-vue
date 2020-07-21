@@ -139,6 +139,10 @@ export function campaignGroups() {
       order: 2,
     },
     {
+      label: 'ЦФО',
+      value: 'cfo',
+      order: 3,
+    }, {
       label: 'Общие',
       value: 'common',
       order: 0,
