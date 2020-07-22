@@ -9,27 +9,27 @@
   .fields
 
     el-input.phone-number(
-    v-if="phaState==='sms'"
-    label="Телефон"
-    v-model="phone"
-    readonly
-    disabled
+      v-if="phaState==='sms'"
+      label="Телефон"
+      v-model="phone"
+      readonly
+      disabled
     )
 
     el-input.sms(
-    v-model="input"
-    type="tel"
-    id="sign-input"
-    :label="label"
-    :placeholder="placeholder"
+      v-model="input"
+      type="tel"
+      id="sign-input"
+      :label="label"
+      :placeholder="placeholder"
     )
 
   .buttons
     el-button(
-    :plain="phaState === 'phone'"
-    :type="buttonType"
-    :disabled="!isComplete || !!error"
-    @click="sendClick"
+      :plain="phaState === 'phone'"
+      :type="buttonType"
+      :disabled="!isComplete || !!error"
+      @click="sendClick"
     ) {{ buttonText }}
 
 </template>
@@ -160,6 +160,10 @@ export default {
     },
 
     cancelClick() {
+      if (this.phaState === 'phone' && !this.input) {
+        this.$router.replace('/');
+        return;
+      }
       this.input = '';
       this.authCancel();
       this.clearError();
