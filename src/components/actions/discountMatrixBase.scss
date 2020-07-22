@@ -29,6 +29,9 @@
   text-align: center;
   gap: 1px;
   background: $gray-border-color;
+  @media print {
+    background: $table-border-color;
+  }
   border: $list-cell-borders;
   // grid-auto-rows: 1fr;
 }

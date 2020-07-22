@@ -142,6 +142,9 @@ th, td {
   border: 1px solid $gray-border-color;
   text-align: center;
   padding: $padding;
+  @media print {
+    border-color: $table-border-color;
+  }
 }
 
 tbody {

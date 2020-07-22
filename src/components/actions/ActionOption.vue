@@ -146,6 +146,10 @@ export default {
   //grid-template-rows: auto auto;
   background: $gray-border-color;
 
+  @media print {
+    background: $table-border-color;
+  }
+
   > .action-option {
     grid-column: 1 / span 5;
   }
