@@ -54,4 +54,8 @@ export default {
 
 @import "../styles/variables";
 
+.el-input {
+  width: unset;
+}
+
 </style>
