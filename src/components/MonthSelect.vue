@@ -3,7 +3,7 @@
 el-select.month-select(
   v-model="selectedMonth"
   @input="onSelect"
-  placeholder="выберите"
+  :placeholder="placeholder"
 )
 
   el-option(
@@ -25,6 +25,10 @@ export default {
   },
 
   props: {
+    placeholder: {
+      type: String,
+      default: 'выберите',
+    },
     value: String,
     months: Array,
   },
