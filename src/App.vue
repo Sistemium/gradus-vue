@@ -3,8 +3,8 @@
 #app(:class="{busy: authorizing || error}")
 
   el-container(
-  v-loading.fullscreen.lock="authorizing"
-  element-loading-text="Авторизация ..."
+    v-loading.fullscreen.lock="authorizing"
+    element-loading-text="Авторизация ..."
   )
 
     el-header
@@ -26,7 +26,7 @@
 <script>
 
 import { mapState, mapActions } from 'vuex';
-import { CLEAR_ERROR } from 'sistemium-vue/store/auth/actions';
+import { CLEAR_ERROR, AUTH_INIT } from 'sistemium-vue/store/auth/actions';
 
 import AppMenu from '@/components/AppMenu.vue';
 import HelloWorld from '@/components/HelloWorld.vue';
@@ -41,15 +41,26 @@ export default {
     authorizing() {
       return this.$store.state.auth.busy;
     },
+    accessToken() {
+      return this.$route.query['access-token'];
+    },
   },
 
   methods: {
-    ...mapActions('auth', [CLEAR_ERROR]),
+    ...mapActions('auth', [CLEAR_ERROR, AUTH_INIT]),
+    async onToken() {
+      await this[AUTH_INIT](this.accessToken);
+      await this.updateRouteParams({}, { 'access-token': undefined });
+    },
   },
 
   components: {
     AppMenu,
     HelloWorld,
+  },
+
+  created() {
+    this.$watch('accessToken', this.onToken, { immediate: true });
   },
 
 };
@@ -71,6 +82,14 @@ export default {
   .el-header {
     display: none;
   }
+}
+
+.el-main {
+  // padding: $padding;
+}
+
+.el-header {
+  // padding: 0 $padding;
 }
 
 </style>
