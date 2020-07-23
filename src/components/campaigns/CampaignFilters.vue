@@ -84,7 +84,7 @@ export default {
 @import "../../styles/responsive";
 
 .month-select {
-  @include responsive-only(gt-xs) {
+  @include responsive-only(gt-sm) {
     margin-left: 10px;
   }
 }
@@ -112,7 +112,8 @@ export default {
   }
 
   .period {
-    @include responsive-only(lt-sm) {
+    white-space: nowrap;
+    @include responsive-only(lt-md) {
       label {
         display: none;
       }
@@ -121,6 +122,7 @@ export default {
 
   .campaign-group-select {
     margin-left: $padding;
+    display: block;
   }
 
 }
