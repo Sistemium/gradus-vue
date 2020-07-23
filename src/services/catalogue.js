@@ -6,6 +6,7 @@ import uniq from 'lodash/uniq';
 import map from 'lodash/map';
 import escapeRegExp from 'lodash/escapeRegExp';
 import orderBy from 'lodash/orderBy';
+import noop from 'lodash/noop';
 
 import Vue from 'vue';
 
@@ -18,19 +19,25 @@ import log from 'sistemium-telegram/services/log';
 
 const { debug, error } = log('catalogue');
 
-export async function loadData() {
+export async function loadData(progress = noop) {
 
   const fetchParams = {
     limit: 1500,
   };
 
+  progress('групп номенклатуры');
+
   await ArticleGroup.fetchAll(fetchParams);
+
+  progress('изображений');
 
   await ArticlePicture.fetchAll(fetchParams);
 
+  progress('номенклатуры');
+
   await Article.fetchAll(fetchParams);
 
-  const articles = Article.filter({});
+  const articles = Article.getAll();
   debug('articles', articles.length);
 
   const groupsWithArticlesIDs = Object.keys(keyBy(articles, 'articleGroupId'));
@@ -52,6 +59,8 @@ export async function loadData() {
     });
 
   debug('removedCount', removedCount);
+
+  progress('');
 
 }
 

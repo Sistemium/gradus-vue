@@ -1,9 +1,6 @@
 <template lang="pug">
 
-el-container.catalogue(
-  no-v-loading.fullscreen.lock="loading || busy"
-  element-loading-text="Загрузка данных ..."
-)
+el-container.catalogue
 
   el-header.catalogue-header(height="")
 
@@ -42,7 +39,7 @@ el-container.catalogue(
 
   el-container.catalogue-main(
     v-loading="loading"
-    element-loading-text="Загрузка данных ..."
+    :element-loading-text="loadingText"
   )
 
     el-aside(v-if="!loading")
@@ -107,6 +104,9 @@ export default {
   },
 
   computed: {
+    loadingText() {
+      return `Загрузка ${this.loading} ...`;
+    },
     ...mapGetters({
       sharedArticles: getters.SHARED_ARTICLES,
       fullScreenArticle: getters.AVATAR_ARTICLE,
@@ -131,8 +131,8 @@ export default {
 
   async created() {
 
-    this.loading = true;
-    await svc.loadData();
+    this.loading = 'данных';
+    await svc.loadData(this.loadingProgress);
     this.loading = false;
 
     this.$watch('currentArticleGroup', this.bindCurrent);
@@ -142,6 +142,10 @@ export default {
   },
 
   methods: {
+
+    loadingProgress(message) {
+      this.loading = message;
+    },
 
     ...mapActions({ closeGallery: actions.ARTICLE_AVATAR_CLICK }),
 
