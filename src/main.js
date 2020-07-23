@@ -7,6 +7,7 @@ import '@/lib/v-select';
 import '@/lib/virtual-scroll';
 import '@/lib/numberFilter';
 
+import { hideTabBar, isNative } from 'sistemium-vue/services/native';
 import { AUTH_INIT } from 'sistemium-vue/store/auth/actions';
 
 import SearchInput from '@/lib/SearchInput.vue';
@@ -39,6 +40,9 @@ new Vue({
   store,
   render: h => h(App),
   created() {
+    if (isNative()) {
+      hideTabBar();
+    }
     return store.dispatch(`auth/${AUTH_INIT}`);
   },
 }).$mount('#app');
