@@ -162,9 +162,16 @@ export default {
 <style scoped lang="scss">
 
 @import "../../styles/variables";
+@import "../../styles/responsive";
 
 aside {
   margin-top: $margin-top;
+  @include responsive-only(lt-md) {
+    max-width: 220px;
+  }
+  @include responsive-only(md) {
+    max-width: 260px;
+  }
 }
 
 main {

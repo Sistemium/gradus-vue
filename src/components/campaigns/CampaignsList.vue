@@ -10,10 +10,11 @@
       :class="value && value.id === item.id && 'active'"
     )
       span.name {{ item.name }}
-      .badge(v-if="item.pictures.length")
-        span {{ item.pictures.length }}
-      .warning(v-else)
-        i.el-icon-warning
+      template(v-if="hasAuthoring")
+        .badge(v-if="item.pictures.length")
+          span {{ item.pictures.length }}
+        .warning(v-else)
+          i.el-icon-warning
 
 </template>
 <script>
@@ -24,6 +25,7 @@ import orderBy from 'lodash/orderBy';
 import filter from 'lodash/filter';
 import { campaignGroups } from '@/services/campaigns';
 import CampaignPicture from '@/models/CampaignPicture';
+import campaignsAuth from '@/components/campaigns/campaignsAuth';
 
 const NAME = 'CampaignsList';
 
@@ -58,13 +60,14 @@ export default {
   created() {
     this.$bindToModel(CampaignPicture);
   },
+  mixins: [campaignsAuth],
 };
 
 </script>
 <style scoped lang="scss">
 
 @import "../../styles/badge";
-@import "../../styles/variables";
+@import "../../styles/responsive";
 
 .badge {
   @extend %badge;
@@ -79,6 +82,12 @@ export default {
 .warning {
   color: $orange;
   font-size: 22px;
+}
+
+@include responsive-only(lt-md) {
+  .warning, .badge {
+    display: none;
+  }
 }
 
 </style>
