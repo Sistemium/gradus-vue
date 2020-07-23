@@ -28,8 +28,15 @@
       img(src="../assets/icons8-info.svg")
       span О проекте
 
+  el-button.toggle-tabbar(
+    v-if="isNative"
+    circle
+    icon="el-icon-rank"
+    @click="toggleTabBarClick"
+  )
+
   account-menu#account-menu(
-    v-if="account"
+    v-if="account && !isNative"
     :account="account"
     index="/account"
   )
@@ -39,6 +46,7 @@
 
 import { mapState } from 'vuex';
 import AccountMenu from '@/components/AccountMenu.vue';
+import * as native from 'sistemium-vue/services/native';
 
 export default {
 
@@ -59,6 +67,15 @@ export default {
       return this.$hasAuthRole('possibleOutlets')
         || this.$hasAuthRole('admin');
     },
+    isNative() {
+      return native.isNative();
+    },
+  },
+
+  methods: {
+    toggleTabBarClick() {
+      native.toggleTabBar();
+    },
   },
 
   components: { AccountMenu },
@@ -76,9 +93,11 @@ $img-size: 30px;
 #app-menu {
 
   display: flex;
+  align-items: center;
 
   #main-menu {
     flex: 1;
+    // display: flex;
   }
 
   #account-menu {
@@ -99,7 +118,7 @@ $img-size: 30px;
 
 }
 
-@include responsive-only(lt-md) {
+@include responsive-only(xs) {
   .not-root {
     .el-menu-item:not(.is-active):not(.home-item) {
       display: none;
