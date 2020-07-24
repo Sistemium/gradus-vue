@@ -57,6 +57,7 @@ export default {
 
 .stm-resize {
   overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 </style>
