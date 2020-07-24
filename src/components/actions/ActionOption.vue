@@ -143,6 +143,9 @@ export default {
   display: grid;
   gap: 1px;
   grid-template-columns: auto 89px 59px 89px 89px;
+  @media print {
+    grid-template-columns: auto 59px 39px 59px 59px;
+  }
   //grid-template-rows: auto auto;
   background: $gray-border-color;
 
@@ -210,8 +213,15 @@ export default {
   background: white;
   padding: $padding;
 
+  @media print {
+    padding: $padding-print;
+  }
+
   > * + * {
     margin-top: $padding;
+    @media print {
+      margin-top: $padding-print;
+    }
   }
 }
 
@@ -236,6 +246,9 @@ export default {
   background: white;
   display: flex;
 
+  @media print {
+    padding: $margin-top-print;
+  }
   .discount-matrix-info {
     // margin: 0 auto 0 0;
     // min-width: 0;
@@ -244,6 +257,9 @@ export default {
 
   > * + * {
     margin-left: $margin-top;
+    @media print {
+      margin-left: $margin-top-print;
+    }
   }
 
   .optional > .option {

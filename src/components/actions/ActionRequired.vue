@@ -56,7 +56,7 @@ export default {
 @import "./actionBase";
 
 .isMultiple {
-  font-size: small;
+  // font-size: small;
   // color: $light-gray;
 }
 

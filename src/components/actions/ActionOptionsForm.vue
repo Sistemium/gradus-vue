@@ -104,7 +104,7 @@ export default {
   display: flex;
   align-items: center;
   font-weight: 500;
-  font-size: 13px;
+  font-size: $small-font-size;
 
   .title {
     flex: 1;

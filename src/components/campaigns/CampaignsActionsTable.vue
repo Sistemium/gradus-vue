@@ -77,8 +77,16 @@ export default {
   background: white;
   color: $gray;
 
+  @media print {
+    padding: $margin-top-print 0;
+    font-size: $font-size-x-large-print;
+  }
+
   i {
     margin-right: $margin-top;
+    @media print {
+      margin-right: $margin-top-print;
+    }
   }
 
 }
@@ -97,13 +105,20 @@ table {
 
 tr + tr td {
   padding-top: $margin-top;
+  @media print {
+    padding-top: $margin-top-print;
+  }
 }
 
 @media print {
   table.campaign {
     // page-break-inside: avoid;
   }
+  .campaigns-actions-table {
+    font-size: $font-size-print;
+  }
 }
+
 
 a {
   cursor: pointer;

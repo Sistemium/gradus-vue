@@ -160,6 +160,9 @@ export default {
 .actions {
   .campaign-action {
     margin-top: $margin-top;
+    @media print {
+      margin-top: $margin-top-print;
+    }
   }
 }
 

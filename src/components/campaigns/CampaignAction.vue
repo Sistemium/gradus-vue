@@ -144,6 +144,7 @@ th, td {
   padding: $padding;
   @media print {
     border-color: $table-border-color;
+    padding: $padding-print;
   }
 }
 
@@ -177,6 +178,10 @@ thead {
 
   th {
     padding: $padding * 2;
+    @media print {
+      padding: $padding-print * 2
+    }
+
   }
 
 }
@@ -187,6 +192,9 @@ table {
 
 .comment {
   margin-top: $padding;
+  @media print {
+    margin-top: $padding-print;
+  }
   white-space: pre-line;
   display: block;
 }
@@ -201,8 +209,15 @@ tfoot td {
   padding: $padding;
   text-align: left;
 
+  @media print {
+    padding: $padding-print;
+  }
+
   span {
     font-size: $small-font-size;
+    @media print {
+      font-size: $small-font-size-print;
+    }
   }
 
   i {
@@ -213,20 +228,34 @@ tfoot td {
 
 td.discount, th.discount {
   width: 90px;
+  @media print {
+    width: 60px;
+  }
 }
 
 th.volume, td.volume {
   width: 90px;
   max-width: 90px;
+  @media print {
+    width: 60px;
+    max-width: 60px;
+  }
 }
 
 th.sku, td.sku {
   width: 60px;
   max-width: 60px;
+  @media print {
+    width: 40px;
+    max-width: 40px;
+  }
 }
 
 th.number, td.number {
   width: 40px;
+  @media print {
+    width: 26px;
+  }
 }
 
 @media print {
@@ -254,6 +283,9 @@ th {
         text-align: left;
         font-weight: bold;
         font-size: 16px;
+        @media print {
+          font-size: $font-size-large-print;
+        }
         flex: 1;
       }
 

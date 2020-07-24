@@ -182,7 +182,7 @@ export default {
 
 .campaign-action-form /deep/ h3 {
   font-weight: 500;
-  font-size: 13px;
+  font-size: $small-font-size;
 }
 
 .el-collapse-item.matrix {
