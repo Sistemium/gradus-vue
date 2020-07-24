@@ -143,13 +143,10 @@ export default {
   display: grid;
   gap: 1px;
   grid-template-columns: auto 89px 59px 89px 89px;
-  @media print {
-    grid-template-columns: auto 59px 39px 59px 59px;
-  }
-  //grid-template-rows: auto auto;
   background: $gray-border-color;
 
   @media print {
+    grid-template-columns: auto 59px 39px 59px 59px;
     background: $table-border-color;
   }
 
