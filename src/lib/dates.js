@@ -1,5 +1,7 @@
 import dayjs from 'dayjs';
 
+require('dayjs/locale/ru');
+
 export function addMonths(date, months = 1) {
   return dayjs(date)
     .add(months, 'month')

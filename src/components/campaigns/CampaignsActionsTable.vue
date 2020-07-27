@@ -2,6 +2,8 @@
 
 .campaigns-actions-table
 
+  campaigns-header
+
   table.campaign(
     v-for="campaign in campaignsWithActions" :key="campaign.id"
     :id="`c-${campaign.id}`"
@@ -25,6 +27,7 @@
 import filter from 'lodash/filter';
 import Action from '@/models/Action';
 import CampaignAction from '@/components/campaigns/CampaignAction.vue';
+import CampaignsHeader from '@/components/campaigns/CampaignsHeader.vue';
 
 const NAME = 'CampaignsActionsTable';
 
@@ -59,7 +62,7 @@ export default {
   props: {
     campaigns: Array,
   },
-  components: { CampaignAction },
+  components: { CampaignsHeader, CampaignAction },
   name: NAME,
 };
 
@@ -119,6 +122,12 @@ tr + tr td {
   }
 }
 
+
+@media screen {
+  .campaigns-header {
+    // display: none;
+  }
+}
 
 a {
   cursor: pointer;
