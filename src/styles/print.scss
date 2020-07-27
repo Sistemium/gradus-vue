@@ -1,10 +1,21 @@
 @import "variables";
 
 @media print {
+
   .el-carousel__arrow, .el-button, .el-dialog__close {
     display: none;
   }
+
   a {
     color: $dark-gray;
   }
+
+  *::-webkit-scrollbar {
+    display: none;
+  }
+
+  * {
+    scrollbar-width: none; /* Firefox */
+  }
+
 }
