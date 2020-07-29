@@ -106,7 +106,7 @@ table {
   width: 100%;
 }
 
-tr + tr td {
+tr + tr > td {
   padding-top: $margin-top;
   @media print {
     padding-top: $margin-top-print;
@@ -114,18 +114,8 @@ tr + tr td {
 }
 
 @media print {
-  table.campaign {
-    // page-break-inside: avoid;
-  }
   .campaigns-actions-table {
     font-size: $font-size-print;
-  }
-}
-
-
-@media screen {
-  .campaigns-header {
-    // display: none;
   }
 }
 

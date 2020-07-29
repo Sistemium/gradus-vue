@@ -57,7 +57,7 @@ export default {
 
 @import "../../styles/variables";
 
-h1 {
+.campaigns-header {
 
   @media screen {
     display: none;

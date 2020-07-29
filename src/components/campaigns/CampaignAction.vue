@@ -3,72 +3,71 @@
 .campaign-action
 
   table
-    thead
-      tr.header
-        // th.number №
-        th.name(colspan="2")
-          .title
-            span {{ action.name }}
-            template(v-if="hasAuthoring")
-              el-button(
-                @click="copyAction(action)"
-                icon="el-icon-copy-document"
-                size="mini" circle
-              )
-              button-edit.edit(@click="onEditClick")
-        th.required(v-for="req in requirements" :class="req.cls") {{ req.title }}
-        th.discount(v-for="discountHeader in discountHeaders") {{ discountHeader.title }}
-    tbody
-      tr.option(v-for="(option, idx) in hasOptions")
+    // thead
+    tr.header
+      // th.number №
+      th.name(colspan="2")
+        .title
+          span {{ action.name }}
+          template(v-if="hasAuthoring")
+            el-button(
+              @click="copyAction(action)"
+              icon="el-icon-copy-document"
+              size="mini" circle
+            )
+            button-edit.edit(@click="onEditClick")
+      th.required(v-for="req in requirements" :class="req.cls") {{ req.title }}
+      th.discount(v-for="discountHeader in discountHeaders") {{ discountHeader.title }}
+    // tbody
+    tr.option(v-for="(option, idx) in hasOptions")
 
-        td.number {{ idx + 1 }}
+      td.number {{ idx + 1 }}
 
-        td.ranges(:action="action" v-if="hasRanges && !idx" :rowspan="hasOptions.length")
-          .name(v-for="range in action.ranges") {{ range.name }}
-        td.complex(:colspan="optionColSpan(option)" v-if="!hasRanges")
-          action-option(
-            :action="option"
-            :show-conditions="!!optionColSpan(option)"
-            :parent="action"
-          )
+      td.ranges(:action="action" v-if="hasRanges && !idx" :rowspan="hasOptions.length")
+        .name(v-for="range in action.ranges") {{ range.name }}
+      td.complex(:colspan="optionColSpan(option)" v-if="!hasRanges")
+        action-option(
+          :action="option"
+          :show-conditions="!!optionColSpan(option)"
+          :parent="action"
+        )
 
-        template(v-if="!optionColSpan(option)")
+      template(v-if="!optionColSpan(option)")
 
-          td.option-required(
-            v-for="req in requirements"
-            :class="req.cls"
-            v-html="req.fn(option) || '-'"
-          )
+        td.option-required(
+          v-for="req in requirements"
+          :class="req.cls"
+          v-html="req.fn(option) || '-'"
+        )
 
-          td.discount(
-            v-if="!(action.discountCash || option.discountCash) && (!discount || idx === 0)"
-            v-for="discountHeader in discountHeaders"
-            :rowspan="discount && hasOptions.length"
-          ) {{ action[discountHeader.name] || option[discountHeader.name] || '-' }}
+        td.discount(
+          v-if="!(action.discountCash || option.discountCash) && (!discount || idx === 0)"
+          v-for="discountHeader in discountHeaders"
+          :rowspan="discount && hasOptions.length"
+        ) {{ action[discountHeader.name] || option[discountHeader.name] || '-' }}
 
-          td.discountCash(
-            v-if="option.discountCash"
-            colspan="2"
-          ) Бонус {{ option.discountCash }} ₽
+        td.discountCash(
+          v-if="option.discountCash"
+          colspan="2"
+        ) Бонус {{ option.discountCash }} ₽
 
-    tfoot
-      tr
-        td(colspan="6")
-          .oneTime(v-if="action.oneTime")
-            i.el-icon-circle-check
-            span Единовременная
-          .repeatable(v-if="action.repeatable")
-            i.el-icon-circle-check
-            span Многократная
-          .repeatable(v-if="action.needPhoto")
-            i.el-icon-camera-solid
-            span Фото-отчет
-          .territory(v-if="action.territory")
-            i.el-icon-location
-            span {{ action.territory }}
-          .comment(v-if="action.commentText")
-            i.el-icon-info
-            span {{ action.commentText }}
+    tr.tfoot
+      td(colspan="6")
+        .oneTime(v-if="action.oneTime")
+          i.el-icon-circle-check
+          span Единовременная
+        .repeatable(v-if="action.repeatable")
+          i.el-icon-circle-check
+          span Многократная
+        .repeatable(v-if="action.needPhoto")
+          i.el-icon-camera-solid
+          span Фото-отчет
+        .territory(v-if="action.territory")
+          i.el-icon-location
+          span {{ action.territory }}
+        .comment(v-if="action.commentText")
+          i.el-icon-info
+          span {{ action.commentText }}
 
 
   //.restrictions(v-if="hasRestrictions")
@@ -148,10 +147,14 @@ th, td {
   }
 }
 
-tbody {
+table {
+
+  width: 100%;
+
   td.complex {
     padding: 0;
   }
+
 }
 
 
@@ -172,7 +175,7 @@ tbody {
 
 }
 
-thead {
+tr.header {
 
   background: $gray-background;
 
@@ -186,25 +189,21 @@ thead {
 
 }
 
-table {
-  width: 100%;
-}
-
 .comment {
   margin-top: $padding;
   @media print {
     margin-top: $padding-print;
   }
   white-space: pre-line;
-  display: block;
+  display: block !important;
 }
 
-tfoot td > * {
+.tfoot td > * {
   margin-right: $margin-right;
   display: inline-block;
 }
 
-tfoot td {
+.tfoot td {
 
   padding: $padding;
   text-align: left;
