@@ -24,7 +24,7 @@
       element-loading-text="Загрузка данных ..."
     )
 
-      resize.resize#campaigns-scroll-container(:padding="30" v-if="layout==='table'")
+      resize.resize#campaigns-scroll-container(:padding="20" v-if="layout==='table'")
         campaigns-table(v-if="!loading" :campaigns="filteredCampaigns" @cell-click="campaignClick")
       campaigns-with-aside(:campaigns="filteredCampaigns" v-else @editCampaign="campaignClick")
 

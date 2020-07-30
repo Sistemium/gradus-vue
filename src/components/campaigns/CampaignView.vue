@@ -18,7 +18,7 @@
       i.el-icon-info
       span {{ campaign.commentText }}
 
-  resize(:padding="50")
+  resize(:padding="20")
 
     .actions
       campaign-action(v-for="action in sortedActions" :action="action" :key="action.id")

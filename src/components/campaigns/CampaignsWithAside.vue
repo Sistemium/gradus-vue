@@ -3,7 +3,7 @@
 el-container.campaigns-with-aside
 
   el-aside
-    resize#campaigns-scroll-container(:padding="30")
+    resize#campaigns-scroll-container(:padding="20")
       campaigns-list(:campaigns="campaigns" v-model="currentCampaign")
 
   el-main
@@ -176,6 +176,7 @@ aside {
 
 main {
   padding-right: 0;
+  padding-bottom: 0;
 }
 
 </style>
