@@ -59,7 +59,7 @@
         .repeatable(v-if="action.repeatable")
           i.el-icon-circle-check
           span Многократная
-        .repeatable(v-if="action.needPhoto")
+        .needPhoto(v-if="action.needPhoto")
           i.el-icon-camera-solid
           span Фото-отчет
         .territory(v-if="action.territory")
@@ -187,6 +187,14 @@ tr.header {
 
   }
 
+}
+
+.needPhoto {
+  padding: 1px $padding;
+  background: $orange;
+  &, i {
+    color: white !important;
+  }
 }
 
 .comment {
