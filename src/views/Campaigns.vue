@@ -1,47 +1,47 @@
 <template lang="pug">
 
-el-container.campaigns(
-  no-v-loading.fullscreen.lock="loading || busy"
-  element-loading-text="Загрузка данных ..."
-)
-
-  el-header.campaigns-header(height="")
-
-    campaign-filters.filters
-
-    layout-select(v-model="layout")
-
-    el-button.add-campaign(
-      @click="addCampaignClick"
-      :round="true"
-      v-if="hasAuthoring"
-    )
-      i.el-icon-document-add
-      span Добавить акцию
-
-  el-container.campaigns-main(
-    v-loading="loading"
+  el-container.campaigns(
+    no-v-loading.fullscreen.lock="loading || busy"
     element-loading-text="Загрузка данных ..."
   )
 
-    resize.resize#campaigns-scroll-container(:padding="30" v-if="layout==='table'")
-      campaigns-table(v-if="!loading" :campaigns="filteredCampaigns" @cell-click="campaignClick")
-    campaigns-with-aside(:campaigns="filteredCampaigns" v-else @editCampaign="campaignClick")
+    el-header.campaigns-header(height="")
 
-  campaign-dialog(
-    v-if="campaign"
-    :campaign="campaign"
-    @closed="editCampaignClose()"
-    @submit="editCampaign"
-    @remove="removeCampaign"
-  )
+      campaign-filters.filters
 
-  //router-view
-  campaign-pictures-dialog(
-    v-if="galleryCampaign"
-    :campaign="galleryCampaign"
-    @closed="onGalleryClosed"
-  )
+      layout-select(v-model="layout" name="campaigns")
+
+      el-button.add-campaign(
+        @click="addCampaignClick"
+        :round="true"
+        v-if="hasAuthoring"
+      )
+        i.el-icon-document-add
+        span Добавить акцию
+
+    el-container.campaigns-main(
+      v-loading="loading"
+      element-loading-text="Загрузка данных ..."
+    )
+
+      resize.resize#campaigns-scroll-container(:padding="30" v-if="layout==='table'")
+        campaigns-table(v-if="!loading" :campaigns="filteredCampaigns" @cell-click="campaignClick")
+      campaigns-with-aside(:campaigns="filteredCampaigns" v-else @editCampaign="campaignClick")
+
+    campaign-dialog(
+      v-if="campaign"
+      :campaign="campaign"
+      @closed="editCampaignClose()"
+      @submit="editCampaign"
+      @remove="removeCampaign"
+    )
+
+    //router-view
+    campaign-pictures-dialog(
+      v-if="galleryCampaign"
+      :campaign="galleryCampaign"
+      @closed="onGalleryClosed"
+    )
 
 </template>
 
@@ -73,11 +73,20 @@ export default {
     return {
       loading: false,
       campaign: undefined,
-      layout: 'list',
+      // layout: 'list',
     };
   },
 
   computed: {
+
+    layout: {
+      get() {
+        return this.$route.query.layout;
+      },
+      set(layout) {
+        this.updateRouteParams({}, { layout });
+      },
+    },
 
     ...mapGetters({
       campaigns: getters.CAMPAIGNS,
