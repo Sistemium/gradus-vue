@@ -40,7 +40,7 @@ new Vue({
   store,
   render: h => h(App),
   created() {
-    if (isNative()) {
+    if (isNative() && process.env.VUE_APP_NAVBAR_HIDE === 'true') {
       hideTabBar();
     }
     return store.dispatch(`auth/${AUTH_INIT}`);
