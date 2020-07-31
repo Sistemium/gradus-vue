@@ -49,8 +49,10 @@ export default {
   methods: {
     ...mapActions('auth', [CLEAR_ERROR, AUTH_INIT]),
     async onToken() {
-      await this[AUTH_INIT](this.accessToken);
-      await this.updateRouteParams({}, { 'access-token': undefined });
+      if (this.accessToken) {
+        await this[AUTH_INIT](this.accessToken);
+        await this.updateRouteParams({}, { 'access-token': undefined });
+      }
     },
   },
 

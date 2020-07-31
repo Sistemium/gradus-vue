@@ -43,6 +43,7 @@ new Vue({
     if (isNative() && process.env.VUE_APP_NAVBAR_HIDE === 'true') {
       hideTabBar();
     }
+    // return store.dispatch(`auth/${AUTH_INIT}`, this.$route.query['access-token']);
     return store.dispatch(`auth/${AUTH_INIT}`);
   },
 }).$mount('#app');
