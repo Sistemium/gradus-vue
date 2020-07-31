@@ -31,7 +31,7 @@
   el-button.toggle-tabbar(
     v-if="isNative"
     circle
-    icon="el-icon-rank"
+    icon="el-icon-d-caret"
     @click="toggleTabBarClick"
   )
 
@@ -125,7 +125,8 @@ $img-size: 30px;
   padding: $padding;
   > i {
     font-weight: bold;
-    font-size: 30px;
+    font-size: 25px;
+    transform: rotate(45deg);
   }
 }
 
