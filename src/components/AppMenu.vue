@@ -9,13 +9,13 @@
     :class="{ 'not-root': $route.name !== 'home' }"
   )
 
-    el-menu-item.home-item(index="/")
+    el-menu-item.home-item(index="/" v-if="!menuFix")
       img(src="../assets/icons8-home.svg")
       span Начало
-    el-menu-item(index="/catalogue")
+    el-menu-item(index="/catalogue" v-if="!menuFix || menuFix==='catalogue'")
       img(src="../assets/icons8-moleskine.svg")
       span Каталог
-    el-menu-item(index="/campaigns")
+    el-menu-item(index="/campaigns" v-if="!menuFix || menuFix==='campaigns'")
       img(src="../assets/icons8-discount.svg")
       span Акции
     //el-menu-item(index="/targets")
@@ -69,6 +69,9 @@ export default {
     },
     isNative() {
       return native.isNative();
+    },
+    menuFix() {
+      return process.env.VUE_APP_MENU_FIX || null;
     },
   },
 

@@ -6,13 +6,17 @@ import campaignsRoutes from './routes/campaignsRoutes';
 
 Vue.use(Router);
 
+const { VUE_APP_MENU_FIX: menuFix } = process.env;
+
+const redirect = `/${menuFix || ''}`;
+
 export default new Router({
   // mode: 'history',
   // base: process.env.BASE_URL,
   routes: [
     {
       path: '*',
-      redirect: '/',
+      redirect,
     },
     {
       path: '/',
