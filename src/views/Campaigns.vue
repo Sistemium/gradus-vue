@@ -69,7 +69,6 @@ import { dateBE } from '@/lib/dates';
 import campaignsAuth from '@/components/campaigns/campaignsAuth';
 import log from 'sistemium-telegram/services/log';
 
-
 const NAME = 'Campaigns';
 const { debug } = log(NAME);
 
@@ -85,6 +84,7 @@ export default {
     return {
       loading: false,
       campaign: undefined,
+      message: undefined,
     };
   },
 
@@ -100,6 +100,7 @@ export default {
     },
 
     ...mapGetters({
+      error: getters.ERROR,
       campaigns: getters.CAMPAIGNS,
       galleryCampaign: getters.GALLERY_CAMPAIGN,
       busy: getters.BUSY,
@@ -123,6 +124,7 @@ export default {
       updateCampaign: actions.UPDATE_CAMPAIGN,
       removeCampaign: actions.REMOVE_CAMPAIGN,
       refreshClick: actions.REFRESH_CAMPAIGNS,
+      clearError: actions.CLEAR_ERROR,
     }),
 
     campaignAvatarClick(campaign) {
@@ -181,10 +183,22 @@ export default {
       if (isBusy) {
         this.message = this.$message({
           message: 'Загрузка данных ...',
-          type: 'warning',
+          type: 'info',
           duration: 0,
         });
       }
+    },
+    error(message) {
+      if (!message) {
+        return;
+      }
+      this.$message({
+        message: `Ошибка загрузки данных: ${message}`,
+        type: 'error',
+        showClose: true,
+        duration: 10000,
+        onClose: () => this.clearError(),
+      });
     },
   },
 
@@ -248,6 +262,7 @@ export default {
 
 .refresh {
   padding: $padding;
+  margin-left: 0;
   /deep/ i {
     font-size: 20px;
   }

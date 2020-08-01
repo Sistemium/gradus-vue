@@ -8,6 +8,7 @@ export default {
   namespaced: true,
 
   state: {
+    [states.ERROR]: null,
     [states.BUSY]: false,
     [states.SELECTED_MONTH]: '',
     [states.SEARCH_TEXT]: '',

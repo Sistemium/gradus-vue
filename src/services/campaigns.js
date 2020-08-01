@@ -31,12 +31,13 @@ export async function campaignsData(month, searchText, force = false) {
 
   const campaignIds = filter(flatten(map(campaigns, 'id')));
 
-  await findByMany(Action, campaignIds, {
-    field: 'campaignId',
-    force,
-  });
-
-  await CampaignPicture.findAll({ where: { campaignId: { '==': campaignIds } } }, { force });
+  if (campaignIds.length) {
+    await findByMany(Action, campaignIds, {
+      field: 'campaignId',
+      force,
+    });
+    await CampaignPicture.findAll({ where: { campaignId: { '==': campaignIds } } }, { force });
+  }
 
   return campaignsFilter(month, searchText);
 
@@ -104,10 +105,18 @@ export function saveCampaign(campaign) {
 }
 
 export function getCampaignPicturesByCampaign(campaign, force = false) {
-  return CampaignPicture.findAll({
+
+  const filterPictures = {
     where: { campaignId: { '==': campaign && campaign.id } },
     orderBy: [['ts', 'ASC'], ['id', 'ASC']],
-  }, { force });
+  };
+
+  if (!force) {
+    return CampaignPicture.filter(filterPictures);
+  }
+
+  return CampaignPicture.findAll(filterPictures, { force });
+
 }
 
 /**

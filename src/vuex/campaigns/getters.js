@@ -1,6 +1,7 @@
 import * as svc from '@/services/campaigns';
 
 export const BUSY = 'BUSY';
+export const ERROR = 'ERROR';
 export const SELECTED_MONTH = 'selectedMonth';
 export const SEARCH_TEXT = 'searchText';
 export const CAMPAIGNS = 'campaigns';
@@ -48,6 +49,10 @@ export default {
 
   [BUSY](state) {
     return state[BUSY];
+  },
+
+  [ERROR](state) {
+    return state[ERROR];
   },
 
 };

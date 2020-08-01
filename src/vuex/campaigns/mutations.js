@@ -13,6 +13,7 @@ export const SET_GALLERY_PICTURE = `SET_${g.ACTIVE_GALLERY_PICTURE}`;
 
 export const SET_ACTION_OPTION_COPY = `SET_${g.ACTION_OPTION_COPY}`;
 export const SET_ACTION_COPY = `SET_${g.ACTION_COPY}`;
+export const SET_ERROR = set(g.ERROR);
 
 export default {
 
@@ -35,6 +36,10 @@ export default {
 
   [SET_BUSY](state, isBusy) {
     state[g.BUSY] = !!isBusy;
+  },
+
+  [SET_ERROR](state, e) {
+    state[g.ERROR] = e ? e.message || JSON.stringify(e) : null;
   },
 
   [SET_SEARCH_TEXT](state, text) {
@@ -62,3 +67,7 @@ export default {
   },
 
 };
+
+function set(name) {
+  return `SET_${name}`;
+}

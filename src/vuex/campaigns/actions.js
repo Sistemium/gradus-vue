@@ -19,6 +19,7 @@ export const REMOVE_CAMPAIGN = 'REMOVE_CAMPAIGN';
 export const COPY_ACTION_OPTION = 'COPY_ACTION_OPTION';
 export const COPY_ACTION = 'COPY_ACTION';
 export const REFRESH_CAMPAIGNS = 'REFRESH_CAMPAIGNS';
+export const CLEAR_ERROR = 'CLEAR_ERROR';
 
 export default {
 
@@ -38,26 +39,26 @@ export default {
 
     const date = getters[g.SELECTED_MONTH];
 
-    const campaigns = await svc.campaignsData(date, searchText);
-
-    commit(m.SET_CAMPAIGNS, campaigns);
+    try {
+      const campaigns = await svc.campaignsData(date, searchText);
+      commit(m.SET_CAMPAIGNS, campaigns);
+    } catch (e) {
+      commit(m.SET_ERROR, e);
+    }
 
     commit(m.SET_BUSY, false);
 
   }, 750),
 
-  async [REFRESH_CAMPAIGNS]({ commit, getters }) {
+  async [REFRESH_CAMPAIGNS]({ getters, dispatch }) {
 
-    commit(m.SET_BUSY, true);
-
-    const searchText = getters[g.SEARCH_TEXT];
     const date = getters[g.SELECTED_MONTH];
+    await dispatch(SELECT_MONTH, date);
 
-    const campaigns = await svc.campaignsData(date, searchText, true);
+  },
 
-    commit(m.SET_CAMPAIGNS, campaigns);
-
-    commit(m.SET_BUSY, false);
+  [CLEAR_ERROR]({ commit }) {
+    commit(m.SET_ERROR, null);
   },
 
   async [SELECT_MONTH]({ commit, getters }, date) {
@@ -66,9 +67,12 @@ export default {
 
     const searchText = getters[g.SEARCH_TEXT];
 
-    const campaigns = await svc.campaignsData(date, searchText);
-
-    commit(m.SET_CAMPAIGNS, campaigns);
+    try {
+      const campaigns = await svc.campaignsData(date, searchText, true);
+      commit(m.SET_CAMPAIGNS, campaigns);
+    } catch (e) {
+      commit(m.SET_ERROR, e);
+    }
 
     commit(m.SET_SELECTED_MONTH, date);
 
@@ -101,15 +105,20 @@ export default {
 
     if (campaign) {
       commit(m.SET_BUSY, true);
-      commit(m.SET_GALLERY_PICTURES, await svc.getCampaignPicturesByCampaign(campaign));
-      setTimeout(() => {
-        commit(m.SET_GALLERY_PICTURE, campaignPicture);
-      }, 0);
+      try {
+        commit(m.SET_GALLERY_PICTURES, await svc.getCampaignPicturesByCampaign(campaign));
+        setTimeout(() => {
+          commit(m.SET_GALLERY_PICTURE, campaignPicture);
+        }, 0);
+        commit(m.SET_GALLERY_CAMPAIGN, campaign);
+      } catch (e) {
+        commit(m.SET_ERROR, e);
+      }
     } else {
       commit(m.SET_GALLERY_PICTURES);
+      commit(m.SET_GALLERY_CAMPAIGN);
     }
 
-    commit(m.SET_GALLERY_CAMPAIGN, campaign);
     commit(m.SET_BUSY, false);
 
   },
@@ -118,7 +127,11 @@ export default {
 
     if (campaign) {
       commit(m.SET_BUSY, true);
-      commit(m.SET_GALLERY_PICTURES, await svc.getCampaignPicturesByCampaign(campaign));
+      try {
+        commit(m.SET_GALLERY_PICTURES, await svc.getCampaignPicturesByCampaign(campaign));
+      } catch (e) {
+        commit(m.SET_ERROR, e);
+      }
     } else {
       commit(m.SET_GALLERY_PICTURES);
     }
