@@ -18,6 +18,7 @@ export const REMOVE_GALLERY_PICTURE = 'REMOVE_GALLERY_PICTURE';
 export const REMOVE_CAMPAIGN = 'REMOVE_CAMPAIGN';
 export const COPY_ACTION_OPTION = 'COPY_ACTION_OPTION';
 export const COPY_ACTION = 'COPY_ACTION';
+export const REFRESH_CAMPAIGNS = 'REFRESH_CAMPAIGNS';
 
 export default {
 
@@ -44,6 +45,20 @@ export default {
     commit(m.SET_BUSY, false);
 
   }, 750),
+
+  async [REFRESH_CAMPAIGNS]({ commit, getters }) {
+
+    commit(m.SET_BUSY, true);
+
+    const searchText = getters[g.SEARCH_TEXT];
+    const date = getters[g.SELECTED_MONTH];
+
+    const campaigns = await svc.campaignsData(date, searchText, true);
+
+    commit(m.SET_CAMPAIGNS, campaigns);
+
+    commit(m.SET_BUSY, false);
+  },
 
   async [SELECT_MONTH]({ commit, getters }, date) {
 

@@ -47,7 +47,7 @@ el-container.campaigns-with-aside
 import find from 'lodash/find';
 
 import CampaignPicture from '@/models/CampaignPicture';
-import * as svc from '@/services/campaigns';
+// import * as svc from '@/services/campaigns';
 import * as actions from '@/vuex/campaigns/actions';
 import * as g from '@/vuex/campaigns/getters';
 import campaignsAuth from '@/components/campaigns/campaignsAuth';
@@ -132,20 +132,11 @@ export default {
       });
     },
     setPictures(campaign) {
-      // this.currentCampaignPictures = campaign ? campaign.pictures : [];
       const query = {
         where: { campaignId: { '==': campaign && campaign.id } },
         orderBy: [['ts', 'ASC'], ['id', 'ASC']],
       };
       CampaignPicture.bindAll(this, query, 'currentCampaignPictures');
-      if (!campaign) {
-        return;
-      }
-      this.loading = true;
-      svc.getCampaignPicturesByCampaign(campaign)
-        .finally(() => {
-          this.loading = false;
-        });
     },
   },
 

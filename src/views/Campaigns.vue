@@ -19,6 +19,14 @@
         i.el-icon-document-add
         span Добавить акцию
 
+      el-button.refresh(
+        :disabled="!!busy"
+        @click="refreshClick"
+        size="small"
+        :circle="true"
+        :icon="busy ? 'el-icon-loading' : 'el-icon-refresh'"
+      )
+
     el-container.campaigns-main(
       v-loading="loading"
       element-loading-text="Загрузка данных ..."
@@ -59,21 +67,24 @@ import CampaignsWithAside from '@/components/campaigns/CampaignsWithAside.vue';
 import LayoutSelect from '@/components/LayoutSelect.vue';
 import { dateBE } from '@/lib/dates';
 import campaignsAuth from '@/components/campaigns/campaignsAuth';
-// import log from 'sistemium-telegram/services/log';
+import log from 'sistemium-telegram/services/log';
 
-// const { debug } = log('Campaigns');
+
+const NAME = 'Campaigns';
+const { debug } = log(NAME);
+
+debug('init');
 
 const { mapActions, mapGetters } = createNamespacedHelpers('campaigns');
 
 export default {
 
-  name: 'Campaigns',
+  name: NAME,
 
   data() {
     return {
       loading: false,
       campaign: undefined,
-      // layout: 'list',
     };
   },
 
@@ -111,6 +122,7 @@ export default {
       campaignAvatarClickStore: actions.CAMPAIGN_AVATAR_CLICK,
       updateCampaign: actions.UPDATE_CAMPAIGN,
       removeCampaign: actions.REMOVE_CAMPAIGN,
+      refreshClick: actions.REFRESH_CAMPAIGNS,
     }),
 
     campaignAvatarClick(campaign) {
@@ -232,6 +244,13 @@ export default {
     font-size: 15px;
   }
 
+}
+
+.refresh {
+  padding: $padding;
+  /deep/ i {
+    font-size: 20px;
+  }
 }
 
 @media print {

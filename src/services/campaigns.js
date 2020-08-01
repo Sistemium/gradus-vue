@@ -17,7 +17,7 @@ import { monthToWhere } from '@/lib/dates';
  * @param {String} searchText
  * @returns {*}
  */
-export async function campaignsData(month, searchText) {
+export async function campaignsData(month, searchText, force = false) {
 
   const fetchParams = {
     limit: 1500,
@@ -25,13 +25,18 @@ export async function campaignsData(month, searchText) {
   };
 
   const campaigns = await Campaign.findAll(fetchParams, {
-    // force: true,
+    force,
     with: ['CampaignPicture'],
   });
 
   const campaignIds = filter(flatten(map(campaigns, 'id')));
 
-  await findByMany(Action, campaignIds, { field: 'campaignId' });
+  await findByMany(Action, campaignIds, {
+    field: 'campaignId',
+    force,
+  });
+
+  await CampaignPicture.findAll({ where: { campaignId: { '==': campaignIds } } }, { force });
 
   return campaignsFilter(month, searchText);
 
