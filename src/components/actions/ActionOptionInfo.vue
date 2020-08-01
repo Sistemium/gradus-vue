@@ -12,7 +12,7 @@
     .range(v-for="range in action.ranges") {{ range.name }}
 
   .options
-    action-option-info(v-for="option in action.options" :action="option")
+    action-option-info(v-for="option in action.options" :action="option" :key="option.id")
 
   .other(v-if="hasRequired || discount")
     .required(v-if="hasRequired")
