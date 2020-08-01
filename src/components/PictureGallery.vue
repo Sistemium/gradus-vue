@@ -128,9 +128,9 @@ export default {
     activeId(id) {
       this.$nextTick(() => this.setActiveItemById(id));
     },
-    carouselItem(item) {
-      console.info(item); // eslint-disable-line
-    },
+    // carouselItem(item) {
+    //   console.info(item); // eslint-disable-line
+    // },
   },
 
   methods: {
