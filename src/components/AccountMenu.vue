@@ -60,6 +60,9 @@ export default {
     height: 30px;
     width: 30px;
   }
+  > span {
+    margin-left: $padding;
+  }
 }
 
 @include responsive-only(gt-sm) {
@@ -68,7 +71,7 @@ export default {
   }
 }
 
-@include responsive-only(lt-md) {
+@include responsive-only(lt-sm) {
   .title span {
     display: none;
   }
