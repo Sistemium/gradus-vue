@@ -171,7 +171,11 @@ export default {
 </script>
 <style scoped lang="scss">
 
-@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.form-buttons {
+  @extend %bottom-bar;
+}
 
 .content {
   padding: 0 $margin-right 80px;
