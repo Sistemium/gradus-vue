@@ -81,6 +81,20 @@ export default {
 
     },
 
+    async validate(form = this.$refs.form) {
+
+      return new Promise((resolve, reject) => {
+        form.validate(isValid => {
+          if (isValid) {
+            resolve(isValid);
+          } else {
+            reject(new Error('Форма не заполнена корректно'));
+          }
+        });
+      });
+
+    },
+
     showError(e) {
       return this.$message.error({
         message: e.message,

@@ -86,7 +86,7 @@ export default {
       };
     },
     validate(cb) {
-      this.$refs.form.validate(cb);
+      return this.$refs.form.validate(cb);
     },
     addOption() {
       this.$emit('addOption');
