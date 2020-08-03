@@ -1,6 +1,7 @@
 import Campaign from '@/models/Campaign';
 import CampaignPicture from '@/models/CampaignPicture';
 import Action from '@/models/Action';
+import ActionHistory from '@/models/ActionHistory';
 import escapeRegExp from 'lodash/escapeRegExp';
 import filter from 'lodash/filter';
 import orderBy from 'lodash/orderBy';
@@ -10,6 +11,9 @@ import flatten from 'lodash/flatten';
 import { findByMany } from '@/lib/modelExtentions';
 import { monthToWhere } from '@/lib/dates';
 
+function mapIds(data) {
+  return filter(flatten(map(data, 'id')));
+}
 
 /**
  *
@@ -29,14 +33,20 @@ export async function campaignsData(month, searchText, force = false) {
     with: ['CampaignPicture'],
   });
 
-  const campaignIds = filter(flatten(map(campaigns, 'id')));
+  const campaignIds = mapIds(campaigns);
 
   if (campaignIds.length) {
-    await findByMany(Action, campaignIds, {
+    const actions = await findByMany(Action, campaignIds, {
       field: 'campaignId',
       force,
     });
     await CampaignPicture.findAll({ where: { campaignId: { '==': campaignIds } } }, { force });
+    if (actions.length) {
+      await findByMany(ActionHistory, mapIds(actions), {
+        field: 'actionId',
+        force,
+      });
+    }
   }
 
   return campaignsFilter(month, searchText);

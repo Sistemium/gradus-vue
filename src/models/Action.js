@@ -2,6 +2,7 @@ import Model from 'sistemium-vue/jsdata/Model';
 // import map from 'lodash/map';
 import filter from 'lodash/filter';
 // import maxBy from 'lodash/maxBy';
+import './ActionHistory';
 
 export default new Model({
 
@@ -16,6 +17,12 @@ export default new Model({
       Campaign: {
         localField: 'campaign',
         localKey: 'campaignId',
+      },
+    },
+    hasMany: {
+      ActionHistory: {
+        localField: 'actionHistory',
+        foreignKey: 'actionId',
       },
     },
   },

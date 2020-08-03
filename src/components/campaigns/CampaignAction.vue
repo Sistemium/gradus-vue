@@ -69,7 +69,7 @@
           i.el-icon-info
           span {{ action.commentText }}
 
-
+  action-history-view(:history="action.actionHistory")
   //.restrictions(v-if="hasRestrictions")
     action-option(v-for="restriction in hasRestrictions" :action="restriction")
 
@@ -80,6 +80,7 @@ import find from 'lodash/find';
 import { createNamespacedHelpers } from 'vuex';
 import ActionOption from '@/components/actions/ActionOption.vue';
 import ActionRequired from '@/components/actions/ActionRequired.vue';
+import ActionHistoryView from '@/components/actions/ActionHistoryView.vue';
 import actionBase from '@/components/actions/actionBase';
 import { COPY_ACTION } from '@/vuex/campaigns/actions';
 
@@ -90,6 +91,7 @@ const NAME = 'CampaignAction';
 export default {
   name: NAME,
   components: {
+    ActionHistoryView,
     ActionOption,
     ActionRequired,
   },
@@ -299,6 +301,10 @@ th {
     }
 
   }
+}
+
+.action-history-view {
+  margin-top: $padding;
 }
 
 </style>
