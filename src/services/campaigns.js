@@ -10,6 +10,7 @@ import find from 'lodash/find';
 import flatten from 'lodash/flatten';
 import { findByMany } from '@/lib/modelExtentions';
 import { monthToWhere } from '@/lib/dates';
+import Workflow from '@/lib/Workflow';
 
 function mapIds(data) {
   return filter(flatten(map(data, 'id')));
@@ -173,3 +174,38 @@ export function campaignGroups() {
     },
   ];
 }
+
+export const campaignWorkflow = new Workflow({
+  default: 'draft',
+  options: [
+    {
+      processing: 'draft',
+      label: 'Черновик',
+      options: [{
+        to: 'published',
+        label: 'Опубликовать',
+      }],
+      primaryOption: 'published',
+      editable: true,
+    },
+    {
+      processing: 'published',
+      label: 'Опубликовано',
+      options: [{
+        to: 'archived',
+        label: 'В архив',
+      }],
+      primaryOption: null,
+      editable: 'history',
+    },
+    {
+      processing: 'archived',
+      label: 'Архивная',
+      options: [{
+        to: 'published',
+        label: 'Опубликовать снова',
+      }],
+      primaryOption: null,
+    },
+  ],
+});
