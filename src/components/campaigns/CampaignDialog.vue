@@ -40,7 +40,7 @@ top="4vh"
       value-format="yyyy-MM-dd"
       )
 
-    el-form-item(label="Версия" prop="version" v-if="isEdit()")
+    // el-form-item(label="Версия" prop="version" v-if="isEdit()")
 
       el-input-number(
       v-model="newCampaign.version"
@@ -165,13 +165,13 @@ export default {
       return this.campaign.id;
     },
 
-    minVersion() {
-      return this.campaign.version || 1;
-    },
-
-    maxVersion() {
-      return (this.campaign.version || 1) + 1;
-    },
+    // minVersion() {
+    //   return this.campaign.version || 1;
+    // },
+    //
+    // maxVersion() {
+    //   return (this.campaign.version || 1) + 1;
+    // },
 
   },
 
