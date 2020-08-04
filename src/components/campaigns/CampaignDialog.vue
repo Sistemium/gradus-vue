@@ -131,7 +131,7 @@ export default {
 
     },
 
-    async submitDialog(formName) {
+    submitDialog(formName) {
 
       this.$refs[formName].validate(valid => {
 
