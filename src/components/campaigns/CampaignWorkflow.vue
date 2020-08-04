@@ -1,7 +1,7 @@
 <template lang="pug">
 
 el-dropdown.campaign-workflow(@command="onCommand")
-  el-button(type="primary" size="mini") {{ step.label }}
+  el-button(:type="step.style" size="mini" :disabled="disabled") {{ step.label }}
   el-dropdown-menu(slot="dropdown")
     el-dropdown-item(
       v-for="option in options" :key="option.to"
@@ -24,7 +24,7 @@ export default {
   },
   computed: {
     step() {
-      return this.workflow.step(this.value);
+      return this.workflow.step(this.processing);
     },
     options() {
       const { step } = this;
@@ -33,11 +33,15 @@ export default {
   },
   methods: {
     onCommand(to) {
-      this.$emit('input', to);
+      this.$emit('transition', to);
     },
   },
   props: {
-    value: String,
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    processing: String,
   },
 };
 

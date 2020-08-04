@@ -185,6 +185,7 @@ export const campaignWorkflow = new Workflow({
         to: 'published',
         label: 'Опубликовать',
       }],
+      style: 'primary',
       primaryOption: 'published',
       editable: true,
     },
@@ -200,12 +201,17 @@ export const campaignWorkflow = new Workflow({
     },
     {
       processing: 'archived',
-      label: 'Архивная',
+      label: 'В архиве',
       options: [{
         to: 'published',
         label: 'Опубликовать снова',
       }],
+      style: 'info',
       primaryOption: null,
     },
   ],
 });
+
+export async function updateCampaign(campaign, props) {
+  return Campaign.update(campaign, props);
+}

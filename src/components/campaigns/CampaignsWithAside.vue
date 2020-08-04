@@ -15,6 +15,11 @@ el-container.campaigns-with-aside
       @campaignPictureClick="campaignPictureClick"
     )
       template(v-slot:buttons)
+        campaign-workflow(
+          :disabled="busy"
+          :processing="currentCampaign.processing"
+          @transition="onWorkflowTransition"
+        )
         el-button(
           v-if="actionCopy"
           @click="onPasteAction"
@@ -47,10 +52,10 @@ el-container.campaigns-with-aside
 import find from 'lodash/find';
 
 import CampaignPicture from '@/models/CampaignPicture';
-// import * as svc from '@/services/campaigns';
 import * as actions from '@/vuex/campaigns/actions';
 import * as g from '@/vuex/campaigns/getters';
 import campaignsAuth from '@/components/campaigns/campaignsAuth';
+import CampaignWorkflow from '@/components/campaigns/CampaignWorkflow.vue';
 import { createNamespacedHelpers } from 'vuex';
 import CampaignsPictureGallery from './CampaignsPictureGallery';
 import CampaignsList from './CampaignsList.vue';
@@ -92,6 +97,7 @@ export default {
     },
     ...mapGetters({
       actionCopy: g.ACTION_COPY,
+      busy: g.BUSY,
     }),
   },
 
@@ -112,6 +118,7 @@ export default {
   methods: {
     ...mapActions({
       campaignPictureClick: actions.SHOW_CAMPAIGN_PICTURE,
+      transitCampaign: actions.TRANSIT_CAMPAIGN,
     }),
     onEditCampaign() {
       this.$emit('editCampaign', this.currentCampaign);
@@ -121,6 +128,12 @@ export default {
     },
     onPasteAction() {
       this.updateRouteParams({}, {}, 'campaignActionPaste');
+    },
+    onWorkflowTransition(processing) {
+      return this.transitCampaign({
+        campaign: this.currentCampaign,
+        processing,
+      });
     },
     scrollToCampaign(campaign) {
       if (!campaign) {
@@ -145,6 +158,7 @@ export default {
     CampaignsPictureGallery,
     CampaignView,
     CampaignsList,
+    CampaignWorkflow,
   },
   mixins: [campaignsAuth],
 };
@@ -168,6 +182,10 @@ aside {
 main {
   padding-right: 0;
   padding-bottom: 0;
+}
+
+.campaign-workflow + * {
+  margin-left: $margin-right;
 }
 
 </style>

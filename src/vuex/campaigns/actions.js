@@ -20,8 +20,19 @@ export const COPY_ACTION_OPTION = 'COPY_ACTION_OPTION';
 export const COPY_ACTION = 'COPY_ACTION';
 export const REFRESH_CAMPAIGNS = 'REFRESH_CAMPAIGNS';
 export const CLEAR_ERROR = 'CLEAR_ERROR';
+export const TRANSIT_CAMPAIGN = 'TRANSIT_CAMPAIGN';
 
 export default {
+
+  async [TRANSIT_CAMPAIGN]({ commit }, { campaign, processing }) {
+    commit(m.SET_BUSY, true);
+    try {
+      await svc.updateCampaign(campaign, { processing });
+    } catch (e) {
+      commit(m.SET_ERROR, e);
+    }
+    commit(m.SET_BUSY, false);
+  },
 
   [COPY_ACTION_OPTION]({ commit }, option) {
     commit(m.SET_ACTION_OPTION_COPY, option);
