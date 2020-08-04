@@ -4,7 +4,6 @@
 
   .buttons(v-if="hasAuthoring")
     slot(name="buttons")
-      button-edit.edit(@click="editCampaignClick()")
 
   .fields
 
