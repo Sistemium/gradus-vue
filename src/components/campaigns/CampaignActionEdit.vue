@@ -50,7 +50,7 @@ import DrawerEditor from '@/lib/DrawerEditor';
 import Action from '@/models/Action';
 import ActionHistory from '@/models/ActionHistory';
 import CampaignActionForm from '@/components/campaigns/CampaignActionForm.vue';
-import ActionHistoryForm from '@/components/campaigns/ActionHistoryForm.vue';
+import ActionHistoryForm from '@/components/actions/ActionHistoryForm.vue';
 import ActionOptionEdit from '@/components/actions/ActionOptionEdit.vue';
 import FormButtons from '@/lib/FormButtons.vue';
 import cloneDeep from 'lodash/cloneDeep';
