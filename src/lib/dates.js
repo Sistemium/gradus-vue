@@ -13,6 +13,17 @@ export function currentMonth() {
     .format('YYYY-MM');
 }
 
+export function monthEnd(monthId) {
+  return dayjs(monthStart(monthId))
+    .add(1, 'month')
+    .add(-1, 'day')
+    .format('YYYY-MM-DD');
+}
+
+export function monthStart(monthId) {
+  return `${monthId}-01`;
+}
+
 export function monthToWhere(monthId) {
 
   const {
@@ -28,13 +39,8 @@ export function monthToWhere(monthId) {
 }
 
 export function dateBE(monthId) {
-  const dateB = `${monthId}-01`;
-  const dateE = dayjs(dateB)
-    .add(1, 'month')
-    .add(-1, 'day')
-    .format('YYYY-MM-DD');
   return {
-    dateE,
-    dateB,
+    dateB: monthStart(monthId),
+    dateE: monthEnd(monthId),
   };
 }

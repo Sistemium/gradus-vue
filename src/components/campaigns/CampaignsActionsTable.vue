@@ -2,7 +2,7 @@
 
 .campaigns-actions-table
 
-  campaigns-header
+  campaigns-header(:month="selectedMonth")
 
   table.campaign(
     v-for="campaign in campaignsWithActions" :key="campaign.id"
@@ -10,10 +10,14 @@
   )
     thead
       tr
-        td.name
-          i.el-icon-s-management
-          a(@click="campaignClick(campaign)")
-            span {{ campaign.name }}
+        td
+          .name
+            i.el-icon-s-management
+            a(@click="campaignClick(campaign)")
+              span {{ campaign.name }}
+          .period(v-if="showPeriod(campaign)")
+            i.el-icon-date
+            span c {{ campaign.dateB | ruDate }} по {{ campaign.dateE | ruDate }}
     tbody.actions
       tr(v-for="action in campaign.actions" :key="action.id")
         td
@@ -26,8 +30,13 @@
 
 import filter from 'lodash/filter';
 import Action from '@/models/Action';
+import { dateBE } from '@/lib/dates';
 import CampaignAction from '@/components/campaigns/CampaignAction.vue';
 import CampaignsHeader from '@/components/campaigns/CampaignsHeader.vue';
+import * as getters from '@/vuex/campaigns/getters';
+import { createNamespacedHelpers } from 'vuex';
+
+const { mapGetters } = createNamespacedHelpers('campaigns');
 
 const NAME = 'CampaignsActionsTable';
 
@@ -36,8 +45,16 @@ export default {
     campaignsWithActions() {
       return filter(this.campaigns, ({ actions }) => actions.length);
     },
+    ...mapGetters({ selectedMonth: getters.SELECTED_MONTH }),
+    monthBE() {
+      return dateBE(this.selectedMonth);
+    },
   },
   methods: {
+    showPeriod(campaign) {
+      const { dateE, dateB } = this.monthBE;
+      return campaign.dateE !== dateE || campaign.dateB !== dateB;
+    },
     scrollToCampaign(campaignId) {
       if (!campaignId) {
         return;
@@ -62,7 +79,10 @@ export default {
   props: {
     campaigns: Array,
   },
-  components: { CampaignsHeader, CampaignAction },
+  components: {
+    CampaignsHeader,
+    CampaignAction,
+  },
   name: NAME,
 };
 
@@ -121,6 +141,19 @@ tr + tr > td {
 
 a {
   cursor: pointer;
+}
+
+thead td {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: $font-size-large-print;
+
+  .el-icon-date {
+    color: $orange;
+    margin-right: $margin-right;
+  }
 }
 
 </style>
