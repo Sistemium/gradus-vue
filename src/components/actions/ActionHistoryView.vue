@@ -3,12 +3,14 @@
 .action-history-view(v-if="history.length")
   .title
     span История изменений
-  .action-history(v-for="entry in history" :key="entry.id")
+  .action-history(v-for="entry in sortedHistory" :key="entry.id")
     .cts() {{ entry.cts | ruDateTime }}
-    .comment() {{ entry.commentText }}
+    .comment() {{ entry.commentText || 'Незначительные изменения' }}
 
 </template>
 <script>
+
+import orderBy from 'lodash/orderBy';
 
 const NAME = 'ActionHistoryView';
 
@@ -16,6 +18,11 @@ export default {
   name: NAME,
   props: {
     history: Array,
+  },
+  computed: {
+    sortedHistory() {
+      return orderBy(this.history, ['cts'], ['desc']);
+    },
   },
 };
 
@@ -43,7 +50,7 @@ export default {
 
 .title {
   span {
-    background: $orange;
+    background: $light-gray;
     color: white;
     padding: 2px $padding;
     border-bottom-right-radius: $border-radius;
