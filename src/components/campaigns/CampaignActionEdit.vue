@@ -48,6 +48,7 @@ import { v4 } from 'uuid';
 import { createNamespacedHelpers } from 'vuex';
 import DrawerEditor from '@/lib/DrawerEditor';
 import Action from '@/models/Action';
+import Campaign from '@/models/Campaign';
 import ActionHistory from '@/models/ActionHistory';
 import CampaignActionForm from '@/components/campaigns/CampaignActionForm.vue';
 import ActionHistoryForm from '@/components/actions/ActionHistoryForm.vue';
@@ -101,8 +102,14 @@ export default {
     },
 
     logHistory() {
-      // TODO: check campaign processing
-      return this.changed;
+      if (!this.changed) {
+        return false;
+      }
+      const campaign = Campaign.get(this.campaignId);
+      if (!campaign) {
+        return false;
+      }
+      return campaign.processing === 'published';
     },
 
     ...mapGetters({
