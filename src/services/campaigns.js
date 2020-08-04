@@ -195,6 +195,9 @@ export const campaignWorkflow = new Workflow({
       options: [{
         to: 'archived',
         label: 'В архив',
+      }, {
+        to: 'draft',
+        label: 'Отменить публикацию',
       }],
       primaryOption: null,
       editable: 'history',

@@ -136,6 +136,7 @@ export default {
 
     addCampaignClick() {
       this.campaign = {
+        processing: 'draft',
         groupCode: this.$route.query.campaignGroup || null,
         ...dateBE(this.selectedMonth),
       };
