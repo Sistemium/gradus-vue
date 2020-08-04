@@ -102,7 +102,7 @@ export default {
     },
 
     logHistory() {
-      if (!this.changed) {
+      if (!this.actionId || !this.changed) {
         return false;
       }
       const campaign = Campaign.get(this.campaignId);
