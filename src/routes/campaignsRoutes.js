@@ -21,8 +21,7 @@ export default {
       path: 'paste',
       name: 'campaignActionPaste',
     }],
-    component: () =>
-      import(/* webpackChunkName: "campaigns" */ '../components/campaigns/CampaignActionEdit.vue'),
+    component: () => import(/* webpackChunkName: "campaigns" */ '../components/campaigns/CampaignActionEdit.vue'),
   }, {
     name: 'campaignActionEdit',
     path: 'action/:actionId/edit',
@@ -34,7 +33,6 @@ export default {
         query: { ...query },
       },
     }),
-    component: () =>
-      import(/* webpackChunkName: "campaigns" */ '../components/campaigns/CampaignActionEdit.vue'),
+    component: () => import(/* webpackChunkName: "campaigns" */ '../components/campaigns/CampaignActionEdit.vue'),
   }],
 };

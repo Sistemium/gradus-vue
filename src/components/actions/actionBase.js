@@ -114,8 +114,8 @@ export default {
       if (!hasOptions) {
         return null;
       }
-      const res = hasOptions.map(option =>
-        find(this.optionRequirements(option), r => r.cls === cls));
+      const optionFind = option => find(this.optionRequirements(option), r => r.cls === cls);
+      const res = hasOptions.map(optionFind);
       return find(res, 'value');
     },
   },

@@ -3,7 +3,7 @@ import { Record } from 'js-data';
 
 import RelationCache from '@/lib/RelationCache';
 
-import ArticleGroup from './ArticleGroup';
+import ArticleGroup from './ArticleGroup';  // eslint-disable-line
 import ArticlePicture from './ArticlePicture';
 
 const relationCache = new RelationCache({});
