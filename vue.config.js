@@ -3,6 +3,7 @@ module.exports = {
   transpileDependencies: [
     'sistemium-vue',
     'sistemium-telegram',
+    'vue-virtual-scroller',
   ],
   devServer: {
     proxy: {
