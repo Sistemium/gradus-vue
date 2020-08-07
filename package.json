@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "campaigns": "vue-cli-service build --mode campaigns",
+    "build": "vue-cli-service build --modern",
+    "campaigns": "vue-cli-service build --mode campaigns --modern",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
