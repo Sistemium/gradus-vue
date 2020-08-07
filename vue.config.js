@@ -5,6 +5,7 @@ module.exports = {
     'sistemium-telegram',
     'vue-virtual-scroller',
   ],
+  productionSourceMap: false,
   devServer: {
     proxy: {
         target: 'https://api.sistemium.com/v4d/dr50',
