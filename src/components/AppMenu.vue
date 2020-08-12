@@ -21,7 +21,7 @@
     //el-menu-item(index="/targets")
       img(src="../assets/icons8-goal.svg")
       span Задачи
-    //el-menu-item(index="/possibleOutlets" :disabled="!hasOutletsAuth")
+    el-menu-item(index="/possibleOutlets" :disabled="!hasOutletsAuth")
       img(src="../assets/icons8-validation.svg")
       span Точки
     //el-menu-item(index="/about")

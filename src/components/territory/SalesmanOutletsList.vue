@@ -9,6 +9,9 @@
     .texts
       .name(v-text="outlet.name")
       .address(v-text="outlet.address")
+      .comment(v-if="outlet.commentText")
+        i.el-icon-info
+        span.comment-text(v-text="outlet.commentText")
     .status(v-if="outlet.statusIcon()")
       i(:class="outlet.statusIcon()")
 
@@ -29,24 +32,32 @@ export default {
 
 @import "../../styles/variables";
 
-.address {
+.texts > * + * {
   margin-top: $padding;
+}
+
+.address {
   color: $gray;
 }
 
 .salesman {
   display: flex;
+
   .texts {
     flex: 1;
   }
 }
 
 i {
-  color: $blue;
+  color: $orange;
 }
 
 .el-icon-circle-check {
   color: $green;
+}
+
+.comment-text {
+  margin-left: $padding;
 }
 
 </style>
