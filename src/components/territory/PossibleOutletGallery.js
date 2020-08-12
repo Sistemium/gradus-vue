@@ -11,7 +11,8 @@ export default {
 
   computed: {
     avatarId() {
-      return this.images[0].id;
+      const [avatar] = this.images;
+      return avatar && avatar.id;
     },
   },
 
