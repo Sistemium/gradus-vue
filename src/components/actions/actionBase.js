@@ -152,7 +152,7 @@ function volumeRequirements(required) {
       .join(' '),
     cost && filter([
       !isMultiple && 'от',
-      `${cost} ₽`,
+      `${cost}&nbsp;руб.`,
       costTo && `до ${costTo}`,
     ])
       .join(' '),
