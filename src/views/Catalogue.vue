@@ -132,7 +132,11 @@ export default {
   async created() {
 
     this.loading = 'данных';
-    await svc.loadData(this.loadingProgress);
+    try {
+      await svc.loadData(this.loadingProgress);
+    } catch (e) {
+      this.$error(e);
+    }
     this.loading = false;
 
     this.$watch('currentArticleGroup', this.bindCurrent);

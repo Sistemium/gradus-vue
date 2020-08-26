@@ -35,7 +35,10 @@ export async function loadData(progress = noop) {
 
   progress('номенклатуры');
 
-  await Article.fetchAll(fetchParams);
+  await Article.fetchAll({
+    ...fetchParams,
+    volumeNotZero: true,
+  });
 
   const articles = Article.getAll();
   debug('articles', articles.length);
