@@ -26,6 +26,7 @@ import './lib/bindToModel';
 import './lib/updateRouteParams';
 import './lib/ruDate';
 import './lib/authHelpers';
+import './lib/debug';
 
 Vue.config.productionTip = false;
 Vue.component('resize', Resize);
