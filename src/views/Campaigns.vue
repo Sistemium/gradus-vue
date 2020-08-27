@@ -109,10 +109,14 @@ export default {
 
     filteredCampaigns() {
       const { campaignGroup: groupCode } = this.$route.query;
-      if (!groupCode) {
-        return this.campaigns;
+      const predicate = {};
+      if (groupCode) {
+        predicate.groupCode = groupCode;
       }
-      return filter(this.campaigns, { groupCode });
+      if (!this.hasAuthoring) {
+        predicate.processing = 'published';
+      }
+      return filter(this.campaigns, predicate);
     },
 
   },
