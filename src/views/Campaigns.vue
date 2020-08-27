@@ -1,55 +1,55 @@
 <template lang="pug">
 
-  el-container.campaigns(
-    no-v-loading.fullscreen.lock="loading || busy"
+el-container.campaigns(
+  no-v-loading.fullscreen.lock="loading || busy"
+  element-loading-text="Загрузка данных ..."
+)
+
+  el-header.campaigns-header(height="")
+
+    campaign-filters.filters
+
+    layout-select(v-model="layout" name="campaigns")
+
+    el-button.add-campaign(
+      @click="addCampaignClick"
+      :round="true"
+      v-if="hasAuthoring"
+    )
+      i.el-icon-document-add
+      span Добавить акцию
+
+    el-button.refresh(
+      :disabled="!!busy"
+      @click="refreshClick"
+      size="small"
+      :circle="true"
+      :icon="busy ? 'el-icon-loading' : 'el-icon-refresh'"
+    )
+
+  el-container.campaigns-main(
+    v-loading="loading"
     element-loading-text="Загрузка данных ..."
   )
 
-    el-header.campaigns-header(height="")
+    resize.resize#campaigns-scroll-container(:padding="20" v-if="layout==='table'")
+      campaigns-table(v-if="!loading" :campaigns="filteredCampaigns" @cell-click="campaignClick")
+    campaigns-with-aside(:campaigns="filteredCampaigns" v-else @editCampaign="campaignClick")
 
-      campaign-filters.filters
+  campaign-dialog(
+    v-if="campaign"
+    :campaign="campaign"
+    @closed="editCampaignClose()"
+    @submit="editCampaign"
+    @remove="removeCampaign"
+  )
 
-      layout-select(v-model="layout" name="campaigns")
-
-      el-button.add-campaign(
-        @click="addCampaignClick"
-        :round="true"
-        v-if="hasAuthoring"
-      )
-        i.el-icon-document-add
-        span Добавить акцию
-
-      el-button.refresh(
-        :disabled="!!busy"
-        @click="refreshClick"
-        size="small"
-        :circle="true"
-        :icon="busy ? 'el-icon-loading' : 'el-icon-refresh'"
-      )
-
-    el-container.campaigns-main(
-      v-loading="loading"
-      element-loading-text="Загрузка данных ..."
-    )
-
-      resize.resize#campaigns-scroll-container(:padding="20" v-if="layout==='table'")
-        campaigns-table(v-if="!loading" :campaigns="filteredCampaigns" @cell-click="campaignClick")
-      campaigns-with-aside(:campaigns="filteredCampaigns" v-else @editCampaign="campaignClick")
-
-    campaign-dialog(
-      v-if="campaign"
-      :campaign="campaign"
-      @closed="editCampaignClose()"
-      @submit="editCampaign"
-      @remove="removeCampaign"
-    )
-
-    //router-view
-    campaign-pictures-dialog(
-      v-if="galleryCampaign"
-      :campaign="galleryCampaign"
-      @closed="onGalleryClosed"
-    )
+  //router-view
+  campaign-pictures-dialog(
+    v-if="galleryCampaign"
+    :campaign="galleryCampaign"
+    @closed="onGalleryClosed"
+  )
 
 </template>
 
@@ -268,6 +268,7 @@ export default {
 .refresh {
   padding: $padding;
   margin-left: 0;
+
   /deep/ i {
     font-size: 20px;
   }
