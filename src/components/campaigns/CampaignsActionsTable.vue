@@ -15,6 +15,7 @@
             i.el-icon-s-management
             a(@click="campaignClick(campaign)")
               span {{ campaign.name }}
+            button-edit(@click="onEditCampaign(campaign)" v-if="hasAuthoring")
           .period(v-if="showPeriod(campaign)")
             i.el-icon-date
             span c {{ campaign.dateB | ruDate }} по {{ campaign.dateE | ruDate }}
@@ -44,12 +45,13 @@
 <script>
 
 import filter from 'lodash/filter';
+import { createNamespacedHelpers } from 'vuex';
 import Action from '@/models/Action';
 import { dateBE } from '@/lib/dates';
 import CampaignAction from '@/components/campaigns/CampaignAction.vue';
 import CampaignsHeader from '@/components/campaigns/CampaignsHeader.vue';
+import campaignsAuth from '@/components/campaigns/campaignsAuth';
 import * as getters from '@/vuex/campaigns/getters';
-import { createNamespacedHelpers } from 'vuex';
 
 const { mapGetters } = createNamespacedHelpers('campaigns');
 
@@ -82,6 +84,9 @@ export default {
     campaignClick({ id: campaignId }) {
       this.updateRouteParams({ campaignId });
     },
+    onEditCampaign(campaign) {
+      this.$emit('editCampaign', campaign);
+    },
   },
   created() {
     this.$watch('$route.params.campaignId', campaignId => {
@@ -98,6 +103,7 @@ export default {
     CampaignsHeader,
     CampaignAction,
   },
+  mixins: [campaignsAuth],
   name: NAME,
 };
 
@@ -115,12 +121,19 @@ export default {
   background: white;
   color: $gray;
 
+  display: flex;
+  align-items: center;
+
+  button {
+    margin-left: $margin-right;
+  }
+
   @media print {
     padding: $margin-top-print 0;
     font-size: $font-size-x-large-print;
   }
 
-  i {
+  > i {
     margin-right: $margin-top;
     @media print {
       margin-right: $margin-top-print;

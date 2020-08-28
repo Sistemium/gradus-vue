@@ -33,7 +33,11 @@ el-container.campaigns(
   )
 
     resize.resize#campaigns-scroll-container(:padding="20" v-if="layout==='table'")
-      campaigns-table(v-if="!loading" :campaigns="filteredCampaigns" @cell-click="campaignClick")
+      campaigns-table(
+        v-if="!loading"
+        :campaigns="filteredCampaigns"
+        @editCampaign="campaignClick"
+      )
     campaigns-with-aside(:campaigns="filteredCampaigns" v-else @editCampaign="campaignClick")
 
   campaign-dialog(
