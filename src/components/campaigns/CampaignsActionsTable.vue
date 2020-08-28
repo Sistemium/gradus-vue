@@ -19,6 +19,21 @@
             i.el-icon-date
             span c {{ campaign.dateB | ruDate }} по {{ campaign.dateE | ruDate }}
     tbody.actions
+      tr
+        td
+          .fields
+            .oneTime(v-if="campaign.oneTime")
+              i.el-icon-circle-check
+              span Единовременная
+            .repeatable(v-if="campaign.repeatable")
+              i.el-icon-circle-check
+              span Многократная
+            .needPhoto(v-if="campaign.needPhoto")
+              i.el-icon-camera-solid
+              span Фото-отчет
+            .territory(v-if="campaign.territory")
+              i.el-icon-location
+              span {{ campaign.territory }}
       tr(v-for="action in campaign.actions" :key="action.id")
         td
           campaign-action(:action="action" )
@@ -89,7 +104,7 @@ export default {
 </script>
 <style scoped lang="scss">
 
-@import "../../styles/variables";
+@import "campaignsBase";
 
 .name {
   padding: $margin-top 0;
@@ -114,10 +129,16 @@ export default {
 
 }
 
-.campaign-action {
+.campaign-action, .fields {
   margin-left: auto;
   @media screen {
     max-width: 900px;
+  }
+}
+
+.fields {
+  > * + * {
+    margin-top: 0;
   }
 }
 
@@ -154,6 +175,14 @@ thead td {
     color: $orange;
     margin-right: $margin-right;
   }
+
+  .period {
+    background: $light-gray;
+    padding: $padding;
+    //font-weight: normal;
+    color: white;
+  }
+
 }
 
 </style>

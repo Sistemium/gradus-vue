@@ -13,9 +13,22 @@
     .period
       .date-b {{ campaign.dateB | ruDate }}
       .date-e {{ campaign.dateE | ruDate }}
+
     .comment-text(v-if="campaign.commentText")
       i.el-icon-info
       span {{ campaign.commentText }}
+    .oneTime(v-if="campaign.oneTime")
+      i.el-icon-circle-check
+      span Единовременная
+    .repeatable(v-if="campaign.repeatable")
+      i.el-icon-circle-check
+      span Многократная
+    .needPhoto(v-if="campaign.needPhoto")
+      i.el-icon-camera-solid
+      span Фото-отчет
+    .territory(v-if="campaign.territory")
+      i.el-icon-location
+      span {{ campaign.territory }}
 
   resize(:padding="20")
 
@@ -86,7 +99,7 @@ export default {
 </script>
 <style scoped lang="scss">
 
-@import "../../styles/variables";
+@import "campaignsBase";
 
 .pictures {
   margin-top: $margin-top;
@@ -134,21 +147,6 @@ export default {
   .date-e:before {
     content: "по";
     margin: 0 $padding;
-  }
-}
-
-.fields {
-  > * + * {
-    margin-top: $margin-top;
-  }
-
-  .comment-text {
-    i {
-      color: $orange;
-      margin-right: $padding;
-    }
-
-    white-space: pre-line;
   }
 }
 
