@@ -52,7 +52,6 @@ export default {
   [SEARCH_TEXT_CHANGE]: debounce(async ({ commit, getters }, searchText) => {
 
     commit(m.SET_BUSY, true);
-
     commit(m.SET_SEARCH_TEXT, searchText);
 
     const date = getters[g.SELECTED_MONTH];
@@ -93,8 +92,8 @@ export default {
     }
 
     commit(m.SET_SELECTED_MONTH, date);
-
     commit(m.SET_BUSY, false);
+
   },
 
   async [UPDATE_CAMPAIGN]({ commit, getters }, campaign) {
@@ -161,7 +160,6 @@ export default {
     const galleryPictures = getters[g.GALLERY_PICTURES];
 
     commit(m.SET_GALLERY_PICTURES, [...galleryPictures, picture]);
-
     commit(m.SET_GALLERY_PICTURE, picture);
 
   },
@@ -177,7 +175,6 @@ export default {
     await svc.removeCampaignPicture(picture);
 
     commit(m.SET_GALLERY_PICTURES, pictures);
-
     commit(m.SET_BUSY, false);
 
   },
@@ -187,7 +184,6 @@ export default {
     commit(m.SET_BUSY, true);
 
     const searchText = getters[g.SEARCH_TEXT];
-
     const date = getters[g.SELECTED_MONTH];
 
     await svc.removeCampaign(campaign);
@@ -195,7 +191,6 @@ export default {
     const campaigns = await svc.campaignsData(date, searchText);
 
     commit(m.SET_CAMPAIGNS, campaigns);
-
     commit(m.SET_BUSY, false);
 
   },
