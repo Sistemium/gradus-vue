@@ -1,6 +1,15 @@
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 
 require('dayjs/locale/ru');
+
+dayjs.extend(utc);
+
+export function serverTimestamp(date = new Date()) {
+  return dayjs(date)
+    .utc()
+    .format('YYYY-MM-DD HH:mm:ss.SSS');
+}
 
 export function addMonths(date, months = 1) {
   return dayjs(date)

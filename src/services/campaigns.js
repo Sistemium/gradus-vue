@@ -9,7 +9,7 @@ import map from 'lodash/map';
 import find from 'lodash/find';
 import flatten from 'lodash/flatten';
 import { findByMany } from '@/lib/modelExtentions';
-import { monthToWhere } from '@/lib/dates';
+import { monthToWhere, serverTimestamp } from '@/lib/dates';
 import Workflow from '@/lib/Workflow';
 
 function mapIds(data) {
@@ -225,4 +225,10 @@ export const campaignWorkflow = new Workflow({
 
 export async function updateCampaign(campaign, props) {
   return Campaign.update(campaign, props);
+}
+
+export async function touchCampaignPictures(campaign) {
+  return Promise.all(map(campaign.pictures, picture => CampaignPicture.update(picture, {
+    timestamp: serverTimestamp(),
+  })));
 }

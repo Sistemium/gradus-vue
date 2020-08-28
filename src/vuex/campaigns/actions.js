@@ -29,6 +29,9 @@ export default {
     commit(m.SET_BUSY, true);
     try {
       await svc.updateCampaign(campaign, { processing });
+      if (processing === 'published') {
+        await svc.touchCampaignPictures(campaign);
+      }
     } catch (e) {
       commit(m.SET_ERROR, e);
     }
