@@ -52,6 +52,7 @@ export default {
     commit(m.SET_CAMPAIGN_COPY, {
       ...campaign,
       actions: [...campaign.actions],
+      pictures: [...campaign.pictures],
     });
   },
 

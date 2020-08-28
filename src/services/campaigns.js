@@ -109,12 +109,23 @@ export async function saveCampaign(campaign) {
     return Campaign.update(campaign, campaign);
   }
 
-  const { actions } = campaign;
-  const saved = await Campaign.create(campaign);
+  const { actions, pictures } = campaign;
+  const saved = await Campaign.create({
+    ...campaign,
+    actions: undefined,
+    pictures: undefined,
+  });
 
   if (actions) {
     await Promise.all(map(actions, async action => Action.create({
       ...action,
+      campaignId: saved.id,
+    })));
+  }
+
+  if (pictures) {
+    await Promise.all(map(pictures, async picture => CampaignPicture.create({
+      ...picture,
       campaignId: saved.id,
     })));
   }

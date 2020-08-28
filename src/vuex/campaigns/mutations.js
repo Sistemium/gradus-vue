@@ -35,6 +35,12 @@ export default {
         id: undefined,
         campaignId: null,
       })),
+      pictures: campaign.pictures.map(picture => ({
+        ...picture,
+        _id: undefined,
+        id: undefined,
+        campaignId: null,
+      })),
       processing: 'draft',
       _id: undefined,
       id: undefined,
