@@ -15,45 +15,56 @@ el-dialog.campaign-input(
     size="mini"
   )
     el-form-item(label="Группа" prop="groupCode")
-
       campaign-group-select(v-model="newCampaign.groupCode")
 
     el-form-item(label="Название" prop="name")
-
       el-input(v-model="newCampaign.name")
 
-    el-form-item(label="Дата начала" prop="dateB")
+    .period
 
-      el-date-picker(
-        v-model="newCampaign.dateB"
-        :picker-options = "{ disabledDate: disableMinDate }"
-        format="yyyy/MM/dd"
-        value-format="yyyy-MM-dd"
-      )
-
-    el-form-item(label="Дата окончания" prop="dateE")
-
-      el-date-picker(
-        v-model="newCampaign.dateE"
-        :picker-options= "{ disabledDate: disableMaxDate }"
-        format="yyyy/MM/dd"
-        value-format="yyyy-MM-dd"
-      )
-
-    el-form-item(label="Описание" prop="commentText")
-
-      el-input(v-model="newCampaign.commentText" type="textarea" :rows="4")
-
-    el-form-item
-      .buttons
-        confirm-button.remove(
-          v-if="isEdit()"
-          text="Удалить" confirm-text="Точно удалить?"
-          @confirm="removeClick"
+      el-form-item(label="Дата начала" prop="dateB")
+        el-date-picker(
+          v-model="newCampaign.dateB"
+          :picker-options = "{ disabledDate: disableMinDate }"
+          format="yyyy/MM/dd"
+          value-format="yyyy-MM-dd"
         )
-        .editButtons
-          el-button(@click="closeDialog") Отмена
-          el-button(type="primary" @click="submitDialog('newCampaign')") Готово
+
+      el-form-item(label="Дата окончания" prop="dateE")
+        el-date-picker(
+          v-model="newCampaign.dateE"
+          :picker-options= "{ disabledDate: disableMaxDate }"
+          format="yyyy/MM/dd"
+          value-format="yyyy-MM-dd"
+        )
+
+    el-form-item(label="Комментарий" prop="commentText")
+      el-input(v-model="newCampaign.commentText" type="textarea" :autosize="{ minRows: 2 }")
+
+    .switches
+      el-switch(v-model="newCampaign.oneTime" inactive-text="Единовременная")
+      el-switch(v-model="newCampaign.repeatable" inactive-text="Многократная")
+      el-switch(v-model="newCampaign.needPhoto" inactive-text="Фото-отчет")
+
+    el-form-item.territory
+      el-input(
+        v-model="newCampaign.territory"
+        placeholder="ограничение по территории"
+        :clearable="true"
+      )
+        template(slot="prepend")
+          i.el-icon-location
+
+    .buttons
+      confirm-button.remove(
+        size="small"
+        v-if="isEdit()"
+        text="Удалить" confirm-text="Точно удалить?"
+        @confirm="removeClick"
+      )
+      .editButtons
+        el-button(@click="closeDialog" size="small") Отмена
+        el-button(type="primary" @click="submitDialog('newCampaign')" size="small") Готово
 
 </template>
 
@@ -191,6 +202,8 @@ export default {
 
 <style scoped lang="scss">
 
+@import "../../styles/switches";
+
 .campaign-input {
 
   .el-input {
@@ -213,6 +226,15 @@ export default {
     width: 100%;
   }
 
+}
+
+.period {
+  display: flex;
+  justify-content: space-between;
+}
+
+.switches {
+  @extend %switches;
 }
 
 </style>

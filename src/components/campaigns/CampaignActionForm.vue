@@ -151,7 +151,7 @@ export default {
 </script>
 <style scoped lang="scss">
 
-@import "../../styles/variables";
+@import "../../styles/switches";
 
 .action-ranges-form {
   margin-top: 7px;
@@ -168,16 +168,7 @@ export default {
 }
 
 .switches {
-  margin-bottom: 18px;
-
-  > * + * {
-    margin-left: $margin-right;
-  }
-
-  /deep/ .el-switch__label {
-    font-weight: normal;
-    color: $gray;
-  }
+  @extend %switches;
 }
 
 .campaign-action-form /deep/ h3 {
