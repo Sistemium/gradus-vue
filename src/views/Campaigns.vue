@@ -11,9 +11,17 @@ el-container.campaigns(
 
     layout-select(v-model="layout" name="campaigns")
 
+    el-button(
+      v-if="campaignCopy"
+      @click="onPasteCampaign"
+      icon="el-icon-suitcase"
+      size="mini" circle
+    )
+
     el-button.add-campaign(
       @click="addCampaignClick"
       :round="true"
+      size="small"
       v-if="hasAuthoring"
     )
       i.el-icon-document-add
@@ -109,6 +117,7 @@ export default {
       galleryCampaign: getters.GALLERY_CAMPAIGN,
       busy: getters.BUSY,
       selectedMonth: getters.SELECTED_MONTH,
+      campaignCopy: getters.CAMPAIGN_COPY,
     }),
 
     filteredCampaigns() {
@@ -171,6 +180,10 @@ export default {
       } else {
         this.campaign = row;
       }
+
+    },
+
+    onPasteCampaign() {
 
     },
 

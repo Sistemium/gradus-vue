@@ -31,6 +31,7 @@ export default new Vuex.Store({
     predicate: [
       'campaigns/SET_ACTION_OPTION_COPY',
       'campaigns/SET_ACTION_COPY',
+      'campaigns/SET_CAMPAIGN_COPY',
     ],
   })],
 

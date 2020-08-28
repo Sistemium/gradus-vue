@@ -21,6 +21,7 @@ export const COPY_ACTION = 'COPY_ACTION';
 export const REFRESH_CAMPAIGNS = 'REFRESH_CAMPAIGNS';
 export const CLEAR_ERROR = 'CLEAR_ERROR';
 export const TRANSIT_CAMPAIGN = 'TRANSIT_CAMPAIGN';
+export const COPY_CAMPAIGN = 'COPY_CAMPAIGN';
 
 export default {
 
@@ -40,6 +41,12 @@ export default {
 
   [COPY_ACTION]({ commit }, option) {
     commit(m.SET_ACTION_COPY, option);
+    commit(m.SET_CAMPAIGN_COPY, null);
+  },
+
+  [COPY_CAMPAIGN]({ commit }, campaign) {
+    commit(m.SET_ACTION_COPY, null);
+    commit(m.SET_CAMPAIGN_COPY, campaign);
   },
 
   [SEARCH_TEXT_CHANGE]: debounce(async ({ commit, getters }, searchText) => {
@@ -95,15 +102,12 @@ export default {
     commit(m.SET_BUSY, true);
 
     const searchText = getters[g.SEARCH_TEXT];
-
     const date = getters[g.SELECTED_MONTH];
 
     const saved = await svc.saveCampaign(campaign);
-
     const campaigns = await svc.campaignsData(date, searchText);
 
     commit(m.SET_CAMPAIGNS, campaigns);
-
     commit(m.SET_BUSY, false);
 
     return saved;

@@ -11,6 +11,7 @@ export const GALLERY_PICTURES = 'galleryPictures';
 export const ACTIVE_GALLERY_PICTURE = 'activeGalleryPicture';
 export const ACTION_OPTION_COPY = 'ACTION_OPTION_COPY';
 export const ACTION_COPY = 'ACTION_COPY';
+export const CAMPAIGN_COPY = 'CAMPAIGN_COPY';
 
 export default {
 
@@ -20,6 +21,10 @@ export default {
 
   [ACTION_COPY](state) {
     return state[ACTION_COPY];
+  },
+
+  [CAMPAIGN_COPY](state) {
+    return state[CAMPAIGN_COPY];
   },
 
   [SELECTED_MONTH](state) {

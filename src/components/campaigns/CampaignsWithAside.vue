@@ -26,6 +26,11 @@ el-container.campaigns-with-aside
           icon="el-icon-suitcase"
           size="mini" circle
         )
+        el-button(
+          @click="onCopyCampaign"
+          icon="el-icon-copy-document"
+          size="mini" circle
+        )
         button-edit(@click="onEditCampaign")
         button-add(@click="onAddAction")
       template(v-slot:footer)
@@ -119,7 +124,11 @@ export default {
     ...mapActions({
       campaignPictureClick: actions.SHOW_CAMPAIGN_PICTURE,
       transitCampaign: actions.TRANSIT_CAMPAIGN,
+      copyCampaign: actions.COPY_CAMPAIGN,
     }),
+    onCopyCampaign() {
+      this.copyCampaign(this.currentCampaign);
+    },
     onEditCampaign() {
       this.$emit('editCampaign', this.currentCampaign);
     },
