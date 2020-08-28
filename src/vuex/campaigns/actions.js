@@ -46,7 +46,10 @@ export default {
 
   [COPY_CAMPAIGN]({ commit }, campaign) {
     commit(m.SET_ACTION_COPY, null);
-    commit(m.SET_CAMPAIGN_COPY, campaign);
+    commit(m.SET_CAMPAIGN_COPY, {
+      ...campaign,
+      actions: [...campaign.actions],
+    });
   },
 
   [SEARCH_TEXT_CHANGE]: debounce(async ({ commit, getters }, searchText) => {

@@ -163,28 +163,34 @@ export default {
       this.campaign = undefined;
     },
 
-    editCampaign(campaign) {
+    async editCampaign(campaign) {
 
-      this.updateCampaign({
+      const saved = await this.updateCampaign({
         ...campaign,
         isActive: true,
-      })
-        .then(({ id }) => this.updateRouteParams({ campaignId: id }));
+      });
+
+      const { id: campaignId } = saved;
+
+      return this.updateRouteParams({ campaignId });
 
     },
 
-    campaignClick(row, column = {}) {
+    campaignClick(campaign) {
 
-      if (column.label === 'Картинки') {
-        this.campaignAvatarClick(row);
-      } else {
-        this.campaign = row;
-      }
+      this.campaign = {
+        ...campaign,
+        actions: undefined,
+      };
 
     },
 
     onPasteCampaign() {
-
+      this.campaign = {
+        ...this.campaignCopy,
+        groupCode: this.$route.query.campaignGroup || null,
+        ...dateBE(this.selectedMonth),
+      };
     },
 
     onGalleryClosed() {

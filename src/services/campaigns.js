@@ -103,15 +103,23 @@ export function getCampaign(id) {
  * @param {Object} campaign
  * @returns {Promise}
  */
-export function saveCampaign(campaign) {
+export async function saveCampaign(campaign) {
 
   if (campaign.id) {
-
     return Campaign.update(campaign, campaign);
-
   }
 
-  return Campaign.create(campaign);
+  const { actions } = campaign;
+  const saved = await Campaign.create(campaign);
+
+  if (actions) {
+    await Promise.all(map(actions, async action => Action.create({
+      ...action,
+      campaignId: saved.id,
+    })));
+  }
+
+  return saved;
 
 }
 

@@ -29,6 +29,13 @@ export default {
   [SET_CAMPAIGN_COPY](state, campaign) {
     state[g.CAMPAIGN_COPY] = campaign && {
       ...campaign,
+      actions: campaign.actions.map(action => ({
+        ...action,
+        _id: undefined,
+        id: undefined,
+        campaignId: null,
+      })),
+      processing: 'draft',
       _id: undefined,
       id: undefined,
     };
