@@ -1,18 +1,18 @@
 <template lang="pug">
 
 el-dialog.campaign-input(
-top="4vh"
-:title="title"
-:before-close="closeDialog"
-:visible.sync="visible"
-:append-to-body="true"
+  top="4vh"
+  :title="title"
+  :before-close="closeDialog"
+  :visible.sync="visible"
+  :append-to-body="true"
 )
 
   el-form(
-  :model="newCampaign"
-  ref="newCampaign"
-  :rules="rules"
-  size="mini"
+    :model="newCampaign"
+    ref="newCampaign"
+    :rules="rules"
+    size="mini"
   )
     el-form-item(label="Группа" prop="groupCode")
 
@@ -25,27 +25,19 @@ top="4vh"
     el-form-item(label="Дата начала" prop="dateB")
 
       el-date-picker(
-      v-model="newCampaign.dateB"
-      :picker-options = "{ disabledDate: disableMinDate }"
-      format="yyyy/MM/dd"
-      value-format="yyyy-MM-dd"
+        v-model="newCampaign.dateB"
+        :picker-options = "{ disabledDate: disableMinDate }"
+        format="yyyy/MM/dd"
+        value-format="yyyy-MM-dd"
       )
 
     el-form-item(label="Дата окончания" prop="dateE")
 
       el-date-picker(
-      v-model="newCampaign.dateE"
-      :picker-options= "{ disabledDate: disableMaxDate }"
-      format="yyyy/MM/dd"
-      value-format="yyyy-MM-dd"
-      )
-
-    // el-form-item(label="Версия" prop="version" v-if="isEdit()")
-
-      el-input-number(
-      v-model="newCampaign.version"
-      :min="minVersion()"
-      :max="maxVersion()"
+        v-model="newCampaign.dateE"
+        :picker-options= "{ disabledDate: disableMaxDate }"
+        format="yyyy/MM/dd"
+        value-format="yyyy-MM-dd"
       )
 
     el-form-item(label="Описание" prop="commentText")
@@ -55,9 +47,9 @@ top="4vh"
     el-form-item
       .buttons
         confirm-button.remove(
-        v-if="isEdit()"
-        text="Удалить" confirm-text="Точно удалить?"
-        @confirm="removeClick"
+          v-if="isEdit()"
+          text="Удалить" confirm-text="Точно удалить?"
+          @confirm="removeClick"
         )
         .editButtons
           el-button(@click="closeDialog") Отмена

@@ -43,12 +43,13 @@ export default {
         label: 'Без группы',
         order: -1,
       }];
-      return filter(orderBy(map(groups, ({ value, label, order }) => ({
+      const matching = map(groups, ({ value, label, order }) => ({
         value,
         label,
         order,
         campaigns: grouped[value],
-      })), 'order'), 'campaigns');
+      }));
+      return filter(orderBy(matching, 'order'), 'campaigns');
     },
   },
   methods: {
