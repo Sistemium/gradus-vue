@@ -55,6 +55,11 @@ el-dialog.campaign-input(
         template(slot="prepend")
           i.el-icon-location
 
+    .other(v-if="actions || pictures")
+      el-form-item
+        .actions(v-if="actions") Подчиненных акций: {{ actions.length }}
+        .actions(v-if="pictures") Изображений: {{ pictures.length }}
+
     .buttons
       confirm-button.remove(
         size="small"
@@ -179,6 +184,16 @@ export default {
   },
 
   computed: {
+
+    pictures() {
+      const { pictures } = this.newCampaign;
+      return pictures && pictures.length && pictures;
+    },
+
+    actions() {
+      const { actions } = this.newCampaign;
+      return actions && actions.length && actions;
+    },
 
     title() {
       return this.isEdit() ? this.campaign.name : 'Новая Акция';
