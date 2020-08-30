@@ -5,12 +5,14 @@
   .header
     .title {{ title }}
     .buttons
-      el-button(
-        v-if="hasPaste"
-        @click="$emit('pasteOption')"
-        icon="el-icon-suitcase"
-        size="mini" circle
-      )
+      transition(name="bounce")
+        el-tooltip(v-if="hasPaste")
+          div(slot="content") Нажмите, чтобы вставить скопированый вариант
+          el-button(
+            @click="$emit('pasteOption')"
+            icon="el-icon-suitcase"
+            size="mini" circle
+          )
       button-add(@click="$emit('addOption')")
 
   transition-group(name="flip-list")

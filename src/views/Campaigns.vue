@@ -12,12 +12,13 @@ el-container.campaigns(
     layout-select(v-model="layout" name="campaigns")
 
     transition(name="bounce")
-      el-button(
-        v-if="campaignCopy"
-        @click="onPasteCampaign"
-        icon="el-icon-suitcase"
-        size="mini" circle
-      )
+      el-tooltip(v-if="campaignCopy")
+        div(slot="content") Нажмите, чтобы вставить копию акции «{{ campaignCopy.name }}»
+        el-button(
+          @click="onPasteCampaign"
+          icon="el-icon-suitcase"
+          size="mini" circle
+        )
 
     el-button.add-campaign(
       @click="addCampaignClick"

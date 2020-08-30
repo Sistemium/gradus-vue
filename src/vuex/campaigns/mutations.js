@@ -19,7 +19,7 @@ export const SET_ERROR = set(g.ERROR);
 export default {
 
   [SET_ACTION_OPTION_COPY](state, option) {
-    state[g.ACTION_OPTION_COPY] = {
+    state[g.ACTION_OPTION_COPY] = option && {
       ...option,
       _id: undefined,
       id: undefined,

@@ -1,6 +1,8 @@
+@import "variables";
+
 
 .bounce-enter-active {
-  animation: bounce-in .5s;
+  animation: bounce-in 1s;
 }
 
 .bounce-leave-active {
@@ -10,12 +12,15 @@
 @keyframes bounce-in {
   0% {
     transform: scale(0);
+    background: none;
   }
   50% {
     transform: scale(1.5);
+    background: $orange;
   }
   100% {
     transform: scale(1);
+    background: none;
   }
 }
 

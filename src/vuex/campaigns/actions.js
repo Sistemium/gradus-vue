@@ -40,14 +40,18 @@ export default {
 
   [COPY_ACTION_OPTION]({ commit }, option) {
     commit(m.SET_ACTION_OPTION_COPY, option);
+    commit(m.SET_ACTION_COPY, null);
+    commit(m.SET_CAMPAIGN_COPY, null);
   },
 
   [COPY_ACTION]({ commit }, option) {
+    commit(m.SET_ACTION_OPTION_COPY, null);
     commit(m.SET_ACTION_COPY, option);
     commit(m.SET_CAMPAIGN_COPY, null);
   },
 
   [COPY_CAMPAIGN]({ commit }, campaign) {
+    commit(m.SET_ACTION_OPTION_COPY, null);
     commit(m.SET_ACTION_COPY, null);
     commit(m.SET_CAMPAIGN_COPY, {
       ...campaign,

@@ -21,12 +21,14 @@ el-container.campaigns-with-aside
           @transition="onWorkflowTransition"
         )
         transition(name="bounce")
-          el-button(
-            v-if="actionCopy"
-            @click="onPasteAction"
-            icon="el-icon-suitcase"
-            size="mini" circle
-          )
+          el-tooltip(v-if="actionCopy")
+            div(slot="content") Нажмите, чтобы вставить копию механики «{{ actionCopy.name }}»
+            el-button(
+              v-if="actionCopy"
+              @click="onPasteAction"
+              icon="el-icon-suitcase"
+              size="mini" circle
+            )
         el-button(
           @click="onCopyCampaign"
           icon="el-icon-copy-document"
