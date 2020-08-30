@@ -250,5 +250,5 @@ export async function touchCampaignPictures(campaign) {
 
 
 export function campaignsPriorities() {
-  return orderBy(CampaignsPriority.getAll(), 'ord');
+  return orderBy(CampaignsPriority.getAll(), ['ord', 'id']);
 }

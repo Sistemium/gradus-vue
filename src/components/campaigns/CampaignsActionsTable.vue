@@ -16,6 +16,9 @@
             a(@click="campaignClick(campaign)")
               span {{ campaign.name }}
             button-edit(@click="onEditCampaign(campaign)" v-if="hasAuthoring")
+          .priority(v-if="campaign.priority")
+            i.el-icon-star-on
+            span {{ campaign.priority.name }}
           .period(v-if="showPeriod(campaign)")
             i.el-icon-date
             span c {{ campaign.dateB | ruDate }} по {{ campaign.dateE | ruDate }}
@@ -45,6 +48,7 @@
 <script>
 
 import filter from 'lodash/filter';
+import orderBy from 'lodash/orderBy';
 import { createNamespacedHelpers } from 'vuex';
 import Action from '@/models/Action';
 import { dateBE } from '@/lib/dates';
@@ -60,7 +64,8 @@ const NAME = 'CampaignsActionsTable';
 export default {
   computed: {
     campaignsWithActions() {
-      return filter(this.campaigns, ({ actions }) => actions.length);
+      const withActions = filter(this.campaigns, ({ actions }) => actions.length);
+      return orderBy(withActions, ({ priority }) => priority && (priority.ord || priority.id));
     },
     ...mapGetters({ selectedMonth: getters.SELECTED_MONTH }),
     monthBE() {
@@ -178,22 +183,28 @@ a {
 }
 
 thead td {
+
   display: flex;
   align-items: center;
-  justify-content: space-between;
   font-weight: bold;
   font-size: $font-size-large-print;
 
-  .el-icon-date {
-    color: $orange;
-    margin-right: $margin-right;
+  .name {
+    flex: 1;
   }
 
-  .period {
+  .period, .priority {
+
+    margin-left: $margin-right;
     background: $light-gray;
     padding: $padding;
-    //font-weight: normal;
     color: white;
+
+    i {
+      color: $orange;
+      margin-right: $padding;
+    }
+
   }
 
 }
