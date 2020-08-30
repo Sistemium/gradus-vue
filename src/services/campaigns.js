@@ -1,5 +1,6 @@
 import Campaign from '@/models/Campaign';
 import CampaignPicture from '@/models/CampaignPicture';
+import CampaignsPriority from '@/models/CampaignsPriority';
 import Action from '@/models/Action';
 import ActionHistory from '@/models/ActionHistory';
 import escapeRegExp from 'lodash/escapeRegExp';
@@ -28,6 +29,8 @@ export async function campaignsData(month, searchText, force = false) {
     limit: 1500,
     'where:': monthToWhere(month),
   };
+
+  await CampaignsPriority.findAll();
 
   const campaigns = await Campaign.findAll(fetchParams, {
     force,
@@ -173,6 +176,11 @@ export function removeCampaign(campaign) {
 export function campaignGroups() {
   return [
     {
+      label: 'Общие',
+      value: 'common',
+      order: 0,
+    },
+    {
       label: 'ОП',
       value: 'op',
       order: 1,
@@ -186,10 +194,6 @@ export function campaignGroups() {
       label: 'ЦФО',
       value: 'cfo',
       order: 3,
-    }, {
-      label: 'Общие',
-      value: 'common',
-      order: 0,
     },
   ];
 }
@@ -242,4 +246,9 @@ export async function touchCampaignPictures(campaign) {
   return Promise.all(map(campaign.pictures, picture => CampaignPicture.update(picture, {
     timestamp: serverTimestamp(),
   })));
+}
+
+
+export function campaignsPriorities() {
+  return orderBy(CampaignsPriority.getAll(), 'ord');
 }

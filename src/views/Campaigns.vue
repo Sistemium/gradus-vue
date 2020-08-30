@@ -179,9 +179,13 @@ export default {
 
     campaignClick(campaign) {
 
+      const { priorityId = null } = campaign;
+
       this.campaign = {
         ...campaign,
+        priorityId,
         actions: undefined,
+        pictures: undefined,
       };
 
     },

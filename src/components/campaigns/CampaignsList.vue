@@ -21,9 +21,8 @@
 
 import groupBy from 'lodash/groupBy';
 import map from 'lodash/map';
-import orderBy from 'lodash/orderBy';
 import filter from 'lodash/filter';
-import { campaignGroups } from '@/services/campaigns';
+import { campaignGroups, campaignsPriorities } from '@/services/campaigns';
 import CampaignPicture from '@/models/CampaignPicture';
 import campaignsAuth from '@/components/campaigns/campaignsAuth';
 
@@ -37,19 +36,26 @@ export default {
   },
   computed: {
     groupedCampaigns() {
-      const grouped = groupBy(this.campaigns, ({ groupCode }) => groupCode || 'Без группы');
-      const groups = [...campaignGroups(), {
-        value: 'Без группы',
-        label: 'Без группы',
-        order: -1,
-      }];
+      const grouped = groupBy(this.campaigns, ({ groupCode, priorityId }) => priorityId || groupCode || 'Без группы');
+      const groups = [
+        {
+          value: 'Без группы',
+          label: 'Без группы',
+        },
+        ...campaignsPriorities()
+          .map(({ id, name }) => ({
+            value: id,
+            label: name,
+          })),
+        ...campaignGroups(),
+      ];
       const matching = map(groups, ({ value, label, order }) => ({
         value,
         label,
         order,
         campaigns: grouped[value],
       }));
-      return filter(orderBy(matching, 'order'), 'campaigns');
+      return filter(matching, 'campaigns');
     },
   },
   methods: {

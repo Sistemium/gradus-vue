@@ -17,6 +17,9 @@ el-dialog.campaign-input(
     el-form-item(label="Группа" prop="groupCode")
       campaign-group-select(v-model="newCampaign.groupCode")
 
+    el-form-item(label="Приоритет" prop="priorityId")
+      campaign-priority-select(v-model="newCampaign.priorityId")
+
     el-form-item(label="Название" prop="name")
       el-input(v-model="newCampaign.name")
 
@@ -76,24 +79,24 @@ el-dialog.campaign-input(
 <script>
 
 import CampaignGroupSelect from '@/components/campaigns/CampaignGroupSelect.vue';
+import CampaignPrioritySelect from '@/components/campaigns/CampaignPrioritySelect.vue';
 
 export default {
 
   name: 'CampaignDialog',
-  components: { CampaignGroupSelect },
+  components: {
+    CampaignPrioritySelect,
+    CampaignGroupSelect,
+  },
   props: {
     campaign: Object,
   },
 
   data() {
     return {
-      newCampaign: {
-        name: '',
-        dateB: '',
-        dateE: '',
-        commentText: '',
-      },
+      newCampaign: { ...this.campaign },
       rules: {
+        priorityId: [],
         groupCode: [
           {
             required: true,
@@ -198,16 +201,6 @@ export default {
     title() {
       return this.isEdit() ? this.campaign.name : 'Новая Акция';
     },
-
-  },
-
-  created() {
-
-    this.newCampaign = { ...this.campaign };
-
-    if (!this.newCampaign.version) {
-      this.newCampaign.version = 1;
-    }
 
   },
 
