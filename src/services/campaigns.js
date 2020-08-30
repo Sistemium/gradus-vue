@@ -176,11 +176,6 @@ export function removeCampaign(campaign) {
 export function campaignGroups() {
   return [
     {
-      label: 'Общие',
-      value: 'common',
-      order: 0,
-    },
-    {
       label: 'ОП',
       value: 'op',
       order: 1,
