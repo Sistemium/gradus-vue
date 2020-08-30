@@ -20,12 +20,13 @@ el-container.campaigns-with-aside
           :processing="currentCampaign.processing"
           @transition="onWorkflowTransition"
         )
-        el-button(
-          v-if="actionCopy"
-          @click="onPasteAction"
-          icon="el-icon-suitcase"
-          size="mini" circle
-        )
+        transition(name="bounce")
+          el-button(
+            v-if="actionCopy"
+            @click="onPasteAction"
+            icon="el-icon-suitcase"
+            size="mini" circle
+          )
         el-button(
           @click="onCopyCampaign"
           icon="el-icon-copy-document"

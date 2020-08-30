@@ -11,12 +11,13 @@ el-container.campaigns(
 
     layout-select(v-model="layout" name="campaigns")
 
-    el-button(
-      v-if="campaignCopy"
-      @click="onPasteCampaign"
-      icon="el-icon-suitcase"
-      size="mini" circle
-    )
+    transition(name="bounce")
+      el-button(
+        v-if="campaignCopy"
+        @click="onPasteCampaign"
+        icon="el-icon-suitcase"
+        size="mini" circle
+      )
 
     el-button.add-campaign(
       @click="addCampaignClick"
