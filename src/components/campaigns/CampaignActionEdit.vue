@@ -91,8 +91,8 @@ export default {
     defaultProps() {
       return {
         campaignId: this.campaignId,
-        oneTime: true,
-        repeatable: true,
+        oneTime: false,
+        repeatable: false,
         needPhoto: false,
       };
     },

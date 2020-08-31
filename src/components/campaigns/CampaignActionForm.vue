@@ -17,18 +17,6 @@ el-form.campaign-action-form(
       autosize
     )
 
-  el-form-item.territory(v-if="isRoot")
-    el-input(
-      v-model="action.territory" placeholder="ограничение по территории" :clearable="true"
-    )
-      template(slot="prepend")
-        i.el-icon-location
-
-  .switches(v-if="isRoot")
-    el-switch(v-model="action.oneTime" inactive-text="Единовременная")
-    el-switch(v-model="action.repeatable" inactive-text="Многократная")
-    el-switch(v-model="action.needPhoto" inactive-text="Фото-отчет")
-
   action-options-form(
     v-if="mayHaveOptions"
     :model="action"
@@ -56,6 +44,17 @@ el-form.campaign-action-form(
         v-else size="mini" @click="addMatrixClick"
         type="primary"
       ) Добавить условия
+    el-collapse-item.etc(title="Прочее" name="etc" v-if="isRoot")
+      el-form-item.territory(v-if="isRoot")
+        el-input(
+          v-model="action.territory" placeholder="ограничение по территории" :clearable="true"
+        )
+          template(slot="prepend")
+            i.el-icon-location
+      .switches
+        el-switch(v-model="action.oneTime" inactive-text="Единовременная")
+        el-switch(v-model="action.repeatable" inactive-text="Многократная")
+        el-switch(v-model="action.needPhoto" inactive-text="Фото-отчет")
 
 </template>
 <script>
@@ -103,10 +102,12 @@ export default {
     initZones() {
       const { isRoot, action: { discountMatrix } } = this;
       const byDefault = !isRoot && !discountMatrix;
+      const { oneTime, repeatable, needPhoto } = this.action;
       return filter([
         (byDefault || this.hasRequired) && 'required',
         (byDefault || this.discount) && 'discounts',
         discountMatrix && 'discountMatrix',
+        (oneTime || repeatable || needPhoto) && 'etc',
       ]);
     },
   },
