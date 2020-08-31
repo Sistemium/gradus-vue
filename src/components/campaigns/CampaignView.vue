@@ -163,4 +163,8 @@ export default {
   }
 }
 
+.campaign-group-select {
+  color: $light-gray;
+}
+
 </style>
