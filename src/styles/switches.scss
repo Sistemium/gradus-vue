@@ -5,7 +5,7 @@
   margin-bottom: 18px;
 
   > * + * {
-    margin-left: $margin-right;
+    margin-left: $margin-top;
   }
 
   /deep/ .el-switch__label {
