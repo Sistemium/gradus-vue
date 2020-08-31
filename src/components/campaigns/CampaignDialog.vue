@@ -1,6 +1,6 @@
 <template lang="pug">
 
-el-dialog.campaign-input(
+el-dialog.campaign-dialog(
   top="4vh"
   :title="title"
   :before-close="closeDialog"
@@ -66,7 +66,7 @@ el-dialog.campaign-input(
     .buttons
       confirm-button.remove(
         size="small"
-        v-if="isEdit()"
+        :class="!isEdit && 'hidden'"
         text="Удалить" confirm-text="Точно удалить?"
         @confirm="removeClick"
       )
@@ -135,11 +135,9 @@ export default {
   methods: {
 
     closeDialog() {
-
       this.newCampaign = {};
       this.visible = false;
       this.$emit('closed');
-
     },
 
     submitDialog(formName) {
@@ -166,27 +164,17 @@ export default {
     },
 
     removeClick() {
-
       this.$emit('remove', this.campaign);
       this.closeDialog();
-
     },
-
-    isEdit() {
-      return this.campaign.id;
-    },
-
-    // minVersion() {
-    //   return this.campaign.version || 1;
-    // },
-    //
-    // maxVersion() {
-    //   return (this.campaign.version || 1) + 1;
-    // },
 
   },
 
   computed: {
+
+    isEdit() {
+      return !!this.campaign.id;
+    },
 
     pictures() {
       const { pictures } = this.newCampaign;
@@ -199,7 +187,7 @@ export default {
     },
 
     title() {
-      return this.isEdit() ? this.campaign.name : 'Новая Акция';
+      return this.isEdit ? this.campaign.name : 'Новая Акция';
     },
 
   },
@@ -212,28 +200,30 @@ export default {
 
 @import "../../styles/switches";
 
-.campaign-input {
+.campaign-dialog {
+  max-width: 1200px;
+}
 
-  .el-input {
-    width: 100%;
-  }
+.el-input {
+  width: 100%;
+}
 
-  .buttons {
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
 
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
+.remove {
+  margin-right: 0;
+}
 
-  }
+.hidden {
+  visibility: hidden;
+}
 
-  .remove {
-    margin-right: 0;
-  }
-
-  .el-input-number {
-    width: 100%;
-  }
-
+.el-input-number {
+  width: 100%;
 }
 
 .period {
