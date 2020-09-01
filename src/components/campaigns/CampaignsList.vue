@@ -7,7 +7,7 @@
       v-for="item in group.campaigns" :key="item.id"
       :id="`c-${item.id}`"
       @click.prevent="itemClick(item)"
-      :class="value && value.id === item.id && 'active'"
+      :class="[value && value.id === item.id && 'active', item.processing || 'draft']"
     )
       span.name {{ item.name }}
       template(v-if="hasAuthoring")
@@ -38,15 +38,15 @@ export default {
     groupedCampaigns() {
       const grouped = groupBy(this.campaigns, ({ groupCode, priorityId }) => priorityId || groupCode || 'Без группы');
       const groups = [
-        {
-          value: 'Без группы',
-          label: 'Без группы',
-        },
         ...campaignsPriorities()
           .map(({ id, name }) => ({
             value: id,
             label: name,
           })),
+        {
+          value: 'Без группы',
+          label: 'Без группы',
+        },
         ...campaignGroups(),
       ];
       const matching = map(groups, ({ value, label, order }) => ({
@@ -94,6 +94,15 @@ export default {
 @include responsive-only(lt-md) {
   .warning, .badge {
     display: none;
+  }
+}
+
+.list-group-item:not(.active) {
+  &.draft {
+    background: $light-green;
+  }
+  &.archive {
+    color: $gray;
   }
 }
 
