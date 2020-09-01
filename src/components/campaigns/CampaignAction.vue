@@ -51,7 +51,7 @@
           colspan="2"
         ) Бонус {{ option.discountCash }} ₽
 
-    tr.tfoot
+    tr.tfoot(v-if="hasFooter")
       td(colspan="6")
         .oneTime(v-if="action.oneTime")
           i.el-icon-circle-check
@@ -111,6 +111,7 @@ export default {
       return this.action.oneTime
         || this.action.repeatable
         || this.action.commentText
+        || this.action.territory
         || this.action.needPhoto;
     },
   },
