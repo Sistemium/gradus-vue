@@ -144,7 +144,9 @@ export function catalogueData(currentArticleGroup, filters, filteredGroups) {
     groups = filter(filteredGroups, g => g.articleGroupId === articleGroupId);
     // debug('bindCurrent', groups.length, articleGroupId, children.length);
   } else {
-    groups = orderBy(intersection(currentArticleGroup.parent.children, filteredGroups), 'name');
+    const { parent } = currentArticleGroup;
+    const siblings = parent ? parent.children : filter(filteredGroups, f => !f.parent);
+    groups = orderBy(intersection(siblings, filteredGroups), 'name');
   }
 
   const articles = articlesByGroupID(currentArticleGroup, filters) || [];
