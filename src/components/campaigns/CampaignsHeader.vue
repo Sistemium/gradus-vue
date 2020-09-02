@@ -65,7 +65,7 @@ export default {
   justify-content: space-between;
 
   .logo img {
-    max-width: 300px;
+    max-width: 260px;
   }
 
 }

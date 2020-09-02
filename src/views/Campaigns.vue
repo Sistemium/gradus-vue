@@ -158,6 +158,8 @@ export default {
         processing: 'draft',
         groupCode: this.$route.query.campaignGroup || null,
         ...dateBE(this.selectedMonth),
+        oneTime: true,
+        repeatable: true,
       };
     },
 
