@@ -174,23 +174,16 @@ export function removeCampaign(campaign) {
 }
 
 export function campaignGroups() {
-  return [
-    {
-      label: 'ОП',
-      value: 'op',
-      order: 1,
-    },
-    {
-      label: 'МВЗ',
-      value: 'mvz',
-      order: 2,
-    },
-    {
-      label: 'ЦФО',
-      value: 'cfo',
-      order: 3,
-    },
-  ];
+
+  const res = SalesTeam.getAll()
+    .map(t => ({
+      label: t.name,
+      value: t.id,
+      order: t.ord,
+    }));
+
+  return orderBy(res, 'order');
+
 }
 
 export const campaignWorkflow = new Workflow({

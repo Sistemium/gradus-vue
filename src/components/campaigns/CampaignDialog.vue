@@ -15,7 +15,7 @@ el-dialog.campaign-dialog(
     size="mini"
   )
     el-form-item(label="Группа" prop="groupCode")
-      campaign-group-select(v-model="newCampaign.groupCode")
+      campaign-group-select(v-model="newCampaign.groupCode" ref="groupSelect")
 
     el-form-item(label="Приоритет" prop="priorityId")
       campaign-priority-select(v-model="newCampaign.priorityId")
@@ -80,6 +80,7 @@ el-dialog.campaign-dialog(
 
 import CampaignGroupSelect from '@/components/campaigns/CampaignGroupSelect.vue';
 import CampaignPrioritySelect from '@/components/campaigns/CampaignPrioritySelect.vue';
+import { campaignGroups } from '@/services/campaigns';
 
 export default {
 
@@ -95,40 +96,7 @@ export default {
   data() {
     return {
       newCampaign: { ...this.campaign },
-      rules: {
-        priorityId: [],
-        groupCode: [
-          {
-            required: true,
-            message: 'Укажите группу акций',
-            trigger: 'blur',
-          },
-        ],
-        name: [
-          {
-            required: true,
-            message: 'Введите название',
-            trigger: 'blur',
-          },
-        ],
-        dateB: [
-          {
-            required: true,
-            message: 'Введите дату начала',
-            trigger: 'blur',
-          },
-        ],
-        dateE: [
-          {
-            required: true,
-            message: 'Введите дату окончания',
-            trigger: 'blur',
-          },
-        ],
-      },
-
       visible: true,
-
     };
   },
 
@@ -188,6 +156,40 @@ export default {
 
     title() {
       return this.isEdit ? this.campaign.name : 'Новая Акция';
+    },
+
+    rules() {
+      return {
+        priorityId: [],
+        groupCode: [
+          {
+            required: !!campaignGroups().length,
+            message: 'Укажите группу акций',
+            trigger: 'blur',
+          },
+        ],
+        name: [
+          {
+            required: true,
+            message: 'Введите название',
+            trigger: 'blur',
+          },
+        ],
+        dateB: [
+          {
+            required: true,
+            message: 'Введите дату начала',
+            trigger: 'blur',
+          },
+        ],
+        dateE: [
+          {
+            required: true,
+            message: 'Введите дату окончания',
+            trigger: 'blur',
+          },
+        ],
+      };
     },
 
   },

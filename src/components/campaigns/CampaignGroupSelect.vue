@@ -13,6 +13,7 @@ el-select.campaign-group-select(v-model="model" :placeholder="placeholder" v-els
 
 import find from 'lodash/find';
 import { campaignGroups } from '@/services/campaigns';
+import SalesTeam from '@/models/SalesTeam';
 
 const NAME = 'CampaignGroupSelect';
 
@@ -49,6 +50,12 @@ export default {
     model(value) {
       this.$emit('input', value);
     },
+  },
+  created() {
+    this.$bindToModel(SalesTeam);
+  },
+  beforeUpdate() {
+    this.options = campaignGroups();
   },
 };
 
