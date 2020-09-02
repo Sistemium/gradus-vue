@@ -1,6 +1,6 @@
 <template lang="pug">
 
-el-select.campaigns-priority-select(
+el-select.campaign-priority-select(
   v-model="model"
   :placeholder="placeholder"
   :clearable="true"
@@ -43,7 +43,7 @@ export default {
   },
   watch: {
     model(value) {
-      this.$emit('input', value);
+      this.$emit('input', value || null);
     },
   },
 };
@@ -53,7 +53,7 @@ export default {
 
 @import "../../styles/variables";
 
-.campaigns-priority-select {
+.campaign-priority-select {
   width: 250px;
 }
 

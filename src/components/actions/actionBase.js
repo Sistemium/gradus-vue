@@ -5,6 +5,7 @@ import maxBy from 'lodash/maxBy';
 import min from 'lodash/min';
 import find from 'lodash/find';
 import campaignsAuth from '@/components/campaigns/campaignsAuth';
+import { campaignsPriorityById } from '@/services/campaigns';
 
 export default {
 
@@ -21,6 +22,11 @@ export default {
   },
 
   computed: {
+
+    priorityName() {
+      const priority = campaignsPriorityById(this.action.priorityId);
+      return priority && priority.name;
+    },
 
     requirements() {
       return [

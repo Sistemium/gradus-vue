@@ -53,6 +53,9 @@
 
     tr.tfoot(v-if="hasFooter")
       td(colspan="6")
+        .priority(v-if="priorityName")
+          i.el-icon-s-flag
+          span {{ priorityName }}
         .oneTime(v-if="action.oneTime")
           i.el-icon-circle-check
           span Единовременная
@@ -112,6 +115,7 @@ export default {
         || this.action.repeatable
         || this.action.commentText
         || this.action.territory
+        || this.priorityName
         || this.action.needPhoto;
     },
   },
@@ -195,6 +199,7 @@ tr.header {
 .needPhoto {
   padding: 1px $padding;
   background: $orange;
+
   &, i {
     color: white !important;
   }
@@ -234,6 +239,16 @@ tr.header {
     color: $orange;
     margin-right: $padding;
   }
+
+  .priority {
+    display: block;
+
+    & + * {
+      margin-top: $padding;
+    }
+
+  }
+
 }
 
 td.discount, th.discount {

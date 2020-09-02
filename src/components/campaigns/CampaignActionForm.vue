@@ -17,6 +17,12 @@ el-form.campaign-action-form(
       autosize
     )
 
+  el-form-item(prop="priorityId")
+    campaign-priority-select(
+      v-model="action.priorityId"
+      placeholder="если нужно – укажите приоритет"
+    )
+
   action-options-form(
     v-if="mayHaveOptions"
     :model="action"
@@ -31,10 +37,13 @@ el-form.campaign-action-form(
   action-ranges-form(:model="action" :title="isRoot ? 'Общий ассортимент' : undefined")
 
   el-collapse(v-model="activeZones")
+
     el-collapse-item(title="Объем закупки" name="required" v-if="!isRoot")
       action-required-form(:required="action.required")
+
     el-collapse-item(title="Скидки" name="discounts")
       action-discount-form(:discount="action")
+
     el-collapse-item.matrix(title="Куб" name="discountMatrix" v-if="!isRoot && mayHaveOptions")
       action-discount-matrix-form(
         :discount-matrix="action.discountMatrix"
@@ -44,6 +53,7 @@ el-form.campaign-action-form(
         v-else size="mini" @click="addMatrixClick"
         type="primary"
       ) Добавить условия
+
     el-collapse-item.etc(title="Прочее" name="etc" v-if="isRoot")
       el-form-item.territory(v-if="isRoot")
         el-input(
@@ -67,6 +77,7 @@ import ActionRangesForm from '@/components/actions/ActionRangesForm.vue';
 import actionBase from '@/components/actions/actionBase';
 import optionEditing from '@/components/actions/optionEditing';
 import ActionDiscountMatrixForm from '@/components/actions/ActionDiscountMatrixForm.vue';
+import CampaignPrioritySelect from '@/components/campaigns/CampaignPrioritySelect.vue';
 
 const NAME = 'CampaignActionForm';
 
@@ -128,6 +139,7 @@ export default {
     ActionOptionsForm,
     ActionDiscountForm,
     ActionRequiredForm,
+    CampaignPrioritySelect,
   },
   props: {
     // action: Object,
@@ -188,6 +200,14 @@ export default {
 
 .el-collapse {
   border-bottom: none;
+}
+
+.campaign-priority-select {
+  display: block;
+  width: 100%;
+  /deep/ input {
+    color: $orange;
+  }
 }
 
 </style>

@@ -70,6 +70,7 @@ export default {
     title() {
       return this.actionId ? this.modelOrigin.name : 'Новая механика акции';
     },
+
     modelOrigin() {
 
       const { actionCopy } = this;
@@ -85,6 +86,7 @@ export default {
         options: [],
         required: { isMultiple: false },
         ranges: [],
+        priorityId: null,
         ...action,
       };
     },
@@ -159,9 +161,6 @@ export default {
       this.performOperation(async () => {
         if (!this.model.options.length) {
           throw new Error('Нужно добавить хотя бы один вариант');
-        }
-        if (!this.model.discountHeaders().length) {
-          throw new Error('Нужно добавить хотя бы одну скидку');
         }
         await this.validate();
         if (this.logHistory) {

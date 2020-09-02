@@ -2,6 +2,7 @@ import Campaign from '@/models/Campaign';
 import CampaignPicture from '@/models/CampaignPicture';
 import CampaignsPriority from '@/models/CampaignsPriority';
 import Action from '@/models/Action';
+import SalesTeam from '@/models/SalesTeam';
 import ActionHistory from '@/models/ActionHistory';
 import escapeRegExp from 'lodash/escapeRegExp';
 import filter from 'lodash/filter';
@@ -30,6 +31,7 @@ export async function campaignsData(month, searchText, force = false) {
     'where:': monthToWhere(month),
   };
 
+  await SalesTeam.findAll();
   await CampaignsPriority.findAll();
 
   const campaigns = await Campaign.findAll(fetchParams, {
@@ -239,4 +241,8 @@ export async function touchCampaignPictures(campaign) {
 
 export function campaignsPriorities() {
   return orderBy(CampaignsPriority.getAll(), ['ord', 'id']);
+}
+
+export function campaignsPriorityById(priorityId) {
+  return priorityId && CampaignsPriority.get(priorityId);
 }
