@@ -4,21 +4,38 @@ import Vue from 'vue';
 Vue.mixin({
   methods: {
     async updateRouteParams(updateParams = {}, updateQuery = {}, updateName) {
-      const { name, params = {}, query } = this.$route;
-      if (matches(updateParams)(params) && matches(updateQuery)(query) && !updateName) {
+
+      const { name, params = {}, query = {} } = this.$route;
+
+      const newParams = {
+        ...params,
+        ...updateParams,
+      };
+
+      const newQuery = {
+        ...query,
+        ...updateQuery,
+      };
+
+      const newName = updateName || name;
+
+      const sameState = matches(newParams)(params)
+        && matches(newQuery)(query)
+        && newName === name;
+
+      if (sameState) {
         return;
       }
+
+      // this.$debug('route:', name, params, query);
+      // this.$debug('update:', updateName, updateParams, updateQuery);
+
       await this.$router.push({
-        name: updateName || name,
-        params: {
-          ...params,
-          ...updateParams,
-        },
-        query: {
-          ...query,
-          ...updateQuery,
-        },
+        name: newName,
+        params: newParams,
+        query: newQuery,
       });
+
     },
   },
 });
