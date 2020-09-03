@@ -38,7 +38,7 @@
             .territory(v-if="campaign.territory")
               i.el-icon-location
               span {{ campaign.territory }}
-      tr(v-for="action in campaign.actions" :key="action.id")
+      tr(v-for="action in campaignActions(campaign)" :key="action.id")
         td
           campaign-action(:action="action" )
 
@@ -73,6 +73,10 @@ export default {
     },
   },
   methods: {
+    campaignActions({ actions }) {
+      const { priorityId } = this;
+      return priorityId ? actions.filter(a => a.priorityId === priorityId) : actions;
+    },
     showPeriod(campaign) {
       const { dateE, dateB } = this.monthBE;
       return campaign.dateE !== dateE || campaign.dateB !== dateB;
@@ -103,6 +107,7 @@ export default {
   },
   props: {
     campaigns: Array,
+    priorityId: String,
   },
   components: {
     CampaignsHeader,

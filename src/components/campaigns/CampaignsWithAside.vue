@@ -4,6 +4,7 @@ el-container.campaigns-with-aside
 
   el-aside
     resize#campaigns-scroll-container(:padding="20")
+      priorities-list(:campaigns="campaigns" v-model="currentPriority")
       campaigns-list(:campaigns="campaigns" v-model="currentCampaign")
 
   el-main
@@ -47,9 +48,15 @@ el-container.campaigns-with-aside
         )
 
     el-alert(
-      v-if="!currentCampaign && campaigns.length"
+      v-if="!currentCampaign && !currentPriority && campaigns.length"
       title="👈 Выберите акцию из списка"
       type="info"
+    )
+
+    priority-actions(
+      v-if="currentPriority"
+      :campaigns="campaigns"
+      :priority="currentPriority"
     )
 
     router-view(v-if="currentCampaign")
@@ -64,6 +71,8 @@ import * as actions from '@/vuex/campaigns/actions';
 import * as g from '@/vuex/campaigns/getters';
 import campaignsAuth from '@/components/campaigns/campaignsAuth';
 import CampaignWorkflow from '@/components/campaigns/CampaignWorkflow.vue';
+import PriorityActions from '@/components/actions/PriorityActions.vue';
+import PrioritiesList from '@/components/actions/PrioritiesList.vue';
 import { createNamespacedHelpers } from 'vuex';
 import CampaignsPictureGallery from './CampaignsPictureGallery';
 import CampaignsList from './CampaignsList.vue';
@@ -79,6 +88,7 @@ export default {
     return {
       loading: false,
       currentCampaign: undefined,
+      currentPriority: undefined,
       currentCampaignPictures: [],
     };
   },
@@ -90,17 +100,34 @@ export default {
   watch: {
     currentCampaign(campaign) {
       const { id: campaignId } = campaign || {};
-      this.updateRouteParams({ campaignId });
+      if (campaignId) {
+        this.currentPriority = undefined;
+      } else if (this.currentPriority) {
+        return;
+      }
       this.setPictures(campaign);
+      this.updateRouteParams({ campaignId }, {}, 'campaigns');
       this.$nextTick(() => {
         this.scrollToCampaign(campaign);
       });
+    },
+    currentPriority(priority) {
+      const { id: campaignId } = priority || {};
+      if (campaignId) {
+        this.currentCampaign = undefined;
+      } else if (this.currentCampaign) {
+        return;
+      }
+      this.updateRouteParams({ campaignId }, {}, 'campaignsPriorities');
     },
   },
 
   computed: {
     routedCampaign() {
-      const { campaignId } = this.$route.params;
+      const { params: { campaignId }, name } = this.$route;
+      if (name === 'campaignsPriorities') {
+        return null;
+      }
       return find(this.campaigns, { id: campaignId }) || null;
     },
     ...mapGetters({
@@ -167,6 +194,8 @@ export default {
 
   name: NAME,
   components: {
+    PriorityActions,
+    PrioritiesList,
     CampaignsPictureGallery,
     CampaignView,
     CampaignsList,
@@ -198,6 +227,10 @@ main {
 
 .campaign-workflow + * {
   margin-left: $margin-right;
+}
+
+.priorities-list {
+  margin-bottom: $margin-top;
 }
 
 </style>

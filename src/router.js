@@ -50,7 +50,7 @@ export default new Router({
         label: 'Авторизация',
       },
     },
-    campaignsRoutes,
+    ...campaignsRoutes,
     {
       path: '/targets/:groupId?',
       name: 'targets',
