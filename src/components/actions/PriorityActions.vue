@@ -4,7 +4,8 @@
   .title
     i.el-icon-s-flag
     span {{ priority.name }}
-  campaigns-actions-table(:campaigns="priorityCampaigns" :priority-id="priority.id")
+  resize(:padding="20")
+    campaigns-actions-table(:campaigns="priorityCampaigns" :priority-id="priority.id")
 
 </template>
 <script>
@@ -48,7 +49,7 @@ export default {
 }
 
 .campaigns-actions-table /deep/ {
-  .tfoot td .priority, .action-history-view {
+  .action-history-view {
     display: none;
   }
 }

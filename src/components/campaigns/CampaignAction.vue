@@ -53,7 +53,7 @@
 
     tr.tfoot(v-if="hasFooter")
       td(colspan="6")
-        .priority(v-if="priorityName")
+        .priority(v-if="priorityName && !hidePriority")
           i.el-icon-s-flag
           span {{ priorityName }}
         .oneTime(v-if="action.oneTime")
@@ -93,6 +93,9 @@ const NAME = 'CampaignAction';
 
 export default {
   name: NAME,
+  props: {
+    hidePriority: Boolean,
+  },
   components: {
     ActionHistoryView,
     ActionOption,
@@ -115,7 +118,7 @@ export default {
         || this.action.repeatable
         || this.action.commentText
         || this.action.territory
-        || this.priorityName
+        || (!this.hidePriority && this.priorityName)
         || this.action.needPhoto;
     },
   },

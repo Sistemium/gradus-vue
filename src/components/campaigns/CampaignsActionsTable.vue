@@ -40,7 +40,7 @@
               span {{ campaign.territory }}
       tr(v-for="action in campaignActions(campaign)" :key="action.id")
         td
-          campaign-action(:action="action" )
+          campaign-action(:action="action" :hide-priority="!!priorityId")
 
   router-view
 

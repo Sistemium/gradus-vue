@@ -1,6 +1,6 @@
 <template lang="pug">
 
-.action-history-view(v-if="history.length")
+.action-history-view(v-if="sortedHistory.length")
   .title
     span История изменений
   .action-history(v-for="entry in sortedHistory" :key="entry.id")
@@ -11,6 +11,7 @@
 <script>
 
 import orderBy from 'lodash/orderBy';
+import filter from 'lodash/filter';
 
 const NAME = 'ActionHistoryView';
 
@@ -21,7 +22,7 @@ export default {
   },
   computed: {
     sortedHistory() {
-      return orderBy(this.history, ['cts'], ['desc']);
+      return orderBy(filter(this.history, 'commentText'), ['cts'], ['desc']);
     },
   },
 };
