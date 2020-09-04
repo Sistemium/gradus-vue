@@ -44,7 +44,7 @@ el-container.campaigns(
 
     resize.resize#campaigns-scroll-container(:padding="20" v-if="layout==='table'")
       campaigns-header(:month="selectedMonth")
-      campaigns-priorities(:campaigns="campaigns")
+      campaigns-priorities(:campaigns="filteredCampaigns")
       campaigns-table(
         v-if="!loading"
         :campaigns="filteredCampaigns"

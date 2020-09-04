@@ -9,7 +9,7 @@ h1.campaigns-header
     span на
     span {{ periodLabel }}
   .logo
-    img(src="/images/logo-r50.jpg")
+    img(:src="src")
 
 </template>
 <script>
@@ -17,6 +17,7 @@ h1.campaigns-header
 import { campaignGroups } from '@/services/campaigns';
 import dayjs from 'dayjs';
 import find from 'lodash/find';
+import { mapState } from 'vuex';
 
 const NAME = 'CampaignsHeader';
 
@@ -24,6 +25,14 @@ export default {
   name: NAME,
   props: { month: String },
   computed: {
+    ...mapState('auth', {
+      org(auth) {
+        return (auth && auth.account) ? auth.account.org : null;
+      },
+    }),
+    src() {
+      return `/images/logo-${this.org}.jpg`;
+    },
     campaignGroup() {
       return this.$route.query.campaignGroup || null;
     },
@@ -64,8 +73,15 @@ export default {
 
   justify-content: space-between;
 
+  .logo {
+    position: relative;
+  }
+
   .logo img {
+    position: absolute;
+    right: 0;
     max-width: 260px;
+    max-height: 65px;
   }
 
 }

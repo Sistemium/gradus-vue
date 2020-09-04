@@ -41,6 +41,7 @@ export default {
 
 .title {
   font-size: x-large;
+  padding: $margin-top 0;
   i {
     color: $orange;
     margin-right: $margin-right;
