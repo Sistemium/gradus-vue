@@ -2,8 +2,6 @@
 
 .campaigns-actions-table
 
-  campaigns-header(:month="selectedMonth")
-
   table.campaign(
     v-for="campaign in campaignsWithActions" :key="campaign.id"
     :id="`c-${campaign.id}`"
@@ -53,7 +51,6 @@ import { createNamespacedHelpers } from 'vuex';
 import Action from '@/models/Action';
 import { dateBE } from '@/lib/dates';
 import CampaignAction from '@/components/campaigns/CampaignAction.vue';
-import CampaignsHeader from '@/components/campaigns/CampaignsHeader.vue';
 import campaignsAuth from '@/components/campaigns/campaignsAuth';
 import * as getters from '@/vuex/campaigns/getters';
 
@@ -110,7 +107,6 @@ export default {
     priorityId: String,
   },
   components: {
-    CampaignsHeader,
     CampaignAction,
   },
   mixins: [campaignsAuth],

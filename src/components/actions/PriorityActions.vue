@@ -4,8 +4,7 @@
   .title
     i.el-icon-s-flag
     span {{ priority.name }}
-  resize(:padding="20")
-    campaigns-actions-table(:campaigns="priorityCampaigns" :priority-id="priority.id")
+  campaigns-actions-table(:campaigns="priorityCampaigns" :priority-id="priority.id")
 
 </template>
 <script>
@@ -45,6 +44,11 @@ export default {
   i {
     color: $orange;
     margin-right: $margin-right;
+  }
+  @media print {
+    span {
+      font-weight: bold;
+    }
   }
 }
 

@@ -5,7 +5,7 @@ el-container.campaigns(
   element-loading-text="Загрузка данных ..."
 )
 
-  el-header.campaigns-header(height="")
+  el-header.header(height="")
 
     campaign-filters.filters
 
@@ -43,6 +43,8 @@ el-container.campaigns(
   )
 
     resize.resize#campaigns-scroll-container(:padding="20" v-if="layout==='table'")
+      campaigns-header(:month="selectedMonth")
+      campaigns-priorities(:campaigns="campaigns")
       campaigns-table(
         v-if="!loading"
         :campaigns="filteredCampaigns"
@@ -82,6 +84,8 @@ import LayoutSelect from '@/components/LayoutSelect.vue';
 import { dateBE } from '@/lib/dates';
 import campaignsAuth from '@/components/campaigns/campaignsAuth';
 import log from 'sistemium-telegram/services/log';
+import CampaignsPriorities from '@/components/campaigns/CampaignsPriorities.vue';
+import CampaignsHeader from '@/components/campaigns/CampaignsHeader.vue';
 
 const NAME = 'Campaigns';
 const { debug } = log(NAME);
@@ -241,6 +245,8 @@ export default {
   mixins: [campaignsAuth],
 
   components: {
+    CampaignsHeader,
+    CampaignsPriorities,
     LayoutSelect,
     CampaignsWithAside,
     CampaignFilters,
@@ -258,7 +264,7 @@ export default {
 @import "../styles/variables";
 @import "../styles/responsive";
 
-.campaigns-header {
+.header {
 
   margin-top: -5px;
   display: flex;

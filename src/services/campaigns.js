@@ -250,3 +250,8 @@ export function campaignsPriorityById(priorityId) {
 export function campaignsWithPriorityActions(campaigns, priorityId) {
   return filter(campaigns, ({ actions }) => find(actions, { priorityId }));
 }
+
+export function prioritiesOfCampaigns(campaigns) {
+  return campaignsPriorities()
+    .filter(({ id }) => campaignsWithPriorityActions(campaigns, id).length);
+}

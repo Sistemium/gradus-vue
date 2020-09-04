@@ -53,11 +53,11 @@ el-container.campaigns-with-aside
       type="info"
     )
 
-    priority-actions(
-      v-if="currentPriority"
-      :campaigns="campaigns"
-      :priority="currentPriority"
-    )
+    resize(:padding="20" v-if="currentPriority")
+      priority-actions(
+        :campaigns="campaigns"
+        :priority="currentPriority"
+      )
 
     router-view(v-if="currentCampaign")
 
