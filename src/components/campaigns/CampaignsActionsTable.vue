@@ -61,7 +61,7 @@ const NAME = 'CampaignsActionsTable';
 export default {
   computed: {
     campaignsWithActions() {
-      const withActions = filter(this.campaigns, ({ actions }) => actions.length);
+      const withActions = filter(this.campaigns, c => c.actions.length && c.processing === 'published');
       return orderBy(withActions, ({ priority }) => priority && (priority.ord || priority.id));
     },
     ...mapGetters({ selectedMonth: getters.SELECTED_MONTH }),
