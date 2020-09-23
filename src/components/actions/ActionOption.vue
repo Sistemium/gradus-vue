@@ -146,7 +146,7 @@ export default {
   background: $gray-border-color;
 
   @media print {
-    grid-template-columns: auto 59px 39px 59px 59px;
+    grid-template-columns: auto 89px 39px 59px 59px;
     background: $table-border-color;
   }
 

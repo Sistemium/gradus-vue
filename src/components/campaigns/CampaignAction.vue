@@ -264,10 +264,10 @@ td.discount, th.discount {
 th.volume, td.volume {
   width: 90px;
   max-width: 90px;
-  @media print {
-    width: 60px;
-    max-width: 60px;
-  }
+  //@media print {
+  //  width: 80px;
+  //  max-width: 80px;
+  //}
 }
 
 th.sku, td.sku {
