@@ -4,7 +4,11 @@ el-container.campaigns-with-aside
 
   el-aside
     resize#campaigns-scroll-container(:padding="20")
-      priorities-list(:campaigns="campaigns" v-model="currentPriority")
+      priorities-list(
+        v-if="!searchText"
+        :campaigns="campaigns"
+        v-model="currentPriority"
+      )
       campaigns-list(:campaigns="campaigns" v-model="currentCampaign")
 
   el-main
@@ -133,6 +137,7 @@ export default {
     ...mapGetters({
       actionCopy: g.ACTION_COPY,
       busy: g.BUSY,
+      searchText: g.SEARCH_TEXT,
     }),
   },
 
