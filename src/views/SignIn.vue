@@ -41,7 +41,7 @@ import InputMask from 'inputmask';
 import * as a from 'sistemium-vue/store/auth/actions';
 import { PHA_AUTH_TOKEN } from 'sistemium-vue/store/auth/mutations';
 
-// import log from 'sistemium-telegram/services/log';
+// import log from 'sistemium-debug';
 // const { debug } = log('SignIn');
 
 const phoneMask = '+7 (999) 999-99-99';

@@ -57,7 +57,7 @@ import find from 'lodash/find';
 import findIndex from 'lodash/findIndex';
 
 import TakePhotoButton from '@/components/TakePhotoButton.vue';
-import log from 'sistemium-telegram/services/log';
+import log from 'sistemium-debug';
 
 const name = 'PictureGallery';
 const { debug, error } = log(name);

@@ -6,7 +6,7 @@ img.placeholder(:src="avatarPicture()")
 
 <script>
 
-// import log from 'sistemium-telegram/services/log';
+// import log from 'sistemium-debug';
 import CampaignPicture from '@/models/CampaignPicture';
 
 // const { debug } = log('CampaignAvatar');

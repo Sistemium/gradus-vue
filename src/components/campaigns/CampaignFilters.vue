@@ -13,7 +13,7 @@
 <script>
 
 import { createNamespacedHelpers } from 'vuex';
-import { monthGenerator } from 'sistemium-telegram/services/moments';
+import { monthGenerator } from '@/lib/dates';
 import * as getters from '@/vuex/campaigns/getters';
 import * as actions from '@/vuex/campaigns/actions';
 import MonthSelect from '@/components/MonthSelect.vue';

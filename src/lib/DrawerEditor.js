@@ -1,4 +1,4 @@
-import log from 'sistemium-telegram/services/log';
+import log from 'sistemium-debug';
 import cloneDeep from 'lodash/cloneDeep';
 import matchesDeep from './matchesDeep';
 

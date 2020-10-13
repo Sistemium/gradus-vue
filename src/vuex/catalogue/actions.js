@@ -6,7 +6,7 @@ import * as svc from '@/services/catalogue';
 import * as m from '@/vuex/catalogue/mutations';
 import * as g from '@/vuex/catalogue/getters';
 
-import log from 'sistemium-telegram/services/log';
+import log from 'sistemium-debug';
 
 const { debug } = log('vuex:actions');
 

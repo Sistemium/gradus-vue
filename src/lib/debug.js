@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-import log from 'sistemium-telegram/services/log';
+import log from 'sistemium-debug';
 
 Vue.mixin({
 

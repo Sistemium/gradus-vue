@@ -28,7 +28,7 @@ import pick from 'lodash/pick';
 import { createNamespacedHelpers } from 'vuex';
 import * as a from '@/vuex/catalogue/actions';
 
-import log from 'sistemium-telegram/services/log';
+import log from 'sistemium-debug';
 import ManagedComponent from '@/lib/ManagedComponent';
 import catalogueAuth from '@/components/catalogue/catalogueAuth';
 

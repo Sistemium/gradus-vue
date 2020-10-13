@@ -29,7 +29,7 @@ el-dialog(
 import { createNamespacedHelpers } from 'vuex';
 import * as a from '@/vuex/campaigns/actions';
 
-import log from 'sistemium-telegram/services/log';
+import log from 'sistemium-debug';
 
 import CampaignPicture from '@/models/CampaignPicture';
 import campaignsAuth from '@/components/campaigns/campaignsAuth';

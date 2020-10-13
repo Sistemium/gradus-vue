@@ -83,7 +83,7 @@ import CampaignsWithAside from '@/components/campaigns/CampaignsWithAside.vue';
 import LayoutSelect from '@/components/LayoutSelect.vue';
 import { dateBE } from '@/lib/dates';
 import campaignsAuth from '@/components/campaigns/campaignsAuth';
-import log from 'sistemium-telegram/services/log';
+import log from 'sistemium-debug';
 import CampaignsPriorities from '@/components/campaigns/CampaignsPriorities.vue';
 import CampaignsHeader from '@/components/campaigns/CampaignsHeader.vue';
 

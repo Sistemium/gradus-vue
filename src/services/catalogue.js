@@ -15,7 +15,7 @@ import Article from '@/models/Article';
 import ArticlePicture from '@/models/ArticlePicture';
 import ArticlePictureArticle from '@/models/ArticlePictureArticle';
 
-import log from 'sistemium-telegram/services/log';
+import log from 'sistemium-debug';
 
 const { debug, error } = log('catalogue');
 

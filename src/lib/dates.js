@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import range from 'lodash/range';
 
 require('dayjs/locale/ru');
 
@@ -52,4 +53,21 @@ export function dateBE(monthId) {
     dateB: monthStart(monthId),
     dateE: monthEnd(monthId),
   };
+}
+
+
+export function monthGenerator(num, date = new Date()) {
+
+  return range(num)
+    .map(i => {
+
+      const month = dayjs(addMonths(date, 1 - i));
+
+      return {
+        id: month.format('YYYY-MM'),
+        label: month.format('YYYY/MM'),
+      };
+
+    });
+
 }

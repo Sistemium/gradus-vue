@@ -1,6 +1,6 @@
 import each from 'lodash/each';
 
-// import log from 'sistemium-telegram/services/log';
+// import log from 'sistemium-debug';
 
 // const { debug } = log('ManagedComponent');
 

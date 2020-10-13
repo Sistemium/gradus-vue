@@ -1,5 +1,5 @@
 import debounce from 'lodash/debounce';
-import log from 'sistemium-telegram/services/log';
+import log from 'sistemium-debug';
 import without from 'lodash/without';
 import * as svc from '@/services/campaigns';
 import * as g from '@/vuex/campaigns/getters';

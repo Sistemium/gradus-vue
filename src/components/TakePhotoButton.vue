@@ -23,8 +23,8 @@ import { mapState } from 'vuex';
 import VueDropzone from 'vue2-dropzone';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 
-import { serverDateFormat } from 'sistemium-telegram/services/moments';
-import log from 'sistemium-telegram/services/log';
+import { addMonths } from '@/lib/dates';
+import log from 'sistemium-debug';
 // import { isNative, takePhoto } from '@/services/native';
 
 const NAME = 'TakePhotoButton';
@@ -95,7 +95,7 @@ export default {
     },
 
     imsUrl() {
-      return `/ims/${this.org}?folder=${this.entityName}/${serverDateFormat()}`;
+      return `/ims/${this.org}?folder=${this.entityName}/${addMonths(new Date(), 0)}`;
     },
 
     // nativeTriggerClick() {

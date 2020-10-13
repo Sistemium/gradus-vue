@@ -26,7 +26,7 @@
 </template>
 <script>
 
-import log from 'sistemium-telegram/services/log';
+import log from 'sistemium-debug';
 
 import pull from 'lodash/pull';
 import SalesTarget from '@/models/SalesTarget';
