@@ -35,14 +35,13 @@
 </template>
 <script>
 
-import { mapActions, mapState, mapMutations } from 'vuex';
+import { createNamespacedHelpers } from 'vuex';
 import InputMask from 'inputmask';
 
 import * as a from 'sistemium-vue/store/auth/actions';
 import { PHA_AUTH_TOKEN } from 'sistemium-vue/store/auth/mutations';
 
-// import log from 'sistemium-debug';
-// const { debug } = log('SignIn');
+const { mapActions, mapState, mapMutations } = createNamespacedHelpers('auth');
 
 const phoneMask = '+7 (999) 999-99-99';
 const smsMask = '9{4,6}';
@@ -59,7 +58,7 @@ export default {
   },
 
   computed: {
-    ...mapState('auth', {
+    ...mapState({
       phaState(state) {
         return state[PHA_AUTH_TOKEN] && state[PHA_AUTH_TOKEN].phone ? 'sms' : 'phone';
       },
@@ -122,13 +121,13 @@ export default {
 
   methods: {
 
-    ...mapActions('auth', {
+    ...mapActions({
       authRequest: a.AUTH_REQUEST,
       authConfirm: a.AUTH_REQUEST_CONFIRM,
       clearError: a.CLEAR_ERROR,
     }),
 
-    ...mapMutations('auth', {
+    ...mapMutations({
       authCancel: PHA_AUTH_TOKEN,
     }),
 
