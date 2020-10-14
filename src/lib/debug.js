@@ -6,7 +6,7 @@ Vue.mixin({
 
   computed: {
     $log() {
-      return log(this.name);
+      return log(this.$options.name);
     },
   },
 
