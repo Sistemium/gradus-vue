@@ -92,9 +92,9 @@ export default {
 
   watch: {
     phaState() {
-      if (!this.authorized) {
-        this.$nextTick(() => this.attachMask());
-      }
+      // if (!this.authorized) {
+      this.$nextTick(() => this.attachMask());
+      // }
     },
     input() {
       const smsComplete = this.phaState === 'sms' && this.input.length === 6;
@@ -154,14 +154,20 @@ export default {
       }
 
       return this.authConfirm(value)
-        .then(() => this.$router.push('/'));
+        .then(() => {
+          this.$emit('cancel');
+          this.$router.push('/');
+        });
 
     },
 
     cancelClick() {
       if (this.phaState === 'phone' && !this.input) {
-        this.$router.replace('/');
-        return;
+        if (this.$route.name === 'signIn') {
+          this.$router.replace('/');
+          return;
+        }
+        this.$emit('cancel');
       }
       this.input = '';
       this.authCancel();
