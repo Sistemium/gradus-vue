@@ -6,6 +6,7 @@ import 'intersection-observer';
 import '@/lib/v-select';
 import '@/lib/virtual-scroll';
 import '@/lib/numberFilter';
+import '@/lib/modelExtentions';
 
 import { hideTabBar, isNative } from 'sistemium-vue/services/native';
 import { AUTH_INIT } from 'sistemium-vue/store/auth/actions';

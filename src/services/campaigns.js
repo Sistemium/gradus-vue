@@ -10,7 +10,6 @@ import orderBy from 'lodash/orderBy';
 import map from 'lodash/map';
 import find from 'lodash/find';
 import flatten from 'lodash/flatten';
-import { findByMany } from '@/lib/modelExtentions';
 import { monthToWhere, serverTimestamp } from '@/lib/dates';
 import Workflow from '@/lib/Workflow';
 
@@ -42,13 +41,13 @@ export async function campaignsData(month, searchText, force = false) {
   const campaignIds = mapIds(campaigns);
 
   if (campaignIds.length) {
-    const actions = await findByMany(Action, campaignIds, {
+    const actions = await Action.findByMany(campaignIds, {
       field: 'campaignId',
       force,
     });
     await CampaignPicture.findAll({ where: { campaignId: { '==': campaignIds } } }, { force });
     if (actions.length) {
-      await findByMany(ActionHistory, mapIds(actions), {
+      await ActionHistory.findByMany(mapIds(actions), {
         field: 'actionId',
         force,
       });
