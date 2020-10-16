@@ -1,10 +1,14 @@
 export default [{
+
   path: '/campaigns/:monthId?/:campaignId?',
   name: 'campaigns',
+
   component: () => import(/* webpackChunkName: "campaigns" */ '../views/Campaigns.vue'),
+
   meta: {
     label: 'Акции',
   },
+
   children: [{
     name: 'campaignsPriorities',
     path: 'priorities',
@@ -48,14 +52,7 @@ export default [{
         query: { ...query },
       },
     }),
-    component: () =>
-      import(/* webpackChunkName: "campaigns" */ '../components/actions/ActionPicturesEdit.vue'),
+    component: () => import(/* webpackChunkName: "campaigns" */ '../components/actions/ActionPicturesEdit.vue'),
   }],
-// }, {
-//   path: '/campaigns/:monthId/priority/:priorityId',
-//   name: 'campaignsPriorities',
-//   component: () => import(/* webpackChunkName: "campaigns" */ '../views/Campaigns.vue'),
-//   meta: {
-//     label: 'Акции',
-//   },
+
 }];

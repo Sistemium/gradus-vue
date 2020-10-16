@@ -52,6 +52,7 @@ export async function campaignsData(month, searchText, force = false) {
         field: 'actionId',
         force,
       });
+      const articlePictureIds = flatten(map(actions, 'articlePictureIds'));
       await ArticlePicture.findByMany(articlePictureIds);
     }
   }

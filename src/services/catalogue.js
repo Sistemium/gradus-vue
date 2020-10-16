@@ -257,7 +257,7 @@ export async function searchArticlePictures(searchText) {
   });
   const ids = map(articles, 'avatarPictureId');
   // const apa = await findByMany(ArticlePictureArticle, ids, { field: 'articleId' });
-  const pictures = await findByMany(ArticlePicture, ids);
+  const pictures = await ArticlePicture.findByMany(ids);
   return pictures.map(picture => ({
     ...picture,
     articles: Article.filter({ avatarPictureId: picture.id }),
