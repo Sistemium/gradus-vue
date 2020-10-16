@@ -30,7 +30,7 @@ el-dialog.action-pictures-edit(
     search-input(v-model="searchText" :debounce="500" size="mini")
 
     resize.pictures(
-      :padding="140"
+      :padding="120"
     )
       el-alert(v-if="noMatchingPictures" :show-icon="true" type="warning")
         span Нет подходящих изображений
@@ -95,8 +95,11 @@ export default {
     },
     pictureClick(picture) {
       const { id } = picture;
+      this.$debug(id, this.model);
       if (this.isSelected(picture)) {
-        this.model.splice(this.model.indexOf(picture), 1);
+        const idx = this.model.indexOf(id);
+        this.$debug(id, idx);
+        this.model.splice(idx, 1);
       } else {
         this.model.push(id);
       }
@@ -185,7 +188,11 @@ export default {
 }
 
 .content {
-  padding: 0 $margin-right 60px;
+  padding: 0 $margin-right 0;
+}
+
+.form-buttons {
+  margin-top: $margin-top;
 }
 
 </style>
