@@ -7,23 +7,24 @@
       v-for="item in group.campaigns" :key="item.id"
       :id="`c-${item.id}`"
       @click.prevent="itemClick(item)"
-      :class="value && value.id === item.id && 'active'"
+      :class="[value && value.id === item.id && 'active', item.processing || 'draft']"
     )
       span.name {{ item.name }}
-      .badge(v-if="item.pictures.length")
-        span {{ item.pictures.length }}
-      .warning(v-else)
-        i.el-icon-warning
+      template(v-if="hasAuthoring")
+        .badge(v-if="item.pictures.length")
+          span {{ item.pictures.length }}
+        .warning(v-else)
+          i.el-icon-warning
 
 </template>
 <script>
 
 import groupBy from 'lodash/groupBy';
 import map from 'lodash/map';
-import orderBy from 'lodash/orderBy';
 import filter from 'lodash/filter';
-import { campaignGroups } from '@/services/campaigns';
+import { campaignGroups, campaignsPriorities } from '@/services/campaigns';
 import CampaignPicture from '@/models/CampaignPicture';
+import campaignsAuth from '@/components/campaigns/campaignsAuth';
 
 const NAME = 'CampaignsList';
 
@@ -35,18 +36,26 @@ export default {
   },
   computed: {
     groupedCampaigns() {
-      const grouped = groupBy(this.campaigns, ({ groupCode }) => groupCode || 'Без группы');
-      const groups = [...campaignGroups(), {
-        value: 'Без группы',
-        label: 'Без группы',
-        order: -1,
-      }];
-      return filter(orderBy(map(groups, ({ value, label, order }) => ({
+      const grouped = groupBy(this.campaigns, ({ groupCode, priorityId }) => priorityId || groupCode || 'Без группы');
+      const groups = [
+        ...campaignsPriorities()
+          .map(({ id, name }) => ({
+            value: id,
+            label: name,
+          })),
+        {
+          value: 'Без группы',
+          label: 'Без группы',
+        },
+        ...campaignGroups(),
+      ];
+      const matching = map(groups, ({ value, label, order }) => ({
         value,
         label,
         order,
         campaigns: grouped[value],
-      })), 'order'), 'campaigns');
+      }));
+      return filter(matching, 'campaigns');
     },
   },
   methods: {
@@ -58,13 +67,14 @@ export default {
   created() {
     this.$bindToModel(CampaignPicture);
   },
+  mixins: [campaignsAuth],
 };
 
 </script>
 <style scoped lang="scss">
 
 @import "../../styles/badge";
-@import "../../styles/variables";
+@import "../../styles/responsive";
 
 .badge {
   @extend %badge;
@@ -79,6 +89,21 @@ export default {
 .warning {
   color: $orange;
   font-size: 22px;
+}
+
+@include responsive-only(lt-md) {
+  .warning, .badge {
+    display: none;
+  }
+}
+
+.list-group-item:not(.active) {
+  &.draft {
+    background: $light-green;
+  }
+  &.archive {
+    color: $gray;
+  }
 }
 
 </style>

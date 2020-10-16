@@ -12,6 +12,7 @@
       :class="req.cls"
       :style="requiredStyle"
       v-html="req.value || '-'"
+      v-if="!hasOptionRequirements(req.cls)"
     )
 
     .discount(
@@ -29,8 +30,8 @@
         i.el-icon-info
         span {{ option.commentText }}
     .option-required(
-      v-if="!ownRequirements.length"
       v-for="req in optionRequirements(option)" :key="`${req.cls}${idx}`"
+      v-if="!ownRequirements.length || hasOptionRequirements(req.cls)"
       :class="req.cls"
       v-html="req.value || '-'"
     )
@@ -142,8 +143,12 @@ export default {
   display: grid;
   gap: 1px;
   grid-template-columns: auto 89px 59px 89px 89px;
-  //grid-template-rows: auto auto;
   background: $gray-border-color;
+
+  @media print {
+    grid-template-columns: auto 89px 39px 59px 59px;
+    background: $table-border-color;
+  }
 
   > .action-option {
     grid-column: 1 / span 5;
@@ -194,6 +199,10 @@ export default {
   }
 }
 
+.option {
+  // align-items: stretch;
+}
+
 .self, .action-option > .comment {
 
   grid-column: 1;
@@ -201,14 +210,26 @@ export default {
   background: white;
   padding: $padding;
 
+  @media print {
+    padding: $padding-print;
+  }
+
   > * + * {
     margin-top: $padding;
+    @media print {
+      margin-top: $padding-print;
+    }
   }
 }
 
 .action-option > .comment {
   grid-column-end: 6;
-  background: $light-green;
+}
+
+.action-option, .option {
+  > .comment {
+    background: $light-green;
+  }
 }
 
 .name {
@@ -222,6 +243,9 @@ export default {
   background: white;
   display: flex;
 
+  @media print {
+    padding: $margin-top-print;
+  }
   .discount-matrix-info {
     // margin: 0 auto 0 0;
     // min-width: 0;
@@ -230,6 +254,9 @@ export default {
 
   > * + * {
     margin-left: $margin-top;
+    @media print {
+      margin-left: $margin-top-print;
+    }
   }
 
   .optional > .option {

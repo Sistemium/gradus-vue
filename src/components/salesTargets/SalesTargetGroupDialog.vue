@@ -21,7 +21,7 @@ el-dialog#sales-target-group-dialog(
 </template>
 <script>
 
-import log from 'sistemium-telegram/services/log';
+import log from 'sistemium-debug';
 
 import ArticleGroup from '@/models/ArticleGroup';
 import SalesTargetGroup from '@/models/SalesTargetGroup';

@@ -1,32 +1,30 @@
 <template lang="pug">
 
 .take-photo-button
-
-  vue-core-image-upload.browser(
-    :crop="false"
-    ref="uploadComponent"
-    @imageuploading="$emit('imageuploading')"
-    @imageuploaded="imageUploaded"
-    @imagechanged="imageChanged"
-    @errorhandle="onError"
-    :multiple="false"
-    :data="imageData"
-    :max-file-size="maxFileSize"
-    :headers="uploadHeaders"
-    :url="imsUrl()"
+  vue-dropzone(
+    ref="dz"
+    id="take-photo-button-drop-zone"
+    :options="dzOptions"
+    :destroy-dropzone="true"
+    :useCustomSlot="true"
+    :include-styling="false"
+    @vdropzone-success="onDropzoneSuccess"
+    @vdropzone-total-upload-progress="uploadProgress"
+    @vdropzone-error="onError"
   )
     slot
-      el-button.trigger(plain type="primary") {{ buttonText }}
+      el-badge.countdown(:value="countdown" :hidden="!isUploading")
+        el-button.trigger(plain type="primary" :disabled="isUploading") {{ currentButtonText }}
 
 </template>
 <script>
 
 import { mapState } from 'vuex';
-// eslint-disable-next-line
-import VueCoreImageUpload from 'vue-core-image-upload';
+import VueDropzone from 'vue2-dropzone';
+import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 
-import { serverDateFormat } from 'sistemium-telegram/services/moments';
-import log from 'sistemium-telegram/services/log';
+import { addMonths } from '@/lib/dates';
+import log from 'sistemium-debug';
 // import { isNative, takePhoto } from '@/services/native';
 
 const NAME = 'TakePhotoButton';
@@ -48,12 +46,11 @@ export default {
     },
   },
 
-  components: { VueCoreImageUpload },
+  components: { VueDropzone },
 
   data() {
     return {
-      imageData: null,
-      fileName: null,
+      countdown: 0,
     };
   },
 
@@ -68,17 +65,37 @@ export default {
     uploadHeaders() {
       return { authorization: this.token };
     },
+    currentButtonText() {
+      return this.isUploading ? 'Загрузка ...' : this.buttonText;
+    },
+    dzOptions() {
+      return {
+        url: this.imsUrl(),
+        thumbnailWidth: 150,
+        acceptedFiles: 'image/png,image/jpeg',
+        headers: this.uploadHeaders,
+        createImageThumbnails: false,
+      };
+    },
+    isUploading() {
+      return !!this.countdown;
+    },
   },
 
   methods: {
 
-    imageChanged(file) {
-      debug('imageChanged', file);
-      this.fileName = file.name;
+    unprocessedCount() {
+      const { dz } = this.$refs;
+      return dz && (dz.getUploadingFiles().length + dz.getQueuedFiles().length);
+    },
+
+    onDropzoneSuccess(file, response) {
+      this.imageUploaded(response, file.name);
+      this.$refs.dz.removeFile(file);
     },
 
     imsUrl() {
-      return `/ims/${this.org}?folder=${this.entityName}/${serverDateFormat()}`;
+      return `/ims/${this.org}?folder=${this.entityName}/${addMonths(new Date(), 0)}`;
     },
 
     // nativeTriggerClick() {
@@ -86,18 +103,24 @@ export default {
     //     .then(this.done);
     // },
 
-    imageUploaded(res) {
-      debug('imageUploaded', res);
+    uploadProgress(totalUploadProgress, totalBytes, totalBytesSent) {
+      this.countdown = this.unprocessedCount();
+      debug(totalUploadProgress, totalBytes, totalBytesSent);
+    },
+
+    imageUploaded(res, fileName) {
+      // debug('imageUploaded', fileName, res);
       const { pictures: picturesInfo } = res;
       if (!picturesInfo) {
         this.$emit('error', res);
         return;
       }
-      this.$emit('done', picturesInfo, this.fileName);
+      this.$emit('done', picturesInfo, fileName);
     },
 
-    onError(params) {
-      this.$emit('error', params);
+    onError(files, message) {
+      this.$refs.dz.removeAllFiles();
+      this.$emit('error', message);
     },
 
   },
@@ -115,5 +138,10 @@ export default {
   box-shadow: none;
   width: 100%;
 }
+
+.take-photo-button /deep/ .dz-preview {
+  display: none;
+}
+
 
 </style>

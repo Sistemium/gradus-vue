@@ -1,5 +1,5 @@
 import debounce from 'lodash/debounce';
-import log from 'sistemium-telegram/services/log';
+import log from 'sistemium-debug';
 import without from 'lodash/without';
 import * as svc from '@/services/campaigns';
 import * as g from '@/vuex/campaigns/getters';
@@ -20,6 +20,10 @@ export const COPY_ACTION_OPTION = 'COPY_ACTION_OPTION';
 export const COPY_ACTION = 'COPY_ACTION';
 export const TOGGLE_SHOW_PICTURES = 'TOGGLE_SHOW_PICTURES';
 
+export const REFRESH_CAMPAIGNS = 'REFRESH_CAMPAIGNS';
+export const CLEAR_ERROR = 'CLEAR_ERROR';
+export const TRANSIT_CAMPAIGN = 'TRANSIT_CAMPAIGN';
+export const COPY_CAMPAIGN = 'COPY_CAMPAIGN';
 
 export default {
 
@@ -27,29 +31,69 @@ export default {
     commit(m.SET_SHOW_PICTURES, !getters[g.SHOW_PICTURES]);
   },
 
+  async [TRANSIT_CAMPAIGN]({ commit }, { campaign, processing }) {
+    commit(m.SET_BUSY, true);
+    try {
+      await svc.updateCampaign(campaign, { processing });
+      if (processing === 'published') {
+        await svc.touchCampaignPictures(campaign);
+      }
+    } catch (e) {
+      commit(m.SET_ERROR, e);
+    }
+    commit(m.SET_BUSY, false);
+  },
+
   [COPY_ACTION_OPTION]({ commit }, option) {
     commit(m.SET_ACTION_OPTION_COPY, option);
+    commit(m.SET_ACTION_COPY, null);
+    commit(m.SET_CAMPAIGN_COPY, null);
   },
 
   [COPY_ACTION]({ commit }, option) {
+    commit(m.SET_ACTION_OPTION_COPY, null);
     commit(m.SET_ACTION_COPY, option);
+    commit(m.SET_CAMPAIGN_COPY, null);
+  },
+
+  [COPY_CAMPAIGN]({ commit }, campaign) {
+    commit(m.SET_ACTION_OPTION_COPY, null);
+    commit(m.SET_ACTION_COPY, null);
+    commit(m.SET_CAMPAIGN_COPY, {
+      ...campaign,
+      actions: [...campaign.actions],
+      pictures: [...campaign.pictures],
+    });
   },
 
   [SEARCH_TEXT_CHANGE]: debounce(async ({ commit, getters }, searchText) => {
 
     commit(m.SET_BUSY, true);
-
     commit(m.SET_SEARCH_TEXT, searchText);
 
     const date = getters[g.SELECTED_MONTH];
 
-    const campaigns = await svc.campaignsData(date, searchText);
-
-    commit(m.SET_CAMPAIGNS, campaigns);
+    try {
+      const campaigns = await svc.campaignsData(date, searchText);
+      commit(m.SET_CAMPAIGNS, campaigns);
+    } catch (e) {
+      commit(m.SET_ERROR, e);
+    }
 
     commit(m.SET_BUSY, false);
 
   }, 750),
+
+  async [REFRESH_CAMPAIGNS]({ getters, dispatch }) {
+
+    const date = getters[g.SELECTED_MONTH];
+    await dispatch(SELECT_MONTH, date);
+
+  },
+
+  [CLEAR_ERROR]({ commit }) {
+    commit(m.SET_ERROR, null);
+  },
 
   async [SELECT_MONTH]({ commit, getters }, date) {
 
@@ -57,13 +101,16 @@ export default {
 
     const searchText = getters[g.SEARCH_TEXT];
 
-    const campaigns = await svc.campaignsData(date, searchText);
-
-    commit(m.SET_CAMPAIGNS, campaigns);
+    try {
+      const campaigns = await svc.campaignsData(date, searchText, true);
+      commit(m.SET_CAMPAIGNS, campaigns);
+    } catch (e) {
+      commit(m.SET_ERROR, e);
+    }
 
     commit(m.SET_SELECTED_MONTH, date);
-
     commit(m.SET_BUSY, false);
+
   },
 
   async [UPDATE_CAMPAIGN]({ commit, getters }, campaign) {
@@ -71,15 +118,12 @@ export default {
     commit(m.SET_BUSY, true);
 
     const searchText = getters[g.SEARCH_TEXT];
-
     const date = getters[g.SELECTED_MONTH];
 
     const saved = await svc.saveCampaign(campaign);
-
     const campaigns = await svc.campaignsData(date, searchText);
 
     commit(m.SET_CAMPAIGNS, campaigns);
-
     commit(m.SET_BUSY, false);
 
     return saved;
@@ -92,15 +136,20 @@ export default {
 
     if (campaign) {
       commit(m.SET_BUSY, true);
-      commit(m.SET_GALLERY_PICTURES, await svc.getCampaignPicturesByCampaign(campaign));
-      setTimeout(() => {
-        commit(m.SET_GALLERY_PICTURE, campaignPicture);
-      }, 0);
+      try {
+        commit(m.SET_GALLERY_PICTURES, await svc.getCampaignPicturesByCampaign(campaign));
+        setTimeout(() => {
+          commit(m.SET_GALLERY_PICTURE, campaignPicture);
+        }, 0);
+        commit(m.SET_GALLERY_CAMPAIGN, campaign);
+      } catch (e) {
+        commit(m.SET_ERROR, e);
+      }
     } else {
       commit(m.SET_GALLERY_PICTURES);
+      commit(m.SET_GALLERY_CAMPAIGN);
     }
 
-    commit(m.SET_GALLERY_CAMPAIGN, campaign);
     commit(m.SET_BUSY, false);
 
   },
@@ -109,7 +158,11 @@ export default {
 
     if (campaign) {
       commit(m.SET_BUSY, true);
-      commit(m.SET_GALLERY_PICTURES, await svc.getCampaignPicturesByCampaign(campaign));
+      try {
+        commit(m.SET_GALLERY_PICTURES, await svc.getCampaignPicturesByCampaign(campaign));
+      } catch (e) {
+        commit(m.SET_ERROR, e);
+      }
     } else {
       commit(m.SET_GALLERY_PICTURES);
     }
@@ -124,7 +177,6 @@ export default {
     const galleryPictures = getters[g.GALLERY_PICTURES];
 
     commit(m.SET_GALLERY_PICTURES, [...galleryPictures, picture]);
-
     commit(m.SET_GALLERY_PICTURE, picture);
 
   },
@@ -140,7 +192,6 @@ export default {
     await svc.removeCampaignPicture(picture);
 
     commit(m.SET_GALLERY_PICTURES, pictures);
-
     commit(m.SET_BUSY, false);
 
   },
@@ -150,7 +201,6 @@ export default {
     commit(m.SET_BUSY, true);
 
     const searchText = getters[g.SEARCH_TEXT];
-
     const date = getters[g.SELECTED_MONTH];
 
     await svc.removeCampaign(campaign);
@@ -158,7 +208,6 @@ export default {
     const campaigns = await svc.campaignsData(date, searchText);
 
     commit(m.SET_CAMPAIGNS, campaigns);
-
     commit(m.SET_BUSY, false);
 
   },

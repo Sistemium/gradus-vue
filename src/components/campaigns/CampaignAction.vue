@@ -3,12 +3,13 @@
 .campaign-action
 
   table
-    thead
-      tr.header
-        // th.number №
-        th.name(colspan="2")
-          .title
-            span {{ action.name }}
+    // thead
+    tr.header
+      // th.number №
+      th.name(colspan="2")
+        .title
+          span {{ action.name }}
+          template(v-if="hasAuthoring")
             el-button(
               v-if="showPictures"
               @click="onEditPicturesClick()"
@@ -21,67 +22,70 @@
               size="mini" circle
             )
             button-edit.edit(@click="onEditClick")
-        th.required(v-for="req in requirements" :class="req.cls") {{ req.title }}
-        th.discount(v-for="discountHeader in discountHeaders") {{ discountHeader.title }}
-    tbody
-      tr.option(v-for="(option, idx) in hasOptions")
+      th.required(v-for="req in requirements" :class="req.cls") {{ req.title }}
+      th.discount(v-for="discountHeader in discountHeaders") {{ discountHeader.title }}
+    // tbody
+    tr.option(v-for="(option, idx) in hasOptions")
 
-        td.number {{ idx + 1 }}
+      td.number {{ idx + 1 }}
 
-        td.ranges(:action="action" v-if="hasRanges && !idx" :rowspan="hasOptions.length")
-          .name(v-for="range in action.ranges") {{ range.name }}
-        td.complex(:colspan="optionColSpan(option)" v-if="!hasRanges")
-          action-option(
-            :action="option"
-            :show-conditions="!!optionColSpan(option)"
-            :parent="action"
+      td.ranges(:action="action" v-if="hasRanges && !idx" :rowspan="hasOptions.length")
+        .name(v-for="range in action.ranges") {{ range.name }}
+      td.complex(:colspan="optionColSpan(option)" v-if="!hasRanges")
+        action-option(
+          :action="option"
+          :show-conditions="!!optionColSpan(option)"
+          :parent="action"
+        )
+
+      template(v-if="!optionColSpan(option)")
+
+        td.option-required(
+          v-for="req in requirements"
+          :class="req.cls"
+          v-html="req.fn(option) || '-'"
+        )
+
+        td.discount(
+          v-if="!(action.discountCash || option.discountCash) && (!discount || idx === 0)"
+          v-for="discountHeader in discountHeaders"
+          :rowspan="discount && hasOptions.length"
+        ) {{ action[discountHeader.name] || option[discountHeader.name] || '-' }}
+
+        td.discountCash(
+          v-if="option.discountCash"
+          colspan="2"
+        ) Бонус {{ option.discountCash }} ₽
+
+    tr.tfoot(v-if="hasFooter")
+      td(colspan="6")
+        .footer
+          action-pictures(
+            v-if="showPictures && action.articlePictureIds"
+            :article-picture-ids="pictureIds"
+            size="small"
           )
+          .other
+            .priority(v-if="priorityName && !hidePriority")
+              i.el-icon-s-flag
+              span {{ priorityName }}
+            .oneTime(v-if="action.oneTime")
+              i.el-icon-circle-check
+              span Единовременная
+            .repeatable(v-if="action.repeatable")
+              i.el-icon-circle-check
+              span Многократная
+            .needPhoto(v-if="action.needPhoto")
+              i.el-icon-camera-solid
+              span Фото-отчет
+            .territory(v-if="action.territory")
+              i.el-icon-location
+              span {{ action.territory }}
+            .comment(v-if="action.commentText")
+              i.el-icon-info
+              span {{ action.commentText }}
 
-        template(v-if="!optionColSpan(option)")
-
-          td.option-required(
-            v-for="req in requirements"
-            :class="req.cls"
-            v-html="req.fn(option) || '-'"
-          )
-
-          td.discount(
-            v-if="!(action.discountCash || option.discountCash) && (!discount || idx === 0)"
-            v-for="discountHeader in discountHeaders"
-            :rowspan="discount && hasOptions.length"
-          ) {{ action[discountHeader.name] || option[discountHeader.name] || '-' }}
-
-          td.discountCash(
-            v-if="option.discountCash"
-            colspan="2"
-          ) Бонус {{ option.discountCash }} ₽
-
-    tfoot
-      tr
-        td(colspan="6")
-          .footer
-            action-pictures(
-              v-if="showPictures && action.articlePictureIds"
-              :article-picture-ids="pictureIds"
-              size="small"
-            )
-            .other
-              .oneTime(v-if="action.oneTime")
-                i.el-icon-circle-check
-                span Единовременная
-              .repeatable(v-if="action.repeatable")
-                i.el-icon-circle-check
-                span Многократная
-              .repeatable(v-if="action.needPhoto")
-                i.el-icon-camera-solid
-                span Фото-отчет
-              .territory(v-if="action.territory")
-                i.el-icon-location
-                span {{ action.territory }}
-              .comment(v-if="action.commentText")
-                i.el-icon-info
-                span {{ action.commentText }}
-
+  action-history-view(:history="action.actionHistory")
   //.restrictions(v-if="hasRestrictions")
     action-option(v-for="restriction in hasRestrictions" :action="restriction")
 
@@ -93,6 +97,7 @@ import { createNamespacedHelpers } from 'vuex';
 import ActionOption from '@/components/actions/ActionOption.vue';
 import ActionRequired from '@/components/actions/ActionRequired.vue';
 import ActionPictures from '@/components/actions/ActionPictures.vue';
+import ActionHistoryView from '@/components/actions/ActionHistoryView.vue';
 import actionBase from '@/components/actions/actionBase';
 import { COPY_ACTION } from '@/vuex/campaigns/actions';
 import { SHOW_PICTURES } from '@/vuex/campaigns/getters';
@@ -103,8 +108,12 @@ const NAME = 'CampaignAction';
 
 export default {
   name: NAME,
+  props: {
+    hidePriority: Boolean,
+  },
   components: {
     ActionPictures,
+    ActionHistoryView,
     ActionOption,
     ActionRequired,
   },
@@ -131,6 +140,8 @@ export default {
       return this.action.oneTime
         || this.action.repeatable
         || this.action.commentText
+        || this.action.territory
+        || (!this.hidePriority && this.priorityName)
         || this.action.needPhoto;
     },
   },
@@ -167,12 +178,20 @@ th, td {
   border: 1px solid $gray-border-color;
   text-align: center;
   padding: $padding;
+  @media print {
+    border-color: $table-border-color;
+    padding: $padding-print;
+  }
 }
 
-tbody {
+table {
+
+  width: 100%;
+
   td.complex {
     padding: 0;
   }
+
 }
 
 
@@ -193,27 +212,44 @@ tbody {
 
 }
 
-thead {
+tr.header {
 
   background: $gray-background;
 
   th {
     padding: $padding * 2;
+    @media print {
+      padding: $padding-print * 2
+    }
+
   }
 
 }
 
-table {
-  width: 100%;
+.needPhoto {
+  padding: 1px $padding;
+  background: $orange;
+
+  &, i {
+    color: white !important;
+  }
 }
 
 .comment {
   margin-top: $padding;
+  @media print {
+    margin-top: $padding-print;
+  }
   white-space: pre-line;
-  display: block;
+  display: block !important;
 }
 
-tfoot {
+.tfoot td > * {
+  margin-right: $margin-right;
+  display: inline-block;
+}
+
+.tfoot {
 
   .footer {
     display: flex;
@@ -234,39 +270,70 @@ tfoot {
     }
   }
 
-  td {
+}
 
-    padding: $padding;
-    text-align: left;
+.tfoot td {
 
-    span {
-      font-size: $small-font-size;
+  padding: $padding;
+  text-align: left;
+
+  @media print {
+    padding: $padding-print;
+  }
+
+  span {
+    font-size: $small-font-size;
+    @media print {
+      font-size: $small-font-size-print;
+    }
+  }
+
+  i {
+    color: $orange;
+    margin-right: $padding;
+  }
+
+  .priority {
+    display: block;
+
+    & + * {
+      margin-top: $padding;
     }
 
-    i {
-      color: $orange;
-      margin-right: $padding;
-    }
   }
 
 }
 
 td.discount, th.discount {
   width: 90px;
+  @media print {
+    width: 60px;
+  }
 }
 
 th.volume, td.volume {
   width: 90px;
   max-width: 90px;
+  //@media print {
+  //  width: 80px;
+  //  max-width: 80px;
+  //}
 }
 
 th.sku, td.sku {
   width: 60px;
   max-width: 60px;
+  @media print {
+    width: 40px;
+    max-width: 40px;
+  }
 }
 
 th.number, td.number {
   width: 40px;
+  @media print {
+    width: 26px;
+  }
 }
 
 @media print {
@@ -294,12 +361,19 @@ th {
         text-align: left;
         font-weight: bold;
         font-size: 16px;
+        @media print {
+          font-size: $font-size-large-print;
+        }
         flex: 1;
       }
 
     }
 
   }
+}
+
+.action-history-view {
+  margin-top: $padding;
 }
 
 </style>

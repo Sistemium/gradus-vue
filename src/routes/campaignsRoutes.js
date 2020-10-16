@@ -1,4 +1,4 @@
-export default {
+export default [{
   path: '/campaigns/:monthId?/:campaignId?',
   name: 'campaigns',
   component: () => import(/* webpackChunkName: "campaigns" */ '../views/Campaigns.vue'),
@@ -6,6 +6,9 @@ export default {
     label: 'Акции',
   },
   children: [{
+    name: 'campaignsPriorities',
+    path: 'priorities',
+  }, {
     name: 'campaignActionCreate',
     path: 'action/create',
     props: ({ params, query }) => ({
@@ -21,8 +24,7 @@ export default {
       path: 'paste',
       name: 'campaignActionPaste',
     }],
-    component: () =>
-      import(/* webpackChunkName: "campaigns" */ '../components/campaigns/CampaignActionEdit.vue'),
+    component: () => import(/* webpackChunkName: "campaigns" */ '../components/campaigns/CampaignActionEdit.vue'),
   }, {
     name: 'campaignActionEdit',
     path: 'action/:actionId/edit',
@@ -34,8 +36,7 @@ export default {
         query: { ...query },
       },
     }),
-    component: () =>
-      import(/* webpackChunkName: "campaigns" */ '../components/campaigns/CampaignActionEdit.vue'),
+    component: () => import(/* webpackChunkName: "campaigns" */ '../components/campaigns/CampaignActionEdit.vue'),
   }, {
     name: 'actionPicturesEdit',
     path: 'action/:actionId/pictures',
@@ -50,4 +51,11 @@ export default {
     component: () =>
       import(/* webpackChunkName: "campaigns" */ '../components/actions/ActionPicturesEdit.vue'),
   }],
-};
+// }, {
+//   path: '/campaigns/:monthId/priority/:priorityId',
+//   name: 'campaignsPriorities',
+//   component: () => import(/* webpackChunkName: "campaigns" */ '../views/Campaigns.vue'),
+//   meta: {
+//     label: 'Акции',
+//   },
+}];

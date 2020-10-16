@@ -9,40 +9,39 @@
   .fields
 
     el-input.phone-number(
-    v-if="phaState==='sms'"
-    label="Телефон"
-    v-model="phone"
-    readonly
-    disabled
+      v-if="phaState==='sms'"
+      label="Телефон"
+      v-model="phone"
+      readonly
+      disabled
     )
 
     el-input.sms(
-    v-model="input"
-    type="tel"
-    id="sign-input"
-    :label="label"
-    :placeholder="placeholder"
+      v-model="input"
+      type="tel"
+      id="sign-input"
+      :label="label"
+      :placeholder="placeholder"
     )
 
   .buttons
     el-button(
-    :plain="phaState === 'phone'"
-    :type="buttonType"
-    :disabled="!isComplete || !!error"
-    @click="sendClick"
+      :plain="phaState === 'phone'"
+      :type="buttonType"
+      :disabled="!isComplete || !!error"
+      @click="sendClick"
     ) {{ buttonText }}
 
 </template>
 <script>
 
-import { mapActions, mapState, mapMutations } from 'vuex';
+import { createNamespacedHelpers } from 'vuex';
 import InputMask from 'inputmask';
 
 import * as a from 'sistemium-vue/store/auth/actions';
 import { PHA_AUTH_TOKEN } from 'sistemium-vue/store/auth/mutations';
 
-// import log from 'sistemium-telegram/services/log';
-// const { debug } = log('SignIn');
+const { mapActions, mapState, mapMutations } = createNamespacedHelpers('auth');
 
 const phoneMask = '+7 (999) 999-99-99';
 const smsMask = '9{4,6}';
@@ -59,7 +58,7 @@ export default {
   },
 
   computed: {
-    ...mapState('auth', {
+    ...mapState({
       phaState(state) {
         return state[PHA_AUTH_TOKEN] && state[PHA_AUTH_TOKEN].phone ? 'sms' : 'phone';
       },
@@ -93,9 +92,9 @@ export default {
 
   watch: {
     phaState() {
-      if (!this.authorized) {
-        this.$nextTick(() => this.attachMask());
-      }
+      // if (!this.authorized) {
+      this.$nextTick(() => this.attachMask());
+      // }
     },
     input() {
       const smsComplete = this.phaState === 'sms' && this.input.length === 6;
@@ -122,13 +121,13 @@ export default {
 
   methods: {
 
-    ...mapActions('auth', {
+    ...mapActions({
       authRequest: a.AUTH_REQUEST,
       authConfirm: a.AUTH_REQUEST_CONFIRM,
       clearError: a.CLEAR_ERROR,
     }),
 
-    ...mapMutations('auth', {
+    ...mapMutations({
       authCancel: PHA_AUTH_TOKEN,
     }),
 
@@ -155,11 +154,21 @@ export default {
       }
 
       return this.authConfirm(value)
-        .then(() => this.$router.push('/'));
+        .then(() => {
+          this.$emit('cancel');
+          this.$router.push('/');
+        });
 
     },
 
     cancelClick() {
+      if (this.phaState === 'phone' && !this.input) {
+        if (this.$route.name === 'signIn') {
+          this.$router.replace('/');
+          return;
+        }
+        this.$emit('cancel');
+      }
       this.input = '';
       this.authCancel();
       this.clearError();

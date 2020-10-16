@@ -4,9 +4,9 @@ import keyBy from 'lodash/keyBy';
 import flatten from 'lodash/flatten';
 import uniq from 'lodash/uniq';
 import map from 'lodash/map';
-// import find from 'lodash/find';
 import escapeRegExp from 'lodash/escapeRegExp';
 import orderBy from 'lodash/orderBy';
+import noop from 'lodash/noop';
 
 import Vue from 'vue';
 
@@ -15,25 +15,32 @@ import Article from '@/models/Article';
 import ArticlePicture from '@/models/ArticlePicture';
 import ArticlePictureArticle from '@/models/ArticlePictureArticle';
 
-import { findByMany } from '@/lib/modelExtentions';
-
-import log from 'sistemium-telegram/services/log';
+import log from 'sistemium-debug';
 
 const { debug, error } = log('catalogue');
 
-export async function loadData() {
+export async function loadData(progress = noop) {
 
   const fetchParams = {
     limit: 1500,
   };
 
+  progress('групп номенклатуры');
+
   await ArticleGroup.fetchAll(fetchParams);
+
+  progress('изображений');
 
   await ArticlePicture.fetchAll(fetchParams);
 
-  await Article.fetchAll(fetchParams);
+  progress('номенклатуры');
 
-  const articles = Article.filter({});
+  await Article.fetchAll({
+    ...fetchParams,
+    volumeNotZero: true,
+  });
+
+  const articles = Article.getAll();
   debug('articles', articles.length);
 
   const groupsWithArticlesIDs = Object.keys(keyBy(articles, 'articleGroupId'));
@@ -55,6 +62,8 @@ export async function loadData() {
     });
 
   debug('removedCount', removedCount);
+
+  progress('');
 
 }
 
@@ -139,7 +148,9 @@ export function catalogueData(currentArticleGroup, filters, filteredGroups) {
     groups = filter(filteredGroups, g => g.articleGroupId === articleGroupId);
     // debug('bindCurrent', groups.length, articleGroupId, children.length);
   } else {
-    groups = orderBy(intersection(currentArticleGroup.parent.children, filteredGroups), 'name');
+    const { parent } = currentArticleGroup;
+    const siblings = parent ? parent.children : filter(filteredGroups, f => !f.parent);
+    groups = orderBy(intersection(siblings, filteredGroups), 'name');
   }
 
   const articles = articlesByGroupID(currentArticleGroup, filters) || [];

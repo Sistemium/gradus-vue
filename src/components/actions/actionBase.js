@@ -3,8 +3,13 @@ import { discountInfo } from '@/models/Action';
 import minBy from 'lodash/minBy';
 import maxBy from 'lodash/maxBy';
 import min from 'lodash/min';
+import find from 'lodash/find';
+import campaignsAuth from '@/components/campaigns/campaignsAuth';
+import { campaignsPriorityById } from '@/services/campaigns';
 
 export default {
+
+  mixins: [campaignsAuth],
 
   props: {
     action: {
@@ -17,6 +22,11 @@ export default {
   },
 
   computed: {
+
+    priorityName() {
+      const priority = campaignsPriorityById(this.action.priorityId);
+      return priority && priority.name;
+    },
 
     requirements() {
       return [
@@ -105,6 +115,15 @@ export default {
           };
         }));
     },
+    hasOptionRequirements(cls) {
+      const { hasOptions } = this;
+      if (!hasOptions) {
+        return null;
+      }
+      const optionFind = option => find(this.optionRequirements(option), r => r.cls === cls);
+      const res = hasOptions.map(optionFind);
+      return find(res, 'value');
+    },
   },
 
 };
@@ -139,7 +158,7 @@ function volumeRequirements(required) {
       .join(' '),
     cost && filter([
       !isMultiple && 'от',
-      `${cost} ₽`,
+      `${cost}&nbsp;руб.`,
       costTo && `до ${costTo}`,
     ])
       .join(' '),

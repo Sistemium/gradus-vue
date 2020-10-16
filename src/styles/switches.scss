@@ -1,0 +1,16 @@
+@import "variables";
+
+%switches {
+
+  margin-bottom: 18px;
+
+  > * + * {
+    margin-left: $margin-top;
+  }
+
+  /deep/ .el-switch__label {
+    font-weight: normal;
+    color: $gray;
+  }
+
+}

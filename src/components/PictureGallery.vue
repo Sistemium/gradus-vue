@@ -27,7 +27,7 @@
   .empty(v-else @click.prevent="$emit('image-click')")
     img(src="/images/placeholder.png" v-if="showEmpty")
 
-  .buttons(v-if="model")
+  .buttons(v-if="model && hasAuthoring")
 
     el-button.make-avatar(
       v-if="avatarId && images.length > 1"
@@ -57,7 +57,7 @@ import find from 'lodash/find';
 import findIndex from 'lodash/findIndex';
 
 import TakePhotoButton from '@/components/TakePhotoButton.vue';
-import log from 'sistemium-telegram/services/log';
+import log from 'sistemium-debug';
 
 const name = 'PictureGallery';
 const { debug, error } = log(name);
@@ -74,6 +74,10 @@ export default {
 
   props: {
     // images: Array,
+    hasAuthoring: {
+      type: Boolean,
+      default: false,
+    },
     model: {
       type: Object,
       // required: true,
@@ -124,9 +128,9 @@ export default {
     activeId(id) {
       this.$nextTick(() => this.setActiveItemById(id));
     },
-    carouselItem(item) {
-      console.info(item); // eslint-disable-line
-    },
+    // carouselItem(item) {
+    //   console.info(item); // eslint-disable-line
+    // },
   },
 
   methods: {

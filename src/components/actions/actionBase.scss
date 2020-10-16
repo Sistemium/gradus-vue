@@ -3,6 +3,9 @@
 .comment {
   color: $dark-gray;
   font-size: $small-font-size;
+  @media print {
+    font-size: $small-font-size-print;
+  }
   white-space: pre-line;
   i {
     margin-right: $padding;
@@ -36,5 +39,8 @@ td > .action-option > .self, .action-option-info {
     color: $orange;
     font-style: normal;
     font-size: $small-font-size;
+    @media print {
+      font-size: $small-font-size-print;
+    }
   }
 }

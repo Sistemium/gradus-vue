@@ -39,21 +39,9 @@ export default {
 @import "../styles/variables";
 
 .form-buttons {
-
   display: flex;
   justify-content: space-around;
   text-align: center;
-  position: absolute;
-  bottom: 0;
-  padding: $margin-top;
-  left: 0;
-  right: 0;
-  background-color: $gray-background;
-  z-index: 2;
-
-  > * + * {
-    margin-left: $margin-right;
-  }
 }
 
 </style>

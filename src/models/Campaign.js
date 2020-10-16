@@ -1,5 +1,6 @@
 import Model from 'sistemium-vue/jsdata/Model';
 import './Action';
+import './CampaignsPriority';
 
 export default new Model({
 
@@ -10,6 +11,12 @@ export default new Model({
   keepChangeHistory: false,
 
   relations: {
+    belongsTo: {
+      CampaignsPriority: {
+        localField: 'priority',
+        localKey: 'priorityId',
+      },
+    },
     hasMany: {
       CampaignPicture: {
         localField: 'pictures',

@@ -8,7 +8,7 @@
 </template>
 <script>
 
-import log from 'sistemium-telegram/services/log';
+import log from 'sistemium-debug';
 
 const name = 'HelloWorld';
 const { debug } = log(name);

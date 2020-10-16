@@ -3,7 +3,12 @@
 el-container.campaigns-with-aside
 
   el-aside
-    resize#campaigns-scroll-container(:padding="30")
+    resize#campaigns-scroll-container(:padding="20")
+      priorities-list(
+        v-if="!searchText"
+        :campaigns="campaigns"
+        v-model="currentPriority"
+      )
       campaigns-list(:campaigns="campaigns" v-model="currentCampaign")
 
   el-main
@@ -15,10 +20,23 @@ el-container.campaigns-with-aside
       @campaignPictureClick="campaignPictureClick"
     )
       template(v-slot:buttons)
+        campaign-workflow(
+          :disabled="busy"
+          :processing="currentCampaign.processing"
+          @transition="onWorkflowTransition"
+        )
+        transition(name="bounce")
+          el-tooltip(v-if="actionCopy")
+            div(slot="content") Нажмите, чтобы вставить копию механики «{{ actionCopy.name }}»
+            el-button(
+              v-if="actionCopy"
+              @click="onPasteAction"
+              icon="el-icon-suitcase"
+              size="mini" circle
+            )
         el-button(
-          v-if="actionCopy"
-          @click="onPasteAction"
-          icon="el-icon-suitcase"
+          @click="onCopyCampaign"
+          icon="el-icon-copy-document"
           size="mini" circle
         )
         button-edit(@click="onEditCampaign")
@@ -30,13 +48,20 @@ el-container.campaigns-with-aside
           carousel-type=""
           :show-empty="false"
           @uploaded="setPictures(currentCampaign)"
+          :has-authoring="hasAuthoring"
         )
 
     el-alert(
-      v-if="!currentCampaign && campaigns.length"
+      v-if="!currentCampaign && !currentPriority && campaigns.length"
       title="👈 Выберите акцию из списка"
       type="info"
     )
+
+    resize(:padding="20" v-if="currentPriority")
+      priority-actions(
+        :campaigns="campaigns"
+        :priority="currentPriority"
+      )
 
     router-view(v-if="currentCampaign")
 
@@ -46,9 +71,12 @@ el-container.campaigns-with-aside
 import find from 'lodash/find';
 
 import CampaignPicture from '@/models/CampaignPicture';
-import * as svc from '@/services/campaigns';
 import * as actions from '@/vuex/campaigns/actions';
 import * as g from '@/vuex/campaigns/getters';
+import campaignsAuth from '@/components/campaigns/campaignsAuth';
+import CampaignWorkflow from '@/components/campaigns/CampaignWorkflow.vue';
+import PriorityActions from '@/components/actions/PriorityActions.vue';
+import PrioritiesList from '@/components/actions/PrioritiesList.vue';
 import { createNamespacedHelpers } from 'vuex';
 import CampaignsPictureGallery from './CampaignsPictureGallery';
 import CampaignsList from './CampaignsList.vue';
@@ -64,6 +92,7 @@ export default {
     return {
       loading: false,
       currentCampaign: undefined,
+      currentPriority: undefined,
       currentCampaignPictures: [],
     };
   },
@@ -75,21 +104,40 @@ export default {
   watch: {
     currentCampaign(campaign) {
       const { id: campaignId } = campaign || {};
-      this.updateRouteParams({ campaignId });
+      if (campaignId) {
+        this.currentPriority = undefined;
+      } else if (this.currentPriority) {
+        return;
+      }
       this.setPictures(campaign);
+      this.updateRouteParams({ campaignId }, {}, 'campaigns');
       this.$nextTick(() => {
         this.scrollToCampaign(campaign);
       });
+    },
+    currentPriority(priority) {
+      const { id: campaignId } = priority || {};
+      if (campaignId) {
+        this.currentCampaign = undefined;
+      } else if (this.currentCampaign) {
+        return;
+      }
+      this.updateRouteParams({ campaignId }, {}, 'campaignsPriorities');
     },
   },
 
   computed: {
     routedCampaign() {
-      const { campaignId } = this.$route.params;
+      const { params: { campaignId }, name } = this.$route;
+      if (name === 'campaignsPriorities') {
+        return null;
+      }
       return find(this.campaigns, { id: campaignId }) || null;
     },
     ...mapGetters({
       actionCopy: g.ACTION_COPY,
+      busy: g.BUSY,
+      searchText: g.SEARCH_TEXT,
     }),
   },
 
@@ -110,7 +158,12 @@ export default {
   methods: {
     ...mapActions({
       campaignPictureClick: actions.SHOW_CAMPAIGN_PICTURE,
+      transitCampaign: actions.TRANSIT_CAMPAIGN,
+      copyCampaign: actions.COPY_CAMPAIGN,
     }),
+    onCopyCampaign() {
+      this.copyCampaign(this.currentCampaign);
+    },
     onEditCampaign() {
       this.$emit('editCampaign', this.currentCampaign);
     },
@@ -119,6 +172,12 @@ export default {
     },
     onPasteAction() {
       this.updateRouteParams({}, {}, 'campaignActionPaste');
+    },
+    onWorkflowTransition(processing) {
+      return this.transitCampaign({
+        campaign: this.currentCampaign,
+        processing,
+      });
     },
     scrollToCampaign(campaign) {
       if (!campaign) {
@@ -130,38 +189,53 @@ export default {
       });
     },
     setPictures(campaign) {
-      // this.currentCampaignPictures = campaign ? campaign.pictures : [];
       const query = {
         where: { campaignId: { '==': campaign && campaign.id } },
         orderBy: [['ts', 'ASC'], ['id', 'ASC']],
       };
       CampaignPicture.bindAll(this, query, 'currentCampaignPictures');
-      if (!campaign) {
-        return;
-      }
-      this.loading = true;
-      svc.getCampaignPicturesByCampaign(campaign)
-        .finally(() => {
-          this.loading = false;
-        });
     },
   },
 
   name: NAME,
   components: {
+    PriorityActions,
+    PrioritiesList,
     CampaignsPictureGallery,
     CampaignView,
     CampaignsList,
+    CampaignWorkflow,
   },
+  mixins: [campaignsAuth],
 };
 
 </script>
 <style scoped lang="scss">
 
 @import "../../styles/variables";
+@import "../../styles/responsive";
 
 aside {
   margin-top: $margin-top;
+  @include responsive-only(lt-md) {
+    max-width: 220px;
+  }
+  @include responsive-only(md) {
+    max-width: 260px;
+  }
+}
+
+main {
+  padding-right: 0;
+  padding-bottom: 0;
+}
+
+.campaign-workflow + * {
+  margin-left: $margin-right;
+}
+
+.priorities-list {
+  margin-bottom: $margin-top;
 }
 
 </style>

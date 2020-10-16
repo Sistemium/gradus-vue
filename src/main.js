@@ -6,7 +6,9 @@ import 'intersection-observer';
 import '@/lib/v-select';
 import '@/lib/virtual-scroll';
 import '@/lib/numberFilter';
+import '@/lib/modelExtentions';
 
+import { hideTabBar, isNative } from 'sistemium-vue/services/native';
 import { AUTH_INIT } from 'sistemium-vue/store/auth/actions';
 
 import SearchInput from '@/lib/SearchInput.vue';
@@ -24,6 +26,8 @@ import store from './store';
 import './lib/bindToModel';
 import './lib/updateRouteParams';
 import './lib/ruDate';
+import './lib/authHelpers';
+import './lib/debug';
 
 Vue.config.productionTip = false;
 Vue.component('resize', Resize);
@@ -38,6 +42,10 @@ new Vue({
   store,
   render: h => h(App),
   created() {
+    if (isNative() && process.env.VUE_APP_NAVBAR_HIDE === 'true') {
+      hideTabBar();
+    }
+    // return store.dispatch(`auth/${AUTH_INIT}`, this.$route.query['access-token']);
     return store.dispatch(`auth/${AUTH_INIT}`);
   },
 }).$mount('#app');

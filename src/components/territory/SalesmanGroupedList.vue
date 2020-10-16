@@ -5,7 +5,7 @@
   .list-group(v-for="group in groupedItems" :key="group.id")
 
     .list-group-header
-      .name {{ group.name }}
+      .name {{ group.name || 'Нет СВ' }}
 
     .list-group-item(
       v-for="item in group.items" :key="item.id"

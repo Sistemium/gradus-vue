@@ -2,7 +2,7 @@ import Model from 'sistemium-vue/jsdata/Model';
 import forEach from 'lodash/forEach';
 
 import RelationCache from '@/lib/RelationCache';
-import Article from './Article';
+import Article from './Article'; // eslint-disable-line
 
 const relationCache = new RelationCache({});
 

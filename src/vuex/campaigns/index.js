@@ -8,6 +8,7 @@ export default {
   namespaced: true,
 
   state: {
+    [states.ERROR]: null,
     [states.BUSY]: false,
     [states.SELECTED_MONTH]: '',
     [states.SEARCH_TEXT]: '',
@@ -17,6 +18,7 @@ export default {
     [states.ACTIVE_GALLERY_PICTURE]: false,
     [states.ACTION_OPTION_COPY]: null,
     [states.ACTION_COPY]: null,
+    [states.CAMPAIGN_COPY]: null,
     [states.SHOW_PICTURES]: null,
   },
 

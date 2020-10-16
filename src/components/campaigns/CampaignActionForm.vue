@@ -17,17 +17,11 @@ el-form.campaign-action-form(
       autosize
     )
 
-  el-form-item.territory(v-if="isRoot")
-    el-input(
-      v-model="action.territory" placeholder="ограничение по территории" :clearable="true"
+  el-form-item(prop="priorityId")
+    campaign-priority-select(
+      v-model="action.priorityId"
+      placeholder="если нужно – укажите приоритет"
     )
-      template(slot="prepend")
-        i.el-icon-location
-
-  .switches(v-if="isRoot")
-    el-switch(v-model="action.oneTime" inactive-text="Единовременная")
-    el-switch(v-model="action.repeatable" inactive-text="Многократная")
-    el-switch(v-model="action.needPhoto" inactive-text="Фото-отчет")
 
   action-options-form(
     v-if="mayHaveOptions"
@@ -43,10 +37,13 @@ el-form.campaign-action-form(
   action-ranges-form(:model="action" :title="isRoot ? 'Общий ассортимент' : undefined")
 
   el-collapse(v-model="activeZones")
+
     el-collapse-item(title="Объем закупки" name="required" v-if="!isRoot")
       action-required-form(:required="action.required")
+
     el-collapse-item(title="Скидки" name="discounts")
       action-discount-form(:discount="action")
+
     el-collapse-item.matrix(title="Куб" name="discountMatrix" v-if="!isRoot && mayHaveOptions")
       action-discount-matrix-form(
         :discount-matrix="action.discountMatrix"
@@ -56,6 +53,18 @@ el-form.campaign-action-form(
         v-else size="mini" @click="addMatrixClick"
         type="primary"
       ) Добавить условия
+
+    el-collapse-item.etc(title="Прочее" name="etc" v-if="isRoot")
+      el-form-item.territory(v-if="isRoot")
+        el-input(
+          v-model="action.territory" placeholder="ограничение по территории" :clearable="true"
+        )
+          template(slot="prepend")
+            i.el-icon-location
+      .switches
+        el-switch(v-model="action.oneTime" inactive-text="Единовременная")
+        el-switch(v-model="action.repeatable" inactive-text="Многократная")
+        el-switch(v-model="action.needPhoto" inactive-text="Фото-отчет")
 
 </template>
 <script>
@@ -68,6 +77,7 @@ import ActionRangesForm from '@/components/actions/ActionRangesForm.vue';
 import actionBase from '@/components/actions/actionBase';
 import optionEditing from '@/components/actions/optionEditing';
 import ActionDiscountMatrixForm from '@/components/actions/ActionDiscountMatrixForm.vue';
+import CampaignPrioritySelect from '@/components/campaigns/CampaignPrioritySelect.vue';
 
 const NAME = 'CampaignActionForm';
 
@@ -86,7 +96,7 @@ export default {
       };
     },
     validate(cb) {
-      this.$refs.form.validate(cb);
+      return this.$refs.form.validate(cb);
     },
     addOption() {
       this.$emit('addOption');
@@ -103,10 +113,12 @@ export default {
     initZones() {
       const { isRoot, action: { discountMatrix } } = this;
       const byDefault = !isRoot && !discountMatrix;
+      const { oneTime, repeatable, needPhoto } = this.action;
       return filter([
         (byDefault || this.hasRequired) && 'required',
         (byDefault || this.discount) && 'discounts',
         discountMatrix && 'discountMatrix',
+        (oneTime || repeatable || needPhoto) && 'etc',
       ]);
     },
   },
@@ -127,6 +139,7 @@ export default {
     ActionOptionsForm,
     ActionDiscountForm,
     ActionRequiredForm,
+    CampaignPrioritySelect,
   },
   props: {
     // action: Object,
@@ -151,7 +164,7 @@ export default {
 </script>
 <style scoped lang="scss">
 
-@import "../../styles/variables";
+@import "../../styles/switches";
 
 .action-ranges-form {
   margin-top: 7px;
@@ -168,21 +181,12 @@ export default {
 }
 
 .switches {
-  margin-bottom: 18px;
-
-  > * + * {
-    margin-left: $margin-right;
-  }
-
-  /deep/ .el-switch__label {
-    font-weight: normal;
-    color: $gray;
-  }
+  @extend %switches;
 }
 
 .campaign-action-form /deep/ h3 {
   font-weight: 500;
-  font-size: 13px;
+  font-size: $small-font-size;
 }
 
 .el-collapse-item.matrix {
@@ -196,6 +200,14 @@ export default {
 
 .el-collapse {
   border-bottom: none;
+}
+
+.campaign-priority-select {
+  display: block;
+  width: 100%;
+  /deep/ input {
+    color: $orange;
+  }
 }
 
 </style>

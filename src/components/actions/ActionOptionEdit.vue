@@ -23,6 +23,7 @@ el-drawer.campaign-action-edit(
     )
 
   form-buttons(
+    v-if="hasAuthoring"
     :loading="loading"
     :changed="changed"
     @deleteClick="deleteClick"
@@ -170,10 +171,18 @@ export default {
 </script>
 <style scoped lang="scss">
 
-@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.form-buttons {
+  @extend %bottom-bar;
+}
 
 .content {
   padding: 0 $margin-right 80px;
+}
+
+.campaign-action-edit /deep/ .el-drawer__body {
+  overflow-y: scroll;
 }
 
 </style>

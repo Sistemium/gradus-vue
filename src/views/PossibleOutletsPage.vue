@@ -94,13 +94,7 @@ export default {
     },
     onSalesmanId(salesmanId) {
       this.outlets = svc.possibleOutlets(salesmanId);
-      const state = {
-        name: 'PossibleOutlets',
-      };
-      if (salesmanId) {
-        state.query = { salesmanId };
-      }
-      this.$router.push(state);
+      this.updateRouteParams({}, { salesmanId });
     },
   },
 

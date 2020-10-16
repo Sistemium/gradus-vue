@@ -1,8 +1,16 @@
 import Vue from 'vue';
-import { dateFormat } from 'sistemium-telegram/services/moments';
+import dayjs from 'dayjs';
 
 Vue.filter('ruDate', ruDateFilter);
 
-function ruDateFilter(value) {
-  return value && dateFormat(value);
+export function ruDateFilter(value) {
+  return value && dayjs(value)
+    .format('DD.MM.YYYY');
+}
+
+Vue.filter('ruDateTime', ruDateTimeFilter);
+
+export function ruDateTimeFilter(value) {
+  return value && dayjs(value)
+    .format('DD.MM.YYYY в HH:mm');
 }

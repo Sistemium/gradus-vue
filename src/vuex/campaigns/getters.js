@@ -1,6 +1,7 @@
 import * as svc from '@/services/campaigns';
 
 export const BUSY = 'BUSY';
+export const ERROR = 'ERROR';
 export const SELECTED_MONTH = 'selectedMonth';
 export const SEARCH_TEXT = 'searchText';
 export const CAMPAIGNS = 'campaigns';
@@ -10,6 +11,7 @@ export const GALLERY_PICTURES = 'galleryPictures';
 export const ACTIVE_GALLERY_PICTURE = 'activeGalleryPicture';
 export const ACTION_OPTION_COPY = 'ACTION_OPTION_COPY';
 export const ACTION_COPY = 'ACTION_COPY';
+export const CAMPAIGN_COPY = 'CAMPAIGN_COPY';
 
 export const SHOW_PICTURES = 'SHOW_PICTURES';
 
@@ -26,6 +28,10 @@ export default {
 
   [ACTION_COPY](state) {
     return state[ACTION_COPY];
+  },
+
+  [CAMPAIGN_COPY](state) {
+    return state[CAMPAIGN_COPY];
   },
 
   [SELECTED_MONTH](state) {
@@ -55,6 +61,10 @@ export default {
 
   [BUSY](state) {
     return state[BUSY];
+  },
+
+  [ERROR](state) {
+    return state[ERROR];
   },
 
 };

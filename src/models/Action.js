@@ -2,6 +2,8 @@ import Model from 'sistemium-vue/jsdata/Model';
 // import map from 'lodash/map';
 import filter from 'lodash/filter';
 // import maxBy from 'lodash/maxBy';
+import './ActionHistory';
+import './CampaignsPriority';
 
 export default new Model({
 
@@ -16,6 +18,17 @@ export default new Model({
       Campaign: {
         localField: 'campaign',
         localKey: 'campaignId',
+      },
+      // FIXME: CampaignActionEdit don't detect changes if this relation is defined
+      // CampaignsPriority: {
+      //   localField: 'priority',
+      //   localKey: 'priorityId',
+      // },
+    },
+    hasMany: {
+      ActionHistory: {
+        localField: 'actionHistory',
+        foreignKey: 'actionId',
       },
     },
   },

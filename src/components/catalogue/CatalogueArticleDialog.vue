@@ -11,6 +11,7 @@ custom-class="el-dialog-gallery"
 center
 )
   catalogue-picture-gallery(
+  :has-authoring="hasAuthoring"
   v-loading="busy"
   element-loading-text="Обработка изображения ..."
   @image-click="closeDialog"
@@ -27,8 +28,9 @@ import pick from 'lodash/pick';
 import { createNamespacedHelpers } from 'vuex';
 import * as a from '@/vuex/catalogue/actions';
 
-import log from 'sistemium-telegram/services/log';
+import log from 'sistemium-debug';
 import ManagedComponent from '@/lib/ManagedComponent';
+import catalogueAuth from '@/components/catalogue/catalogueAuth';
 
 import CataloguePictureGallery from './CataloguePictureGallery';
 
@@ -105,7 +107,7 @@ export default {
     CataloguePictureGallery,
   },
 
-  mixins: [ManagedComponent],
+  mixins: [ManagedComponent, catalogueAuth],
 
 };
 

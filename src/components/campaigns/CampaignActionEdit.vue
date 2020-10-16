@@ -20,13 +20,16 @@ el-drawer.campaign-action-edit(
       ref="form"
       :is-root="true"
     )
-    form-buttons(
-      :loading="loading"
-      :changed="changed"
-      @deleteClick="deleteClick"
-      @cancelClick="cancelClick"
-      @saveClick="saveClick"
-    )
+    .footer
+      action-history-form(v-if="logHistory" :history="actionHistoryEntry" ref="historyForm")
+      form-buttons(
+        v-if="hasAuthoring"
+        :loading="loading"
+        :changed="changed"
+        @deleteClick="deleteClick"
+        @cancelClick="cancelClick"
+        @saveClick="saveClick"
+      )
 
   action-option-edit(
     v-if="editOption"
@@ -45,7 +48,10 @@ import { v4 } from 'uuid';
 import { createNamespacedHelpers } from 'vuex';
 import DrawerEditor from '@/lib/DrawerEditor';
 import Action from '@/models/Action';
+import Campaign from '@/models/Campaign';
+import ActionHistory from '@/models/ActionHistory';
 import CampaignActionForm from '@/components/campaigns/CampaignActionForm.vue';
+import ActionHistoryForm from '@/components/actions/ActionHistoryForm.vue';
 import ActionOptionEdit from '@/components/actions/ActionOptionEdit.vue';
 import FormButtons from '@/lib/FormButtons.vue';
 import cloneDeep from 'lodash/cloneDeep';
@@ -58,11 +64,13 @@ const { mapGetters } = createNamespacedHelpers('campaigns');
 const NAME = 'CampaignActionEdit';
 
 export default {
+
   computed: {
 
     title() {
       return this.actionId ? this.modelOrigin.name : 'Новая механика акции';
     },
+
     modelOrigin() {
 
       const { actionCopy } = this;
@@ -78,23 +86,38 @@ export default {
         options: [],
         required: { isMultiple: false },
         ranges: [],
+        priorityId: null,
         ...action,
       };
     },
     defaultProps() {
       return {
         campaignId: this.campaignId,
-        oneTime: true,
-        repeatable: true,
+        oneTime: false,
+        repeatable: false,
         needPhoto: false,
       };
     },
+
     campaignId() {
       return this.$route.params.campaignId;
     },
+
+    logHistory() {
+      if (!this.actionId || !this.changed) {
+        return false;
+      }
+      const campaign = Campaign.get(this.campaignId);
+      if (!campaign) {
+        return false;
+      }
+      return campaign.processing === 'published';
+    },
+
     ...mapGetters({
       actionCopy: g.ACTION_COPY,
     }),
+
   },
   methods: {
     getActionPlain() {
@@ -135,29 +158,35 @@ export default {
       });
     },
     saveClick() {
-      this.performOperation(async () => new Promise((resolve, reject) => {
+      this.performOperation(async () => {
         if (!this.model.options.length) {
-          reject(new Error('Нужно добавить хотя бы один вариант'));
-          return;
+          throw new Error('Нужно добавить хотя бы один вариант');
         }
-        if (!this.model.discountHeaders().length) {
-          reject(new Error('Нужно добавить хотя бы одну скидку'));
-          return;
+        await this.validate();
+        if (this.logHistory) {
+          await this.validate(this.$refs.historyForm.$refs.form);
         }
-        this.$refs.form.validate(isValid => {
-          if (!isValid) {
-            reject(new Error('Форма не заполнена корректно'));
-            return;
-          }
-          Action.create(this.model)
-            .then(resolve, reject);
-        });
-      }));
+        await this.saveAction();
+      });
     },
+
+    async saveAction() {
+      const { logHistory } = this;
+      if (logHistory) {
+        await ActionHistory.create({
+          ...this.actionHistoryEntry,
+          actionId: this.actionId,
+          archived: this.modelOrigin,
+        });
+      }
+      Action.create(this.model);
+    },
+
     onOptionDelete() {
       const { idx } = this.editOption;
       this.model.options.splice(idx, 1);
     },
+
     onOptionSave(option) {
       if (!this.editOption) {
         throw new Error('Undefined option onOptionSave');
@@ -165,6 +194,7 @@ export default {
       const { idx } = this.editOption;
       this.$set(this.model.options, idx, { id: v4(), ...option });
     },
+
   },
   props: {
     actionId: {
@@ -174,6 +204,9 @@ export default {
   data() {
     return {
       model: null,
+      actionHistoryEntry: {
+        commentText: '',
+      },
       editOption: null,
       campaignActionRules: {
         name: [
@@ -192,6 +225,7 @@ export default {
     }, { immediate: true });
   },
   components: {
+    ActionHistoryForm,
     FormButtons,
     CampaignActionForm,
     ActionOptionEdit,
@@ -203,14 +237,18 @@ export default {
 </script>
 <style scoped lang="scss">
 
-@import "../../styles/variables";
+@import "../../styles/mixins";
 
 .content {
-  padding: 0 $margin-right 80px;
+  padding: 0 $margin-right 200px;
 }
 
 .campaign-action-edit /deep/ .el-drawer__body {
   overflow-y: scroll;
+}
+
+.footer {
+  @extend %bottom-bar;
 }
 
 </style>

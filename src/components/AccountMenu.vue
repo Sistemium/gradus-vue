@@ -6,20 +6,43 @@ el-menu(mode="horizontal" :router="false")
       span.title
         img(src="../assets/icons8-test-account.svg")
         span {{ account.name }}
+    el-menu-item(
+      v-for="account in otherAccounts" :key="account.authId"
+      @click="switchToAccount(account)"
+    )
+      img(src="../assets/icons8-change-user.svg")
+      span {{ account.name }}
+    el-menu-item(@click="addAccountModal")
+      img(src="../assets/icons8-add.svg")
+      span Добавить аккаунт
     el-menu-item(index="/logout" @click="logoutMessage")
       img(src="../assets/icons8-shutdown.svg")
       span Выход
 
+  el-dialog(
+    title="Добавление учетной записи"
+    :append-to-body="true"
+    :close-on-click-modal="false"
+    :visible.sync="addAccountModalVisible"
+    :destroy-on-close="true"
+  )
+    sign-in(@cancel="addAccountModalVisible=false")
+
 </template>
 <script>
 
-import { LOGOFF } from 'sistemium-vue/store/auth/actions';
-import { mapActions } from 'vuex';
+import filter from 'lodash/filter';
+import { LOGOFF, LOG_ACCOUNT } from 'sistemium-vue/store/auth/actions';
+import * as g from 'sistemium-vue/store/auth/getters';
+import { createNamespacedHelpers } from 'vuex';
+import SignIn from '@/views/SignIn.vue';
+
+const { mapActions, mapGetters } = createNamespacedHelpers('auth');
 
 export default {
 
   name: 'AccountMenu',
-
+  components: { SignIn },
   props: {
     /**
      * @property {String} account.name
@@ -28,9 +51,27 @@ export default {
     index: String,
   },
 
+  data() {
+    return {
+      addAccountModalVisible: false,
+    };
+  },
+
+  computed: {
+    ...mapGetters({
+      accounts: g.SAVED_ACCOUNTS,
+    }),
+    otherAccounts() {
+      return filter(this.accounts, ({ authId }) => authId !== this.account.authId);
+    },
+  },
+
   methods: {
 
-    ...mapActions('auth', [LOGOFF]),
+    ...mapActions({
+      logoff: LOGOFF,
+      logAccount: LOG_ACCOUNT,
+    }),
 
     logoutMessage() {
 
@@ -38,9 +79,25 @@ export default {
         confirmButtonText: 'Подтвердить',
         cancelButtonText: 'Отменить',
         type: 'warning',
-      }).then(() => {
-        this[LOGOFF]();
-      }).catch(() => {});
+      })
+        .then(() => {
+          this.logoff();
+        })
+        .catch(() => {
+        });
+
+    },
+
+    switchToAccount(account) {
+      this.$debug('switchToAccount', account);
+      this.logAccount(account)
+        .then(() => this.$router.push('/'))
+        .catch(e => this.$error(e));
+    },
+
+    addAccountModal() {
+
+      this.addAccountModalVisible = true;
 
     },
 
@@ -56,9 +113,14 @@ export default {
 
 .title {
   border-bottom: none !important;
+
   img {
     height: 30px;
     width: 30px;
+  }
+
+  > span {
+    margin-left: $padding;
   }
 }
 
@@ -68,7 +130,7 @@ export default {
   }
 }
 
-@include responsive-only(lt-md) {
+@include responsive-only(lt-sm) {
   .title span {
     display: none;
   }

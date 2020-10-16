@@ -5,9 +5,11 @@ el-container.campaigns(
   element-loading-text="Загрузка данных ..."
 )
 
-  el-header.campaigns-header(height="")
+  el-header.header(height="")
 
     campaign-filters.filters
+
+    layout-select(v-model="layout" name="campaigns")
 
     el-button.show-pictures(
       :type="showPictures ? 'primary' : 'default'"
@@ -18,17 +20,45 @@ el-container.campaigns(
 
     layout-select(v-model="layout")
 
-    el-button.add-campaign(type="" @click="addCampaignClick" :round="true")
+    transition(name="bounce")
+      el-tooltip(v-if="campaignCopy")
+        div(slot="content") Нажмите, чтобы вставить копию акции «{{ campaignCopy.name }}»
+        el-button(
+          @click="onPasteCampaign"
+          icon="el-icon-suitcase"
+          size="mini" circle
+        )
+
+    el-button.add-campaign(
+      @click="addCampaignClick"
+      :round="true"
+      size="small"
+      v-if="hasAuthoring"
+    )
       i.el-icon-document-add
       span Добавить акцию
+
+    el-button.refresh(
+      :disabled="!!busy"
+      @click="refreshClick"
+      size="small"
+      :circle="true"
+      :icon="busy ? 'el-icon-loading' : 'el-icon-refresh'"
+    )
 
   el-container.campaigns-main(
     v-loading="loading"
     element-loading-text="Загрузка данных ..."
   )
 
-    resize.resize#campaigns-scroll-container(:padding="30" v-if="layout==='table'")
-      campaigns-table(v-if="!loading" :campaigns="filteredCampaigns" @cell-click="campaignClick")
+    resize.resize#campaigns-scroll-container(:padding="20" v-if="layout==='table'")
+      campaigns-header(:month="selectedMonth")
+      campaigns-priorities(:campaigns="filteredCampaigns")
+      campaigns-table(
+        v-if="!loading"
+        :campaigns="filteredCampaigns"
+        @editCampaign="campaignClick"
+      )
     campaigns-with-aside(:campaigns="filteredCampaigns" v-else @editCampaign="campaignClick")
 
   campaign-dialog(
@@ -61,40 +91,61 @@ import * as actions from '@/vuex/campaigns/actions';
 import CampaignsWithAside from '@/components/campaigns/CampaignsWithAside.vue';
 import LayoutSelect from '@/components/LayoutSelect.vue';
 import { dateBE } from '@/lib/dates';
-// import log from 'sistemium-telegram/services/log';
+import campaignsAuth from '@/components/campaigns/campaignsAuth';
+import log from 'sistemium-debug';
+import CampaignsPriorities from '@/components/campaigns/CampaignsPriorities.vue';
+import CampaignsHeader from '@/components/campaigns/CampaignsHeader.vue';
 
-// const { debug } = log('Campaigns');
+const NAME = 'Campaigns';
+const { debug } = log(NAME);
+
+debug('init');
 
 const { mapActions, mapGetters } = createNamespacedHelpers('campaigns');
 
 export default {
 
-  name: 'Campaigns',
+  name: NAME,
 
   data() {
     return {
       loading: false,
       campaign: undefined,
-      layout: 'list',
+      message: undefined,
     };
   },
 
   computed: {
 
+    layout: {
+      get() {
+        return this.$route.query.layout;
+      },
+      set(layout) {
+        this.updateRouteParams({}, { layout });
+      },
+    },
+
     ...mapGetters({
+      error: getters.ERROR,
       showPictures: getters.SHOW_PICTURES,
       campaigns: getters.CAMPAIGNS,
       galleryCampaign: getters.GALLERY_CAMPAIGN,
       busy: getters.BUSY,
       selectedMonth: getters.SELECTED_MONTH,
+      campaignCopy: getters.CAMPAIGN_COPY,
     }),
 
     filteredCampaigns() {
       const { campaignGroup: groupCode } = this.$route.query;
-      if (!groupCode) {
-        return this.campaigns;
+      const predicate = {};
+      if (groupCode) {
+        predicate.groupCode = groupCode;
       }
-      return filter(this.campaigns, { groupCode });
+      if (!this.hasAuthoring) {
+        predicate.processing = 'published';
+      }
+      return filter(this.campaigns, predicate);
     },
 
   },
@@ -106,6 +157,8 @@ export default {
       campaignAvatarClickStore: actions.CAMPAIGN_AVATAR_CLICK,
       updateCampaign: actions.UPDATE_CAMPAIGN,
       removeCampaign: actions.REMOVE_CAMPAIGN,
+      refreshClick: actions.REFRESH_CAMPAIGNS,
+      clearError: actions.CLEAR_ERROR,
     }),
 
     campaignAvatarClick(campaign) {
@@ -117,8 +170,11 @@ export default {
 
     addCampaignClick() {
       this.campaign = {
+        processing: 'draft',
         groupCode: this.$route.query.campaignGroup || null,
         ...dateBE(this.selectedMonth),
+        oneTime: true,
+        repeatable: true,
       };
     },
 
@@ -126,24 +182,38 @@ export default {
       this.campaign = undefined;
     },
 
-    editCampaign(campaign) {
+    async editCampaign(campaign) {
 
-      this.updateCampaign({
+      const saved = await this.updateCampaign({
         ...campaign,
         isActive: true,
-      })
-        .then(({ id }) => this.updateRouteParams({ campaignId: id }));
+      });
+
+      const { id: campaignId } = saved;
+
+      return this.updateRouteParams({ campaignId });
 
     },
 
-    campaignClick(row, column = {}) {
+    campaignClick(campaign) {
 
-      if (column.label === 'Картинки') {
-        this.campaignAvatarClick(row);
-      } else {
-        this.campaign = row;
-      }
+      const { priorityId = null } = campaign;
 
+      this.campaign = {
+        ...campaign,
+        priorityId,
+        actions: undefined,
+        pictures: undefined,
+      };
+
+    },
+
+    onPasteCampaign() {
+      this.campaign = {
+        ...this.campaignCopy,
+        groupCode: this.$route.query.campaignGroup || null,
+        ...dateBE(this.selectedMonth),
+      };
     },
 
     onGalleryClosed() {
@@ -164,14 +234,30 @@ export default {
       if (isBusy) {
         this.message = this.$message({
           message: 'Загрузка данных ...',
-          type: 'warning',
+          type: 'info',
           duration: 0,
         });
       }
     },
+    error(message) {
+      if (!message) {
+        return;
+      }
+      this.$message({
+        message: `Ошибка загрузки данных: ${message}`,
+        type: 'error',
+        showClose: true,
+        duration: 10000,
+        onClose: () => this.clearError(),
+      });
+    },
   },
 
+  mixins: [campaignsAuth],
+
   components: {
+    CampaignsHeader,
+    CampaignsPriorities,
     LayoutSelect,
     CampaignsWithAside,
     CampaignFilters,
@@ -189,7 +275,7 @@ export default {
 @import "../styles/variables";
 @import "../styles/responsive";
 
-.campaigns-header {
+.header {
 
   margin-top: -5px;
   display: flex;
@@ -225,6 +311,15 @@ export default {
     font-size: 15px;
   }
 
+}
+
+.refresh {
+  padding: $padding;
+  margin-left: 0;
+
+  /deep/ i {
+    font-size: 20px;
+  }
 }
 
 @media print {

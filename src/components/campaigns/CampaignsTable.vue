@@ -27,7 +27,7 @@ el-table.campaigns-table(
 </template>
 <script>
 
-import { longDate } from 'sistemium-telegram/services/moments';
+import { ruDateFilter } from '@/lib/ruDate';
 
 import CampaignAvatar from '@/components/campaigns/CampaignAvatar.vue';
 
@@ -42,11 +42,11 @@ export default {
   methods: {
 
     dateBFormatter(date) {
-      return longDate(date.dateB);
+      return ruDateFilter(date.dateB);
     },
 
     dateEFormatter(date) {
-      return longDate(date.dateE);
+      return ruDateFilter(date.dateE);
     },
 
     cellClick(row, column) {

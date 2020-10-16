@@ -5,6 +5,7 @@ import sharedMutations from 'vuex-shared-mutations';
 import catalogue from './vuex/catalogue';
 import campaigns from './vuex/campaigns';
 import territory from './vuex/territory';
+// import authGetters from './vuex/auth/getters';
 
 Vue.use(Vuex);
 
@@ -17,6 +18,10 @@ export default new Vuex.Store({
   },
 
   modules: {
+    // auth: {
+    //   ...auth,
+    //   getters: authGetters,
+    // },
     auth,
     catalogue,
     campaigns,
@@ -27,6 +32,7 @@ export default new Vuex.Store({
     predicate: [
       'campaigns/SET_ACTION_OPTION_COPY',
       'campaigns/SET_ACTION_COPY',
+      'campaigns/SET_CAMPAIGN_COPY',
     ],
   })],
 

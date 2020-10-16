@@ -2,14 +2,19 @@ $black: #2c3e50;
 $gray: #606266;
 $dark-gray: darken($gray, 20%);
 $light-gray: lighten($gray, 10%);
-$gray-background: rgb(255, 242, 246);
-$gray-border-color: #f0f0f0;
+$gray-background: rgb(249, 244, 246);
+$gray-border-color: #dddddd;
+$table-border-color: #b0b0b0;
 
 $blue: #26a2ff;
 $primary-color: $blue;
 $white: beige;
 
 $small-font-size: 13px;
+$font-size-print: 11.5px;
+$font-size-large-print: 12px;
+$font-size-x-large-print: 18px;
+$small-font-size-print: 9px;
 
 $red: red;
 $green: green;
@@ -21,9 +26,11 @@ $icon-button-width: 40px;
 
 $margin-right: 7px;
 $margin-top: 14px;
+$margin-top-print: 10px;
 $margin: 30px;
 
 $padding: 5px;
+$padding-print: 3.1px;
 
 $border-radius: 6px;
 $list-cell-borders: solid 1px $gray-border-color;

@@ -1,4 +1,4 @@
-import log from 'sistemium-telegram/services/log';
+import log from 'sistemium-debug';
 import cloneDeep from 'lodash/cloneDeep';
 import matchesDeep from './matchesDeep';
 
@@ -84,6 +84,20 @@ export default {
         this.hideLoading();
         this.showError(e);
       }
+
+    },
+
+    async validate(form = this.$refs.form) {
+
+      return new Promise((resolve, reject) => {
+        form.validate(isValid => {
+          if (isValid) {
+            resolve(isValid);
+          } else {
+            reject(new Error('Форма не заполнена корректно'));
+          }
+        });
+      });
 
     },
 

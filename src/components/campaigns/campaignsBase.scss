@@ -1,0 +1,38 @@
+@import "../../styles/variables";
+
+.needPhoto {
+
+  padding: 1px $padding;
+  background: $orange;
+
+  &, i {
+    color: white !important;
+  }
+
+}
+
+.fields {
+
+  > * + * {
+    margin-top: $margin-top;
+  }
+
+  .comment-text {
+    white-space: pre-line;
+    display: block;
+  }
+
+  i {
+    color: $orange;
+    margin-right: $padding;
+  }
+
+  > * {
+    display: inline-block;
+
+    & + * {
+      margin-left: $padding;
+    }
+  }
+
+}
