@@ -29,21 +29,11 @@ el-dialog.action-pictures-edit(
 
     search-input(v-model="searchText" :debounce="500" size="mini")
 
-    resize.pictures(
-      :padding="120"
+    article-picture-select-list.pictures(
+      v-model="model"
+      :search-text="searchText"
+      @loadingMessage="onLoadingMessage"
     )
-      el-alert(v-if="noMatchingPictures" :show-icon="true" type="warning")
-        span Нет подходящих изображений
-      .picture(
-        v-for="picture in pictures" :key="picture.id"
-        @click="pictureClick(picture)"
-      )
-        .thumbnail
-          img(:src="picture.thumbnailSrc")
-        .articles
-          .name(v-for="article in picture.articles" :key="article.id") {{ article.name }}
-        .status(v-if="isSelected(picture)")
-          i.el-icon-check
 
   form-buttons(
     :loading="loading"
@@ -55,24 +45,29 @@ el-dialog.action-pictures-edit(
 </template>
 <script>
 
-import { searchArticlePictures } from '@/services/catalogue';
 import DrawerEditor from '@/lib/DrawerEditor';
 import FormButtons from '@/lib/FormButtons.vue';
 import Action from '@/models/Action';
 import ActionPictures from '@/components/actions/ActionPictures.vue';
+import ArticlePictureSelectList from '@/components/catalogue/ArticlePictureSelectList.vue';
 
 const NAME = 'ActionPicturesEdit';
 
 export default {
+
   name: NAME,
   mixins: [DrawerEditor],
+
   components: {
+    ArticlePictureSelectList,
     ActionPictures,
     FormButtons,
   },
+
   props: {
     actionId: String,
   },
+
   data() {
     return {
       // loading: false,
@@ -81,59 +76,40 @@ export default {
       pictures: [],
     };
   },
+
   computed: {
-    noMatchingPictures() {
-      return this.searchText && !this.loading && !this.pictures.length;
-    },
     modelOrigin() {
       return this.actionInstance().articlePictureIds || [];
     },
   },
+
   methods: {
+
+    onLoadingMessage(message) {
+      this.loadingMessage = message;
+    },
+
     actionInstance() {
       return this.getPlainInstanceById(Action, this.actionId);
     },
-    pictureClick(picture) {
-      const { id } = picture;
-      this.$debug(id, this.model);
-      if (this.isSelected(picture)) {
-        const idx = this.model.indexOf(id);
-        this.$debug(id, idx);
-        this.model.splice(idx, 1);
-      } else {
-        this.model.push(id);
-      }
-    },
+
     saveClick() {
       const data = this.actionInstance();
       data.articlePictureIds = this.model;
       this.performOperation(() => Action.create(data));
     },
-    isSelected(picture) {
-      const { id } = picture;
-      const selected = this.model.indexOf(id);
-      return selected > -1;
-    },
+
     removeSelected({ id }) {
       this.model.splice(this.model.indexOf(id), 1);
     },
   },
-  watch: {
-    async searchText(text) {
-      if (!text) {
-        this.pictures = [];
-        return;
-      }
-      this.loadingMessage = 'Поиск изображений ...';
-      this.pictures = await searchArticlePictures(text);
-      this.loadingMessage = '';
-    },
-  },
+
   created() {
     this.$watch('actionId', () => {
       this.model = [...this.modelOrigin];
     }, { immediate: true });
   },
+
 };
 
 </script>
@@ -143,28 +119,6 @@ export default {
 
 .pictures, .search-input {
   margin-top: $margin-top;
-}
-
-.picture {
-  display: flex;
-  padding: $padding 0;
-  position: relative;
-
-  img {
-    max-height: 80px;
-  }
-
-  .thumbnail {
-    width: 80px;
-    text-align: center;
-  }
-
-  .articles {
-    flex: 1;
-    text-align: left;
-    font-size: 11px;
-  }
-
 }
 
 .selected {
