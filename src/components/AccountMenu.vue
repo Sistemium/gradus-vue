@@ -92,6 +92,7 @@ export default {
       this.$debug('switchToAccount', account);
       this.logAccount(account)
         .then(() => this.$router.push('/'))
+        .then(() => window.location.reload())
         .catch(e => this.$error(e));
     },
 
