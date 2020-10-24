@@ -11,25 +11,43 @@ el-dialog.action-pictures-edit(
   top="4vh"
 )
   section.content(
-    v-loading="loading || busyText"
-    :element-loading-text="busyText"
+    v-loading="loading"
     element-loading-spinner="el-icon-loading"
   )
 
-    .selected
+    .pictures
 
-      action-pictures(:layout="model" v-if="model.pictures.length")
-        template(v-slot:etc="{ picture }")
-          .status(@click="removeSelected(picture)")
-            i.el-icon-remove
+      .action-pictures(
+        v-if="model.pictures.length"
+        :style="{ 'justify-content': model.align }"
+      )
+        action-picture-form.picture(
+          v-for="picture in model.pictures" :key="picture.id"
+          :picture="picture"
+          :editable="true"
+          @removeClick="removeSelected(picture)"
+        )
 
       .empty(v-else)
         el-alert(:show-icon="true" title="Изображения не выбраны" :closable="false")
           p Используйте поиск чтобы добавить
 
-    search-input(v-model="searchText" :debounce="500" size="mini")
+    .text
+      el-input(v-model="model.commentText")
 
-    article-picture-select-list.pictures(
+    .controls
+      .searching
+        search-input(v-model="searchText" :debounce="850" size="medium")
+      .align
+        el-button-group
+          el-button(icon="el-icon-d-arrow-left" @click="model.align = 'flex-start'")
+          el-button(icon="el-icon-video-pause" @click="model.align = 'center'")
+          el-button(icon="el-icon-d-arrow-right" @click="model.align = 'flex-end'")
+
+    article-picture-select-list(
+      v-loading="busyText"
+      :element-loading-text="busyText"
+      element-loading-spinner="el-icon-loading"
       v-model="idsModel"
       :search-text="searchText"
       @loadingMessage="onLoadingMessage"
@@ -54,7 +72,7 @@ import filter from 'lodash/filter';
 import DrawerEditor from '@/lib/DrawerEditor';
 import Action from '@/models/Action';
 import ArticlePicture from '@/models/ArticlePicture';
-import ActionPictures from '@/components/actions/ActionPictures.vue';
+import ActionPictureForm from '@/components/actions/ActionPictureForm.vue';
 import ArticlePictureSelectList from '@/components/catalogue/ArticlePictureSelectList.vue';
 import ims from '@/lib/ims';
 
@@ -66,8 +84,8 @@ export default {
   mixins: [DrawerEditor, ims],
 
   components: {
+    ActionPictureForm,
     ArticlePictureSelectList,
-    ActionPictures,
     FormButtons,
   },
 
@@ -176,6 +194,7 @@ export default {
           id: v4(),
           src: null,
           thumbnailSrc: null,
+          height: 100,
         };
       });
 
@@ -202,19 +221,20 @@ export default {
 
 @import "../../styles/variables";
 
-.pictures, .search-input {
-  margin-top: $margin-top;
+.content > * {
+  margin: $margin-top;
 }
 
-.selected {
+.action-pictures {
+  display: flex;
+
+  > .picture {
+    margin: $margin-top;
+  }
+}
+
+.pictures {
   min-height: 133px;
-}
-
-.status {
-  position: absolute;
-  top: 0;
-  font-size: 20px;
-  color: $green;
 }
 
 .content {
@@ -223,6 +243,16 @@ export default {
 
 .form-buttons {
   margin-top: $margin-top;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+}
+
+.align {
+  //display: flex;
+  //justify-content: center;
 }
 
 </style>

@@ -1,0 +1,103 @@
+<template lang="pug">
+
+.action-picture-form
+
+  .image(:style="imageStyle")
+    img(
+      v-if="picture.src"
+      :src="src(picture)"
+      :class="size"
+    )
+    i.el-icon-loading(v-else)
+
+  el-slider.height(
+    vertical
+    v-model="picture.height"
+    v-if="editable"
+  )
+
+  .remove(v-if="editable" @click="$emit('removeClick', picture)")
+    i.el-icon-remove
+
+  .label
+    el-input(v-if="editable" v-model="picture.label")
+
+</template>
+<script>
+
+const NAME = 'ActionPictureForm';
+
+export default {
+
+  name: NAME,
+
+  props: {
+    picture: Object,
+    size: {
+      type: String,
+      default: 'thumbnail',
+    },
+    editable: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
+  computed: {
+    imageStyle() {
+      const { height = 100 } = this.picture;
+      return { 'max-height': `${height}%` };
+    },
+  },
+
+  methods: {
+    src(picture) {
+      const res = picture[`${this.size}Src`];
+      return res || picture.src;
+    },
+  },
+
+};
+
+</script>
+<style scoped lang="scss">
+
+@import "../../styles/variables";
+
+.action-picture-form {
+  display: grid;
+  grid-template-columns: auto auto;
+  position: relative;
+}
+
+.image {
+  grid-row: 1;
+  grid-column: 1;
+  display: flex;
+  align-self: end;
+
+  img {
+    flex: 1;
+    object-fit: contain;
+  }
+}
+
+.height {
+  grid-row: 1;
+  grid-column: 2;
+}
+
+.label {
+  margin-top: $margin-top;
+  max-width: 80px;
+}
+
+.remove {
+  position: absolute;
+  top: 0;
+  font-size: 20px;
+  color: $green;
+}
+
+
+</style>

@@ -1,27 +1,25 @@
 <template lang="pug">
 
-.action-pictures
-  .picture(
-    v-for="picture in pictures" :key="picture.id"
-  )
-    .img-wrapper
-      img(
-        v-if="picture.src"
-        :src="src(picture)"
-        :class="size"
-      )
-      i.el-icon-loading(v-else)
-    slot(name="etc" v-bind:picture="picture")
+.action-pictures(:style="style")
+  .comment-text(v-if="layout.commentText") {{ layout.commentText }}
+  .pictures
+    action-picture-view.picture(
+      v-for="picture in pictures" :key="picture.id"
+      :picture="picture"
+    )
 
 </template>
 <script>
 
-// import { getManyArticlePictures } from '@/services/catalogue';
+import ActionPictureView from '@/components/actions/ActionPictureView.vue';
 
 const NAME = 'ActionPictures';
 
 export default {
+
   name: NAME,
+  components: { ActionPictureView },
+
   props: {
     layout: Object,
     // articlePictureIds: Array,
@@ -30,17 +28,20 @@ export default {
       default: 'thumbnail',
     },
   },
+
   computed: {
+    style() {
+      const { align = 'center' } = this.layout;
+      return {
+        'justify-content': align === 'center' ? 'center' : 'flex-end',
+        'flex-direction': align === 'flex-start' ? 'row-reverse' : 'row',
+      };
+    },
     pictures() {
       return this.layout && this.layout.pictures;
     },
   },
-  methods: {
-    src(picture) {
-      const res = picture[`${this.size}Src`];
-      return res || picture.src;
-    },
-  },
+
 };
 
 </script>
@@ -49,6 +50,11 @@ export default {
 @import "../../styles/variables";
 
 .action-pictures {
+  display: flex;
+  align-items: center;
+}
+
+.pictures {
 
   display: flex;
   align-items: flex-end;
@@ -66,13 +72,15 @@ export default {
     padding: 0 $padding;
   }
 
-  .status {
-    right: -5px;
+  > .picture {
+    margin: $margin-top;
   }
+
 }
 
-.picture {
-  position: relative;
-}
+//
+//.picture {
+//  position: relative;
+//}
 
 </style>
