@@ -11,14 +11,14 @@ el-dialog.action-pictures-edit(
   top="4vh"
 )
   section.content(
-    v-loading="loading"
-    :element-loading-text="loadingMessage"
+    v-loading="loading || busyText"
+    :element-loading-text="busyText"
     element-loading-spinner="el-icon-loading"
   )
 
     .selected
 
-      action-pictures(:article-picture-ids="model" v-if="model.length")
+      action-pictures(:layout="model" v-if="model.pictures.length")
         template(v-slot:etc="{ picture }")
           .status(@click="removeSelected(picture)")
             i.el-icon-remove
@@ -30,7 +30,7 @@ el-dialog.action-pictures-edit(
     search-input(v-model="searchText" :debounce="500" size="mini")
 
     article-picture-select-list.pictures(
-      v-model="model"
+      v-model="idsModel"
       :search-text="searchText"
       @loadingMessage="onLoadingMessage"
     )
@@ -45,18 +45,25 @@ el-dialog.action-pictures-edit(
 </template>
 <script>
 
-import DrawerEditor from '@/lib/DrawerEditor';
+import { v4 } from 'uuid';
 import FormButtons from '@/lib/FormButtons.vue';
+import set from 'lodash/set';
+import map from 'lodash/map';
+import find from 'lodash/find';
+import filter from 'lodash/filter';
+import DrawerEditor from '@/lib/DrawerEditor';
 import Action from '@/models/Action';
+import ArticlePicture from '@/models/ArticlePicture';
 import ActionPictures from '@/components/actions/ActionPictures.vue';
 import ArticlePictureSelectList from '@/components/catalogue/ArticlePictureSelectList.vue';
+import ims from '@/lib/ims';
 
 const NAME = 'ActionPicturesEdit';
 
 export default {
 
   name: NAME,
-  mixins: [DrawerEditor],
+  mixins: [DrawerEditor, ims],
 
   components: {
     ArticlePictureSelectList,
@@ -70,23 +77,47 @@ export default {
 
   data() {
     return {
-      // loading: false,
-      model: [],
+      idsModel: [],
+      model: {},
       searchText: '',
-      pictures: [],
+      busyText: '',
     };
   },
 
   computed: {
     modelOrigin() {
-      return this.actionInstance().articlePictureIds || [];
+      /*
+      {
+      pictures: [
+        {
+          _id: false,
+          id: String,
+          articlePictureId: String,
+          src: String,
+          thumbnailSrc: String,
+          label: String,
+          height: String,
+        },
+      ],
+      align: String,
+      commentText: String,
+      }
+      */
+      return this.actionInstance().layout || {
+        pictures: [],
+        align: 'left',
+        commentText: null,
+      };
+    },
+    idsModelOrigin() {
+      return filter(map(this.modelOrigin.pictures, 'articlePictureId'));
     },
   },
 
   methods: {
 
     onLoadingMessage(message) {
-      this.loadingMessage = message;
+      this.busyText = message;
     },
 
     actionInstance() {
@@ -95,19 +126,73 @@ export default {
 
     saveClick() {
       const data = this.actionInstance();
-      data.articlePictureIds = this.model;
+      set(data, 'layout', this.model);
       this.performOperation(() => Action.create(data));
     },
 
     removeSelected({ id }) {
-      this.model.splice(this.model.indexOf(id), 1);
+      this.idsModel.splice(this.idsModel.indexOf(id), 1);
     },
+
+    async processPictureUrl({ articlePictureId }) {
+
+      const articlePicture = await ArticlePicture.find(articlePictureId);
+
+      if (!articlePicture) {
+        throw new Error(`Not found ArticlePicture ${articlePictureId}`);
+      }
+
+      const { pictures } = await this.imsGet('ActionPicture', articlePicture.largeSrc);
+      const { src } = find(pictures, { name: 'largeImage' });
+      const { src: thumbnailSrc } = find(pictures, { name: 'thumbnail' });
+
+      return {
+        src,
+        thumbnailSrc,
+      };
+
+    },
+
   },
 
   created() {
-    this.$watch('actionId', () => {
-      this.model = [...this.modelOrigin];
-    }, { immediate: true });
+
+    this.$watchImmediate('actionId', () => {
+      this.idsModel = [...this.idsModelOrigin];
+      this.model = this.cloneDeep(this.modelOrigin);
+    });
+
+    this.$watchImmediate('idsModel', async ids => {
+
+      if (!ids) {
+        this.$error('idsModel:empty');
+        return;
+      }
+
+      const newPictures = ids.map(articlePictureId => {
+        const existing = find(this.model.pictures, { articlePictureId });
+        return existing || {
+          articlePictureId,
+          id: v4(),
+          src: null,
+          thumbnailSrc: null,
+        };
+      });
+
+      this.model.pictures = newPictures;
+
+      const toProcess = filter(newPictures, ({ src }) => !src);
+
+      const process = toProcess.map(async picture => {
+        const sources = await this.processPictureUrl(picture);
+        Object.assign(picture, sources);
+      });
+
+      await Promise.all(process)
+        .catch(e => this.$error(e));
+
+    });
+
   },
 
 };
@@ -123,15 +208,6 @@ export default {
 
 .selected {
   min-height: 133px;
-}
-
-.pictures {
-  // min-height: 50px;
-  .picture {
-    & + .picture {
-      border-top: $list-cell-borders;
-    }
-  }
 }
 
 .status {

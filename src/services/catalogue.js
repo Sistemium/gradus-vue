@@ -248,7 +248,7 @@ function filterArticles(articles, filters) {
 
 export async function searchArticlePictures(searchText) {
   const where = {
-    name: { likei: `%${searchText}%` },
+    name: { likei: `%${searchText.replace(/[ ]+/g, '%')}%` },
     avatarPictureId: { '!=': null },
   };
   const articles = await Article.findAll({

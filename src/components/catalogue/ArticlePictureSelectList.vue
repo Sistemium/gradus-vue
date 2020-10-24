@@ -107,6 +107,14 @@ export default {
 
 }
 
+.pictures {
+  // min-height: 50px;
+  .picture {
+    & + .picture {
+      border-top: $list-cell-borders;
+    }
+  }
+}
 
 .status {
   position: absolute;

@@ -110,9 +110,9 @@ export default {
       });
     },
 
-    showLoading() {
+    showLoading(message) {
       this.loadingMessage = this.$message({
-        message: 'Сохранение ...',
+        message: message || 'Сохранение ...',
         duration: 0,
       });
     },

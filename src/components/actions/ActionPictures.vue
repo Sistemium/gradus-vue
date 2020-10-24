@@ -2,36 +2,43 @@
 
 .action-pictures
   .picture(
-    v-for="picture in selectedPictures" :key="picture.id"
+    v-for="picture in pictures" :key="picture.id"
   )
     .img-wrapper
-      img(:src="src(picture)" :class="size")
+      img(
+        v-if="picture.src"
+        :src="src(picture)"
+        :class="size"
+      )
+      i.el-icon-loading(v-else)
     slot(name="etc" v-bind:picture="picture")
 
 </template>
 <script>
 
-import { getManyArticlePictures } from '@/services/catalogue';
+// import { getManyArticlePictures } from '@/services/catalogue';
 
 const NAME = 'ActionPictures';
 
 export default {
   name: NAME,
   props: {
-    articlePictureIds: Array,
+    layout: Object,
+    // articlePictureIds: Array,
     size: {
       type: String,
       default: 'thumbnail',
     },
   },
   computed: {
-    selectedPictures() {
-      return getManyArticlePictures(this.articlePictureIds);
+    pictures() {
+      return this.layout && this.layout.pictures;
     },
   },
   methods: {
     src(picture) {
-      return picture[`${this.size}Src`];
+      const res = picture[`${this.size}Src`];
+      return res || picture.src;
     },
   },
 };
@@ -47,7 +54,7 @@ export default {
   align-items: flex-end;
 
   img.thumbnail {
-    max-height: 120px;
+    max-height: 170px;
   }
 
   img.small {

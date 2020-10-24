@@ -61,8 +61,8 @@
       td(colspan="6")
         .footer
           action-pictures(
-            v-if="showPictures && action.articlePictureIds"
-            :article-picture-ids="pictureIds"
+            v-if="showPictures && layoutHasPictures"
+            :layout="action.layout"
             size="small"
           )
           .other
@@ -121,9 +121,9 @@ export default {
     ...mapGetters({
       showPictures: SHOW_PICTURES,
     }),
-    pictureIds() {
-      const { articlePictureIds } = this.action;
-      return articlePictureIds && articlePictureIds.length && articlePictureIds;
+    layoutHasPictures() {
+      const { layout } = this.action;
+      return layout && layout.pictures.length;
     },
     discountHeaders() {
       return this.action.discountHeaders();
@@ -142,6 +142,7 @@ export default {
         || this.action.commentText
         || this.action.territory
         || (!this.hidePriority && this.priorityName)
+        || (this.layoutHasPictures && this.showPictures)
         || this.action.needPhoto;
     },
   },
