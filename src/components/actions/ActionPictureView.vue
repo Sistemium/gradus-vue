@@ -51,7 +51,7 @@ img {
 
 .label {
   text-align: center;
-  font-weight: bold;
+  //font-weight: bold;
   padding: $margin-right;
 }
 

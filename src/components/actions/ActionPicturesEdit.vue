@@ -40,9 +40,13 @@ el-dialog.action-pictures-edit(
         search-input(v-model="searchText" :debounce="850" size="medium")
       .align
         el-button-group
-          el-button(icon="el-icon-d-arrow-left" @click="model.align = 'flex-start'")
-          el-button(icon="el-icon-video-pause" @click="model.align = 'center'")
-          el-button(icon="el-icon-d-arrow-right" @click="model.align = 'flex-end'")
+          el-button(
+            v-for="b in layoutButtons"
+            :key="b.name"
+            :icon="b.icon"
+            @click="model.align = b.name"
+            :type="model.align === b.name ? 'primary' : 'default'"
+          )
 
     article-picture-select-list(
       v-loading="busyText"
@@ -103,6 +107,21 @@ export default {
   },
 
   computed: {
+    layoutButtons() {
+      return [
+        {
+          icon: 'el-icon-d-arrow-left',
+          name: 'flex-start',
+        }, {
+          icon: 'el-icon-video-pause',
+          name: 'center',
+        },
+        {
+          icon: 'el-icon-d-arrow-right',
+          name: 'flex-end',
+        },
+      ];
+    },
     modelOrigin() {
       /*
       {

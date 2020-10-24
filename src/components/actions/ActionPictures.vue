@@ -1,6 +1,6 @@
 <template lang="pug">
 
-.action-pictures(:style="style")
+.action-pictures(:style="layoutStyle")
   .comment-text(v-if="layout.commentText") {{ layout.commentText }}
   .pictures
     action-picture-view.picture(
@@ -30,12 +30,22 @@ export default {
   },
 
   computed: {
-    style() {
+    layoutStyle() {
       const { align = 'center' } = this.layout;
       return {
         'justify-content': align === 'center' ? 'center' : 'flex-end',
-        'flex-direction': align === 'flex-start' ? 'row-reverse' : 'row',
+        'flex-direction': this.directionStyle,
       };
+    },
+    directionStyle() {
+      switch (this.layout.align) {
+        case 'center':
+          return 'column-reverse';
+        case 'flex-start':
+          return 'row-reverse';
+        default:
+          return 'row';
+      }
     },
     pictures() {
       return this.layout && this.layout.pictures;
@@ -52,6 +62,11 @@ export default {
 .action-pictures {
   display: flex;
   align-items: center;
+}
+
+.comment-text {
+  font-weight: 500;
+  margin: $margin-top;
 }
 
 .pictures {
