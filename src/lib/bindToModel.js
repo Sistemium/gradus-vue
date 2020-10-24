@@ -14,6 +14,9 @@ Vue.mixin({
       model.bind(this);
       unbindFn(this, model);
     },
+    $watchImmediate(expOrFn, callback) {
+      return this.$watch(expOrFn, callback, { immediate: true });
+    },
   },
 });
 
