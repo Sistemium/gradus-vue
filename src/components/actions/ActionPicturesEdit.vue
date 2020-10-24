@@ -33,11 +33,15 @@ el-dialog.action-pictures-edit(
           p Используйте поиск чтобы добавить
 
     .text
-      el-input(v-model="model.commentText")
+      el-input(v-model="model.commentText" :clearable="true")
 
     .controls
       .searching
-        search-input(v-model="searchText" :debounce="850" size="medium")
+        search-input(
+          v-model="searchText" :debounce="850"
+          size="medium"
+          placeholder="поиск изображений"
+        )
       .align
         el-button-group
           el-button(
