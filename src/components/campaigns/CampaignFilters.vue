@@ -5,6 +5,7 @@
   .period
     label Период:
     month-select(:months="lastYearMonths" v-model="selectedMonth")
+
   campaign-group-select(v-model="campaignGroup" placeholder="все группы")
 
   search-input(v-model="searchText" :debounce="100")
