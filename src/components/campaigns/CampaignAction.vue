@@ -332,6 +332,7 @@ th.sku, td.sku {
 
 th.number, td.number {
   width: 40px;
+  background: $gray-background;
   @media print {
     width: 26px;
   }

@@ -7,7 +7,7 @@
       :src="src(picture)"
       :class="size"
     )
-  .label(v-if="picture.label") {{ picture.label }}
+  .label {{ picture.label }}
 
 </template>
 <script>
@@ -50,6 +50,7 @@ img {
 }
 
 .label {
+  height: $padding;
   text-align: center;
   //font-weight: bold;
   padding: $margin-right;

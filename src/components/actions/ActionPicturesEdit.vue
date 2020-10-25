@@ -33,7 +33,12 @@ el-dialog.action-pictures-edit(
           p Используйте поиск чтобы добавить
 
     .text
-      el-input(v-model="model.commentText" :clearable="true")
+      el-input(
+        type="textarea"
+        autosize
+        v-model="model.commentText"
+        :clearable="true"
+      )
 
     .controls
       .searching

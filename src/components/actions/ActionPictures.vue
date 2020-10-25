@@ -1,7 +1,7 @@
 <template lang="pug">
 
 .action-pictures(:style="layoutStyle")
-  .comment-text(v-if="layout.commentText") {{ layout.commentText }}
+  .comment-text(v-if="layout.commentText" v-html="layout.commentText")
   .pictures
     action-picture-view.picture(
       v-for="picture in pictures" :key="picture.id"
@@ -65,8 +65,24 @@ export default {
 }
 
 .comment-text {
+
   font-weight: 500;
   margin: $margin-top;
+  white-space: pre-line;
+
+  /deep/ {
+    em {
+      color: $orange;
+      font-style: normal;
+    }
+
+    mark {
+      color: $black;
+      background-color: $light-green;
+      padding: 0 $padding;
+    }
+  }
+
 }
 
 .pictures {
@@ -92,10 +108,5 @@ export default {
   }
 
 }
-
-//
-//.picture {
-//  position: relative;
-//}
 
 </style>

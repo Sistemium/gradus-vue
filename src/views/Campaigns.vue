@@ -18,8 +18,6 @@ el-container.campaigns(
     )
       i.el-icon-picture-outline
 
-    layout-select(v-model="layout")
-
     transition(name="bounce")
       el-tooltip(v-if="campaignCopy")
         div(slot="content") Нажмите, чтобы вставить копию акции «{{ campaignCopy.name }}»
