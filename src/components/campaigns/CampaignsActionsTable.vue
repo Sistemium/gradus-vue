@@ -95,12 +95,16 @@ export default {
     },
   },
   created() {
-    this.$watch('$route.params.campaignId', campaignId => {
+    this.$bindToModel(Action);
+    if (this.priorityId) {
+      return;
+    }
+    this.$watchImmediate('$route.params.campaignId', campaignId => {
       this.$nextTick(() => {
         this.scrollToCampaign(campaignId);
+        // this.$debug('scrollToCampaign', campaignId);
       });
-    }, { immediate: true });
-    this.$bindToModel(Action);
+    });
   },
   props: {
     campaigns: Array,
