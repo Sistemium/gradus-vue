@@ -27,7 +27,7 @@
     .cash(v-if="action.discountCash")
       label Бонус
       strong {{ action.discountCash }}
-      span ₽
+      span р.
 
   .comment(v-if="action.commentText")
     i.el-icon-info

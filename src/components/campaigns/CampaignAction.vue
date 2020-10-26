@@ -55,7 +55,7 @@
         td.discountCash(
           v-if="option.discountCash"
           colspan="2"
-        ) Бонус {{ option.discountCash }} ₽
+        ) Бонус {{ option.discountCash }} р.
 
     tr.tfoot(v-if="hasFooter")
       td(colspan="6")
