@@ -60,11 +60,6 @@
     tr.tfoot(v-if="hasFooter")
       td(colspan="6")
         .footer
-          action-pictures(
-            v-if="showPictures && layoutHasPictures"
-            :layout="action.layout"
-            size="small"
-          )
           .other
             .priority(v-if="priorityName && !hidePriority")
               i.el-icon-s-flag
@@ -84,6 +79,11 @@
             .comment(v-if="action.commentText")
               i.el-icon-info
               span {{ action.commentText }}
+          action-pictures(
+            v-if="showPictures && layoutHasPictures"
+            :layout="layout"
+            size="small"
+          )
 
   action-history-view(:history="action.actionHistory")
   //.restrictions(v-if="hasRestrictions")
@@ -123,8 +123,12 @@ export default {
       showPictures: SHOW_PICTURES,
     }),
     layoutHasPictures() {
-      const { layout } = this.action;
+      const { layout } = this;
       return layout && layout.pictures.length;
+    },
+    layout() {
+      const { layout, ts } = this.action;
+      return this.$tick(ts, layout);
     },
     discountHeaders() {
       return this.action.discountHeaders();

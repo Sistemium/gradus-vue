@@ -17,6 +17,9 @@ Vue.mixin({
     $watchImmediate(expOrFn, callback) {
       return this.$watch(expOrFn, callback, { immediate: true });
     },
+    $tick(arg1, arg2) {
+      return arg2;
+    },
   },
 });
 
