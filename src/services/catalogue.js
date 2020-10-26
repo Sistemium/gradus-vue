@@ -254,12 +254,14 @@ export async function searchArticlePictures(searchText) {
   const articles = await Article.findAll({
     where,
     limit: 50,
+    orderBy: ['name', 'asc'],
   });
   const ids = map(articles, 'avatarPictureId');
   // const apa = await findByMany(ArticlePictureArticle, ids, { field: 'articleId' });
   const pictures = await ArticlePicture.findByMany(ids);
-  return pictures.map(picture => ({
-    ...picture,
-    articles: Article.filter({ avatarPictureId: picture.id }),
-  }));
+  return orderBy(pictures, 'name')
+    .map(picture => ({
+      ...picture,
+      articles: Article.filter({ avatarPictureId: picture.id }),
+    }));
 }
