@@ -38,6 +38,7 @@ el-dialog.action-pictures-edit(
         autosize
         v-model="model.commentText"
         :clearable="true"
+        placeholder="Текстовое пояснение к иллюстрации"
       )
 
     .controls
@@ -151,7 +152,7 @@ export default {
       */
       return this.actionInstance().layout || {
         pictures: [],
-        align: 'left',
+        align: 'flex-end',
         commentText: null,
       };
     },
@@ -257,12 +258,12 @@ export default {
   display: flex;
 
   > .picture {
-    margin: $margin-top;
+    margin: 0 $margin-top;
   }
 }
 
 .pictures {
-  min-height: 133px;
+  min-height: 254px;
 }
 
 .content {
