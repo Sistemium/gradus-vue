@@ -9,7 +9,7 @@ h1.campaigns-header
     span на
     span {{ periodLabel }}
   .logo
-    img(:src="src")
+    img(:src="src" :alt="alt")
 
 </template>
 <script>
@@ -32,6 +32,9 @@ export default {
     }),
     src() {
       return `/images/logo-${this.org}.jpg`;
+    },
+    alt() {
+      return `${this.org}`;
     },
     campaignGroup() {
       return this.$route.query.campaignGroup || null;
