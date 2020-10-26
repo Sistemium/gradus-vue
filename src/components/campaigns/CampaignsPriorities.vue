@@ -1,6 +1,6 @@
 <template lang="pug">
 
-.campaigns-priorities
+.campaigns-priorities(v-if="priorities.length")
   priority-actions(
     v-for="priority in priorities" :key="priority.id"
     :priority="priority"

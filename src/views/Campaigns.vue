@@ -52,6 +52,7 @@ el-container.campaigns(
     resize.resize#campaigns-scroll-container(:padding="20" v-if="layout==='table'")
       campaigns-header(:month="selectedMonth")
       campaigns-priorities(:campaigns="filteredCampaigns")
+      campaigns-header(:month="selectedMonth")
       campaigns-table(
         v-if="!loading"
         :campaigns="filteredCampaigns"
@@ -327,6 +328,9 @@ export default {
   #campaigns-scroll-container {
     max-height: none !important;
   }
+  .campaigns-priorities {
+    page-break-after: always;
+  }
 }
 
 .show-pictures {
@@ -337,5 +341,6 @@ export default {
   padding: 6px;
 
 }
+
 
 </style>

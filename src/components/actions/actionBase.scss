@@ -33,6 +33,9 @@ td > .action-option > .self, .action-option-info {
 
   /deep/ small {
     color: $gray;
+    @media print {
+      font-size: $small-font-size-print;
+    }
   }
 
   /deep/ em {
@@ -45,6 +48,6 @@ td > .action-option > .self, .action-option-info {
   }
 }
 
-td.discount, th.discount {
+td.discount, th.discount, .action-option > .discount {
   background: $light-green;
 }

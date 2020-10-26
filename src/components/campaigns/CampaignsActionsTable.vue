@@ -14,15 +14,6 @@
             a(@click="campaignClick(campaign)")
               span {{ campaign.name }}
             button-edit(@click="onEditCampaign(campaign)" v-if="hasAuthoring")
-          .priority(v-if="campaign.priority")
-            i.el-icon-star-on
-            span {{ campaign.priority.name }}
-          .period(v-if="showPeriod(campaign)")
-            i.el-icon-date
-            span c {{ campaign.dateB | ruDate }} по {{ campaign.dateE | ruDate }}
-    tbody.actions
-      tr
-        td
           .fields
             .oneTime(v-if="campaign.oneTime")
               i.el-icon-circle-check
@@ -36,6 +27,16 @@
             .territory(v-if="campaign.territory")
               i.el-icon-location
               span {{ campaign.territory }}
+          .priority(v-if="campaign.priority")
+            i.el-icon-star-on
+            span {{ campaign.priority.name }}
+          .period(v-if="showPeriod(campaign)")
+            i.el-icon-date
+            span c {{ campaign.dateB | ruDate }} по {{ campaign.dateE | ruDate }}
+    tbody.actions
+      //tr
+        td
+          .fields
       tr(v-for="action in campaignActions(campaign)" :key="action.id")
         td
           campaign-action(:action="action" :hide-priority="!!priorityId")
@@ -157,6 +158,9 @@ export default {
   @media screen {
     max-width: 900px;
   }
+  @media print {
+    max-width: 18cm;
+  }
 }
 
 .fields {
@@ -192,7 +196,10 @@ thead td {
   display: flex;
   align-items: center;
   font-weight: bold;
-  font-size: $font-size-large-print;
+
+  @media print {
+    font-size: $font-size-large-print;
+  }
 
   .name {
     flex: 1;

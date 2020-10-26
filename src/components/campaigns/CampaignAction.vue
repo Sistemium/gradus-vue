@@ -69,10 +69,10 @@
             .priority(v-if="priorityName && !hidePriority")
               i.el-icon-s-flag
               span {{ priorityName }}
-            .oneTime(v-if="action.oneTime")
+            .oneTime(v-if="isOneTime")
               i.el-icon-circle-check
               span Единовременная
-            .repeatable(v-if="action.repeatable")
+            .repeatable(v-if="isRepeatable")
               i.el-icon-circle-check
               span Многократная
             .needPhoto(v-if="action.needPhoto")
@@ -93,6 +93,7 @@
 <script>
 
 import find from 'lodash/find';
+import get from 'lodash/get';
 import { createNamespacedHelpers } from 'vuex';
 import ActionOption from '@/components/actions/ActionOption.vue';
 import ActionRequired from '@/components/actions/ActionRequired.vue';
@@ -136,9 +137,15 @@ export default {
       const { options } = this.action;
       return find(options, 'commentText');
     },
+    isRepeatable() {
+      return get(this.action, 'repeatable') && !get(this.action, 'campaign.repeatable');
+    },
+    isOneTime() {
+      return get(this.action, 'oneTime') && !get(this.action, 'campaign.oneTime');
+    },
     hasFooter() {
-      return this.action.oneTime
-        || this.action.repeatable
+      return this.isOneTime
+        || this.isRepeatable
         || this.action.commentText
         || this.action.territory
         || (!this.hidePriority && this.priorityName)
@@ -220,7 +227,7 @@ tr.header {
   th {
     padding: $padding * 2;
     @media print {
-      padding: $padding-print * 2
+      padding: $padding-print
     }
 
   }

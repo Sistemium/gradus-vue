@@ -276,6 +276,14 @@ export default {
 .controls {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  .searching {
+    flex: 1;
+    margin-right: $margin;
+  }
+  .search-input {
+    width: 100%;
+  }
 }
 
 .align {
