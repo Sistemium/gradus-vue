@@ -54,6 +54,7 @@ img {
   text-align: center;
   //font-weight: bold;
   padding: $margin-right;
+  white-space: nowrap;
 }
 
 </style>

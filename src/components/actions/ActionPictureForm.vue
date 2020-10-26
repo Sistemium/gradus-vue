@@ -1,19 +1,24 @@
 <template lang="pug">
 
-.action-picture-form
+.action-picture-form(
+  v-loading="!isReady"
+  element-loading-text="Обработка ..."
+)
 
-  .image(:style="imageStyle")
+  .image(
+    :style="imageStyle"
+  )
     img(
-      v-if="picture.src"
+      v-if="isReady"
       :src="src(picture)"
       :class="size"
     )
-    i.el-icon-loading(v-else)
+    //i.el-icon-loading(v-else)
 
   el-slider.height(
     vertical
     v-model="picture.height"
-    v-if="editable"
+    v-if="editable && isReady"
   )
 
   .remove(v-if="editable" @click="$emit('removeClick', picture)")
@@ -44,6 +49,9 @@ export default {
   },
 
   computed: {
+    isReady() {
+      return !!this.picture.src;
+    },
     imageStyle() {
       const { height = 100 } = this.picture;
       return { 'max-height': `${height}%` };
@@ -66,6 +74,7 @@ export default {
 
 .action-picture-form {
   display: grid;
+  grid-template-rows: 1fr auto;
   grid-template-columns: auto auto;
   position: relative;
 }
@@ -75,6 +84,7 @@ export default {
   grid-column: 1;
   display: flex;
   align-self: end;
+  text-align: center;
 
   img {
     flex: 1;
