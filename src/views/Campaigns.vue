@@ -50,8 +50,9 @@ el-container.campaigns(
   )
 
     resize.resize#campaigns-scroll-container(:padding="20" v-if="layout==='table'")
-      campaigns-header(:month="selectedMonth")
-      campaigns-priorities(:campaigns="filteredCampaigns")
+      template(v-if="priorities.length")
+        campaigns-header(:month="selectedMonth")
+        campaigns-priorities(:priorities="priorities" :campaigns="filteredCampaigns")
       campaigns-header(:month="selectedMonth")
       campaigns-table(
         v-if="!loading"
@@ -94,6 +95,7 @@ import campaignsAuth from '@/components/campaigns/campaignsAuth';
 import log from 'sistemium-debug';
 import CampaignsPriorities from '@/components/campaigns/CampaignsPriorities.vue';
 import CampaignsHeader from '@/components/campaigns/CampaignsHeader.vue';
+import { prioritiesOfCampaigns } from '@/services/campaigns';
 
 const NAME = 'Campaigns';
 const { debug } = log(NAME);
@@ -134,6 +136,10 @@ export default {
       selectedMonth: getters.SELECTED_MONTH,
       campaignCopy: getters.CAMPAIGN_COPY,
     }),
+
+    priorities() {
+      return prioritiesOfCampaigns(this.filteredCampaigns);
+    },
 
     filteredCampaigns() {
       const { campaignGroup: groupCode } = this.$route.query;

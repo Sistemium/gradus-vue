@@ -10,7 +10,6 @@
 </template>
 <script>
 
-import { prioritiesOfCampaigns } from '@/services/campaigns';
 import PriorityActions from '@/components/actions/PriorityActions.vue';
 
 const NAME = 'CampaignsPriorities';
@@ -19,12 +18,8 @@ export default {
   name: NAME,
   components: { PriorityActions },
   props: {
+    priorities: Array,
     campaigns: Array,
-  },
-  computed: {
-    priorities() {
-      return prioritiesOfCampaigns(this.campaigns);
-    },
   },
 };
 
