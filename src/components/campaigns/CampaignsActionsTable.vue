@@ -159,7 +159,7 @@ export default {
     max-width: 900px;
   }
   @media print {
-    max-width: 18cm;
+    max-width: 17.5cm;
   }
 }
 

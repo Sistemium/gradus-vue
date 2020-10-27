@@ -96,6 +96,7 @@ export default {
         oneTime: false,
         repeatable: false,
         needPhoto: false,
+        commentText: null,
       };
     },
 

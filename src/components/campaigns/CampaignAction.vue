@@ -6,7 +6,7 @@
     // thead
     tr.header
       // th.number №
-      th.name(colspan="2")
+      th.name(:colspan="nameColspan")
         .title
           span {{ action.name }}
           template(v-if="hasAuthoring")
@@ -31,11 +31,22 @@
 
       td.ranges(:action="action" v-if="hasRanges && !idx" :rowspan="hasOptions.length")
         .name(v-for="range in action.ranges") {{ range.name }}
-      td.complex(:colspan="optionColSpan(option)" v-if="!hasRanges")
+      td.comments(
+        v-if="complexComments"
+      )
+        .comment(v-if="option.commentText")
+          i.el-icon-info
+          span {{ option.commentText }}
+
+      td.complex(
+        :colspan="optionColSpan(option)"
+        v-if="optionColSpan(option) || !hasRanges"
+      )
         action-option(
           :action="option"
           :show-conditions="!!optionColSpan(option)"
           :parent="action"
+          :show-ranges="!hasRanges"
         )
 
       template(v-if="!optionColSpan(option)")
@@ -58,7 +69,7 @@
         ) Бонус {{ option.discountCash }} р.
 
     tr.tfoot(v-if="hasFooter")
-      td(colspan="6")
+      td(:colspan="footerColspan")
         .footer
           .other
             .priority(v-if="priorityName && !hidePriority")
@@ -122,6 +133,12 @@ export default {
     ...mapGetters({
       showPictures: SHOW_PICTURES,
     }),
+    nameColspan() {
+      return this.complexComments ? 3 : 2;
+    },
+    footerColspan() {
+      return this.complexComments ? 7 : 6;
+    },
     layoutHasPictures() {
       const { layout } = this;
       return layout && layout.pictures.length;
@@ -135,7 +152,10 @@ export default {
     },
     hasRanges() {
       const { ranges = [] } = this.action;
-      return ranges.length && !this.hasDetailedOptions;
+      return ranges.length; // && !this.hasDetailedOptions;
+    },
+    complexComments() {
+      return this.hasRanges && this.hasDetailedOptions;
     },
     hasDetailedOptions() {
       const { options } = this.action;
@@ -231,7 +251,7 @@ tr.header {
   th {
     padding: $padding * 2;
     @media print {
-      padding: $padding-print
+      padding: $padding-print;
     }
 
   }
@@ -247,10 +267,10 @@ tr.header {
   }
 }
 
-.comment {
-  margin-top: $padding;
+.other .comment {
+  margin-top: $margin-top-small;
   @media print {
-    margin-top: $padding-print;
+    margin-top: $margin-top-small-print;
   }
   white-space: pre-line;
   display: block !important;
@@ -347,6 +367,10 @@ th.number, td.number {
   @media print {
     width: 26px;
   }
+}
+
+td.comments {
+  text-align: left;
 }
 
 @media print {

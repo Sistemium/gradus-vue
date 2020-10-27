@@ -11,9 +11,9 @@ $primary-color: $blue;
 $white: beige;
 
 $small-font-size: 13px;
-$font-size-print: 10.5px;
-$font-size-large-print: 10px;
-$font-size-x-large-print: 16px;
+$font-size-print: 10px;
+$font-size-large-print: 9px;
+$font-size-x-large-print: 15px;
 $small-font-size-print: 8.5px;
 
 $red: red;
@@ -26,11 +26,13 @@ $icon-button-width: 40px;
 
 $margin-right: 7px;
 $margin-top: 14px;
-$margin-top-print: 10px;
+$margin-top-print: 5px;
+$margin-top-small: 6px;
+$margin-top-small-print: 2.4px;
 $margin: 30px;
 
 $padding: 5px;
-$padding-print: 3px;
+$padding-print: 2.25px 4px;
 
 $border-radius: 6px;
 $list-cell-borders: solid 1px $gray-border-color;

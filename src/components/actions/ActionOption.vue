@@ -1,6 +1,6 @@
 <template lang="pug">
 
-.action-option(:class="isGrid && 'grid'")
+.action-option(:class="{ grid: isGrid, 'no-ranges': !showRanges }")
 
   .self(v-if="hasSelfRow")
     .name(v-if="name") {{ name }}
@@ -51,7 +51,7 @@
           i.el-icon-info
           span {{ option.commentText }}
 
-  .comment(v-if="action.commentText")
+  .comment(v-if="action.commentText && showRanges")
     i.el-icon-info
     span {{ action.commentText }}
 
@@ -111,8 +111,8 @@ export default {
       ];
     },
     hasSelfRow() {
-      const { ranges, name } = this;
-      return name || (ranges && ranges.length);
+      const { ranges, name, showRanges } = this;
+      return (name || (ranges && ranges.length)) && showRanges;
     },
   },
   mixins: [actionBase],
@@ -120,6 +120,10 @@ export default {
     showConditions: {
       type: Boolean,
       default: false,
+    },
+    showRanges: {
+      type: Boolean,
+      default: true,
     },
   },
 };
@@ -154,6 +158,16 @@ export default {
     grid-column: 1 / span 5;
   }
 
+  &.no-ranges {
+    grid-template-columns: auto 88px 59px 89px 89px;
+    @media print {
+      grid-template-columns: auto 88px 39px 59px 59px;
+    }
+    .volume {
+      grid-column: 1 / span 2;
+    }
+  }
+
 }
 
 .option {
@@ -184,6 +198,9 @@ export default {
   text-align: center;
   background: white;
   padding: $padding;
+  @media print {
+    padding: $padding-print;
+  }
   display: flex;
   align-items: center;
   justify-content: center;
@@ -195,7 +212,10 @@ export default {
   align-items: flex-start;
 
   > * + * {
-    margin-top: $padding;
+    margin-top: $margin-top-small;
+    @media print {
+      margin-top: $margin-top-small-print;
+    }
   }
 }
 
@@ -215,9 +235,9 @@ export default {
   }
 
   > * + * {
-    margin-top: $padding;
+    margin-top: $margin-top-small;
     @media print {
-      margin-top: $padding-print;
+      margin-top: $margin-top-small-print;
     }
   }
 }
@@ -246,6 +266,7 @@ export default {
   @media print {
     padding: $margin-top-print;
   }
+
   .discount-matrix-info {
     // margin: 0 auto 0 0;
     // min-width: 0;
