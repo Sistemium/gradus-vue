@@ -127,8 +127,8 @@ export default {
       return layout && layout.pictures.length;
     },
     layout() {
-      const { layout, ts } = this.action;
-      return this.$tick(ts, layout);
+      // const { layout, ts } = this.action;
+      return this.$tsReactive(this.action, 'layout');
     },
     discountHeaders() {
       return this.action.discountHeaders();

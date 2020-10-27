@@ -20,6 +20,9 @@ Vue.mixin({
     $tick(arg1, arg2) {
       return arg2;
     },
+    $tsReactive(instance, field) {
+      return instance.ts ? instance[field] : instance[field];
+    },
   },
 });
 
