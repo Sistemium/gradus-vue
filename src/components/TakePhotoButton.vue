@@ -19,6 +19,7 @@
 </template>
 <script>
 
+import filter from 'lodash/filter';
 import { mapState } from 'vuex';
 import VueDropzone from 'vue2-dropzone';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
@@ -43,6 +44,10 @@ export default {
     maxFileSize: {
       type: Number,
       default: 1024 * 1024 * 20,
+    },
+    trim: {
+      type: Boolean,
+      default: false,
     },
   },
 
@@ -95,7 +100,12 @@ export default {
     },
 
     imsUrl() {
-      return `/ims/${this.org}?folder=${this.entityName}/${addMonths(new Date(), 0)}`;
+      const url = [
+        `/ims/${this.org}?folder=${this.entityName}/${addMonths(new Date(), 0)}`,
+        this.trim && 'trim=true',
+      ];
+      return filter(url)
+        .join('&');
     },
 
     // nativeTriggerClick() {
