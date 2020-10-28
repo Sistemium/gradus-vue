@@ -48,6 +48,8 @@ el-dialog.action-pictures-edit(
           size="medium"
           placeholder="поиск изображений"
         )
+      .take-photo
+        take-photo-button(entity-name="ActionPicture" :trim="true" @done="onImageUpload")
       .align
         el-button-group
           el-button(
@@ -87,6 +89,7 @@ import Action from '@/models/Action';
 import ArticlePicture from '@/models/ArticlePicture';
 import ActionPictureForm from '@/components/actions/ActionPictureForm.vue';
 import ArticlePictureSelectList from '@/components/catalogue/ArticlePictureSelectList.vue';
+import TakePhotoButton from '@/components/TakePhotoButton.vue';
 import ims from '@/lib/ims';
 
 const NAME = 'ActionPicturesEdit';
@@ -97,6 +100,7 @@ export default {
   mixins: [DrawerEditor, ims],
 
   components: {
+    TakePhotoButton,
     ActionPictureForm,
     ArticlePictureSelectList,
     FormButtons,
@@ -176,8 +180,13 @@ export default {
       this.performOperation(() => Action.create(data));
     },
 
-    removeSelected({ id }) {
-      this.idsModel.splice(this.idsModel.indexOf(id), 1);
+    removeSelected({ articlePictureId }) {
+      const idx = this.idsModel.indexOf(articlePictureId);
+      if (idx === -1) {
+        this.$debug('not found', articlePictureId);
+        return;
+      }
+      this.idsModel.splice(idx, 1);
     },
 
     async processPictureUrl({ articlePictureId }) {
@@ -189,13 +198,32 @@ export default {
       }
 
       const { pictures } = await this.imsGet('ActionPicture', articlePicture.largeSrc);
-      const { src } = find(pictures, { name: 'largeImage' });
+      const { src } = find(pictures, { name: 'smallImage' });
       const { src: thumbnailSrc } = find(pictures, { name: 'thumbnail' });
 
       return {
         src,
         thumbnailSrc,
       };
+
+    },
+
+    async onImageUpload(picturesInfo) {
+
+      const { src } = find(picturesInfo, { name: 'smallImage' });
+      const { src: thumbnailSrc } = find(picturesInfo, { name: 'thumbnail' });
+      const id = v4();
+
+      const picture = {
+        id,
+        articlePictureId: id,
+        src,
+        thumbnailSrc,
+        height: 100,
+      };
+
+      this.model.pictures.push(picture);
+      this.idsModel.push(id);
 
     },
 
@@ -277,10 +305,16 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   .searching {
     flex: 1;
     margin-right: $margin;
   }
+
+  .take-photo {
+    margin-right: $margin;
+  }
+
   .search-input {
     width: 100%;
   }
