@@ -79,7 +79,6 @@ el-dialog.action-pictures-edit(
 
 import { v4 } from 'uuid';
 import FormButtons from '@/lib/FormButtons.vue';
-import set from 'lodash/set';
 import map from 'lodash/map';
 import find from 'lodash/find';
 import filter from 'lodash/filter';
@@ -173,7 +172,7 @@ export default {
 
     saveClick() {
       const data = this.actionInstance();
-      set(data, 'layout', this.model);
+      this.$set(data, 'layout', this.model);
       this.performOperation(() => Action.create(data));
     },
 

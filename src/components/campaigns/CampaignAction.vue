@@ -87,12 +87,13 @@
             .territory(v-if="action.territory")
               i.el-icon-location
               span {{ action.territory }}
-            .comment(v-if="action.commentText")
+            .comment(v-if="action.commentText && !moveCommentToLayout")
               i.el-icon-info
-              span {{ action.commentText }}
+              span(v-html="action.commentText")
           action-pictures(
             v-if="showPictures && layoutHasPictures"
             :layout="layout"
+            :parent-comment-text="action.commentText"
             size="small"
           )
 
@@ -133,6 +134,10 @@ export default {
     ...mapGetters({
       showPictures: SHOW_PICTURES,
     }),
+    moveCommentToLayout() {
+      const { showPictures, action: { commentText }, layoutHasPictures } = this;
+      return showPictures && commentText && layoutHasPictures && !this.layout.commentText;
+    },
     nameColspan() {
       return this.complexComments ? 3 : 2;
     },

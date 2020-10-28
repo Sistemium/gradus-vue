@@ -1,7 +1,7 @@
 <template lang="pug">
 
 .action-pictures(:style="layoutStyle")
-  .comment-text(v-if="layout.commentText" v-html="layout.commentText")
+  .comment-text(v-if="commentText" v-html="commentText")
   .pictures
     action-picture-view.picture(
       v-for="picture in pictures" :key="picture.id"
@@ -22,7 +22,7 @@ export default {
 
   props: {
     layout: Object,
-    // articlePictureIds: Array,
+    parentCommentText: String,
     size: {
       type: String,
       default: 'thumbnail',
@@ -50,6 +50,9 @@ export default {
     pictures() {
       return this.layout && this.layout.pictures;
     },
+    commentText() {
+      return this.layout.commentText || this.parentCommentText;
+    },
   },
 
 };
@@ -66,7 +69,7 @@ export default {
 
 .comment-text {
 
-  font-weight: 500;
+  //font-weight: 500;
   margin: $margin-top;
   white-space: pre-line;
 
