@@ -36,6 +36,10 @@ export default {
   name: NAME,
 
   props: {
+    allowMultiple: {
+      type: Boolean,
+      default: true,
+    },
     entityName: String,
     buttonText: {
       type: String,
@@ -76,6 +80,7 @@ export default {
     dzOptions() {
       return {
         url: this.imsUrl(),
+        maxFiles: this.allowMultiple ? null : 1,
         thumbnailWidth: 150,
         acceptedFiles: 'image/png,image/jpeg',
         headers: this.uploadHeaders,

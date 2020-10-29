@@ -49,7 +49,12 @@ el-dialog.action-pictures-edit(
           placeholder="поиск изображений"
         )
       .take-photo
-        take-photo-button(entity-name="ActionPicture" :trim="true" @done="onImageUpload")
+        take-photo-button(
+          entity-name="ActionPicture"
+          :trim="true"
+          @done="onImageUpload"
+          :allow-multiple="false"
+        )
       .align
         el-button-group
           el-button(
