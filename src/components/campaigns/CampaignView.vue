@@ -33,7 +33,10 @@
   resize(:padding="20")
 
     .actions
-      campaign-action(v-for="action in sortedActions" :action="action" :key="action.id")
+      campaign-action(
+        v-for="action in sortedActions" :action="action" :key="action.id"
+        @actionClick="onActionClick"
+      )
 
     .pictures()
       .thumbnail(
@@ -72,6 +75,9 @@ export default {
     },
     campaignThumbnailClick(picture) {
       this.$emit('campaignPictureClick', picture);
+    },
+    onActionClick({ id: actionId }) {
+      this.updateRouteParams({ actionId }, {}, 'ActionSingleView');
     },
   },
 

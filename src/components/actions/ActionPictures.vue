@@ -6,6 +6,7 @@
     action-picture-view.picture(
       v-for="picture in pictures" :key="picture.id"
       :picture="picture"
+      :size="size"
     )
 
 </template>
@@ -76,14 +77,6 @@ export default {
 
   display: flex;
   align-items: flex-end;
-
-  img.thumbnail {
-    max-height: 170px;
-  }
-
-  img.small {
-    max-height: 270px;
-  }
 
   .img-wrapper {
     width: auto;

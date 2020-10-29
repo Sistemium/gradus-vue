@@ -44,6 +44,7 @@
 </template>
 <script>
 
+import first from 'lodash/first';
 import { mapState } from 'vuex';
 import AccountMenu from '@/components/AccountMenu.vue';
 import * as native from 'sistemium-vue/services/native';
@@ -61,7 +62,7 @@ export default {
   computed: {
     ...mapState('auth', { account: 'account' }),
     defaultActive() {
-      return this.$route.path.match(/^\/[^/]*/)[0];
+      return first(this.$route.path.match(/^\/[^/]*/));
     },
     hasOutletsAuth() {
       return this.$hasAuthRole('possibleOutlets')

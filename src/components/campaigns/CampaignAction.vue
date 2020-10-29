@@ -6,7 +6,7 @@
     // thead
     tr.header
       // th.number №
-      th.name(:colspan="nameColspan")
+      th.name(:colspan="nameColspan" @click="$emit('actionClick', action)")
         .title
           span {{ action.name }}
           template(v-if="hasAuthoring")
@@ -94,10 +94,10 @@
             v-if="showPictures && layoutHasPictures"
             :layout="layout"
             :parent-comment-text="action.commentText"
-            size="small"
+            :size="pictureSize"
           )
 
-  action-history-view(:history="action.actionHistory")
+  action-history-view(:history="action.actionHistory" v-if="withHistory")
   //.restrictions(v-if="hasRestrictions")
     action-option(v-for="restriction in hasRestrictions" :action="restriction")
 
@@ -124,6 +124,14 @@ export default {
   name: NAME,
   props: {
     hidePriority: Boolean,
+    withPictures: {
+      type: Boolean,
+      default: false,
+    },
+    withHistory: {
+      type: Boolean,
+      default: true,
+    },
   },
   components: {
     StyledComment,
@@ -134,8 +142,14 @@ export default {
   },
   computed: {
     ...mapGetters({
-      showPictures: SHOW_PICTURES,
+      showPicturesGlobal: SHOW_PICTURES,
     }),
+    pictureSize() {
+      return this.withPictures ? 'small' : 'thumbnail';
+    },
+    showPictures() {
+      return this.showPicturesGlobal || this.withPictures;
+    },
     moveCommentToLayout() {
       const { showPictures, action: { commentText }, layoutHasPictures } = this;
       return showPictures && commentText && layoutHasPictures && !this.layout.commentText;

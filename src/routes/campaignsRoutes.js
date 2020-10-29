@@ -55,4 +55,12 @@ export default [{
     component: () => import(/* webpackChunkName: "campaigns" */ '../components/actions/ActionPicturesEdit.vue'),
   }],
 
+}, {
+  name: 'ActionSingleView',
+  path: '/actionSingle/:actionId',
+  component: () => import(/* webpackChunkName: "campaigns" */ '../views/ActionSingleView.vue'),
+  props: true,
+  meta: {
+    hideMenu: true,
+  },
 }];

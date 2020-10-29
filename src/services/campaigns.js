@@ -4,7 +4,7 @@ import CampaignsPriority from '@/models/CampaignsPriority';
 import Action from '@/models/Action';
 import SalesTeam from '@/models/SalesTeam';
 import ActionHistory from '@/models/ActionHistory';
-import ArticlePicture from '@/models/ArticlePicture';
+// import ArticlePicture from '@/models/ArticlePicture';
 import escapeRegExp from 'lodash/escapeRegExp';
 import filter from 'lodash/filter';
 import orderBy from 'lodash/orderBy';
@@ -52,8 +52,8 @@ export async function campaignsData(month, searchText, force = false) {
         field: 'actionId',
         force,
       });
-      const articlePictureIds = flatten(map(actions, 'articlePictureIds'));
-      await ArticlePicture.findByMany(articlePictureIds);
+      // const articlePictureIds = flatten(map(actions, 'articlePictureIds'));
+      // await ArticlePicture.findByMany(articlePictureIds);
     }
   }
 

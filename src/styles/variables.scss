@@ -19,8 +19,11 @@ $small-font-size-print: 8.5px;
 $red: red;
 $green: green;
 $light-green: #d0ffd0;
+$light-green: rgb(231, 128, 97);
+$mid-green: darken($light-green, 45%);
 
-$orange: orange;
+$orange: rgb(199, 53, 44);
+$orange: rgb(239, 65, 54);
 
 $icon-button-width: 40px;
 

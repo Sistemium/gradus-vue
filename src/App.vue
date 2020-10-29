@@ -7,8 +7,8 @@
     element-loading-text="Авторизация ..."
   )
 
-    el-header
-      app-menu(v-if="authorized")
+    el-header(:class="{ hidden: !showMenu }")
+      app-menu(v-if="showMenu")
 
     el-main
 
@@ -35,6 +35,9 @@ export default {
 
   computed: {
     ...mapState('auth', { error: 'error' }),
+    showMenu() {
+      return this.authorized && !this.$route.meta.hideMenu;
+    },
     authorized() {
       return !!this.$store.state.auth.roles;
     },
@@ -92,6 +95,10 @@ export default {
 
 .el-header {
   // padding: 0 $padding;
+}
+
+.hidden {
+  display: none;
 }
 
 </style>

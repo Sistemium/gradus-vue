@@ -18,6 +18,12 @@ const NAME = 'ActionPictureView';
 
 export default {
   name: NAME,
+  props: {
+    size: {
+      type: String,
+      default: 'thumbnail',
+    },
+  },
   mixins: [ActionPictureForm],
   computed: {
     imageStyle() {
@@ -46,7 +52,17 @@ export default {
 }
 
 img {
+
   object-fit: contain;
+
+  &.thumbnail {
+    max-height: 170px;
+  }
+
+  &.small {
+    max-height: 270px;
+  }
+
 }
 
 .label {
