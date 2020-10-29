@@ -89,7 +89,7 @@
               span {{ action.territory }}
             .comment(v-if="action.commentText && !moveCommentToLayout")
               i.el-icon-info
-              span(v-html="action.commentText")
+              styled-comment(:text="action.commentText")
           action-pictures(
             v-if="showPictures && layoutHasPictures"
             :layout="layout"
@@ -107,6 +107,7 @@
 import find from 'lodash/find';
 import get from 'lodash/get';
 import { createNamespacedHelpers } from 'vuex';
+import StyledComment from '@/components/StyledComment.vue';
 import ActionOption from '@/components/actions/ActionOption.vue';
 import ActionRequired from '@/components/actions/ActionRequired.vue';
 import ActionPictures from '@/components/actions/ActionPictures.vue';
@@ -125,6 +126,7 @@ export default {
     hidePriority: Boolean,
   },
   components: {
+    StyledComment,
     ActionPictures,
     ActionHistoryView,
     ActionOption,

@@ -1,7 +1,7 @@
 <template lang="pug">
 
 .action-pictures(:style="layoutStyle")
-  .comment-text(v-if="commentText" v-html="commentText")
+  styled-comment(:text="commentText")
   .pictures
     action-picture-view.picture(
       v-for="picture in pictures" :key="picture.id"
@@ -11,6 +11,7 @@
 </template>
 <script>
 
+import StyledComment from '@/components/StyledComment.vue';
 import ActionPictureView from '@/components/actions/ActionPictureView.vue';
 
 const NAME = 'ActionPictures';
@@ -18,7 +19,7 @@ const NAME = 'ActionPictures';
 export default {
 
   name: NAME,
-  components: { ActionPictureView },
+  components: { StyledComment, ActionPictureView },
 
   props: {
     layout: Object,
@@ -68,24 +69,7 @@ export default {
 }
 
 .comment-text {
-
-  //font-weight: 500;
   margin: $margin-top;
-  white-space: pre-line;
-
-  /deep/ {
-    em {
-      color: $orange;
-      font-style: normal;
-    }
-
-    mark {
-      color: $black;
-      background-color: $light-green;
-      padding: 0 $padding;
-    }
-  }
-
 }
 
 .pictures {
