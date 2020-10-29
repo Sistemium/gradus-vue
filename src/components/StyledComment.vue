@@ -35,6 +35,12 @@ export default {
       background-color: $light-green;
       padding: 0 $padding;
     }
+
+    ul {
+      white-space: normal;
+      margin: $margin-top 0 0;
+    }
+
   }
 
 }

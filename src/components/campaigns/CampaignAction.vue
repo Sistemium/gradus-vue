@@ -279,7 +279,7 @@ tr.header {
   @media print {
     margin-top: $margin-top-small-print;
   }
-  white-space: pre-line;
+  //white-space: pre-line;
   display: block !important;
 }
 
