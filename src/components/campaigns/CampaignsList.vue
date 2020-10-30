@@ -11,8 +11,8 @@
     )
       span.name {{ item.name }}
       template(v-if="hasAuthoring")
-        .badge(v-if="item.pictures.length")
-          span {{ item.pictures.length }}
+        .badge(v-if="badgeCount(item)")
+          span {{ badgeCount(item) }}
         .warning(v-else)
           i.el-icon-warning
 
@@ -63,6 +63,11 @@ export default {
       // const { value } = this;
       this.$emit('input', item);
     },
+    badgeCount(campaign) {
+      const { pictures, actions } = campaign;
+      return pictures.length
+        + filter(actions, ({ layout = {} }) => layout.pictures && layout.pictures.length).length;
+    },
   },
   created() {
     this.$bindToModel(CampaignPicture);
@@ -101,6 +106,7 @@ export default {
   &.draft {
     background: $light-green;
   }
+
   &.archive {
     color: $gray;
   }
