@@ -1,16 +1,21 @@
 <template lang="pug">
 
-.action-single-view()
+.action-single-view(v-if="campaign && action")
 
-  h1.campaign(v-if="campaign")
+  h1.campaign
     img(src="../assets/icons8-discount-orange.svg")
     .name Акция {{ campaign.name }}
 
   campaign-action(
     :action="action"
-    v-if="action"
     :with-pictures="true"
     :with-history="false"
+  )
+
+  action-pictures(
+    :layout="action.layout"
+    :parent-comment-text="action.commentText"
+    size="small"
   )
 
   .footer(v-if="campaign")
@@ -35,13 +40,14 @@
 import Action from '@/models/Action';
 import Campaign from '@/models/Campaign';
 import CampaignAction from '@/components/campaigns/CampaignAction.vue';
+import ActionPictures from '@/components/actions/ActionPictures.vue';
 
 const NAME = 'ActionSingleView';
 
 export default {
 
   name: NAME,
-  components: { CampaignAction },
+  components: { CampaignAction, ActionPictures },
 
   props: {
     actionId: {
@@ -94,35 +100,40 @@ export default {
 //$header-color: #2ECC71;
 //$header-color: rgb(0, 123, 193);
 $header-color: rgb(87, 53, 128);
+$header-color: lighten(rgb(0, 88, 87), 1%);
 
 img {
   max-height: 75px;
 }
 
 @mixin header-font {
-  font-size: 30px;
+  font-size: 28px;
   font-weight: 500;
+  color: $header-color;
 }
 
 .action-single-view {
   height: 750px;
   width: 1100px;
   border: dashed 1px $gray-border-color;
-  padding: $margin;
+  padding: $margin-top;
   display: flex;
   flex-direction: column;
 }
 
+h1 .name, .footer .fields {
+  //border: $list-cell-borders;
+  border-radius: 10px;
+  @include header-font();
+  background: $light-green;
+  //background: lighten($header-color, 27%);
+  color: $header-color;
+  padding: $margin-top;
+  flex: 1;
+}
+
 .campaign {
 
-  .name {
-    background: $header-color;
-    color: white;
-    flex: 1;
-    padding: $margin-top;
-  }
-
-  @include header-font();
   display: flex;
   align-items: center;
 
@@ -132,24 +143,37 @@ img {
 
 }
 
+.action-pictures {
+  font-size: 18px;
+  margin-top: $margin-top;
+  flex: 1;
+  min-height: 0;
+}
+
 .campaign-action {
 
-  $col-width: 130px;
-  $col-width-thin: 90px;
+  $col-width: 150px;
+  $col-mid: 105px;
+  $col-mid-1: $col-mid - 1;
   $col-width-1: $col-width - 1;
+  $col-width-thin: 60px;
 
-  font-size: 23px;
+  font-size: 20px;
 
-  flex: 1;
+  //flex: 1;
 
   /deep/ {
+
+    .option {
+      padding: 14px;
+    }
 
     table {
       //height: 100%;
     }
 
-    th.discount {
-      color: #444;
+    th .title {
+      color: $header-color;
     }
 
     th .title span {
@@ -158,10 +182,11 @@ img {
 
     .action-required em {
       font-size: 15px;
+      margin-top: $margin-top;
     }
 
     .tfoot {
-      font-size: 18px;
+      display: none;
     }
 
     button {
@@ -169,10 +194,16 @@ img {
     }
 
     td.discount, th.discount {
-      width: $col-width;
+      width: $col-mid;
       //@media print {
       //  width: 60px;
       //}
+    }
+
+    td {
+      .action-required, .discount {
+        @include header-font();
+      }
     }
 
     th.volume, td.volume {
@@ -203,14 +234,14 @@ img {
 
     .action-option.grid {
 
-      grid-template-columns: auto $col-width-1 $col-width-thin - 1 $col-width-1 $col-width-1;
+      grid-template-columns: auto $col-width-1 $col-width-thin - 1 $col-mid-1 $col-mid-1;
 
       @media print {
         //grid-template-columns: auto $col-width-1 $col-width-1 $col-width-1 $col-width-1;
       }
 
       &.no-ranges {
-        grid-template-columns: auto $col-width-1 - 1 $col-width-thin - 1 $col-width-1 $col-width-1;
+        grid-template-columns: auto $col-width-1 $col-width-thin - 1 $col-mid-1 $col-mid-1;
         //@media print {
         //  grid-template-columns: auto 88px 39px 59px 59px;
         //}
@@ -228,12 +259,6 @@ img {
 
 .footer {
 
-  .fields {
-    background: $header-color;
-    flex: 1;
-    padding: $margin-top;
-  }
-
   img {
     margin-left: $margin;
   }
@@ -242,9 +267,7 @@ img {
   flex-direction: row;
   align-items: center;
 
-  margin-top: $margin;
-  color: white;
-  font-size: 30px;
+  margin-top: $margin-top;
 
   i {
     margin-right: $margin-right;

@@ -20,10 +20,12 @@ $red: red;
 $green: green;
 $light-green: #d0ffd0;
 $light-green: rgb(231, 128, 97);
-$mid-green: darken($light-green, 45%);
+$light-green: lighten(rgb(136, 202, 147), 25%);
+$mid-green: rgb(116, 178, 59);
 
 $orange: rgb(199, 53, 44);
 $orange: rgb(239, 65, 54);
+$orange: rgb(116, 178, 59);
 
 $icon-button-width: 40px;
 
