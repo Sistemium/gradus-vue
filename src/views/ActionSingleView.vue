@@ -47,7 +47,10 @@ const NAME = 'ActionSingleView';
 export default {
 
   name: NAME,
-  components: { CampaignAction, ActionPictures },
+  components: {
+    CampaignAction,
+    ActionPictures,
+  },
 
   props: {
     actionId: {
@@ -138,7 +141,7 @@ h1 .name, .footer .fields {
   align-items: center;
 
   img {
-    margin-right: $margin;
+    margin-right: $margin-top;
   }
 
 }
@@ -152,19 +155,19 @@ h1 .name, .footer .fields {
 
 .campaign-action {
 
-  $col-width: 150px;
+  $col-width: 170px;
   $col-mid: 105px;
   $col-mid-1: $col-mid - 1;
   $col-width-1: $col-width - 1;
   $col-width-thin: 60px;
 
-  font-size: 20px;
+  font-size: 18px;
 
   //flex: 1;
 
   /deep/ {
 
-    .option {
+    .option, .volume {
       padding: 14px;
     }
 
@@ -234,14 +237,15 @@ h1 .name, .footer .fields {
 
     .action-option.grid {
 
-      grid-template-columns: auto $col-width-1 $col-width-thin - 1 $col-mid-1 $col-mid-1;
+      grid-template-columns: auto $col-width-1 $col-width-thin - 1 $col-mid-1 $col-mid-1 $col-mid-1;
 
       @media print {
         //grid-template-columns: auto $col-width-1 $col-width-1 $col-width-1 $col-width-1;
       }
 
       &.no-ranges {
-        grid-template-columns: auto $col-width-1 $col-width-thin - 1 $col-mid-1 $col-mid-1;
+        grid-template-columns: auto $col-width-1
+          $col-width-thin - 1 $col-mid-1 $col-mid-1 $col-mid-1;
         //@media print {
         //  grid-template-columns: auto 88px 39px 59px 59px;
         //}
@@ -260,7 +264,7 @@ h1 .name, .footer .fields {
 .footer {
 
   img {
-    margin-left: $margin;
+    margin-left: $margin-top;
   }
 
   display: flex;

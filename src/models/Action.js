@@ -46,12 +46,19 @@ export default new Model({
       // }
       return filter([
         {
+          title: '% общая',
+          name: 'discountTotal',
+          cls: 'total',
+        },
+        {
           title: '% комп.',
           name: 'discountComp',
+          cls: 'comp',
         },
         {
           title: '% комм.',
           name: 'discountOwn',
+          cls: 'own',
         },
       ]);
     },

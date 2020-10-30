@@ -38,7 +38,7 @@
     .discount(
       v-for="discountHeader in discountHeaders"
       :class="discountHeader.cls"
-    ) {{ option[discountHeader.name] || action[discountHeader.name] || '-' }}
+    ) {{ discountValue(option, discountHeader) || '-' }}
 
   .discount-matrix(v-if="action.discountMatrix")
     discount-matrix-info(:discount-matrix="action.discountMatrix")
@@ -99,6 +99,11 @@ export default {
     discountHeaders() {
       return [
         {
+          title: '% общая',
+          name: 'discountTotal',
+          cls: 'total',
+        },
+        {
           title: '% комп.',
           name: 'discountComp',
           cls: 'comp',
@@ -113,6 +118,18 @@ export default {
     hasSelfRow() {
       const { ranges, name, showRanges } = this;
       return (name || (ranges && ranges.length)) && showRanges;
+    },
+  },
+  methods: {
+    discountValue(option, { name }) {
+      if (name === 'discountTotal') {
+        return this.discountValueSimple(option, 'discountOwn')
+          + this.discountValueSimple(option, 'discountComp');
+      }
+      return this.discountValueSimple(option, name);
+    },
+    discountValueSimple(option, name) {
+      return option[name] || this.action[name] || 0;
     },
   },
   mixins: [actionBase],
@@ -142,15 +159,18 @@ export default {
   text-align: left;
 }
 
+$col-mid: 89px;
+$col-mid-print: 59px;
+
 .action-option.grid {
 
   display: grid;
   gap: 1px;
-  grid-template-columns: auto 89px 59px 89px 89px;
+  grid-template-columns: auto 89px 59px $col-mid $col-mid $col-mid;
   background: $gray-border-color;
 
   @media print {
-    grid-template-columns: auto 89px 39px 59px 59px;
+    grid-template-columns: auto 89px 39px $col-mid-print $col-mid-print $col-mid-print;
     background: $table-border-color;
   }
 
@@ -159,9 +179,9 @@ export default {
   }
 
   &.no-ranges {
-    grid-template-columns: auto 88px 59px 89px 89px;
+    grid-template-columns: auto 88px 59px $col-mid $col-mid $col-mid;
     @media print {
-      grid-template-columns: auto 88px 39px 59px 59px;
+      grid-template-columns: auto 88px 39px $col-mid-print $col-mid-print;
     }
     .volume {
       grid-column: 1 / span 2;
@@ -186,12 +206,16 @@ export default {
   grid-row-start: 1;
 }
 
-.comp {
+.total {
   grid-column: 4;
 }
 
-.own {
+.comp {
   grid-column: 5;
+}
+
+.own {
+  grid-column: 6;
 }
 
 .discount, .action-required, .option, .option-required {
@@ -243,7 +267,7 @@ export default {
 }
 
 .action-option > .comment {
-  grid-column-end: 6;
+  grid-column-end: 7;
 }
 
 .action-option, .option {
@@ -259,7 +283,7 @@ export default {
 
 .discount-matrix {
   padding: $margin-top;
-  grid-column: 1 / span 5;
+  grid-column: 1 / span 6;
   background: white;
   display: flex;
 

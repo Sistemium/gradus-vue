@@ -6,9 +6,8 @@
     // thead
     tr.header
       // th.number №
-      th.name(:colspan="nameColspan" @click="$emit('actionClick', action)")
+      th.name(:colspan="nameColspan")
         .title
-          span {{ action.name }}
           template(v-if="hasAuthoring")
             el-button(
               v-if="showPictures"
@@ -23,7 +22,10 @@
             )
             button-edit.edit(@click="onEditClick")
       th.required(v-for="req in requirements" :class="req.cls") {{ req.title }}
-      th.discount(v-for="discountHeader in discountHeaders") {{ discountHeader.title }}
+      th.discount(
+        v-for="discountHeader in discountHeaders" :key="discountHeader.cls"
+        :class="discountHeader.cls"
+      ) {{ discountHeader.title }}
     // tbody
     tr.option(v-for="(option, idx) in hasOptions")
 
@@ -61,11 +63,12 @@
           v-if="!(action.discountCash || option.discountCash) && (!discount || idx === 0)"
           v-for="discountHeader in discountHeaders"
           :rowspan="discount && hasOptions.length"
-        ) {{ action[discountHeader.name] || option[discountHeader.name] || '-' }}
+          :class="discountHeader.cls"
+        ) {{ discountValue(option, discountHeader) || '-' }}
 
         td.discountCash(
           v-if="option.discountCash"
-          colspan="2"
+          colspan="3"
         ) Бонус {{ option.discountCash }} р.
 
     tr.tfoot(v-if="hasFooter")
@@ -158,7 +161,7 @@ export default {
       return this.complexComments ? 3 : 2;
     },
     footerColspan() {
-      return this.complexComments ? 7 : 6;
+      return this.complexComments ? 8 : 7;
     },
     layoutHasPictures() {
       const { layout } = this;
@@ -203,7 +206,7 @@ export default {
       copyAction: COPY_ACTION,
     }),
     optionColSpan(option) {
-      return ((option.options && option.options.length) || option.discountMatrix) ? 5 : undefined;
+      return ((option.options && option.options.length) || option.discountMatrix) ? 6 : undefined;
     },
     onEditClick() {
       const { id: actionId } = this.action;
@@ -212,6 +215,16 @@ export default {
     onEditPicturesClick() {
       const { id: actionId } = this.action;
       this.updateRouteParams({ actionId }, {}, 'actionPicturesEdit');
+    },
+    discountValue(option, { name }) {
+      if (name === 'discountTotal') {
+        return this.discountValueSimple(option, 'discountOwn')
+          + this.discountValueSimple(option, 'discountComp');
+      }
+      return this.discountValueSimple(option, name);
+    },
+    discountValueSimple(option, name) {
+      return this.action[name] || option[name] || 0;
     },
   },
   mixins: [actionBase],
