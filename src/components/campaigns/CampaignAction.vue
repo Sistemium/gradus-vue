@@ -8,6 +8,7 @@
       // th.number №
       th.name(:colspan="nameColspan")
         .title
+          span(@click="$emit('actionClick', action)") {{ action.name }}
           template(v-if="hasAuthoring")
             el-button(
               v-if="showPictures"
@@ -256,6 +257,7 @@ table {
 
   td.complex {
     padding: 0;
+    height: 0;
   }
 
 }
@@ -378,8 +380,8 @@ td.discount, th.discount {
 }
 
 th.volume, td.volume {
-  width: 90px;
-  max-width: 90px;
+  width: 110px;
+  max-width: 110px;
   //@media print {
   //  width: 80px;
   //  max-width: 80px;

@@ -159,6 +159,9 @@ export default {
   text-align: left;
 }
 
+$col-wide: 109px;
+$col-wide-print: 109px;
+
 $col-mid: 89px;
 $col-mid-print: 59px;
 
@@ -166,11 +169,12 @@ $col-mid-print: 59px;
 
   display: grid;
   gap: 1px;
-  grid-template-columns: auto 89px 59px $col-mid $col-mid $col-mid;
+  grid-template-columns: auto $col-wide 59px $col-mid $col-mid $col-mid;
   background: $gray-border-color;
+  height: 100%;
 
   @media print {
-    grid-template-columns: auto 89px 39px $col-mid-print $col-mid-print $col-mid-print;
+    grid-template-columns: auto $col-wide-print 39px $col-mid-print $col-mid-print $col-mid-print;
     background: $table-border-color;
   }
 
@@ -179,10 +183,12 @@ $col-mid-print: 59px;
   }
 
   &.no-ranges {
-    grid-template-columns: auto 88px 59px $col-mid $col-mid $col-mid;
+    grid-template-columns: auto $col-wide - 1 59px $col-mid $col-mid $col-mid;
     @media print {
-      grid-template-columns: auto 88px 39px $col-mid-print $col-mid-print;
+      grid-template-columns: auto $col-wide-print - 1 39px
+        $col-mid-print $col-mid-print $col-mid-print;
     }
+
     .volume {
       grid-column: 1 / span 2;
     }
