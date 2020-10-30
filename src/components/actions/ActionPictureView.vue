@@ -56,11 +56,11 @@ img {
   object-fit: contain;
 
   &.thumbnail {
-    max-height: 170px;
+    max-height: 130px;
   }
 
   &.small {
-    max-height: 270px;
+    max-height: 250px;
   }
 
 }

@@ -14,7 +14,11 @@
   )
     slot
       el-badge.countdown(:value="countdown" :hidden="!isUploading")
-        el-button.trigger(plain type="primary" :disabled="isUploading") {{ currentButtonText }}
+        el-button.trigger(
+          plain type="primary"
+          :disabled="isUploading"
+          :size="size"
+        ) {{ currentButtonText }}
 
 </template>
 <script>
@@ -44,6 +48,10 @@ export default {
     buttonText: {
       type: String,
       default: 'Добавить фото',
+    },
+    size: {
+      type: String,
+      default: 'medium',
     },
     maxFileSize: {
       type: Number,

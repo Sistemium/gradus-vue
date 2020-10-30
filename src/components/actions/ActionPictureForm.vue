@@ -25,7 +25,7 @@
     i.el-icon-remove
 
   .label
-    el-input(v-if="editable" v-model="picture.label")
+    el-input(v-if="editable" v-model="picture.label" size="mini")
 
 </template>
 <script>
@@ -87,8 +87,11 @@ export default {
   text-align: center;
 
   img {
+
     flex: 1;
     object-fit: contain;
+    max-height: 110px;
+
   }
 }
 

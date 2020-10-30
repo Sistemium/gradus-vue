@@ -36,6 +36,7 @@ el-dialog.action-pictures-edit(
       el-input(
         type="textarea"
         autosize
+        size="mini"
         v-model="model.commentText"
         :clearable="true"
         placeholder="Текстовое пояснение к иллюстрации"
@@ -45,13 +46,14 @@ el-dialog.action-pictures-edit(
       .searching
         search-input(
           v-model="searchText" :debounce="850"
-          size="medium"
+          size="mini"
           placeholder="поиск изображений"
         )
       .take-photo
         take-photo-button(
           entity-name="ActionPicture"
           :trim="true"
+          size="mini"
           @done="onImageUpload"
           :allow-multiple="false"
         )
@@ -61,6 +63,7 @@ el-dialog.action-pictures-edit(
             v-for="b in layoutButtons"
             :key="b.name"
             :icon="b.icon"
+            size="mini"
             @click="model.align = b.name"
             :type="model.align === b.name ? 'primary' : 'default'"
           )
@@ -282,8 +285,8 @@ export default {
 
 @import "../../styles/variables";
 
-.content > * {
-  margin: $margin-top;
+.content > * + * {
+  margin-top: $margin-top;
 }
 
 .action-pictures {
@@ -295,7 +298,7 @@ export default {
 }
 
 .pictures {
-  min-height: 254px;
+  min-height: 152px;
 }
 
 .content {
