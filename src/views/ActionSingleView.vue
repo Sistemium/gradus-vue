@@ -13,7 +13,7 @@
   )
 
   action-pictures(
-    :layout="action.layout"
+    :layout="layout"
     :parent-comment-text="action.commentText"
     size="small"
   )
@@ -68,9 +68,10 @@ export default {
   },
 
   computed: {
-    // action() {
-    //   return Action.get(this.actionId);
-    // },
+    layout() {
+      const { layout = {} } = this.action || {};
+      return layout;
+    },
   },
 
   created() {

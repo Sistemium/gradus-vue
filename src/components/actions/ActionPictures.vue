@@ -20,10 +20,16 @@ const NAME = 'ActionPictures';
 export default {
 
   name: NAME,
-  components: { StyledComment, ActionPictureView },
+  components: {
+    StyledComment,
+    ActionPictureView,
+  },
 
   props: {
-    layout: Object,
+    layout: {
+      type: Object,
+      required: true,
+    },
     parentCommentText: String,
     size: {
       type: String,
