@@ -169,7 +169,7 @@ h1 .name, .footer .fields {
   /deep/ {
 
     .option, .volume {
-      padding: 14px;
+      padding: $padding 14px;
     }
 
     table {
@@ -245,7 +245,7 @@ h1 .name, .footer .fields {
       }
 
       &.no-ranges {
-        grid-template-columns: auto $col-width-1
+        grid-template-columns: auto $col-width-1 - 1
           $col-width-thin - 1 $col-mid-1 $col-mid-1 $col-mid-1;
         //@media print {
         //  grid-template-columns: auto 88px 39px 59px 59px;
