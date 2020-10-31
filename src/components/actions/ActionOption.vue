@@ -38,7 +38,7 @@
     .discount(
       v-for="discountHeader in discountHeaders"
       :class="discountHeader.cls"
-    ) {{ discountValue(option, discountHeader) || '-' }}
+    ) {{ discountValue(option, discountHeader) | decimal }}
 
   .discount-matrix(v-if="action.discountMatrix")
     discount-matrix-info(:discount-matrix="action.discountMatrix")

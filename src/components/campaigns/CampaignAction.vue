@@ -65,7 +65,7 @@
           v-for="discountHeader in discountHeaders"
           :rowspan="discount && hasOptions.length"
           :class="discountHeader.cls"
-        ) {{ discountValue(option, discountHeader) || '-' }}
+        ) {{ discountValue(option, discountHeader) | decimal }}
 
         td.discountCash(
           v-if="option.discountCash"
