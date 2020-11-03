@@ -63,6 +63,9 @@ img {
     max-height: 200px;
   }
 
+  max-width: 100%;
+  height: auto;
+
 }
 
 .label {
