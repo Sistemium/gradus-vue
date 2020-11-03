@@ -56,5 +56,9 @@ td.discount, th.discount, .action-option > .discount, td.discountCash {
   }
 }
 
-.discount.total {
+td {
+  &.discount.total, .action-option .discount.total {
+    font-weight: bold;
+    //font-size: larger;
+  }
 }

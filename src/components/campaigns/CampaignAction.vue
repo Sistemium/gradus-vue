@@ -257,7 +257,7 @@ table {
 
   td.complex {
     padding: 0;
-    height: 0;
+    min-height: 0;
   }
 
 }
