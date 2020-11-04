@@ -1,6 +1,9 @@
 <template lang="pug">
 
-.action-single-view(v-if="campaign && action")
+.action-single-view(
+  v-if="campaign && action"
+  :class="viewClass"
+)
 
   h1.campaign
     img(src="../assets/icons8-discount-orange.svg")
@@ -37,6 +40,7 @@
 </template>
 <script>
 
+import sumBy from 'lodash/sumBy';
 import Action from '@/models/Action';
 import Campaign from '@/models/Campaign';
 import CampaignAction from '@/components/campaigns/CampaignAction.vue';
@@ -71,6 +75,24 @@ export default {
     layout() {
       const { layout = {} } = this.action || {};
       return layout;
+    },
+    viewClass() {
+      const { action } = this;
+      if (!action) {
+        return 'loading';
+      }
+      const { options: variants, ranges: commonRanges = [] } = action;
+      const length = commonRanges.length || sumBy(variants, variant => {
+        const { options: addOptions = [], ranges = [] } = variant;
+        if (ranges.length) {
+          return ranges.length;
+        }
+        if (addOptions.length) {
+          return addOptions.length;
+        }
+        return 1;
+      });
+      return length > 7 ? 'tall' : null;
     },
   },
 
@@ -110,15 +132,20 @@ img {
   max-height: 75px;
 }
 
-@mixin header-font {
-  font-size: 28px;
+@mixin header-font($tall: null) {
   font-weight: 500;
   color: $header-color;
+  @if $tall == tall {
+    font-size: 22px;
+  } @else {
+    font-size: 28px;
+  }
 }
 
 .action-single-view {
-  height: 750px;
-  width: 1100px;
+  min-height: 750px;
+  max-width: 1100px;
+  //min-width: 890px;
   border: dashed 1px $gray-border-color;
   padding: $margin-top;
   display: flex;
@@ -163,8 +190,6 @@ h1 .name, .footer .fields {
   $col-width-thin: 60px;
 
   font-size: 18px;
-
-  //flex: 1;
 
   /deep/ {
 
@@ -261,6 +286,27 @@ h1 .name, .footer .fields {
   }
 
 }
+
+.tall {
+  .campaign-action {
+    font-size: 15px;
+
+    /deep/ {
+      .option, .volume {
+        padding: $padding 7px;
+      }
+    }
+  }
+
+  .action-pictures {
+    /deep/ {
+      .action-picture-view img {
+        max-height: 130px;
+      }
+    }
+  }
+}
+
 
 .footer {
 

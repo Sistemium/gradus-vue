@@ -77,7 +77,7 @@ export default {
       this.$emit('campaignPictureClick', picture);
     },
     onActionClick({ id: actionId }) {
-      this.updateRouteParams({ actionId }, {}, 'ActionSingleView');
+      this.updateRouteParams({ actionId }, {}, 'campaignActionPicture');
     },
   },
 

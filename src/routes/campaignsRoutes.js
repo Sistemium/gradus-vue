@@ -9,51 +9,36 @@ export default [{
     label: 'Акции',
   },
 
-  children: [{
-    name: 'campaignsPriorities',
-    path: 'priorities',
-  }, {
-    name: 'campaignActionCreate',
-    path: 'action/create',
-    props: ({ params, query }) => ({
-      // actionId: params.actionId,
-      from: {
-        name: 'campaigns',
-        params: { ...params },
-        query: { ...query },
-      },
-      forceModified: true,
-    }),
-    children: [{
-      path: 'paste',
-      name: 'campaignActionPaste',
-    }],
-    component: () => import(/* webpackChunkName: "campaigns" */ '../components/campaigns/CampaignActionEdit.vue'),
-  }, {
-    name: 'campaignActionEdit',
-    path: 'action/:actionId/edit',
-    props: ({ params, query }) => ({
-      actionId: params.actionId,
-      from: {
-        name: 'campaigns',
-        params: { ...params },
-        query: { ...query },
-      },
-    }),
-    component: () => import(/* webpackChunkName: "campaigns" */ '../components/campaigns/CampaignActionEdit.vue'),
-  }, {
-    name: 'actionPicturesEdit',
-    path: 'action/:actionId/pictures',
-    props: ({ params, query }) => ({
-      actionId: params.actionId,
-      from: {
-        name: 'campaigns',
-        params: { ...params },
-        query: { ...query },
-      },
-    }),
-    component: () => import(/* webpackChunkName: "campaigns" */ '../components/actions/ActionPicturesEdit.vue'),
-  }],
+  children: [
+    {
+      name: 'campaignsPriorities',
+      path: 'priorities',
+    }, {
+      name: 'campaignActionCreate',
+      path: 'action/create',
+      props: fromProps({ forceModified: true }),
+      children: [{
+        path: 'paste',
+        name: 'campaignActionPaste',
+      }],
+      component: () => import(/* webpackChunkName: "campaigns" */ '../components/campaigns/CampaignActionEdit.vue'),
+    }, {
+      name: 'campaignActionEdit',
+      path: 'action/:actionId/edit',
+      props: fromProps(),
+      component: () => import(/* webpackChunkName: "campaigns" */ '../components/campaigns/CampaignActionEdit.vue'),
+    }, {
+      name: 'campaignActionPicture',
+      path: 'action/:actionId/picture',
+      props: fromProps(),
+      component: () => import(/* webpackChunkName: "campaigns" */ '../components/campaigns/CampaignActionPicture.vue'),
+    }, {
+      name: 'actionPicturesEdit',
+      path: 'action/:actionId/pictures',
+      props: fromProps(),
+      component: () => import(/* webpackChunkName: "campaigns" */ '../components/actions/ActionPicturesEdit.vue'),
+    },
+  ],
 
 }, {
   name: 'ActionSingleView',
@@ -64,3 +49,16 @@ export default [{
     hideMenu: true,
   },
 }];
+
+
+function fromProps(extra = {}) {
+  return ({ params, query }) => ({
+    actionId: params.actionId,
+    from: {
+      name: 'campaigns',
+      params: { ...params },
+      query: { ...query },
+    },
+    ...extra,
+  });
+}

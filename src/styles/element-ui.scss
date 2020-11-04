@@ -11,3 +11,7 @@
 .el-button + .el-button {
   margin-left: $margin-right;
 }
+
+.el-dialog__body {
+  word-break: normal;
+}
