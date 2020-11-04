@@ -173,4 +173,12 @@ export default {
   color: $light-gray;
 }
 
+.campaign-action /deep/ th .title > span {
+  color: $blue;
+  cursor: pointer;
+  &:hover {
+    color: $primary-hover-color;
+  }
+}
+
 </style>
