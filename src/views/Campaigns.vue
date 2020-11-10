@@ -51,12 +51,23 @@ el-container.campaigns(
 
     resize.resize#campaigns-scroll-container(:padding="20" v-if="layout==='table'")
       campaigns-header(:month="selectedMonth")
-      campaigns-table(
-        v-if="!loading"
-        :campaigns="filteredCampaigns"
-        @editCampaign="campaignClick"
-      )
-    campaigns-with-aside(:campaigns="filteredCampaigns" v-else @editCampaign="campaignClick")
+      template(v-if="!loading")
+        campaigns-priorities(
+          v-if="showPriorities"
+          :priorities="priorities"
+          :campaigns="filteredCampaigns"
+        )
+        campaigns-table(
+          v-else
+          :campaigns="filteredCampaigns"
+          @editCampaign="campaignClick"
+        )
+    campaigns-with-aside(
+      v-else
+      :campaign-id="campaignId"
+      :campaigns="filteredCampaigns"
+      @editCampaign="campaignClick"
+    )
 
   campaign-dialog(
     v-if="campaign"
@@ -66,7 +77,6 @@ el-container.campaigns(
     @remove="removeCampaign"
   )
 
-  //router-view
   campaign-pictures-dialog(
     v-if="galleryCampaign"
     :campaign="galleryCampaign"
@@ -105,6 +115,10 @@ export default {
 
   name: NAME,
 
+  props: {
+    campaignId: String,
+  },
+
   data() {
     return {
       loading: false,
@@ -133,6 +147,10 @@ export default {
       selectedMonth: getters.SELECTED_MONTH,
       campaignCopy: getters.CAMPAIGN_COPY,
     }),
+
+    showPriorities() {
+      return this.$route.query.mode === 'priorities';
+    },
 
     priorities() {
       return prioritiesOfCampaigns(this.filteredCampaigns);

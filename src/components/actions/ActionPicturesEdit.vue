@@ -144,26 +144,9 @@ export default {
       ];
     },
     modelOrigin() {
-      /*
-      {
-      pictures: [
-        {
-          _id: false,
-          id: String,
-          articlePictureId: String,
-          src: String,
-          thumbnailSrc: String,
-          label: String,
-          height: String,
-        },
-      ],
-      align: String,
-      commentText: String,
-      }
-      */
       return this.actionInstance().layout || {
         pictures: [],
-        align: 'flex-end',
+        align: 'flex-start',
         commentText: null,
       };
     },

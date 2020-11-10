@@ -1,7 +1,10 @@
+// import RoutePassThrough from '@/lib/RoutePassThrough.vue';
+
 export default [{
 
-  path: '/campaigns/:monthId?/:campaignId?',
+  path: '/campaigns/:monthId?',
   name: 'campaigns',
+  props: true,
 
   component: () => import(/* webpackChunkName: "campaigns" */ '../views/Campaigns.vue'),
 
@@ -11,9 +14,46 @@ export default [{
 
   children: [
     {
+      path: 'campaign/:campaignId',
+      name: 'campaign',
+      component: () => import(/* webpackChunkName: "campaigns" */ '../views/CampaignMainView.vue'),
+      children: campaignChildren(),
+      props: true,
+    },
+    {
+      path: 'priorities/:priorityId?',
       name: 'campaignsPriorities',
-      path: 'priorities',
-    }, {
+    },
+  ],
+
+}, {
+  name: 'ActionSingleView',
+  path: '/actionSingle/:actionId',
+  component: () => import(/* webpackChunkName: "campaigns" */ '../views/ActionSingleView.vue'),
+  props: true,
+  meta: {
+    hideMenu: true,
+  },
+}];
+
+
+function fromProps(extra = {}) {
+  return ({ params, query }) => ({
+    actionId: params.actionId,
+    from: {
+      name: 'campaign',
+      params: { ...params },
+      query: { ...query },
+    },
+    ...extra,
+  });
+}
+
+
+function campaignChildren() {
+
+  return [
+    {
       name: 'campaignActionCreate',
       path: 'action/create',
       props: fromProps({ forceModified: true }),
@@ -38,27 +78,6 @@ export default [{
       props: fromProps(),
       component: () => import(/* webpackChunkName: "campaigns" */ '../components/actions/ActionPicturesEdit.vue'),
     },
-  ],
+  ];
 
-}, {
-  name: 'ActionSingleView',
-  path: '/actionSingle/:actionId',
-  component: () => import(/* webpackChunkName: "campaigns" */ '../views/ActionSingleView.vue'),
-  props: true,
-  meta: {
-    hideMenu: true,
-  },
-}];
-
-
-function fromProps(extra = {}) {
-  return ({ params, query }) => ({
-    actionId: params.actionId,
-    from: {
-      name: 'campaigns',
-      params: { ...params },
-      query: { ...query },
-    },
-    ...extra,
-  });
 }

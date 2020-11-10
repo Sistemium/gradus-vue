@@ -7,7 +7,7 @@
       v-for="item in group.campaigns" :key="item.id"
       :id="`c-${item.id}`"
       @click.prevent="itemClick(item)"
-      :class="[value && value.id === item.id && 'active', item.processing || 'draft']"
+      :class="[value === item.id && 'active', item.processing || 'draft']"
     )
       span.name {{ item.name }}
       template(v-if="hasAuthoring")
@@ -32,7 +32,7 @@ export default {
   name: NAME,
   props: {
     campaigns: Array,
-    value: Object,
+    value: String,
   },
   computed: {
     groupedCampaigns() {
@@ -61,7 +61,7 @@ export default {
   methods: {
     itemClick(item) {
       // const { value } = this;
-      this.$emit('input', item);
+      this.$emit('input', item.id);
     },
     badgeCount(campaign) {
       const { pictures, actions } = campaign;
