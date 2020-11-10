@@ -73,11 +73,14 @@ export default {
         }
 
         const updateName = campaignId ? 'campaign' : 'campaigns';
-        this.updateRouteParams({ campaignId }, {}, updateName);
+        this.updateRouteParams({
+          campaignId,
+          priorityId: undefined,
+        }, {}, updateName);
 
-        this.$nextTick(() => {
-          this.scrollToCampaign(campaignId);
-        });
+        // this.$nextTick(() => {
+        //   this.scrollToCampaign(campaignId);
+        // });
       },
     },
   },
@@ -90,13 +93,23 @@ export default {
       } else if (this.currentCampaignId) {
         return;
       }
-      this.updateRouteParams({ priorityId }, {}, 'campaignsPriorities');
+      this.updateRouteParams({
+        priorityId,
+        campaignId: undefined,
+      }, {}, 'campaignsPriorities');
     },
   },
 
   created() {
-    this.$watchImmediate('$route.params.campaignId', campaignId => {
-      this.currentCampaignId = campaignId;
+    this.$watchImmediate(() => ({
+      campaigns: this.campaigns,
+      campaignId: this.campaignId,
+    }), ({ campaigns, campaignId }) => {
+      if (campaigns.length && campaignId) {
+        this.$nextTick(() => {
+          this.scrollToCampaign(this.campaignId);
+        });
+      }
     });
   },
 
