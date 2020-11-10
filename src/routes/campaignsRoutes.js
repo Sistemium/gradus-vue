@@ -39,13 +39,13 @@ export default [{
 
 function fromProps(extra = {}) {
   return ({ params, query }) => ({
-    actionId: params.actionId,
     from: {
       name: 'campaign',
-      params: { ...params },
+      params: { ...params, actionId: undefined },
       query: { ...query },
     },
     ...extra,
+    actionId: params.actionId,
   });
 }
 
