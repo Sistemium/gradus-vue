@@ -19,7 +19,7 @@ Vue.mixin({
 
       const newName = updateName || name;
 
-      const sameState = matches(newParams)(params)
+      const sameState = matches(params)(newParams)
         && matches(newQuery)(query)
         && newName === name;
 
