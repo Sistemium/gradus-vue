@@ -29,3 +29,15 @@ function createWithDeviceCts(params) {
 
 Model.prototype.findByMany = findByMany;
 Model.prototype.create = createWithDeviceCts;
+
+Object.assign(Model.prototype, {
+
+  reactiveFilter(filter) {
+    return this.ts && this.filter(filter);
+  },
+
+  reactiveGet(id) {
+    return this.ts && this.get(id);
+  },
+
+});

@@ -87,7 +87,6 @@ el-container.campaigns(
 
 <script>
 
-import filter from 'lodash/filter';
 import { createNamespacedHelpers } from 'vuex';
 import CampaignPicturesDialog from '@/components/campaigns/CampaignPicturesDialog.vue';
 import CampaignDialog from '@/components/campaigns/CampaignDialog.vue';
@@ -146,6 +145,7 @@ export default {
       busy: getters.BUSY,
       selectedMonth: getters.SELECTED_MONTH,
       campaignCopy: getters.CAMPAIGN_COPY,
+      filteredCampaigns: getters.FILTERED_CAMPAIGNS,
     }),
 
     showPriorities() {
@@ -154,18 +154,6 @@ export default {
 
     priorities() {
       return prioritiesOfCampaigns(this.filteredCampaigns);
-    },
-
-    filteredCampaigns() {
-      const { campaignGroup: groupCode } = this.$route.query;
-      const predicate = {};
-      if (groupCode) {
-        predicate.groupCode = groupCode;
-      }
-      if (!this.hasAuthoring) {
-        predicate.processing = 'published';
-      }
-      return filter(this.campaigns, predicate);
     },
 
   },

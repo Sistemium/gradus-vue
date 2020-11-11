@@ -1,4 +1,5 @@
 import * as svc from '@/services/campaigns';
+import filter from 'lodash/filter';
 
 export const BUSY = 'BUSY';
 export const ERROR = 'ERROR';
@@ -12,6 +13,7 @@ export const ACTIVE_GALLERY_PICTURE = 'activeGalleryPicture';
 export const ACTION_OPTION_COPY = 'ACTION_OPTION_COPY';
 export const ACTION_COPY = 'ACTION_COPY';
 export const CAMPAIGN_COPY = 'CAMPAIGN_COPY';
+export const FILTERED_CAMPAIGNS = 'filteredCampaigns';
 
 export const SHOW_PICTURES = 'SHOW_PICTURES';
 
@@ -44,6 +46,25 @@ export default {
 
   [CAMPAIGNS](state) {
     return svc.getCampaigns(state[CAMPAIGNS]);
+  },
+
+  hasAuthoring(state, getters, rootState, rootGetters) {
+    const $hasAuthRole = rootGetters['auth/HAS_ROLE'];
+    return $hasAuthRole('actions')
+      || $hasAuthRole('tester')
+      || $hasAuthRole('admin');
+  },
+
+  [FILTERED_CAMPAIGNS](state, { hasAuthoring, campaigns }, rootState) {
+    const { campaignGroup: groupCode } = rootState.route.query;
+    const predicate = {};
+    if (groupCode) {
+      predicate.groupCode = groupCode;
+    }
+    if (!hasAuthoring) {
+      predicate.processing = 'published';
+    }
+    return filter(campaigns, predicate);
   },
 
   [GALLERY_CAMPAIGN](state) {

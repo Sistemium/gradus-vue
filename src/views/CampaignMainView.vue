@@ -36,7 +36,6 @@ campaign-view(
       :new-image-properties="{ campaignId: currentCampaign.id }"
       carousel-type=""
       :show-empty="false"
-      @uploaded="setPictures()"
       :has-authoring="hasAuthoring"
     )
 
@@ -77,8 +76,6 @@ export default {
   data() {
     return {
       loading: false,
-      currentCampaign: undefined,
-      currentCampaignPictures: [],
     };
   },
 
@@ -94,6 +91,17 @@ export default {
       busy: g.BUSY,
       searchText: g.SEARCH_TEXT,
     }),
+    currentCampaign() {
+      return Campaign.reactiveGet(this.campaignId);
+    },
+    currentCampaignPictures() {
+      const { campaignId } = this;
+      const query = {
+        where: { campaignId: { '==': campaignId } },
+        orderBy: [['ts', 'ASC'], ['id', 'ASC']],
+      };
+      return CampaignPicture.reactiveFilter(query);
+    },
   },
 
   methods: {
@@ -120,29 +128,6 @@ export default {
         processing,
       });
     },
-    setPictures() {
-      const { campaignId } = this;
-      if (!campaignId) {
-        this.$error('campaignId:empty');
-        return;
-      }
-      const query = {
-        where: { campaignId: { '==': campaignId } },
-        orderBy: [['ts', 'ASC'], ['id', 'ASC']],
-      };
-      this.$bindToModelFilter(CampaignPicture, query, 'currentCampaignPictures');
-    },
-  },
-
-  created() {
-    this.$watchImmediate('campaignId', campaignId => {
-      if (!campaignId) {
-        this.$error('campaignId:empty');
-        return;
-      }
-      this.$bindById(Campaign, campaignId, 'currentCampaign');
-      this.setPictures();
-    });
   },
 
 };

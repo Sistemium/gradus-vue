@@ -8,7 +8,7 @@
     v-for="item in priorities"
     :id="`c-${item.id}`"
     @click.prevent="itemClick(item)"
-    :class="[value && value.id === item.id && 'active']"
+    :class="[value === item.id && 'active']"
   ) {{ item.name }}
 
 </template>
@@ -26,7 +26,7 @@ export default {
       type: Array,
       required: true,
     },
-    value: Object,
+    value: String,
   },
   data() {
     return {
@@ -42,7 +42,7 @@ export default {
   methods: {
     itemClick(item) {
       // const { value } = this;
-      this.$emit('input', item);
+      this.$emit('input', item.id);
     },
   },
   created() {

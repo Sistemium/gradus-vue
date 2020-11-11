@@ -23,6 +23,8 @@ export default [{
     {
       path: 'priorities/:priorityId?',
       name: 'campaignsPriorities',
+      component: () => import(/* webpackChunkName: "campaigns" */ '../views/PriorityActionsPage.vue'),
+      props: true,
     },
   ],
 

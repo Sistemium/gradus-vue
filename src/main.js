@@ -1,5 +1,6 @@
 import Vue from 'vue';
 
+import { sync } from 'vuex-router-sync';
 import VueScrollTo from 'vue-scrollto';
 import '@/lib/element-ui';
 import 'intersection-observer';
@@ -28,6 +29,8 @@ import './lib/updateRouteParams';
 import './lib/ruDate';
 import './lib/authHelpers';
 import './lib/debug';
+
+sync(store, router);
 
 Vue.config.productionTip = false;
 Vue.component('resize', Resize);

@@ -7,23 +7,17 @@ el-container.campaigns-with-aside
       priorities-list(
         v-if="!searchText"
         :campaigns="campaigns"
-        v-model="currentPriority"
+        v-model="currentPriorityId"
       )
       campaigns-list(:campaigns="campaigns" v-model="currentCampaignId")
 
   el-main
 
     el-alert(
-      v-if="!currentCampaignId && !currentPriority && campaigns.length"
+      v-if="!currentCampaignId && !currentPriorityId && campaigns.length"
       title="👈 Выберите акцию из списка"
       type="info"
     )
-
-    resize(:padding="20" v-if="currentPriority")
-      priority-actions(
-        :campaigns="campaigns"
-        :priority="currentPriority"
-      )
 
     router-view(@editCampaign="onEditCampaign")
 
@@ -47,7 +41,6 @@ export default {
   data() {
     return {
       loading: false,
-      currentPriority: undefined,
       currentCampaignPictures: [],
     };
   },
@@ -61,14 +54,33 @@ export default {
     ...mapGetters({
       searchText: g.SEARCH_TEXT,
     }),
+    currentPriorityId: {
+      get() {
+        return this.$route.params.priorityId;
+      },
+      set(priorityId) {
+
+        if (priorityId) {
+          this.currentCampaignId = undefined;
+        } else if (this.currentCampaignId) {
+          return;
+        }
+
+        this.updateRouteParams({
+          campaignId: undefined,
+          priorityId,
+        }, {}, 'campaignsPriorities');
+
+      },
+    },
     currentCampaignId: {
       get() {
         return this.campaignId;
       },
       set(campaignId) {
         if (campaignId) {
-          this.currentPriority = undefined;
-        } else if (this.currentPriority) {
+          this.currentPriorityId = undefined;
+        } else if (this.currentPriorityId) {
           return;
         }
 
@@ -78,27 +90,24 @@ export default {
           priorityId: undefined,
         }, {}, updateName);
 
-        // this.$nextTick(() => {
-        //   this.scrollToCampaign(campaignId);
-        // });
       },
     },
   },
 
-  watch: {
-    currentPriority(priority) {
-      const { id: priorityId } = priority || {};
-      if (priorityId) {
-        this.currentCampaignId = undefined;
-      } else if (this.currentCampaignId) {
-        return;
-      }
-      this.updateRouteParams({
-        priorityId,
-        campaignId: undefined,
-      }, {}, 'campaignsPriorities');
-    },
-  },
+  // watch: {
+  //   currentPriority(priority) {
+  //     const { id: priorityId } = priority || {};
+  //     if (priorityId) {
+  //       this.currentCampaignId = undefined;
+  //     } else if (this.currentCampaignId) {
+  //       return;
+  //     }
+  //     this.updateRouteParams({
+  //       priorityId,
+  //       campaignId: undefined,
+  //     }, {}, 'campaignsPriorities');
+  //   },
+  // },
 
   created() {
     this.$watchImmediate(() => ({
@@ -163,6 +172,12 @@ main {
 
 .priorities-list {
   margin-bottom: $margin-top;
+}
+
+@media print {
+  .el-aside {
+    display: none;
+  }
 }
 
 </style>
