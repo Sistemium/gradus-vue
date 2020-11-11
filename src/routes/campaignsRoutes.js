@@ -21,7 +21,7 @@ export default [{
       props: true,
     },
     {
-      path: 'priorities/:priorityId?',
+      path: 'priorities/:priorityId',
       name: 'campaignsPriorities',
       component: () => import(/* webpackChunkName: "campaigns" */ '../views/PriorityActionsPage.vue'),
       props: true,
@@ -43,7 +43,10 @@ function fromProps(extra = {}) {
   return ({ params, query }) => ({
     from: {
       name: 'campaign',
-      params: { ...params, actionId: undefined },
+      params: {
+        ...params,
+        actionId: undefined,
+      },
       query: { ...query },
     },
     ...extra,

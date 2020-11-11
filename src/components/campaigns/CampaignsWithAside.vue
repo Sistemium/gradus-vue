@@ -178,6 +178,9 @@ main {
   .el-aside {
     display: none;
   }
+  main {
+    padding: 0 !important;
+  }
 }
 
 </style>

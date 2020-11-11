@@ -1,7 +1,10 @@
 <template lang="pug">
 
 .priorities-list.list-group(v-if="priorities.length")
-  .list-group-header
+  .list-group-header(
+    @click.prevent="itemClick({ id: 'ALL' })"
+    :class="[value === 'ALL' && 'active']"
+  )
     i.el-icon-s-flag
     span Приоритетное
   .list-group-item(
@@ -59,9 +62,23 @@ export default {
 @import "../../styles/variables";
 
 .list-group-header {
+
+  color: $blue;
+  cursor: pointer;
+
   i {
     margin-right: $padding;
   }
+
+  &:hover {
+    color: $primary-hover-color;
+  }
+
+  &.active {
+    background: $primary-color;
+    color: white;
+  }
+
 }
 
 </style>
