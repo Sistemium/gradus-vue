@@ -1,4 +1,4 @@
-import mutations from './mutations';
+import mutations, * as m from './mutations';
 import getters, * as states from './getters';
 import actions from './actions';
 
@@ -19,7 +19,7 @@ export default {
     [states.ACTION_OPTION_COPY]: null,
     [states.ACTION_COPY]: null,
     [states.CAMPAIGN_COPY]: null,
-    [states.SHOW_PICTURES]: null,
+    [states.SHOW_PICTURES]: JSON.parse(localStorage.getItem(m.KEY_SHOW_PICTURES)),
   },
 
   mutations,

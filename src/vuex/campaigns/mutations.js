@@ -18,11 +18,14 @@ export const SET_ERROR = set(g.ERROR);
 
 export const SET_SHOW_PICTURES = `SET_${g.SHOW_PICTURES}`;
 
+export const KEY_SHOW_PICTURES = 'stv.campaigns.showPictures';
 
 export default {
 
   [SET_SHOW_PICTURES](state, value) {
-    state[g.SHOW_PICTURES] = !!value;
+    const newValue = !!value;
+    state[g.SHOW_PICTURES] = newValue;
+    localStorage.setItem(KEY_SHOW_PICTURES, newValue.toString());
   },
 
   [SET_ACTION_OPTION_COPY](state, option) {
