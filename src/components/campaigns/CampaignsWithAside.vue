@@ -62,7 +62,7 @@ export default {
 
         if (priorityId) {
           this.currentCampaignId = undefined;
-        } else if (this.currentCampaignId) {
+        } else if (this.currentCampaignId || !priorityId) {
           return;
         }
 
@@ -93,21 +93,6 @@ export default {
       },
     },
   },
-
-  // watch: {
-  //   currentPriority(priority) {
-  //     const { id: priorityId } = priority || {};
-  //     if (priorityId) {
-  //       this.currentCampaignId = undefined;
-  //     } else if (this.currentCampaignId) {
-  //       return;
-  //     }
-  //     this.updateRouteParams({
-  //       priorityId,
-  //       campaignId: undefined,
-  //     }, {}, 'campaignsPriorities');
-  //   },
-  // },
 
   created() {
     this.$watchImmediate(() => ({
