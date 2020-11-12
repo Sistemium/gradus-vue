@@ -164,6 +164,7 @@ export default {
 }
 
 .fields {
+  margin-left: $margin-right;
   > * + * {
     margin-top: 0;
   }

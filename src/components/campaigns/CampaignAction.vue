@@ -438,6 +438,10 @@ th {
           font-size: $font-size-large-print;
         }
         flex: 1;
+
+        & + .el-button {
+          margin-left: $margin-right;
+        }
       }
 
     }
