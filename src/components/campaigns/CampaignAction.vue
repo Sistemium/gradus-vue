@@ -215,7 +215,7 @@ export default {
     },
     onEditPicturesClick() {
       const { id: actionId } = this.action;
-      this.updateRouteParams({ actionId }, {}, 'actionPicturesEdit');
+      this.updateRouteParams({ actionId }, {}, 'campaignActionPicturesEdit');
     },
     discountValue(option, { name }) {
       if (name === 'discountTotal') {

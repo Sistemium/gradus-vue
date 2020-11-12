@@ -44,7 +44,11 @@ export default {
     return state[SEARCH_TEXT];
   },
 
-  [CAMPAIGNS](state) {
+  [CAMPAIGNS](state, getters, rootState) {
+    const { path } = rootState.route;
+    if (!/^\/campaigns/.test(path)) {
+      return [];
+    }
     return svc.getCampaigns(state[CAMPAIGNS]);
   },
 
@@ -55,7 +59,7 @@ export default {
       || $hasAuthRole('admin');
   },
 
-  [FILTERED_CAMPAIGNS](state, { hasAuthoring, campaigns }, rootState) {
+  [FILTERED_CAMPAIGNS](state, { hasAuthoring, [CAMPAIGNS]: campaigns }, rootState) {
     const { campaignGroup: groupCode } = rootState.route.query;
     const predicate = {};
     if (groupCode) {

@@ -78,7 +78,7 @@ function campaignChildren() {
       props: fromProps(),
       component: () => import(/* webpackChunkName: "campaigns" */ '../components/campaigns/CampaignActionPicture.vue'),
     }, {
-      name: 'actionPicturesEdit',
+      name: 'campaignActionPicturesEdit',
       path: 'action/:actionId/pictures',
       props: fromProps(),
       component: () => import(/* webpackChunkName: "campaigns" */ '../components/actions/ActionPicturesEdit.vue'),
