@@ -98,6 +98,7 @@ export default {
 .height {
   grid-row: 1;
   grid-column: 2;
+  margin-top: 10px;
 }
 
 .label {

@@ -282,6 +282,7 @@ export default {
 
 .pictures {
   min-height: 152px;
+  overflow-x: scroll;
 }
 
 .content {
