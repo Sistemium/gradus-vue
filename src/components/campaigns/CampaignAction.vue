@@ -245,10 +245,6 @@ th, td {
   border: 1px solid $gray-border-color;
   text-align: center;
   padding: $padding;
-  @media print {
-    border-color: $table-border-color;
-    padding: $padding-print;
-  }
 }
 
 table {
@@ -286,10 +282,6 @@ tr.header {
 
   th {
     padding: $padding * 2;
-    @media print {
-      padding: $padding-print;
-    }
-
   }
 
 }
@@ -305,10 +297,6 @@ tr.header {
 
 .other .comment {
   margin-top: $margin-top-small;
-  @media print {
-    margin-top: $margin-top-small-print;
-  }
-  //white-space: pre-line;
   display: block !important;
 }
 
@@ -345,15 +333,8 @@ tr.header {
   padding: $padding;
   text-align: left;
 
-  @media print {
-    padding: $padding-print;
-  }
-
   span {
     font-size: $small-font-size;
-    @media print {
-      font-size: $small-font-size-print;
-    }
   }
 
   i {
@@ -374,45 +355,25 @@ tr.header {
 
 td.discount, th.discount {
   width: 90px;
-  @media print {
-    width: 60px;
-  }
 }
 
 th.volume, td.volume {
   width: 110px;
   max-width: 110px;
-  //@media print {
-  //  width: 80px;
-  //  max-width: 80px;
-  //}
 }
 
 th.sku, td.sku {
   width: 60px;
   max-width: 60px;
-  @media print {
-    width: 40px;
-    max-width: 40px;
-  }
 }
 
 th.number, td.number {
   width: 40px;
   background: $gray-background;
-  @media print {
-    width: 26px;
-  }
 }
 
 td.comments {
   text-align: left;
-}
-
-@media print {
-  .campaign-action {
-    page-break-inside: avoid;
-  }
 }
 
 th, td {
@@ -434,9 +395,6 @@ th {
         text-align: left;
         font-weight: bold;
         font-size: 16px;
-        @media print {
-          font-size: $font-size-large-print;
-        }
         flex: 1;
 
         & + .el-button {

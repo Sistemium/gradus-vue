@@ -1,6 +1,6 @@
 <template lang="pug">
 
-.action-option(:class="{ grid: isGrid, 'no-ranges': !showRanges }")
+.action-option-complex(:class="{ grid: isGrid, 'no-ranges': !showRanges }")
 
   .self(v-if="hasSelfRow")
     .name(v-if="name") {{ name }}
@@ -155,7 +155,7 @@ export default {
   text-align: left;
 }
 
-.action-option {
+.action-option-complex {
   text-align: left;
 }
 
@@ -165,7 +165,7 @@ $col-wide-print: 109px;
 $col-mid: 89px;
 $col-mid-print: 59px;
 
-.action-option.grid {
+.action-option-complex.grid {
 
   display: grid;
   gap: 1px;
@@ -173,27 +173,19 @@ $col-mid-print: 59px;
   background: $gray-border-color;
   height: 100%;
 
-  @media print {
-    grid-template-columns: auto $col-wide-print 39px $col-mid-print $col-mid-print $col-mid-print;
-    background: $table-border-color;
-  }
-
-  > .action-option {
+  > .action-option-complex {
     grid-column: 1 / span 5;
   }
 
   &.no-ranges {
+
     grid-template-columns: auto $col-wide - 1 59px $col-mid $col-mid $col-mid;
-    @media print {
-      grid-template-columns: auto $col-wide-print - 1 39px
-        $col-mid-print $col-mid-print $col-mid-print;
-    }
 
     .volume {
       grid-column: 1 / span 2;
     }
-  }
 
+  }
 }
 
 .option {
@@ -208,7 +200,7 @@ $col-mid-print: 59px;
   grid-column: 3;
 }
 
-.action-option > .action-required {
+.action-option-complex > .action-required {
   grid-row-start: 1;
 }
 
@@ -228,9 +220,6 @@ $col-mid-print: 59px;
   text-align: center;
   background: white;
   padding: $padding;
-  @media print {
-    padding: $padding-print;
-  }
   display: flex;
   align-items: center;
   justify-content: center;
@@ -243,9 +232,6 @@ $col-mid-print: 59px;
 
   > * + * {
     margin-top: $margin-top-small;
-    @media print {
-      margin-top: $margin-top-small-print;
-    }
   }
 }
 
@@ -253,30 +239,23 @@ $col-mid-print: 59px;
   // align-items: stretch;
 }
 
-.self, .action-option > .comment {
+.self, .action-option-complex > .comment {
 
   grid-column: 1;
 
   background: white;
   padding: $padding;
 
-  @media print {
-    padding: $padding-print;
-  }
-
   > * + * {
     margin-top: $margin-top-small;
-    @media print {
-      margin-top: $margin-top-small-print;
-    }
   }
 }
 
-.action-option > .comment {
+.action-option-complex > .comment {
   grid-column-end: 7;
 }
 
-.action-option, .option {
+.action-option-complex, .option {
   > .comment {
     background: $light-green;
   }
@@ -293,21 +272,8 @@ $col-mid-print: 59px;
   background: white;
   display: flex;
 
-  @media print {
-    padding: $margin-top-print;
-  }
-
-  .discount-matrix-info {
-    // margin: 0 auto 0 0;
-    // min-width: 0;
-    // width: auto;
-  }
-
   > * + * {
     margin-left: $margin-top;
-    @media print {
-      margin-left: $margin-top-print;
-    }
   }
 
   .optional > .option {

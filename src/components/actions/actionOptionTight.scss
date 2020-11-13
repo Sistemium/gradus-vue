@@ -1,0 +1,54 @@
+@import "../../styles/variables";
+
+$col-wide: 109px;
+$col-wide-print: 109px;
+
+$col-mid: 89px;
+$col-mid-print: 59px;
+
+
+.action-option-complex {
+
+  &.grid {
+
+    grid-template-columns: auto $col-wide-print 39px $col-mid-print $col-mid-print $col-mid-print;
+    background: $table-border-color;
+
+    &.no-ranges {
+      grid-template-columns: auto $col-wide-print - 1 39px
+        $col-mid-print $col-mid-print $col-mid-print;
+    }
+
+  }
+
+  .discount, .action-required, .option, .option-required {
+    padding: $padding-print;
+  }
+
+  .option, .ranges {
+    > * + * {
+      margin-top: $margin-top-small-print;
+    }
+  }
+
+  .self, > .comment {
+
+    padding: $padding-print;
+
+    > * + * {
+      margin-top: $margin-top-small-print;
+    }
+  }
+
+  .discount-matrix {
+
+    padding: $margin-top-print;
+
+    > * + * {
+      margin-left: $margin-top-print;
+    }
+
+  }
+
+}
+

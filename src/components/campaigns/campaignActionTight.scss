@@ -1,0 +1,71 @@
+@import "../../styles/variables";
+
+th, td {
+  border-color: $table-border-color;
+  &:not(.complex) {
+    padding: $padding-print;
+  }
+}
+
+tr.header {
+
+  th {
+    padding: $padding-print;
+  }
+
+}
+
+.other .comment {
+  margin-top: $margin-top-small-print;
+}
+
+.tfoot td {
+
+  padding: $padding-print;
+
+  span {
+    font-size: $small-font-size-print;
+  }
+
+}
+
+td.discount, th.discount {
+  width: 60px;
+}
+
+th.sku, td.sku {
+  width: 40px;
+  max-width: 40px;
+}
+
+th.number, td.number {
+  width: 26px;
+}
+
+th {
+  &.name {
+    .title {
+      span {
+        font-size: $font-size-large-print;
+      }
+    }
+  }
+}
+
+/* from actionBase */
+
+.comment {
+  font-size: $small-font-size-print;
+}
+
+.action-required, .option-required {
+
+  /deep/ small {
+    font-size: $small-font-size-print;
+  }
+
+  /deep/ em {
+    font-size: $small-font-size-print;
+  }
+}
+

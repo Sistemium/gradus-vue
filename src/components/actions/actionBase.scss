@@ -1,16 +1,16 @@
 @import "../../styles/variables";
 
 .comment {
+
   color: $dark-gray;
   font-size: $small-font-size;
-  @media print {
-    font-size: $small-font-size-print;
-  }
   white-space: pre-line;
+
   i {
     margin-right: $padding;
     color: $orange;
   }
+
 }
 
 td > .action-option > .self, .action-option-info {
@@ -33,23 +33,18 @@ td > .action-option > .self, .action-option-info {
 
   /deep/ small {
     color: $gray;
-    @media print {
-      font-size: $small-font-size-print;
-    }
   }
 
   /deep/ em {
     color: $orange;
     font-style: normal;
     font-size: $small-font-size;
-    @media print {
-      font-size: $small-font-size-print;
-    }
   }
 }
 
 td.discount, th.discount, .action-option > .discount, td.discountCash {
   background: $light-green;
+
   &.total {
     background: $mid-green;
     color: white;

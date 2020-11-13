@@ -123,6 +123,18 @@ export default {
 
 @import "campaignsBase";
 
+@media print {
+
+  .campaigns-actions-table /deep/ {
+    .campaign-action {
+      page-break-inside: avoid;
+      @import "campaignActionTight";
+      @import "../actions/actionOptionTight";
+    }
+  }
+
+}
+
 .name {
   padding: $margin-top 0;
   font-size: x-large;
@@ -165,6 +177,7 @@ export default {
 
 .fields {
   margin-left: $margin-right;
+
   > * + * {
     margin-top: 0;
   }
