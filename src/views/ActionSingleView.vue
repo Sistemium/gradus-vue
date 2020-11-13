@@ -270,7 +270,7 @@ h1 .name, .footer .fields {
       //}
     }
 
-    .action-option.grid {
+    .action-option-complex.grid {
 
       grid-template-columns: auto $col-width-1 $col-width-thin - 1 $col-mid-1 $col-mid-1 $col-mid-1;
 
