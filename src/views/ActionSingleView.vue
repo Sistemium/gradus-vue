@@ -84,13 +84,17 @@ export default {
       const { options: variants, ranges: commonRanges = [] } = action;
       const length = commonRanges.length || sumBy(variants, variant => {
         const { options: addOptions = [], ranges = [] } = variant;
+        let res = 1;
+        if (variant.discountMatrix) {
+          res = 5;
+        }
         if (ranges.length) {
-          return ranges.length;
+          res += ranges.length;
         }
         if (addOptions.length) {
-          return addOptions.length;
+          res += addOptions.length + sumBy(addOptions, o => (o.ranges ? o.ranges.length : 0));
         }
-        return 1;
+        return res;
       });
       return length > 7 ? 'tall' : null;
     },
@@ -138,13 +142,14 @@ img {
   @if $tall == tall {
     font-size: 22px;
   } @else {
-    font-size: 28px;
+    font-size: 26px;
   }
 }
 
 .action-single-view {
-  min-height: 750px;
-  max-width: 1100px;
+  min-height: 700px;
+  max-width: 1000px;
+  box-sizing: border-box;
   //min-width: 890px;
   border: dashed 1px $gray-border-color;
   padding: $margin-top;
@@ -193,6 +198,10 @@ h1 .name, .footer .fields {
 
   /deep/ {
 
+    .discount-matrix .cell.header > * {
+      font-size: 14px;
+    }
+
     .option, .volume {
       padding: $padding 14px;
     }
@@ -230,7 +239,7 @@ h1 .name, .footer .fields {
     }
 
     td {
-      .action-required, .discount {
+      &.option-required, .action-required, .discount, &.discount {
         @include header-font();
       }
     }

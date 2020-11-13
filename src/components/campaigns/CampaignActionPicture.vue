@@ -65,4 +65,10 @@ export default {
   justify-content: center;
 }
 
+.campaign-action-picture /deep/ {
+  .el-dialog__body {
+    padding: 0;
+  }
+}
+
 </style>
