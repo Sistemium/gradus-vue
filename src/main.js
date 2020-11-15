@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import VueHead from 'vue-head';
 
 import { sync } from 'vuex-router-sync';
 import VueScrollTo from 'vue-scrollto';
@@ -39,6 +40,7 @@ Vue.component(SearchInput.name, SearchInput);
 Vue.component(ButtonEdit.name, ButtonEdit);
 Vue.component(ButtonAdd.name, ButtonAdd);
 Vue.use(VueScrollTo);
+Vue.use(VueHead);
 
 new Vue({
   router,
