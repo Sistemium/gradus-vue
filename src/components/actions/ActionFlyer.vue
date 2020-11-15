@@ -76,9 +76,11 @@ export default {
       if (scale === 1) {
         return null;
       }
+      const margin = this.$el.clientHeight - this.maxHeight + 1;
       return {
-        transform: `scale(${floor(scale, 4).toFixed(4)})`,
+        transform: `scale(${scale})`,
         'transform-origin': 'top',
+        'margin-bottom': `-${margin}px`,
       };
     },
     campaign() {
@@ -119,11 +121,11 @@ export default {
       if (clientHeight <= this.maxHeight) {
         return 1;
       }
-      return this.maxHeight / clientHeight;
+      return floor(this.maxHeight / clientHeight, 6);
     },
 
     handleResize() {
-      this.$debug('height', this.$el.clientHeight);
+      // this.$debug('height', this.$el.clientHeight);
       this.scale = this.scaleValue(this.$el.clientHeight);
     },
   },
