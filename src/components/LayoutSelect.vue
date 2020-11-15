@@ -6,6 +6,9 @@
         i.el-icon-notebook-2
       el-radio-button(label="table")
         i.el-icon-c-scale-to-original
+      el-radio-button(label="pictures")
+        i.el-icon-picture
+
 
 </template>
 <script>

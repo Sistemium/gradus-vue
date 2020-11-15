@@ -123,7 +123,7 @@ img {
   }
 }
 
-.action-single-view {
+.action-flyer {
   min-height: 700px;
   max-width: 1000px;
   box-sizing: border-box;

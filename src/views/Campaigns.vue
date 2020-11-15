@@ -15,6 +15,7 @@ el-container.campaigns(
       :type="showPictures ? 'primary' : 'default'"
       size="mini"
       @click="toggleShowPictures"
+      :disabled="layout !== 'list'"
     )
       i.el-icon-picture-outline
 
@@ -62,12 +63,21 @@ el-container.campaigns(
           :campaigns="filteredCampaigns"
           @editCampaign="campaignClick"
         )
+
     campaigns-with-aside(
-      v-else
+      v-if="layout==='list'"
       :campaign-id="campaignId"
       :campaigns="filteredCampaigns"
       @editCampaign="campaignClick"
     )
+
+    resize.resize#campaigns-scroll-container(
+      :padding="20"
+      v-if="layout==='pictures'"
+    )
+      campaigns-flyers(
+        :campaigns="filteredCampaigns"
+      )
 
   campaign-dialog(
     v-if="campaign"
@@ -98,15 +108,12 @@ import CampaignsWithAside from '@/components/campaigns/CampaignsWithAside.vue';
 import LayoutSelect from '@/components/LayoutSelect.vue';
 import { dateBE } from '@/lib/dates';
 import campaignsAuth from '@/components/campaigns/campaignsAuth';
-import log from 'sistemium-debug';
 import CampaignsPriorities from '@/components/campaigns/CampaignsPriorities.vue';
 import CampaignsHeader from '@/components/campaigns/CampaignsHeader.vue';
 import { prioritiesOfCampaigns } from '@/services/campaigns';
+import CampaignsFlyers from '@/components/campaigns/CampaignsFlyers.vue';
 
 const NAME = 'Campaigns';
-const { debug } = log(NAME);
-
-debug('init');
 
 const { mapActions, mapGetters } = createNamespacedHelpers('campaigns');
 
@@ -264,6 +271,7 @@ export default {
   mixins: [campaignsAuth],
 
   components: {
+    CampaignsFlyers,
     CampaignsHeader,
     CampaignsPriorities,
     LayoutSelect,

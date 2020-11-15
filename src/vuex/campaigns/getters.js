@@ -14,14 +14,19 @@ export const ACTION_OPTION_COPY = 'ACTION_OPTION_COPY';
 export const ACTION_COPY = 'ACTION_COPY';
 export const CAMPAIGN_COPY = 'CAMPAIGN_COPY';
 export const FILTERED_CAMPAIGNS = 'filteredCampaigns';
+export const CAMPAIGN_VIEW_LAYOUT = 'CAMPAIGN_VIEW_LAYOUT';
 
 export const SHOW_PICTURES = 'SHOW_PICTURES';
 
 
 export default {
 
-  [SHOW_PICTURES](state) {
-    return state[SHOW_PICTURES];
+  [CAMPAIGN_VIEW_LAYOUT](state, getters, { route: { query } }) {
+    return query.layout || 'list';
+  },
+
+  [SHOW_PICTURES](state, { [CAMPAIGN_VIEW_LAYOUT]: layout }) {
+    return layout === 'list' && state[SHOW_PICTURES];
   },
 
   [ACTION_OPTION_COPY](state) {
@@ -59,8 +64,11 @@ export default {
       || $hasAuthRole('admin');
   },
 
-  [FILTERED_CAMPAIGNS](state, { hasAuthoring, [CAMPAIGNS]: campaigns }, rootState) {
-    const { campaignGroup: groupCode } = rootState.route.query;
+  groupCode(state, getters, { route }) {
+    return route && route.query.campaignGroup;
+  },
+
+  [FILTERED_CAMPAIGNS](state, { hasAuthoring, [CAMPAIGNS]: campaigns, groupCode }) {
     const predicate = {};
     if (groupCode) {
       predicate.groupCode = groupCode;
