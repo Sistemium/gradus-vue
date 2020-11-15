@@ -11,12 +11,13 @@ el-dialog.campaign-action-picture(
   center
 )
   .wrapper
-    action-single-view(:action-id="actionId")
+    action-flyer(:action="action" v-if="action")
 
 </template>
 <script>
 
-import ActionSingleView from '@/views/ActionSingleView.vue';
+import ActionFlyer from '@/components/actions/ActionFlyer.vue';
+import Action from '@/models/Action';
 
 const NAME = 'CampaignActionPicture';
 
@@ -24,7 +25,7 @@ export default {
 
   name: NAME,
 
-  components: { ActionSingleView },
+  components: { ActionFlyer },
 
   data() {
     return {
@@ -37,10 +38,15 @@ export default {
     from: Object,
   },
 
+  computed: {
+    action() {
+      return Action.reactiveGet(this.actionId);
+    },
+  },
+
   methods: {
     closeDialog() {
       this.visible = false;
-      // this.$emit('closed');
       this.$router.replace({ ...this.from })
         .catch(e => this.$error('handleClose', e));
     },
@@ -55,8 +61,6 @@ export default {
 
 .action-single-view {
   flex: 1;
-  //transform: scale(1);
-  //transform-origin: top;
 }
 
 .wrapper {
