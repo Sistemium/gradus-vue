@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueHead from 'vue-head';
+import 'vue-resize/dist/vue-resize.css';
 
 import { sync } from 'vuex-router-sync';
 import VueScrollTo from 'vue-scrollto';

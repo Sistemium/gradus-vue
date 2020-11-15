@@ -4,10 +4,13 @@
   .campaign(
     v-for="campaign in campaigns" :key="campaign.id"
   )
-    action-flyer(
+    .wrapper(
       v-for="action in campaign.actions" :key="action.id"
-      :action="action"
     )
+      action-flyer(
+        :action="action"
+        :max-height="700"
+      )
 
 </template>
 <script>
@@ -41,12 +44,19 @@ export default {
 
 @import "../../styles/variables";
 
+.wrapper {
+  overflow: hidden;
+}
+
 .action-flyer {
   width: 100%;
   min-width: 100%;
   page-break-inside: avoid;
   page-break-after: always;
   border: none;
+  //overflow: hidden;
+  //max-height: 690px;
+  //height: 690px;
 }
 
 @media screen {

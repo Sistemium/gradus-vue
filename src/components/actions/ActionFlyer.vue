@@ -3,6 +3,8 @@
 .action-flyer(
   v-if="campaign && action"
   :class="viewClass"
+  ref="flyer"
+  :style="style"
 )
 
   h1.campaign
@@ -37,9 +39,13 @@
         span {{ campaign.territory }}
     img(src="../../assets/icons8-discount-orange.svg")
 
+  resize-observer(@notify="handleResize")
+
 </template>
 <script>
 
+import { ResizeObserver } from 'vue-resize';
+import floor from 'lodash/floor';
 import sumBy from 'lodash/sumBy';
 import Campaign from '@/models/Campaign';
 import CampaignAction from '@/components/campaigns/CampaignAction.vue';
@@ -54,9 +60,27 @@ export default {
       type: Object,
       required: true,
     },
+    maxHeight: {
+      type: Number,
+      default: 700,
+    },
+  },
+
+  data() {
+    return { scale: 1 };
   },
 
   computed: {
+    style() {
+      const { scale } = this;
+      if (scale === 1) {
+        return null;
+      }
+      return {
+        transform: `scale(${floor(scale, 4).toFixed(4)})`,
+        'transform-origin': 'top',
+      };
+    },
     campaign() {
       const { action } = this;
       return action ? Campaign.reactiveGet(action.campaignId) : null;
@@ -89,11 +113,33 @@ export default {
     },
   },
 
+  methods: {
+
+    scaleValue(clientHeight) {
+      if (clientHeight <= this.maxHeight) {
+        return 1;
+      }
+      return this.maxHeight / clientHeight;
+    },
+
+    handleResize() {
+      this.$debug('height', this.$el.clientHeight);
+      this.scale = this.scaleValue(this.$el.clientHeight);
+    },
+  },
+
+  created() {
+    this.$nextTick(() => {
+      this.handleResize();
+    });
+  },
+
   name: NAME,
 
   components: {
     CampaignAction,
     ActionPictures,
+    ResizeObserver,
   },
 
 };
@@ -124,14 +170,17 @@ img {
 }
 
 .action-flyer {
-  min-height: 700px;
+  min-height: 690px;
   max-width: 1000px;
   box-sizing: border-box;
   //min-width: 890px;
-  border: dashed 1px $gray-border-color;
+  @media screen {
+    border: dashed 1px $gray-border-color;
+  }
   padding: $margin-top;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 h1 .name, .footer .fields {
@@ -315,6 +364,11 @@ h1 .name, .footer .fields {
     display: inline-block;
   }
 
+}
+
+.resize-observer {
+  height: 0;
+  max-height: 0;
 }
 
 </style>
