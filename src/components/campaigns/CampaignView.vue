@@ -164,7 +164,7 @@ export default {
   .campaign-action {
     margin-top: $margin-top;
     @media print {
-      margin-top: $margin-top-print;
+      margin-top: $margin-top * 2;
     }
   }
 }

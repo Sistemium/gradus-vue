@@ -241,6 +241,10 @@ table {
   border-collapse: collapse;
 }
 
+.campaign-action {
+  page-break-inside: avoid;
+}
+
 th, td {
   border: 1px solid $gray-border-color;
   text-align: center;

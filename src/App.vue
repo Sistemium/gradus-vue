@@ -87,6 +87,9 @@ export default {
   .el-header {
     display: none;
   }
+  .el-main {
+    padding: 0;
+  }
 }
 
 .el-main {

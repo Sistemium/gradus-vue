@@ -116,6 +116,11 @@ export default {
   },
   mixins: [campaignsAuth],
   name: NAME,
+  head: {
+    style: [
+      { type: 'text/css', inner: '@page { size: A4 portrait; }', undo: true },
+    ],
+  },
 };
 
 </script>
