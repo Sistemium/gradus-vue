@@ -4,7 +4,7 @@
   .image(:style="imageStyle")
     img(
       v-if="picture.src"
-      :src="src(picture)"
+      :src="imgSrc"
       :class="size"
     )
   .label {{ picture.label }}
@@ -28,10 +28,17 @@ export default {
   computed: {
     imageStyle() {
       const { height = 100 } = this.picture;
-      return {
+      return height === 100 ? null : {
         // 'max-height': `${height}%`,
         transform: `scale(${height / 100})`,
       };
+    },
+    imgSrc() {
+      const res = this.src(this.picture);
+      if (this.size === 'stream') {
+        return res.replace('smallImage', 'stream');
+      }
+      return res;
     },
   },
 };
@@ -59,7 +66,7 @@ img {
     max-height: 130px;
   }
 
-  &.small {
+  &.small, &.stream {
     max-height: 200px;
   }
 
