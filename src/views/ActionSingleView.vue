@@ -66,4 +66,15 @@ export default {
 
 @import "../styles/variables";
 
+.action-single-view {
+  position: relative;
+  height: 700px;
+  overflow: hidden;
+}
+
+.action-flyer {
+  position: absolute;
+  top:0;
+}
+
 </style>
