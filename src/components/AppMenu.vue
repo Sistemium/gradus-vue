@@ -35,6 +35,15 @@
     @click="toggleTabBarClick"
   )
 
+  .print
+    el-button(
+      v-if="!isNative"
+      circle
+      size="mini"
+      icon="el-icon-printer"
+      @click="printClick()"
+    )
+
   account-menu#account-menu(
     v-if="account && !isNative"
     :account="account"
@@ -77,6 +86,9 @@ export default {
   },
 
   methods: {
+    printClick() {
+      window.print();
+    },
     toggleTabBarClick() {
       native.toggleTabBar();
     },
@@ -124,10 +136,20 @@ $img-size: 30px;
 
 .el-button.toggle-tabbar {
   padding: $padding;
+
   > i {
     font-weight: bold;
     font-size: 25px;
     transform: rotate(45deg);
+  }
+}
+
+.print {
+  height: 60px;
+  line-height: 60px;
+  border-bottom: solid 1px #e6e6e6;
+  .el-button {
+    //background: $blue;
   }
 }
 
