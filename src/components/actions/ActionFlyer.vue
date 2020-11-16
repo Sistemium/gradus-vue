@@ -1,14 +1,17 @@
 <template lang="pug">
 
+- const logo = "../../assets/icons8-discount-orange.svg";
+
 .action-flyer(
   v-if="campaign && action"
   :class="viewClass"
   ref="flyer"
   :style="style"
+  v-resize="handleResize"
 )
 
   h1.campaign
-    img(src="../../assets/icons8-discount-orange.svg")
+    img(src=logo)
     .name Акция {{ campaign.name }}
 
   campaign-action(
@@ -37,14 +40,12 @@
       .territory(v-if="campaign.territory")
         i.el-icon-location
         span {{ campaign.territory }}
-    img(src="../../assets/icons8-discount-orange.svg")
-
-  resize-observer(@notify="handleResize")
+    img(src=logo)
 
 </template>
 <script>
 
-import { ResizeObserver } from 'vue-resize';
+import resize from 'vue-resize-directive';
 import floor from 'lodash/floor';
 import sumBy from 'lodash/sumBy';
 import Campaign from '@/models/Campaign';
@@ -54,6 +55,8 @@ import ActionPictures from '@/components/actions/ActionPictures.vue';
 const NAME = 'ActionFlyer';
 
 export default {
+
+  directives: { resize },
 
   props: {
     action: {
@@ -125,7 +128,6 @@ export default {
     },
 
     handleResize() {
-      // this.$debug('height', this.$el.clientHeight);
       this.scale = this.scaleValue(this.$el.clientHeight);
     },
   },
@@ -173,7 +175,7 @@ img {
 
 .action-flyer {
   min-height: 690px;
-  max-width: 1000px;
+  max-width: 1100px;
   box-sizing: border-box;
   //min-width: 890px;
   @media screen {
@@ -366,11 +368,6 @@ h1 .name, .footer .fields {
     display: inline-block;
   }
 
-}
-
-.resize-observer {
-  height: 0;
-  max-height: 0;
 }
 
 </style>
