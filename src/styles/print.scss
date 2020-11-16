@@ -27,4 +27,14 @@
     margin: 0;
   }
 
+  .v-modal {
+    display: none !important;
+  }
+
+  body.el-popup-parent--hidden {
+    #app {
+      display: none;
+    }
+  }
+
 }
