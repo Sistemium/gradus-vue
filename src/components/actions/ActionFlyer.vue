@@ -26,7 +26,7 @@
     size="stream"
   )
 
-  .footer(v-if="campaign")
+  .footer
     .fields
       .oneTime(v-if="campaign.oneTime")
         i.el-icon-circle-check
@@ -76,14 +76,15 @@ export default {
   computed: {
     style() {
       const { scale } = this;
-      if (scale === 1) {
+      if (scale === 1 || !scale) {
         return null;
       }
-      const margin = this.$el.clientHeight - this.maxHeight + 1;
+      this.$debug('scaled', scale, `${this.$el.clientHeight}px`, this.campaign.name, '-', this.action.name);
+      // const margin = this.$el.clientHeight - this.maxHeight + 1;
       return {
         transform: `scale(${scale})`,
         'transform-origin': 'top',
-        'margin-bottom': `-${margin}px`,
+        // 'margin-bottom': `-${margin}px`,
       };
     },
     campaign() {
@@ -124,7 +125,7 @@ export default {
       if (clientHeight <= this.maxHeight) {
         return 1;
       }
-      return floor(this.maxHeight / clientHeight, 6);
+      return floor(this.maxHeight / clientHeight, 2);
     },
 
     handleResize() {
@@ -175,13 +176,12 @@ img {
 
 .action-flyer {
   min-height: 690px;
-  max-width: 1100px;
+  max-width: 1000px;
   box-sizing: border-box;
-  //min-width: 890px;
   @media screen {
     border: dashed 1px $gray-border-color;
+    padding: $margin-top;
   }
-  padding: $margin-top;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -213,7 +213,7 @@ h1 .name, .footer .fields {
   font-size: 18px;
   margin-top: $margin-top;
   flex: 1;
-  min-height: 0;
+  min-height: 50px;
 }
 
 .campaign-action {

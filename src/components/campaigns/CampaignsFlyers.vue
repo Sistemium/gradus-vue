@@ -9,7 +9,7 @@
     )
       action-flyer(
         :action="action"
-        :max-height="700"
+        :max-height="690"
       )
 
 </template>
@@ -32,7 +32,7 @@ export default {
     style: [
       {
         type: 'text/css',
-        inner: '@page { size: A4 landscape; }',
+        inner: '@page { size: A4 landscape }',
       },
     ],
   },
@@ -46,21 +46,29 @@ export default {
 
 .wrapper {
   overflow: hidden;
+  position: relative;
+  height: 695px;
+  page-break-inside: avoid;
+  box-sizing: border-box;
 }
 
 .action-flyer {
-  width: 100%;
+  width: 1024px;
   min-width: 100%;
-  page-break-inside: avoid;
-  page-break-after: always;
-  border: none;
-  //overflow: hidden;
-  //max-height: 690px;
-  //height: 690px;
+  max-width: 1024px;
+  min-height: 690px;
+  @media print {
+    border: none;
+    padding: 0;
+  }
+  position: absolute;
+  top:0;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 @media screen {
-  .action-flyer + .action-flyer, .campaign + .campaign {
+  .wrapper + .wrapper, .campaign + .campaign {
     margin-top: $margin;
   }
 }
