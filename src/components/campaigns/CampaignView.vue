@@ -158,6 +158,8 @@ export default {
 
 .buttons {
   float: right;
+  display: flex;
+  align-items: center;
 }
 
 .actions {

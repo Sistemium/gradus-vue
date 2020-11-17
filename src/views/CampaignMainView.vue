@@ -8,6 +8,7 @@ campaign-view(
 )
 
   template(v-slot:buttons)
+
     campaign-workflow(
       :disabled="busy"
       :processing="currentCampaign.processing"
@@ -22,6 +23,13 @@ campaign-view(
           icon="el-icon-suitcase"
           size="mini" circle
         )
+    el-button.show-pictures(
+      :type="showPictures ? 'primary' : 'default'"
+      size="mini"
+      @click="toggleShowPictures"
+    )
+      i.el-icon-picture-outline
+
     el-button(
       @click="onCopyCampaign"
       icon="el-icon-copy-document"
@@ -90,6 +98,7 @@ export default {
       actionCopy: g.ACTION_COPY,
       busy: g.BUSY,
       searchText: g.SEARCH_TEXT,
+      showPictures: g.SHOW_PICTURES,
     }),
     currentCampaign() {
       return Campaign.reactiveGet(this.campaignId);
@@ -109,6 +118,7 @@ export default {
       campaignPictureClick: actions.SHOW_CAMPAIGN_PICTURE,
       transitCampaign: actions.TRANSIT_CAMPAIGN,
       copyCampaign: actions.COPY_CAMPAIGN,
+      toggleShowPictures: actions.TOGGLE_SHOW_PICTURES,
     }),
     onCopyCampaign() {
       this.copyCampaign(this.currentCampaign);
@@ -139,6 +149,18 @@ export default {
 
 .campaign-workflow + * {
   margin-left: $margin-right;
+}
+
+.show-pictures {
+
+  i {
+    font-size: 16px;
+  }
+
+  padding: 5px 7px;
+
+  //margin-right: $margin-right;
+
 }
 
 </style>

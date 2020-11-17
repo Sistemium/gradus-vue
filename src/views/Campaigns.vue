@@ -11,14 +11,6 @@ el-container.campaigns(
 
     layout-select(v-model="layout" name="campaigns")
 
-    el-button.show-pictures(
-      :type="showPictures ? 'primary' : 'default'"
-      size="mini"
-      @click="toggleShowPictures"
-      :disabled="layout !== 'list'"
-    )
-      i.el-icon-picture-outline
-
     transition(name="bounce")
       el-tooltip(v-if="campaignCopy")
         div(slot="content") Нажмите, чтобы вставить копию акции «{{ campaignCopy.name }}»
@@ -146,7 +138,6 @@ export default {
 
     ...mapGetters({
       error: getters.ERROR,
-      showPictures: getters.SHOW_PICTURES,
       campaigns: getters.CAMPAIGNS,
       galleryCampaign: getters.GALLERY_CAMPAIGN,
       busy: getters.BUSY,
@@ -168,7 +159,6 @@ export default {
   methods: {
 
     ...mapActions({
-      toggleShowPictures: actions.TOGGLE_SHOW_PICTURES,
       campaignAvatarClickStore: actions.CAMPAIGN_AVATAR_CLICK,
       updateCampaign: actions.UPDATE_CAMPAIGN,
       removeCampaign: actions.REMOVE_CAMPAIGN,
@@ -349,15 +339,5 @@ export default {
     page-break-after: always;
   }
 }
-
-.show-pictures {
-  i {
-    font-size: large;
-  }
-
-  padding: 6px;
-
-}
-
 
 </style>
