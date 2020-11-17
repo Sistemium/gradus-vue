@@ -34,6 +34,9 @@ export default {
     href() {
       let { url } = this;
       if (this.auth) {
+        if (!/[?]/.test(url)) {
+          url += '?';
+        }
         url += `&access-token=${this.accessToken}`;
       }
       const params = {

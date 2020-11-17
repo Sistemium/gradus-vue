@@ -12,7 +12,7 @@ el-dialog.campaign-action-picture(
 )
 
   .buttons
-    download-button(:options="downloadOptions" format="png")
+    download-button(:options="downloadOptions" format="png" :url="printUrl")
     el-link(type="primary" icon="el-icon-printer" @click="printClick") Печатать
     el-link(type="primary" icon="el-icon-close" @click="closeDialog") Закрыть
 
@@ -64,6 +64,10 @@ export default {
     },
     fileName() {
       return this.action && this.action.name;
+    },
+    printUrl() {
+      const { host, protocol } = window.location;
+      return `${protocol}//${host}/#/actionSingle/${this.actionId}`;
     },
   },
 
