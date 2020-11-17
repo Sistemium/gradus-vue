@@ -68,7 +68,7 @@ export default {
 }
 
 @media screen {
-  .wrapper + .wrapper, .campaign + .campaign {
+  .wrapper, .campaign + .campaign {
     margin-top: $margin;
   }
 }

@@ -170,7 +170,7 @@ img {
   @if $tall == tall {
     font-size: 22px;
   } @else {
-    font-size: 26px;
+    font-size: 25px;
   }
 }
 
@@ -180,8 +180,8 @@ img {
   box-sizing: border-box;
   @media screen {
     border: dashed 1px $gray-border-color;
-    padding: $margin-top;
   }
+  padding: $margin-top;
   display: flex;
   flex-direction: column;
   position: relative;

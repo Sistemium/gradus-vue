@@ -74,7 +74,9 @@ export default {
 
 .action-flyer {
   position: absolute;
+  min-height: 700px;
   top:0;
+  padding: $margin-top;
 }
 
 </style>

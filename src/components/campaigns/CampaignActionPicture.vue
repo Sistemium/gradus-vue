@@ -10,12 +10,19 @@ el-dialog.campaign-action-picture(
   append-to-body
   center
 )
+
+  .buttons
+    download-button(:options="downloadOptions" format="png")
+    el-link(type="primary" icon="el-icon-printer" @click="printClick") Печатать
+    el-link(type="primary" icon="el-icon-close" @click="closeDialog") Закрыть
+
   .wrapper
     action-flyer(:action="action" v-if="action")
 
 </template>
 <script>
 
+import DownloadButton from '@/components/DownloadButton.vue';
 import ActionFlyer from '@/components/actions/ActionFlyer.vue';
 import Action from '@/models/Action';
 
@@ -25,7 +32,10 @@ export default {
 
   name: NAME,
 
-  components: { ActionFlyer },
+  components: {
+    ActionFlyer,
+    DownloadButton,
+  },
 
   data() {
     return {
@@ -39,12 +49,28 @@ export default {
   },
 
   computed: {
+    downloadOptions() {
+      return {
+        name: this.fileName,
+        width: '960',
+        height: '700',
+        media: 'print',
+        scale: '1',
+        background: 'true',
+      };
+    },
     action() {
       return Action.reactiveGet(this.actionId);
+    },
+    fileName() {
+      return this.action && this.action.name;
     },
   },
 
   methods: {
+    printClick() {
+      window.print();
+    },
     closeDialog() {
       this.visible = false;
       this.$router.replace({ ...this.from })
@@ -59,19 +85,48 @@ export default {
 
 @import "../../styles/variables";
 
-.action-single-view {
-  flex: 1;
+@media print {
+  .campaign-action-picture {
+    .buttons, /deep/ .el-dialog__header {
+      display: none;
+    }
+  }
 }
 
 .wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 700px;
+  box-sizing: border-box;
+  position: relative;
 }
 
 .campaign-action-picture /deep/ {
   .el-dialog__body {
-    padding: 0;
+    padding: 0 $margin;
+    @media print {
+      padding: 0;
+    }
+  }
+}
+
+.action-flyer {
+  max-width: 960px;
+  position: absolute;
+  top: 0;
+  @media print {
+    max-width: 100%;
+    min-height: 700px;
+  }
+}
+
+.buttons {
+  text-align: center;
+  margin: -$margin-top auto $margin-top;
+
+  > * + * {
+    margin-left: $margin;
   }
 }
 
