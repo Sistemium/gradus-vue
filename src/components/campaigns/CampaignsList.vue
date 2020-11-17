@@ -59,9 +59,9 @@ export default {
     },
   },
   methods: {
-    itemClick(item) {
-      // const { value } = this;
-      this.$emit('input', item.id);
+    itemClick({ id }) {
+      const { value } = this;
+      this.$emit('input', id === value ? null : id);
     },
     badgeCount(campaign) {
       const { pictures, actions } = campaign;
