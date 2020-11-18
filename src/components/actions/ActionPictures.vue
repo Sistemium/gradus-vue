@@ -1,6 +1,6 @@
 <template lang="pug">
 
-.action-pictures(:style="layoutStyle")
+.action-pictures(:style="layoutStyle" :class="cls")
   styled-comment(:text="commentText")
   .pictures
     action-picture-view.picture(
@@ -45,6 +45,9 @@ export default {
         'flex-direction': this.directionStyle,
       };
     },
+    cls() {
+      return this.layout.align && `layout-${this.layout.align}`;
+    },
     directionStyle() {
       switch (this.layout.align) {
         case 'center':
@@ -75,8 +78,16 @@ export default {
   align-items: center;
 }
 
-.comment-text {
-  margin: $margin-top;
+.styled-comment {
+  margin: 0 $margin-top;
+  max-width: 400px;
+}
+
+.action-pictures.layout-center {
+  .styled-comment {
+    margin: 0 auto $margin-top;
+    max-width: none;
+  }
 }
 
 .pictures {
