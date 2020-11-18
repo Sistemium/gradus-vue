@@ -2,7 +2,7 @@
 
 .campaigns-pictures-list
   .campaign(
-    v-for="campaign in campaigns" :key="campaign.id"
+    v-for="campaign in matchingCampaigns" :key="campaign.id"
   )
     .wrapper(
       v-for="action in campaign.actions" :key="action.id"
@@ -15,6 +15,7 @@
 </template>
 <script>
 
+import filter from 'lodash/filter';
 import ActionFlyer from '@/components/actions/ActionFlyer.vue';
 
 const NAME = 'CampaignsFlyers';
@@ -27,6 +28,12 @@ export default {
   },
 
   components: { ActionFlyer },
+
+  computed: {
+    matchingCampaigns() {
+      return filter(this.campaigns, { processing: 'published' });
+    },
+  },
 
   head: {
     style: [
@@ -62,7 +69,7 @@ export default {
     padding: 0;
   }
   position: absolute;
-  top:0;
+  top: 0;
   margin-left: auto;
   margin-right: auto;
 }
