@@ -91,7 +91,7 @@ export default {
 
 @media print {
   .campaign-action-picture {
-    .buttons, /deep/ .el-dialog__header {
+    .buttons, ::v-deep .el-dialog__header {
       display: none;
     }
   }
@@ -106,7 +106,7 @@ export default {
   position: relative;
 }
 
-.campaign-action-picture /deep/ {
+.campaign-action-picture ::v-deep {
   .el-dialog__body {
     padding: 0 $margin;
     @media print {

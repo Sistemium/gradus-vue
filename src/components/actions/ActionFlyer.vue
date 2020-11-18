@@ -226,7 +226,7 @@ h1 .name, .footer .fields {
 
   font-size: 18px;
 
-  /deep/ {
+  ::v-deep {
 
     .discount-matrix .cell.header > * {
       font-size: 14px;
@@ -330,7 +330,7 @@ h1 .name, .footer .fields {
   .campaign-action {
     font-size: 15px;
 
-    /deep/ {
+    ::v-deep {
       .option, .volume {
         padding: $padding 7px;
       }
@@ -338,7 +338,7 @@ h1 .name, .footer .fields {
   }
 
   .action-pictures {
-    /deep/ {
+    ::v-deep {
       .action-picture-view img {
         max-height: 130px;
       }

@@ -8,7 +8,7 @@
     margin-left: $margin-top;
   }
 
-  /deep/ .el-switch__label {
+  ::v-deep .el-switch__label {
     font-weight: normal;
     color: $gray;
   }

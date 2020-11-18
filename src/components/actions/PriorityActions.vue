@@ -53,7 +53,7 @@ export default {
   }
 }
 
-.campaigns-actions-table /deep/ {
+.campaigns-actions-table ::v-deep {
   .action-history-view {
     display: none;
   }

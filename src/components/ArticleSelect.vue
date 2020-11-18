@@ -89,7 +89,7 @@ export default {
   /*overflow-y: auto;*/
 }
 
-.article-select /deep/ .dropdown-menu a {
+.article-select ::v-deep .dropdown-menu a {
   white-space: normal;
   border-bottom: solid 1px $gray-border-color;
 }

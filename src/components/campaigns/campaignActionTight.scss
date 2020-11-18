@@ -60,11 +60,11 @@ th {
 
 .action-required, .option-required {
 
-  /deep/ small {
+  ::v-deep small {
     font-size: $small-font-size-print;
   }
 
-  /deep/ em {
+  ::v-deep em {
     font-size: $small-font-size-print;
   }
 }

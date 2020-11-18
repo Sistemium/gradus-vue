@@ -65,7 +65,7 @@ export default {
 @import "../../styles/variables";
 
 
-.campaigns-table /deep/ .el-table__row {
+.campaigns-table ::v-deep .el-table__row {
   cursor: pointer;
 }
 

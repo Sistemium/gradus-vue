@@ -24,7 +24,7 @@ export default {
   display: inline;
   white-space: pre-line;
 
-  /deep/ {
+  ::v-deep {
     em {
       color: $orange;
       font-style: normal;

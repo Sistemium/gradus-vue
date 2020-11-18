@@ -176,7 +176,7 @@ export default {
 }
 
 @media screen {
-  .campaign-action /deep/ th .title > span {
+  .campaign-action ::v-deep th .title > span {
     color: $blue;
     cursor: pointer;
     &:hover {

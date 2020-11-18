@@ -244,7 +244,7 @@ export default {
   padding: 0 $margin-right 200px;
 }
 
-.campaign-action-edit /deep/ .el-drawer__body {
+.campaign-action-edit ::v-deep .el-drawer__body {
   overflow-y: scroll;
 }
 

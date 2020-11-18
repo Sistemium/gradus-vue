@@ -91,7 +91,7 @@ export default {
 .action-required {
   display: flex;
 
-  > /deep/ * + * {
+  > ::v-deep * + * {
     margin-left: $margin-right;
     margin-top: 0;
 

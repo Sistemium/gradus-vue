@@ -58,7 +58,7 @@ i {
   font-size: large;
 }
 
-.layout-select /deep/ .el-radio-button__inner {
+.layout-select ::v-deep .el-radio-button__inner {
   padding: 6px;
 }
 

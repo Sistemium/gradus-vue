@@ -162,7 +162,7 @@ export default {
   width: 100%;
 }
 
-.take-photo-button /deep/ .dz-preview {
+.take-photo-button ::v-deep .dz-preview {
   display: none;
 }
 

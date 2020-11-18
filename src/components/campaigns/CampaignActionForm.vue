@@ -171,11 +171,11 @@ export default {
 }
 
 .el-collapse {
-  & /deep/ h3.title {
+  & ::v-deep h3.title {
     display: none;
   }
 
-  & /deep/ .el-collapse-item__content {
+  & ::v-deep .el-collapse-item__content {
     padding-bottom: 0;
   }
 }
@@ -184,7 +184,7 @@ export default {
   @extend %switches;
 }
 
-.campaign-action-form /deep/ h3 {
+.campaign-action-form ::v-deep h3 {
   font-weight: 500;
   font-size: $small-font-size;
 }
@@ -205,7 +205,7 @@ export default {
 .campaign-priority-select {
   display: block;
   width: 100%;
-  /deep/ input {
+  ::v-deep input {
     color: $orange;
   }
 }

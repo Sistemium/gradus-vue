@@ -117,7 +117,7 @@ export default {
   padding: 0 $margin-right 80px;
 }
 
-.action-axis-edit /deep/ .el-drawer__body {
+.action-axis-edit ::v-deep .el-drawer__body {
   overflow-y: scroll;
 }
 
@@ -145,7 +145,7 @@ export default {
     margin-top: $margin-top;
   }
 
-  /deep/ h3.title {
+  ::v-deep h3.title {
     display: none;
   }
 }

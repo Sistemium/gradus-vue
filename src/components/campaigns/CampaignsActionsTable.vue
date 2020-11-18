@@ -118,7 +118,11 @@ export default {
   name: NAME,
   head: {
     style: [
-      { type: 'text/css', inner: '@page { size: A4 portrait; }', undo: true },
+      {
+        type: 'text/css',
+        inner: '@page { size: A4 portrait; }',
+        undo: true,
+      },
     ],
   },
 };
@@ -130,12 +134,10 @@ export default {
 
 @media print {
 
-  .campaigns-actions-table /deep/ {
-    .campaign-action {
-      page-break-inside: avoid;
-      @import "campaignActionTight";
-      @import "../actions/actionOptionTight";
-    }
+  .campaigns-actions-table ::v-deep .campaign-action {
+    page-break-inside: avoid;
+    @import "campaignActionTight";
+    @import "../actions/actionOptionTight";
   }
 
 }

@@ -42,7 +42,7 @@ export default {
 
 @import "discountMatrixBase";
 
-.action-required /deep/ > * {
+.action-required ::v-deep > * {
   white-space: nowrap;
 }
 

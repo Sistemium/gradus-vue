@@ -145,7 +145,7 @@ label {
   justify-content: space-between;
 }
 
-.list-group-item /deep/ button {
+.list-group-item ::v-deep button {
   padding: 0;
 
   &.confirmation {

@@ -323,7 +323,7 @@ export default {
   padding: $padding;
   margin-left: 0;
 
-  /deep/ i {
+  ::v-deep i {
     font-size: 20px;
   }
 }
