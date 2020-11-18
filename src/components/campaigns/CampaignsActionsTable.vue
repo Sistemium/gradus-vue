@@ -89,7 +89,11 @@ export default {
       });
     },
     campaignClick({ id: campaignId }) {
-      this.updateRouteParams({ campaignId });
+      const { name } = this.$route;
+      this.updateRouteParams({
+        campaignId,
+        priorityId: undefined,
+      }, {}, name === 'campaignsPriorities' ? 'campaign' : undefined);
     },
     onEditCampaign(campaign) {
       this.$emit('editCampaign', campaign);
