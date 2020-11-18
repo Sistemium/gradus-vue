@@ -38,13 +38,13 @@ export default {
   },
   watch: {
     choice(value) {
-      localStorage.setItem(this.localStorageKey, value);
+      // localStorage.setItem(this.localStorageKey, value);
       this.$emit('input', value);
     },
   },
   created() {
     if (!this.value) {
-      this.choice = localStorage.getItem(this.localStorageKey) || 'list';
+      this.choice = 'list'; // localStorage.getItem(this.localStorageKey)
     }
   },
 };
