@@ -116,12 +116,13 @@ export default {
 }
 
 .action-flyer {
-  max-width: 960px;
+  max-width: 1000px;
+  width: 980px;
   position: absolute;
   top: 0;
+  min-height: 700px;
   @media print {
     max-width: 100%;
-    min-height: 700px;
   }
 }
 
