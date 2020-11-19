@@ -340,7 +340,7 @@ h1 .name, .footer .fields {
   .action-pictures {
     ::v-deep {
       .action-picture-view img {
-        max-height: 130px;
+        max-height: 150px;
       }
     }
   }

@@ -12,6 +12,7 @@
 </template>
 <script>
 
+import find from 'lodash/find';
 import StyledComment from '@/components/StyledComment.vue';
 import ActionPictureView from '@/components/actions/ActionPictureView.vue';
 
@@ -45,13 +46,16 @@ export default {
         'flex-direction': this.directionStyle,
       };
     },
+    hasLabels() {
+      return !!find(this.pictures, 'label');
+    },
     cls() {
-      return this.layout.align && `layout-${this.layout.align}`;
+      return this.layout.align && [`layout-${this.layout.align}`, !this.hasLabels && 'no-labels'];
     },
     directionStyle() {
       switch (this.layout.align) {
         case 'center':
-          return 'column-reverse';
+          return 'column';
         case 'flex-start':
           return 'row-reverse';
         default:
@@ -76,6 +80,11 @@ export default {
 .action-pictures {
   display: flex;
   align-items: center;
+  &.no-labels ::v-deep {
+    .label {
+      display: none;
+    }
+  }
 }
 
 .styled-comment {
@@ -85,7 +94,7 @@ export default {
 
 .action-pictures.layout-center {
   .styled-comment {
-    margin: 0 auto $margin-top;
+    margin: 0 auto;
     max-width: none;
   }
 }
