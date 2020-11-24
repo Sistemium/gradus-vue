@@ -363,9 +363,17 @@ h1 .name, .footer .fields {
     margin-right: $margin-right;
   }
 
-  .fields > * {
-    margin-right: $margin;
-    display: inline-block;
+  .fields {
+    display: flex;
+    > * + * {
+      margin-left: $margin-top;
+    }
+  }
+
+  .territory {
+    &, .el-icon-location {
+      color: $red;
+    }
   }
 
 }
