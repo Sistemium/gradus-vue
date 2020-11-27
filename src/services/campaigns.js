@@ -68,12 +68,18 @@ function campaignsFilter(monthId, searchText) {
   const monthB = `${monthId}-01`;
   const monthE = `${monthId}-31`;
 
+  const statuses = searchToProcessing(searchText);
+
   return filter(campaigns, campaign => {
 
     const { dateB, dateE, name } = campaign;
 
     if (dateB > monthE || dateE < monthB) {
       return false;
+    }
+
+    if (statuses.length) {
+      return statuses.includes(campaign.processing);
     }
 
     let res = !re || re.test(name);
@@ -85,6 +91,17 @@ function campaignsFilter(monthId, searchText) {
     return res;
   });
 
+}
+
+
+export function searchToProcessing(searchText) {
+  if (/на утверждени[еи]/i.test(searchText)) {
+    return ['draft', 'published'];
+  }
+  if (/черновики?/i.test(searchText)) {
+    return ['draft'];
+  }
+  return [];
 }
 
 /**

@@ -53,6 +53,7 @@ el-container.campaigns(
         campaigns-table(
           v-else
           :campaigns="filteredCampaigns"
+          :processing="filterProcessing"
           @editCampaign="campaignClick"
         )
 
@@ -102,7 +103,7 @@ import { dateBE } from '@/lib/dates';
 import campaignsAuth from '@/components/campaigns/campaignsAuth';
 import CampaignsPriorities from '@/components/campaigns/CampaignsPriorities.vue';
 import CampaignsHeader from '@/components/campaigns/CampaignsHeader.vue';
-import { prioritiesOfCampaigns } from '@/services/campaigns';
+import { prioritiesOfCampaigns, searchToProcessing } from '@/services/campaigns';
 import CampaignsFlyers from '@/components/campaigns/CampaignsFlyers.vue';
 
 const NAME = 'Campaigns';
@@ -136,6 +137,11 @@ export default {
       },
     },
 
+    filterProcessing() {
+      const res = searchToProcessing(this.searchText);
+      return res.length ? res : ['published'];
+    },
+
     ...mapGetters({
       error: getters.ERROR,
       campaigns: getters.CAMPAIGNS,
@@ -144,6 +150,7 @@ export default {
       selectedMonth: getters.SELECTED_MONTH,
       campaignCopy: getters.CAMPAIGN_COPY,
       filteredCampaigns: getters.FILTERED_CAMPAIGNS,
+      searchText: getters.SEARCH_TEXT,
     }),
 
     showPriorities() {

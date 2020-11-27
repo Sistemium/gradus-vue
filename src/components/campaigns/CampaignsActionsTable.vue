@@ -10,7 +10,7 @@
       tr
         td
           .name
-            i.el-icon-s-management
+            i(:class="campaign.processing === 'draft' ? 'el-icon-unlock' : 'el-icon-s-management'")
             a(@click="campaignClick(campaign)")
               span {{ campaign.name }}
             button-edit(@click="onEditCampaign(campaign)" v-if="hasAuthoring")
@@ -62,7 +62,10 @@ const NAME = 'CampaignsActionsTable';
 export default {
   computed: {
     campaignsWithActions() {
-      const withActions = filter(this.campaigns, c => c.actions.length && c.processing === 'published');
+      const withActions = filter(this.campaigns, c => {
+        const { processing = [] } = this;
+        return c.actions.length && (!processing.length || processing.includes(c.processing));
+      });
       return orderBy(withActions, ({ priority }) => priority && (priority.ord || priority.id));
     },
     ...mapGetters({ selectedMonth: getters.SELECTED_MONTH }),
@@ -114,6 +117,12 @@ export default {
   props: {
     campaigns: Array,
     priorityId: String,
+    processing: {
+      type: Array,
+      default() {
+        return ['published'];
+      },
+    },
   },
   components: {
     CampaignAction,
@@ -147,6 +156,8 @@ export default {
 }
 
 .name {
+
+  //white-space: nowrap;
   padding: $margin-top 0;
   font-size: x-large;
   font-weight: 500;
@@ -174,6 +185,10 @@ export default {
     }
   }
 
+}
+
+.el-icon-unlock {
+  color: $red;
 }
 
 .campaign-action, .fields {
@@ -242,6 +257,10 @@ thead td {
       margin-right: $padding;
     }
 
+  }
+
+  .draft {
+    color: $red;
   }
 
 }
