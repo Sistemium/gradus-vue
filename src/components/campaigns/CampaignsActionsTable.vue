@@ -79,7 +79,10 @@ export default {
       return priorityId ? actions.filter(a => a.priorityId === priorityId) : actions;
     },
     showPeriod(campaign) {
-      const { dateE, dateB } = this.monthBE;
+      const {
+        dateE,
+        dateB,
+      } = this.monthBE;
       return campaign.dateE !== dateE || campaign.dateB !== dateB;
     },
     scrollToCampaign(campaignId) {
