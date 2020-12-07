@@ -2,6 +2,7 @@
 
 th, td {
   border-color: $table-border-color;
+
   &:not(.complex) {
     padding: $padding-print;
   }
@@ -51,8 +52,6 @@ th {
     }
   }
 }
-
-/* from actionBase */
 
 .comment {
   font-size: $small-font-size-print;
