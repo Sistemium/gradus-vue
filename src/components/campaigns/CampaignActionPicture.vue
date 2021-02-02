@@ -55,7 +55,7 @@ export default {
         width: '960',
         height: '700',
         media: 'print',
-        scale: '1',
+        scale: '2',
         background: 'true',
       };
     },

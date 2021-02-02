@@ -39,9 +39,7 @@
           .fields
       tr(v-for="action in campaignActions(campaign)" :key="action.id")
         td
-          campaign-action(:action="action" :hide-priority="!!priorityId")
-
-  router-view
+          campaign-action(:action="action" :hide-priority="!!priorityId" :editable="false")
 
 </template>
 <script>
@@ -64,9 +62,18 @@ export default {
     campaignsWithActions() {
       const withActions = filter(this.campaigns, c => {
         const { processing = [] } = this;
-        return c.actions.length && (!processing.length || processing.includes(c.processing));
+        if (!c.actions.length) {
+          return false;
+        }
+        return !processing.length || processing.includes(c.processing);
       });
-      return orderBy(withActions, ({ priority }) => priority && (priority.ord || priority.id));
+      const externalOnly = filter(withActions, ({ priority }) => {
+        if (priority && priority.id === this.priorityId) {
+          return true;
+        }
+        return !priority || !priority.isInternal;
+      });
+      return orderBy(externalOnly, ({ priority }) => priority && (priority.ord || priority.id));
     },
     ...mapGetters({ selectedMonth: getters.SELECTED_MONTH }),
     monthBE() {

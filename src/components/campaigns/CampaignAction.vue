@@ -9,7 +9,7 @@
       th.name(:colspan="nameColspan")
         .title
           span(@click="$emit('actionClick', action)") {{ action.name }}
-          template(v-if="hasAuthoring")
+          template(v-if="hasAuthoring && editable")
             el-button(
               v-if="showPictures"
               @click="onEditPicturesClick()"
@@ -131,6 +131,10 @@ export default {
     withPictures: {
       type: Boolean,
       default: false,
+    },
+    editable: {
+      type: Boolean,
+      default: true,
     },
     withHistory: {
       type: Boolean,
