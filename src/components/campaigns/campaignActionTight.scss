@@ -59,12 +59,11 @@ th {
 
 .action-required, .option-required {
 
-  ::v-deep small {
+  small {
     font-size: $small-font-size-print;
   }
 
-  ::v-deep em {
+  em {
     font-size: $small-font-size-print;
   }
 }
-
