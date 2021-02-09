@@ -66,7 +66,7 @@ export default {
     badgeCount(campaign) {
       const { pictures, actions } = campaign;
       return pictures.length
-        + filter(actions, ({ layout = {} }) => layout.pictures && layout.pictures.length).length;
+        + filter(actions, ({ layout: l }) => l && l.pictures && l.pictures.length).length;
     },
   },
   created() {

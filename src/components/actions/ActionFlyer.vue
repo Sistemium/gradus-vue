@@ -92,8 +92,8 @@ export default {
       return action ? Campaign.reactiveGet(action.campaignId) : null;
     },
     layout() {
-      const { layout = {} } = this.action || {};
-      return layout;
+      const { layout } = this.action || {};
+      return layout || {};
     },
     viewClass() {
       const { action } = this;
