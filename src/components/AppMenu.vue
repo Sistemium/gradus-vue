@@ -21,7 +21,7 @@
     //el-menu-item(index="/targets")
       img(src="../assets/icons8-goal.svg")
       span Задачи
-    el-menu-item(index="/possibleOutlets" :disabled="!hasOutletsAuth")
+    el-menu-item(index="/possibleOutlets" v-if="hasOutletsAuth")
       img(src="../assets/icons8-validation.svg")
       span Точки
     el-menu-item(index="/perfectShop")
@@ -77,6 +77,9 @@ export default {
       return first(this.$route.path.match(/^\/[^/]*/));
     },
     hasOutletsAuth() {
+      if (!['r50', 'dr50'].includes(this.account.org)) {
+        return false;
+      }
       return this.$hasAuthRole('possibleOutlets')
         || this.$hasAuthRole('admin');
     },
