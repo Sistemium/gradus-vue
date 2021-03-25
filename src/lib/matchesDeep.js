@@ -10,7 +10,7 @@ export default function matchesDeep(obj1, obj2) {
     case 'Array':
       return arrayMatch(obj1, obj2);
     default:
-      return obj1 === obj2;
+      return obj1 === obj2 || (!obj1 && obj2 === null);
   }
 
 }
