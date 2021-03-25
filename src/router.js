@@ -5,6 +5,7 @@ import SignIn from './views/SignIn.vue';
 import campaignsRoutes from './routes/campaignsRoutes';
 import otherRoutes from './routes/otherRoutes';
 import possibleOutletsRoutes from './routes/possibleOutletsRoutes';
+import perfectShopRoutes from './routes/perfectShopRoutes';
 
 Vue.use(Router);
 
@@ -36,5 +37,6 @@ export default new Router({
     ...campaignsRoutes,
     ...possibleOutletsRoutes,
     ...otherRoutes,
+    ...perfectShopRoutes,
   ],
 });

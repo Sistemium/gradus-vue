@@ -24,6 +24,9 @@
     el-menu-item(index="/possibleOutlets" :disabled="!hasOutletsAuth")
       img(src="../assets/icons8-validation.svg")
       span Точки
+    el-menu-item(index="/perfectShop")
+      img(src="../assets/icons8-shop.svg")
+      span PS
     //el-menu-item(index="/about")
       img(src="../assets/icons8-info.svg")
       span О проекте
