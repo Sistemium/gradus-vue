@@ -80,7 +80,7 @@ export default {
       return svc.filterOutlets(this.outlets, this.searchText);
     },
     filteredSalesman() {
-      return svc.groupedSalesman(this.searchText);
+      return svc.groupedSalesman(this.searchText, svc.possibleOutlets);
     },
   },
 
@@ -125,32 +125,6 @@ export default {
 </script>
 <style scoped lang="scss">
 
-@import "../styles/variables";
-
-.el-main {
-  padding: 0;
-  margin-left: $margin-top;
-}
-
-.el-container {
-  min-height: 100px;
-}
-
-h3 {
-  position: sticky;
-  top: 0;
-  background-color: white;
-  margin-bottom: 0;
-  padding-bottom: 15px;
-  font-weight: bold;
-}
-
-.search-input {
-  margin-bottom: $margin-top;
-}
-
-.el-icon-warning {
-  color: $orange;
-}
+@import "../styles/masterPage";
 
 </style>
