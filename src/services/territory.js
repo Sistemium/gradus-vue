@@ -56,10 +56,10 @@ export function possibleOutletById(id) {
 export function perfectShopStatById(id) {
   noop(OutletStats.ts);
   noop(Outlet.ts);
-  const stat = OutletStats.get(id);
+  const stat = OutletStats.get(id) || {};
   return {
     ...stat,
-    outlet: Outlet.get(stat.outletId),
+    outlet: Outlet.get(stat.outletId) || {},
   };
 }
 

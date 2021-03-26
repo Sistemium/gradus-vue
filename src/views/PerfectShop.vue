@@ -106,6 +106,16 @@ export default {
       this.updateRouteParams({}, { salesmanId });
     },
 
+    onRouteChange(salesmanId) {
+      const { id } = this.currentSalesman || {};
+      if (salesmanId && salesmanId !== id) {
+        const men = flatMap(this.filteredSalesman, 'items');
+        this.currentSalesman = find(men, { id: salesmanId });
+      } else if (this.currentSalesman && !salesmanId) {
+        this.currentSalesman = null;
+      }
+    },
+
     onOutletClick(outlet) {
       this.$router.push({
         name: 'PerfectShopStatsDialog',
@@ -123,14 +133,9 @@ export default {
       dateE,
     });
 
-    const { salesmanId } = this.$route.query;
-
-    if (salesmanId) {
-      const men = flatMap(this.filteredSalesman, 'items');
-      this.currentSalesman = find(men, { id: salesmanId });
-    }
-
+    this.$watch('$route.query.salesmanId', this.onRouteChange, { immediate: true });
     this.$watch('currentSalesman.id', this.onSalesmanId, { immediate: true });
+
   },
 
   components: {
