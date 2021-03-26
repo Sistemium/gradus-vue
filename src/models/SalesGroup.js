@@ -6,10 +6,10 @@ export default new Model({
 
   relations: {
     hasMany: {
-      // Salesman: {
-      //   localField: 'salesmans',
-      //   foreignKey: 'salesGroupId',
-      // },
+      Salesman: {
+        localField: 'salesmen',
+        foreignKey: 'salesGroupId',
+      },
     },
   },
 

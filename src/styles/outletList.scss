@@ -1,0 +1,29 @@
+@import "./variables";
+
+.texts > * + * {
+  margin-top: $padding;
+}
+
+.address {
+  color: $gray;
+}
+
+.list-group-item {
+  display: flex;
+
+  .texts {
+    flex: 1;
+  }
+}
+
+i {
+  color: $orange;
+}
+
+.el-icon-circle-check {
+  color: $green;
+}
+
+.comment-text {
+  margin-left: $padding;
+}

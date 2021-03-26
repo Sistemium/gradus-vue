@@ -7,7 +7,8 @@ const { debug } = log('vuex:actions:territory');
 
 debug('init');
 
-export const LOAD_TERRITORY_DATA = 'REMOVE_CAMPAIGN';
+export const LOAD_TERRITORY_DATA = 'LOAD_TERRITORY_DATA';
+export const LOAD_OUTLET_STATS = 'LOAD_OUTLET_STATS';
 
 export default {
 
@@ -16,6 +17,17 @@ export default {
     commit(m.SET_BUSY, true);
 
     await svc.loadTerritory();
+
+    commit(m.SET_BUSY, false);
+
+  },
+
+  async [LOAD_OUTLET_STATS]({ commit }, filter) {
+
+    commit(m.SET_BUSY, true);
+
+    await svc.loadSalesmen();
+    await svc.loadOutletStats(filter.dateB, filter.dateE);
 
     commit(m.SET_BUSY, false);
 
