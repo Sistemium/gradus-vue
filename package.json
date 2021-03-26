@@ -14,7 +14,6 @@
     "element-ui": "^2.13.1",
     "inputmask": "^4.0.2",
     "intersection-observer": "^0.5.1",
-    "js-data": "^3.0.4",
     "lodash": "^4.17.20",
     "sistemium-debug": "^1.0.1",
     "sistemium-vue": "^1.3.2",
@@ -44,6 +43,7 @@
     "eslint-plugin-vue": "^6.2.2",
     "node-sass": "^4.14.1",
     "sass-loader": "^9.0.3",
+    "sistemium-jsdata": "^1.0.5",
     "vue-cli-plugin-pug": "^1.0.7",
     "vue-template-compiler": "^2.6.11"
   },

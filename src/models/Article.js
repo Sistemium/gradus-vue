@@ -1,20 +1,10 @@
 import Model from 'sistemium-vue/jsdata/Model';
-import { Record } from 'js-data';
-
 import RelationCache from '@/lib/RelationCache';
 
 import ArticleGroup from './ArticleGroup';  // eslint-disable-line
 import ArticlePicture from './ArticlePicture';
 
 const relationCache = new RelationCache({});
-
-class ArticleRecord extends Record {}
-
-Object.defineProperties(ArticleRecord.prototype, {
-  parent: relationCache.one('parent', 'articleGroupId'),
-  sameArticles: relationCache.many('articleSameId'),
-  avatarPicture: relationCache.one('avatarPicture', 'avatarPictureId'),
-});
 
 const Article = new Model({
 
@@ -24,7 +14,14 @@ const Article = new Model({
   noValidate: true,
   keepChangeHistory: false,
 
-  recordClass: ArticleRecord,
+  schema: {
+    type: 'object',
+    properties: {
+      parent: relationCache.one('parent', 'articleGroupId'),
+      sameArticles: relationCache.many('articleSameId'),
+      avatarPicture: relationCache.one('avatarPicture', 'avatarPictureId'),
+    },
+  },
 
   indexes: ['articleGroupId', 'articleSameId'],
 
