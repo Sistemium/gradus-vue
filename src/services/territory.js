@@ -53,6 +53,16 @@ export function possibleOutletById(id) {
   return PossibleOutlet.get(id);
 }
 
+export function perfectShopStatById(id) {
+  noop(OutletStats.ts);
+  noop(Outlet.ts);
+  const stat = OutletStats.get(id);
+  return {
+    ...stat,
+    outlet: Outlet.get(stat.outletId),
+  };
+}
+
 export function groupedSalesman(searchText, outletsFn) {
 
   const re = new RegExp(`^${escapeRegExp(searchText)}`, 'i');

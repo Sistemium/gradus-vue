@@ -34,9 +34,12 @@
           perfect-shop-stats-list(
             v-if="currentSalesman"
             :stats="outlets"
+            @click="onOutletClick"
           )
 
         el-alert(v-else title="Выберите ТП" type="warning")
+
+    router-view
 
 </template>
 <script>
@@ -101,6 +104,14 @@ export default {
 
     onSalesmanId(salesmanId) {
       this.updateRouteParams({}, { salesmanId });
+    },
+
+    onOutletClick(outlet) {
+      this.$router.push({
+        name: 'PerfectShopStatsDialog',
+        params: { statId: outlet.id },
+        query: this.$route.query,
+      });
     },
 
   },
