@@ -16,26 +16,40 @@ el-dialog.perfect-shop-stats-dialog(
       .address
         small {{ stat.outlet.address }}
 
+  outlet-perfect-shop-info(:stat="perfectShop.stats[nextLevel]")
+
 </template>
 <script>
 
 import DialogComponent from '@/lib/DialogComponent';
 import * as svc from '@/services/territory';
+import OutletPerfectShopInfo from '@/components/perfectShop/OutletPerfectShopInfo.vue';
 
 const NAME = 'PerfectShopStatsDialog';
 
 export default {
 
   name: NAME,
-  components: {},
+  components: { OutletPerfectShopInfo },
 
   created() {
     this.visible = true;
   },
 
   computed: {
+
+    perfectShop() {
+      const { stats } = this.stat || {};
+      return stats ? stats.perfectShop : null;
+    },
+
     stat() {
       return svc.perfectShopStatById(this.$route.params.statId);
+    },
+
+    nextLevel() {
+      const { nextLevel } = this.perfectShop || {};
+      return nextLevel;
     },
 
     title() {
@@ -61,5 +75,9 @@ export default {
 <style scoped lang="scss">
 
 @import "../../styles/variables";
+
+.outlet-perfect-shop-info {
+  color: $black;
+}
 
 </style>
