@@ -13,9 +13,11 @@ el-dialog.perfect-shop-stats-dialog(
   template(slot="title" v-if="stat")
     h1 Показатели участия в акции Perfect Shop
     .outlet
-      .name {{ stat.outlet.name }}
-      .address
-        small {{ stat.outlet.address }}
+      outlet-info(:outlet="stat.outlet")
+      .salesman
+        label ТП
+        = ' '
+        span {{ salesman.name }}
 
   el-form
     el-form-item(label="Уровень акции")
@@ -32,6 +34,7 @@ import * as svc from '@/services/territory';
 import { perfectShopLevels } from '@/services/perfectShop';
 import OutletPerfectShopInfo from '@/components/perfectShop/OutletPerfectShopInfo.vue';
 import StatLevelInput from '@/components/perfectShop/StatLevelInput.vue';
+import OutletInfo from '@/components/territory/OutletInfo.vue';
 
 const NAME = 'PerfectShopStatsDialog';
 
@@ -39,6 +42,7 @@ export default {
 
   name: NAME,
   components: {
+    OutletInfo,
     StatLevelInput,
     OutletPerfectShopInfo,
   },
@@ -59,6 +63,11 @@ export default {
 
     stat() {
       return svc.perfectShopStatById(this.$route.params.statId);
+    },
+
+    salesman() {
+      const { salesmanId } = this.stat || {};
+      return svc.salesmanById(salesmanId) || {};
     },
 
     levels() {
@@ -131,6 +140,12 @@ h1 {
 
   .name {
     font-weight: bold;
+  }
+
+  .salesman {
+    font-weight: normal;
+    font-size: small;
+    margin-top: $padding;
   }
 }
 
