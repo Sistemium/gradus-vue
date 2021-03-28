@@ -108,6 +108,12 @@ export default {
     flex-direction: row;
     align-items: center;
   }
+
+  ::v-deep .el-dialog {
+    margin: 0 auto;
+    max-width: 1024px;
+  }
+
 }
 
 h1 {
