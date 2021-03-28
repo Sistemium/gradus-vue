@@ -4,7 +4,7 @@
 
   el-container(
     v-loading="loading"
-    element-loading-text="Загрузка данных ..."
+    :element-loading-text="loading"
   )
 
     el-aside(v-if="!loading")
@@ -39,7 +39,7 @@
 
         el-alert(v-else title="Выберите ТП" type="warning")
 
-    router-view
+    router-view(v-if="!loading")
 
 </template>
 <script>

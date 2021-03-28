@@ -26,11 +26,16 @@ export default {
 
     commit(m.SET_BUSY, true);
 
-    await svc.loadSalesmen();
-    await svc.loadOutletStats(filter.dateB, filter.dateE);
+    await svc.loadSalesmen(onProgress(commit));
+    await svc.loadOutletStats(filter.dateB, filter.dateE, onProgress(commit));
 
     commit(m.SET_BUSY, false);
 
   },
 
 };
+
+
+function onProgress(commit) {
+  return msg => commit(m.SET_BUSY, msg);
+}

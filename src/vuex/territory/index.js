@@ -8,7 +8,7 @@ export default {
   namespaced: true,
 
   state: {
-    [states.BUSY]: false,
+    [states.BUSY]: '',
   },
 
   mutations,

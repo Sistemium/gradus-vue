@@ -25,12 +25,16 @@ export async function loadTerritory() {
   await PossibleOutletPhoto.findAll();
 }
 
-export async function loadSalesmen() {
+export async function loadSalesmen(onProgress = noop) {
+  onProgress('групп ТП');
   await SalesGroup.findAll();
+  onProgress('ТП');
   await Salesman.findAll();
 }
 
-export async function loadOutletStats(dateB, dateE) {
+export async function loadOutletStats(dateB, dateE, onProgress = noop) {
+
+  onProgress('результатов акций');
 
   const stats = await OutletStats.fetchAll({
     dateB,
@@ -41,6 +45,7 @@ export async function loadOutletStats(dateB, dateE) {
   const toLoad = filter(stats, ({ outlet }) => !outlet);
   const ids = map(toLoad, 'outletId');
 
+  onProgress('торговых точек');
   await Outlet.findByMany(ids, { chunkSize: 150 });
 
 }
