@@ -16,7 +16,7 @@
     "intersection-observer": "^0.5.1",
     "lodash": "^4.17.20",
     "sistemium-debug": "^1.0.1",
-    "sistemium-vue": "^1.4.1",
+    "sistemium-vue": "^1.4.2",
     "uuid": "latest",
     "vue": "^2.6.11",
     "vue-head": "^2.2.0",
