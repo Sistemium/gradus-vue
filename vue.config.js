@@ -4,7 +4,7 @@ module.exports = {
   publicPath: '',
   transpileDependencies: [
     'sistemium-vue',
-    // 'sistemium-jsdata',
+    'sistemium-jsdata',
     'vue-virtual-scroller',
   ],
   productionSourceMap: false,
