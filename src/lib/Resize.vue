@@ -58,6 +58,9 @@ export default {
 .stm-resize {
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   @media print {
     max-height: none !important;
     height: auto !important;
