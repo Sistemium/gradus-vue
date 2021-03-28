@@ -14,7 +14,7 @@ import { hideTabBar, isNative } from 'sistemium-vue/services/native';
 import { AUTH_INIT } from 'sistemium-vue/store/auth/actions';
 
 import SearchInput from '@/lib/SearchInput.vue';
-import Resize from '@/lib/Resize.vue';
+import Resize from 'sistemium-vue/components/Resize.vue';
 import ConfirmButton from '@/lib/ConfirmButton.vue';
 import ButtonEdit from '@/components/ButtonEdit.vue';
 import ButtonAdd from '@/components/ButtonAdd.vue';
