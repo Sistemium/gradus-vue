@@ -37,4 +37,12 @@
     }
   }
 
+  .el-select__caret.el-input__icon {
+    display: none;
+  }
+
+  .el-input__inner {
+    border: none;
+  }
+
 }
