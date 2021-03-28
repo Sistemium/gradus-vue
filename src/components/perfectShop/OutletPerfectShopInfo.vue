@@ -2,8 +2,6 @@
 
 .outlet-perfect-shop-info
 
-  p.level Следующий уровень: {{ stat.levelName }}
-
   .stats
 
     .header.block.name Блок

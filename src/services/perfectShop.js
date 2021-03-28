@@ -62,3 +62,9 @@ export function ruleName(rule) {
       return rule;
   }
 }
+
+export function perfectShopLevels() {
+
+  return ['BRONZE', 'SILVER', 'GOLD'];
+
+}

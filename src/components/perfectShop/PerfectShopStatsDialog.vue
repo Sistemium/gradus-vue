@@ -11,29 +11,43 @@ el-dialog.perfect-shop-stats-dialog(
 )
 
   template(slot="title" v-if="stat")
-    h1
+    h1 Показатели участия в акции Perfect Shop
+    .outlet
       .name {{ stat.outlet.name }}
       .address
         small {{ stat.outlet.address }}
 
-  outlet-perfect-shop-info(:stat="perfectShop.stats[nextLevel]")
+  el-form
+    el-form-item(label="Уровень акции")
+      stat-level-input(v-model="level" :levels="levels")
+
+  resize(v-if="level" :padding="20")
+    outlet-perfect-shop-info(:stat="perfectShop.stats[level]")
 
 </template>
 <script>
 
 import DialogComponent from '@/lib/DialogComponent';
 import * as svc from '@/services/territory';
+import { perfectShopLevels } from '@/services/perfectShop';
 import OutletPerfectShopInfo from '@/components/perfectShop/OutletPerfectShopInfo.vue';
+import StatLevelInput from '@/components/perfectShop/StatLevelInput.vue';
 
 const NAME = 'PerfectShopStatsDialog';
 
 export default {
 
   name: NAME,
-  components: { OutletPerfectShopInfo },
+  components: {
+    StatLevelInput,
+    OutletPerfectShopInfo,
+  },
 
   created() {
     this.visible = true;
+    this.$watchImmediate('nextLevel', nextLevel => {
+      this.level = nextLevel;
+    });
   },
 
   computed: {
@@ -45,6 +59,10 @@ export default {
 
     stat() {
       return svc.perfectShopStatById(this.$route.params.statId);
+    },
+
+    levels() {
+      return perfectShopLevels();
     },
 
     nextLevel() {
@@ -69,6 +87,10 @@ export default {
 
   mixins: [DialogComponent],
 
+  data() {
+    return { level: this.nextLevel };
+  },
+
 };
 
 </script>
@@ -78,6 +100,36 @@ export default {
 
 .outlet-perfect-shop-info {
   color: $black;
+}
+
+.perfect-shop-stats-dialog {
+  ::v-deep .el-dialog__header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+h1 {
+  flex: 1;
+  order: 2;
+  text-align: center;
+  font-weight: bold;
+  margin: 0 $margin-top * 2;
+}
+
+.outlet {
+  font-size: large;
+  order: 1;
+  text-align: left;
+
+  .name {
+    font-weight: bold;
+  }
+}
+
+.stm-resize {
+  margin-top: $margin-top;
 }
 
 </style>
