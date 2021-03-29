@@ -26,18 +26,32 @@
       resize(:padding="30")
 
         template(v-if="currentSalesman")
-          h3
+          h3.header
             .name {{ currentSalesman.name }}
             .level Уровень
             .progress Блоки
             .progress Ассортимент
           perfect-shop-stats-list(
-            v-if="currentSalesman"
+            v-if="outlets.length"
             :stats="outlets"
             @click="onOutletClick"
           )
 
-        el-alert(v-else title="Выберите ТП" type="warning")
+        //el-alert(v-else title="Выберите ТП" type="warning")
+        template(v-else)
+          h3.header
+            .name Близкие к достижению целей точки
+            .level Уровень
+            .progress Блоки
+            .progress Ассортимент
+          .salesman-group(v-for="group in readyStats" :key="group.id")
+            .salesman(v-for="salesman in group.items" :key="salesman.id")
+              h3.salesman
+                .name {{ salesman.name }}
+              perfect-shop-stats-list(
+                :stats="salesman.outlets"
+                @click="onOutletClick"
+              )
 
     router-view(v-if="!loading")
 
@@ -93,7 +107,33 @@ export default {
       return currentSalesman ? currentSalesman.outlets : [];
     },
 
+    readyStats() {
+
+      const data = this.filteredSalesman.map(group => {
+        const { items } = group;
+        const mappedItems = items.map(salesmanItem => {
+          const { outlets } = salesmanItem;
+          return {
+            ...salesmanItem,
+            outlets: outlets.filter(o => o.level || o.close),
+          };
+        });
+        return {
+          ...group,
+          items: mappedItems.filter(({ outlets }) => outlets.length),
+        };
+      });
+
+      return data.filter(({ items }) => items.length);
+
+    },
+
     filteredSalesman() {
+
+      if (this.loading) {
+        return [];
+      }
+
       const fn = salesmanId => svc.outletStatsBySalesmanId(salesmanId, this.dateB, this.dateE);
       return svc.groupedSalesman(this.searchText, fn);
     },
@@ -151,7 +191,8 @@ export default {
 
 @import "../styles/masterPage";
 
-h3 {
+h3.header {
+
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -167,6 +208,12 @@ h3 {
   }
 
   padding-right: $margin-top + 1;
+
+}
+
+h3.salesman {
+  font-weight: bold;
+  margin-top: $margin-top;
 }
 
 </style>

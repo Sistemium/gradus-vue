@@ -59,8 +59,8 @@ export function possibleOutletById(id) {
 }
 
 export function perfectShopStatById(id) {
-  noop(OutletStats.ts);
-  noop(Outlet.ts);
+  // noop(OutletStats.ts);
+  // noop(Outlet.ts);
   const stat = OutletStats.get(id) || {};
   return {
     ...stat,
@@ -72,8 +72,6 @@ export function groupedSalesman(searchText, outletsFn) {
 
   const re = new RegExp(`^${escapeRegExp(searchText)}`, 'i');
   const data = groupBy(Salesman.getAll(), 'salesGroupId');
-
-  noop(Salesman.ts);
 
   const grouped = map(data, (salesmen, id) => ({
 
@@ -100,16 +98,40 @@ export function groupedSalesman(searchText, outletsFn) {
 }
 
 function perfectShopInfo({ stats: { perfectShop } }) {
+
   const {
     level,
     blocksProgress,
     assortmentsProgress,
   } = perfectShop;
+
+  const blocksInfo = progressNumbers(blocksProgress);
+  const assortmentsInfo = progressNumbers(assortmentsProgress);
+
   return {
     level,
     blocksProgress,
     assortmentsProgress,
+    close: blocksInfo.result || assortmentsInfo.result,
   };
+
+}
+
+const PROGRESS_RE = /(\d+) \/ (\d+)/;
+
+function progressNumbers(string) {
+
+  const [, doneString, totalString] = string.match(PROGRESS_RE);
+
+  const done = parseInt(doneString, 0);
+  const total = parseInt(totalString, 0);
+
+  return {
+    done,
+    total,
+    result: done + 1 >= total,
+  };
+
 }
 
 export function outletStatsBySalesmanId(salesmanId, dateB, dateE) {
@@ -128,8 +150,8 @@ export function outletStatsBySalesmanId(salesmanId, dateB, dateE) {
 
   return orderByName(map(data, item => ({
     id: item.id,
-    name: item.outlet.name,
-    address: item.outlet.address,
+    name: get(item.outlet, 'name'),
+    address: get(item.outlet, 'address'),
     ...perfectShopInfo(item),
   })));
 
