@@ -12,7 +12,7 @@ el-dialog.perfect-shop-stats-dialog(
 
   template(slot="title" v-if="stat")
 
-    h1 Показатели участия в акции Perfect Shop
+    h1 Показатели Perfect Shop
 
     .outlet
       outlet-info(:outlet="stat.outlet")
@@ -124,9 +124,11 @@ export default {
     align-items: center;
   }
 
-  ::v-deep .el-dialog {
-    margin: 0 auto;
-    max-width: 1024px;
+  @media screen {
+    ::v-deep .el-dialog {
+      margin: 0 auto;
+      max-width: 1024px;
+    }
   }
 
 }
@@ -135,6 +137,10 @@ h1 {
   flex: 1;
   order: 2;
   text-align: center;
+  @media print {
+    text-align: right;
+    margin-right: 0;
+  }
   font-weight: bold;
   margin: 0 $margin-top * 2;
 }
