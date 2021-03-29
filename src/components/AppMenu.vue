@@ -39,12 +39,10 @@
   )
 
   .print
-    el-button(
+    print-button(
       v-if="!isNative"
       circle
       size="mini"
-      icon="el-icon-printer"
-      @click="printClick()"
     )
 
   account-menu#account-menu(
@@ -59,6 +57,7 @@
 import first from 'lodash/first';
 import { mapState } from 'vuex';
 import AccountMenu from '@/components/AccountMenu.vue';
+import PrintButton from '@/lib/PrintButton.vue';
 import * as native from 'sistemium-vue/services/native';
 
 export default {
@@ -92,15 +91,15 @@ export default {
   },
 
   methods: {
-    printClick() {
-      window.print();
-    },
     toggleTabBarClick() {
       native.toggleTabBar();
     },
   },
 
-  components: { AccountMenu },
+  components: {
+    PrintButton,
+    AccountMenu,
+  },
 
 };
 
@@ -154,6 +153,7 @@ $img-size: 30px;
   height: 60px;
   line-height: 60px;
   border-bottom: solid 1px #e6e6e6;
+
   .el-button {
     //background: $blue;
   }

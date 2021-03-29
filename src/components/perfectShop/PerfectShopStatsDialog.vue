@@ -11,13 +11,17 @@ el-dialog.perfect-shop-stats-dialog(
 )
 
   template(slot="title" v-if="stat")
+
     h1 Показатели участия в акции Perfect Shop
+
     .outlet
       outlet-info(:outlet="stat.outlet")
       .salesman
         label ТП
         = ' '
         span {{ salesman.name }}
+
+    print-button.el-dialog__headerbtn(type="text")
 
   el-form
     el-form-item(label="Уровень акции")
@@ -30,6 +34,7 @@ el-dialog.perfect-shop-stats-dialog(
 <script>
 
 import DialogComponent from '@/lib/DialogComponent';
+import PrintButton from '@/lib/PrintButton.vue';
 import * as svc from '@/services/territory';
 import { perfectShopLevels } from '@/services/perfectShop';
 import OutletPerfectShopInfo from '@/components/perfectShop/OutletPerfectShopInfo.vue';
@@ -42,6 +47,7 @@ export default {
 
   name: NAME,
   components: {
+    PrintButton,
     OutletInfo,
     StatLevelInput,
     OutletPerfectShopInfo,
@@ -151,6 +157,11 @@ h1 {
 
 .stm-resize {
   margin-top: $margin-top;
+}
+
+.print-button {
+  right: 50px;
+  padding: 1px;
 }
 
 </style>
