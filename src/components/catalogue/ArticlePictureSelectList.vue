@@ -64,17 +64,28 @@ export default {
       }
       this.$emit('input', model);
     },
-  },
-
-  watch: {
-    async searchText(text) {
+    async onSearchText(text) {
       if (!text) {
         this.pictures = [];
         return;
       }
       this.$emit('loadingMessage', 'Поиск изображений ...');
-      this.pictures = await searchArticlePictures(text);
+      try {
+        this.pictures = await searchArticlePictures(text);
+      } catch (e) {
+        this.$notify.error({
+          title: 'Ошибка',
+          message: e.message,
+        });
+      }
       this.$emit('loadingMessage', '');
+    },
+  },
+
+  watch: {
+    searchText(text) {
+      this.onSearchText(text)
+        .catch(this.$error);
     },
   },
 
