@@ -1,6 +1,6 @@
 import Model from 'sistemium-vue/jsdata/Model';
 import RelationCache from '@/lib/RelationCache';
-import Outlet from '@/models/Outlet';
+// import Outlet from '@/models/Outlet';
 
 const relationCache = new RelationCache({});
 
@@ -34,5 +34,5 @@ export default new Model({
 });
 
 relationCache.setRelations({
-  outlet: Outlet,
+  outlet: 'Outlet',
 });

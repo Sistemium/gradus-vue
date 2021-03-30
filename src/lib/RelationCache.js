@@ -1,4 +1,5 @@
 import each from 'lodash/each';
+import { getModel } from 'sistemium-vue/jsdata/Model';
 
 export default class RelationCache {
 
@@ -28,14 +29,17 @@ export default class RelationCache {
     if (!id) {
       return null;
     }
-    return this.relations[name].get(id);
+    const modelName = this.relations[name];
+    const model = getModel(modelName);
+    return model ? model.get(id) : null;
   }
 
   getMany(name, fk, id) {
     if (!id) {
       return [];
     }
-    const model = this.relations[name];
+    const modelName = this.relations[name];
+    const model = getModel(modelName);
     const index = model.indexed[fk];
     return index[id];
   }

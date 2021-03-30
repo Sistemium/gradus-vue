@@ -2,7 +2,7 @@ import Model from 'sistemium-vue/jsdata/Model';
 import forEach from 'lodash/forEach';
 
 import RelationCache from '@/lib/RelationCache';
-import Article from './Article'; // eslint-disable-line
+// import Article from './Article'; // eslint-disable-line
 
 const relationCache = new RelationCache({});
 
@@ -84,7 +84,7 @@ const ArticleGroup = new Model({
 export default ArticleGroup;
 
 relationCache.setRelations({
-  parent: ArticleGroup,
-  articleGroupId: ArticleGroup,
-  articles: Article,
+  parent: 'ArticleGroup',
+  articleGroupId: 'ArticleGroup',
+  articles: 'Article',
 });

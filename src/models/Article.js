@@ -1,8 +1,8 @@
 import Model from 'sistemium-vue/jsdata/Model';
 import RelationCache from '@/lib/RelationCache';
 
-import ArticleGroup from './ArticleGroup';  // eslint-disable-line
-import ArticlePicture from './ArticlePicture';
+// import ArticleGroup from './ArticleGroup';  // eslint-disable-line
+// import ArticlePicture from './ArticlePicture';
 
 const relationCache = new RelationCache({});
 
@@ -55,7 +55,7 @@ const Article = new Model({
 export default Article;
 
 relationCache.setRelations({
-  parent: ArticleGroup,
-  articleSameId: Article,
-  avatarPicture: ArticlePicture,
+  parent: 'ArticleGroup',
+  articleSameId: 'Article',
+  avatarPicture: 'ArticlePicture',
 });
