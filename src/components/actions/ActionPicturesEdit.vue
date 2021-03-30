@@ -162,7 +162,7 @@ export default {
     },
 
     actionInstance() {
-      return this.getPlainInstanceById(Action, this.actionId);
+      return this.getPlainInstanceById(Action, this.actionId) || {};
     },
 
     saveClick() {
