@@ -82,7 +82,10 @@ export default {
     },
 
     ranges() {
-      const { parent, action } = this;
+      const {
+        parent,
+        action,
+      } = this;
       return action.ranges && action.ranges.length ? action.ranges : (parent && parent.ranges);
     },
 
@@ -116,7 +119,11 @@ export default {
       ];
     },
     hasSelfRow() {
-      const { ranges, name, showRanges } = this;
+      const {
+        ranges,
+        name,
+        showRanges,
+      } = this;
       return (name || (ranges && ranges.length)) && showRanges;
     },
   },
