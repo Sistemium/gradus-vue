@@ -93,10 +93,7 @@ export default {
   methods: {
     onClose() {
       this.closeDialog();
-      this.$router.replace({
-        name: 'PerfectShop',
-        query: this.$route.query,
-      });
+      this.updateRouteParams({}, {}, 'PerfectShop');
     },
   },
 

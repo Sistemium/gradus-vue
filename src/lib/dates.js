@@ -56,12 +56,12 @@ export function dateBE(monthId) {
 }
 
 
-export function monthGenerator(num, date = new Date()) {
+export function monthGenerator(num, date = new Date(), extra = 1) {
 
   return range(num)
     .map(i => {
 
-      const month = dayjs(addMonths(date, 1 - i));
+      const month = dayjs(addMonths(date, extra - i));
 
       return {
         id: month.format('YYYY-MM'),

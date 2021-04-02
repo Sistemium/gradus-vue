@@ -7,10 +7,20 @@
     :element-loading-text="loading"
   )
 
+    //perfect-shop-aside(v-if="!loading")
+
     el-aside(v-if="!loading")
+
+      search-input(v-model="searchText" placeholder="поиск точек или ТП")
+
+      month-select(
+        :months="lastYearMonths"
+        v-model="selectedMonth"
+        placeholder="период акции"
+      )
+
       resize(:padding="30")
 
-        search-input(v-model="searchText" placeholder="поиск точек или ТП")
         salesman-grouped-list(
           v-if="filteredSalesman.length"
           :grouped-items="filteredSalesman"
@@ -61,18 +71,25 @@
 import * as svc from '@/services/territory';
 import store from '@/store';
 import * as a from '@/vuex/territory/actions';
+import * as g from '@/vuex/territory/getters';
 import find from 'lodash/find';
 import noop from 'lodash/noop';
 import flatMap from 'lodash/flatMap';
 import SalesmanOutletsList from '@/components/territory/SalesmanOutletsList.vue';
-import SalesmanGroupedList from '@/components/territory/SalesmanGroupedList.vue';
 import { territoryGetters } from '@/vuex/territory/maps';
 import PerfectShopStatsList from '@/components/perfectShop/PerfectShopStatsList.vue';
+import MonthSelect from '@/components/MonthSelect.vue';
+import SalesmanGroupedList from '@/components/territory/SalesmanGroupedList.vue';
+import { dateBE, monthGenerator } from '@/lib/dates';
+import { createNamespacedHelpers } from 'vuex';
+// import PerfectShopAside from '@/components/perfectShop/PerfectShopAside.vue';
+
+const {
+  mapActions,
+  mapGetters,
+} = createNamespacedHelpers('territory');
 
 const NAME = 'PerfectShop';
-
-const dateB = '2021-03-01';
-const dateE = '2021-03-31';
 
 export default {
 
@@ -82,8 +99,6 @@ export default {
     return {
       currentSalesman: null,
       searchText: '',
-      dateB,
-      dateE,
     };
   },
 
@@ -99,7 +114,16 @@ export default {
 
   computed: {
 
+    selectedMonth: {
+      ...mapGetters({ get: g.SELECTED_MONTH }),
+      ...mapActions({ set: a.SELECT_MONTH }),
+    },
+
     loading: territoryGetters.busy,
+
+    lastYearMonths() {
+      return monthGenerator(12, Date(), 0);
+    },
 
     outlets() {
       noop(this.searchText);
@@ -134,7 +158,12 @@ export default {
         return [];
       }
 
-      const fn = salesmanId => svc.outletStatsBySalesmanId(salesmanId, this.dateB, this.dateE);
+      const {
+        dateB,
+        dateE,
+      } = dateBE(this.selectedMonth);
+
+      const fn = salesmanId => svc.outletStatsBySalesmanId(salesmanId, dateB, dateE);
       return svc.groupedSalesman(this.searchText, fn);
     },
 
@@ -157,31 +186,49 @@ export default {
     },
 
     onOutletClick(outlet) {
-      this.$router.push({
-        name: 'PerfectShopStatsDialog',
-        params: { statId: outlet.id },
-        query: this.$route.query,
-      });
+      const params = { statId: outlet.id };
+      this.updateRouteParams(params, {}, 'PerfectShopStatsDialog');
     },
 
   },
 
-  async created() {
-
-    await store.dispatch(`territory/${a.LOAD_OUTLET_STATS}`, {
-      dateB,
-      dateE,
-    });
+  created() {
 
     this.$watch('$route.query.salesmanId', this.onRouteChange, { immediate: true });
     this.$watch('currentSalesman.id', this.onSalesmanId, { immediate: true });
+    this.$watchImmediate('$route.params.monthId', monthId => {
+      this.selectedMonth = monthId || this.selectedMonth || this.lastYearMonths[1].id;
+      if (!monthId) {
+        this.updateRouteParams({ monthId: this.selectedMonth }, {}, 'PerfectShop');
+      }
+    });
 
   },
 
+  watch: {
+    async selectedMonth(monthId) {
+
+      await this.updateRouteParams({ monthId });
+
+      const {
+        dateB,
+        dateE,
+      } = dateBE(this.selectedMonth);
+
+      await store.dispatch(`territory/${a.LOAD_OUTLET_STATS}`, {
+        dateB,
+        dateE,
+      });
+
+    },
+  },
+
   components: {
+    // PerfectShopAside,
     PerfectShopStatsList,
     SalesmanOutletsList,
     SalesmanGroupedList,
+    MonthSelect,
   },
 
 };
@@ -214,6 +261,11 @@ h3.header {
 h3.salesman {
   font-weight: bold;
   margin-top: $margin-top;
+}
+
+.month-select {
+  width: 100%;
+  margin-bottom: $margin-top;
 }
 
 </style>

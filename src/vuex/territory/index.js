@@ -9,6 +9,7 @@ export default {
 
   state: {
     [states.BUSY]: '',
+    [states.SELECTED_MONTH]: '',
   },
 
   mutations,

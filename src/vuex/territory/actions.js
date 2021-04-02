@@ -9,6 +9,7 @@ debug('init');
 
 export const LOAD_TERRITORY_DATA = 'LOAD_TERRITORY_DATA';
 export const LOAD_OUTLET_STATS = 'LOAD_OUTLET_STATS';
+export const SELECT_MONTH = 'SELECT_MONTH';
 
 export default {
 
@@ -30,6 +31,12 @@ export default {
     await svc.loadOutletStats(filter.dateB, filter.dateE, onProgress(commit));
 
     commit(m.SET_BUSY, false);
+
+  },
+
+  [SELECT_MONTH]({ commit }, date) {
+
+    commit(m.SET_SELECTED_MONTH, date);
 
   },
 
