@@ -81,8 +81,8 @@ export default {
     },
 
     nextLevel() {
-      const { nextLevel } = this.perfectShop || {};
-      return nextLevel;
+      const { nextLevel, level } = this.perfectShop || {};
+      return nextLevel || level;
     },
 
     title() {

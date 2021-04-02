@@ -13,7 +13,9 @@
         i.el-icon-info
         span.comment-text(v-text="outlet.commentText")
     .status
-      .level {{ stat.level || '-' }}
+      .level
+        el-tag(v-if="stat.level" type="success") {{ stat.level }}
+        span(v-else) -
       .progress {{ stat.blocksProgress }}
       .progress {{ stat.assortmentsProgress }}
 
@@ -41,6 +43,9 @@ export default {
   > * {
     width: 80px;
     text-align: center;
+  }
+  .el-tag {
+    flex: 1;
   }
 }
 

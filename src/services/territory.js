@@ -130,6 +130,10 @@ const PROGRESS_RE = /(\d+) \/ (\d+)/;
 
 function progressNumbers(string) {
 
+  if (!string) {
+    return {};
+  }
+
   const [, doneString, totalString] = string.match(PROGRESS_RE);
 
   const done = parseInt(doneString, 0);
