@@ -56,13 +56,12 @@ export default {
   },
 
   created() {
-    const immediate = true;
-    this.$watch('$route.params.monthId', monthId => {
+    this.$watchImmediate('$route.params.monthId', monthId => {
       this.selectedMonth = monthId || this.selectedMonth || this.lastYearMonths[1].id;
       if (!monthId) {
         this.updateRouteParams({ monthId: this.selectedMonth });
       }
-    }, { immediate });
+    });
   },
 
   watch: {
