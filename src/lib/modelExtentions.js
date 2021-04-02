@@ -3,16 +3,30 @@ import uniq from 'lodash/uniq';
 import flatten from 'lodash/flatten';
 import Model from 'sistemium-vue/jsdata/Model';
 import { serverTimestamp } from '@/lib/dates';
+import noop from 'lodash/noop';
 
 async function findByMany(ids, options = {}) {
 
-  const { chunkSize = 100, field = 'id', force = false } = options;
+  const {
+    chunkSize = 100,
+    field = 'id',
+    force = false,
+    onProgress = noop,
+  } = options;
 
   const chunks = chunk(uniq(ids), chunkSize);
+  const { length: total } = chunks;
 
-  return Promise.all(chunks.map(chunkIds => {
+  return Promise.all(chunks.map((chunkIds, idx) => {
     const where = { [field]: { in: chunkIds } };
-    return this.findAll({ where }, { force });
+    return this.findAll({ where }, { force })
+      .then(res => {
+        onProgress({
+          total,
+          current: idx + 1,
+        });
+        return res;
+      });
   }))
     .then(flatten);
 

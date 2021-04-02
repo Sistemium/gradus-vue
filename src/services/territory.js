@@ -1,5 +1,6 @@
 import groupBy from 'lodash/groupBy';
 import fpOrderBy from 'lodash/fp/orderBy';
+import repeat from 'lodash/repeat';
 import map from 'lodash/map';
 import get from 'lodash/get';
 import filter from 'lodash/filter';
@@ -40,13 +41,21 @@ export async function loadOutletStats(dateB, dateE, onProgress = noop) {
     dateB,
     dateE,
     limit: 1000,
+  }, {
+    onProgress({ page }) {
+      onProgress(`результатов акций ${repeat('.', page)}`);
+    },
   });
 
   const toLoad = filter(stats, ({ outlet }) => !outlet);
   const ids = map(toLoad, 'outletId');
 
-  onProgress('торговых точек');
-  await Outlet.findByMany(ids, { chunkSize: 150 });
+  await Outlet.findByMany(ids, {
+    chunkSize: 150,
+    onProgress(p) {
+      onProgress(`торговых точек ${p.current} / ${p.total}`);
+    },
+  });
 
 }
 
