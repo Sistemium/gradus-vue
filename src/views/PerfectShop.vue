@@ -197,7 +197,7 @@ export default {
     this.$watch('$route.query.salesmanId', this.onRouteChange, { immediate: true });
     this.$watch('currentSalesman.id', this.onSalesmanId, { immediate: true });
     this.$watchImmediate('$route.params.monthId', monthId => {
-      this.selectedMonth = monthId || this.selectedMonth || this.lastYearMonths[1].id;
+      this.selectedMonth = monthId || this.selectedMonth || this.lastYearMonths[0].id;
       if (!monthId) {
         this.updateRouteParams({ monthId: this.selectedMonth }, {}, 'PerfectShop');
       }
