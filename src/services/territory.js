@@ -20,6 +20,8 @@ const orderByName = fpOrderBy(['name'], ['asc']);
 const { VUE_APP_PERFECT_SHOP_SALE_TYPES } = process.env;
 const PERFECT_SHOP_SALE_TYPES = JSON.parse(VUE_APP_PERFECT_SHOP_SALE_TYPES);
 
+const OUTLET_STATS_FETCH_MAP = new Map();
+
 export async function loadTerritory() {
   await loadSalesmen();
   await PossibleOutlet.findAll();
@@ -37,6 +39,10 @@ export async function loadOutletStats(dateB, dateE, onProgress = noop) {
 
   onProgress('результатов акций');
 
+  const fetchKey = `${dateB}-${dateE}`;
+
+  OutletStats.lastFetchOffset = OUTLET_STATS_FETCH_MAP.get(fetchKey) || '*';
+
   const stats = await OutletStats.fetchAll({
     dateB,
     dateE,
@@ -45,7 +51,10 @@ export async function loadOutletStats(dateB, dateE, onProgress = noop) {
     onProgress({ page }) {
       onProgress(`результатов акций ${repeat('.', page)}`);
     },
+    force: true,
   });
+
+  OUTLET_STATS_FETCH_MAP.set(fetchKey, OutletStats.lastFetchOffset);
 
   const toLoad = filter(stats, ({ outlet }) => !outlet);
   const ids = map(toLoad, 'outletId');
