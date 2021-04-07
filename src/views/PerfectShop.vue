@@ -37,7 +37,12 @@
 
         template(v-if="currentSalesman")
           h3.header
-            .name {{ currentSalesman.name }}
+            .name
+              span {{ currentSalesman.name }}
+              download-excel-button(
+                :data-fn="downloadExcelData"
+                :name="downloadExcelFileName"
+              )
             .level Уровень
             .progress Блоки
             .progress Ассортимент
@@ -50,7 +55,12 @@
         //el-alert(v-else title="Выберите ТП" type="warning")
         template(v-else)
           h3.header
-            .name Близкие к достижению целей точки
+            .name
+              span Близкие к достижению целей точки
+              download-excel-button(
+                :data-fn="downloadExcelData"
+                :name="downloadExcelFileName"
+              )
             .level Уровень
             .progress Блоки
             .progress Ассортимент
@@ -68,6 +78,7 @@
 </template>
 <script>
 
+import * as ps from '@/services/perfectShop';
 import * as svc from '@/services/territory';
 import store from '@/store';
 import * as a from '@/vuex/territory/actions';
@@ -82,6 +93,7 @@ import MonthSelect from '@/components/MonthSelect.vue';
 import SalesmanGroupedList from '@/components/territory/SalesmanGroupedList.vue';
 import { dateBE, monthGenerator } from '@/lib/dates';
 import { createNamespacedHelpers } from 'vuex';
+import DownloadExcelButton from '@/lib/DownloadExcelButton.vue';
 // import PerfectShopAside from '@/components/perfectShop/PerfectShopAside.vue';
 
 const {
@@ -120,6 +132,14 @@ export default {
     },
 
     loading: territoryGetters.busy,
+
+    downloadExcelFileName() {
+      const { currentSalesman } = this;
+      if (!currentSalesman) {
+        return `PS ${this.selectedMonth} лучшие точки`;
+      }
+      return `PS ${this.selectedMonth} ${currentSalesman.name}`;
+    },
 
     lastYearMonths() {
       return monthGenerator(12, Date(), 0);
@@ -190,6 +210,23 @@ export default {
       this.updateRouteParams(params, {}, 'PerfectShopStatsDialog');
     },
 
+    downloadExcelData() {
+      const { currentSalesman } = this;
+      const schema = ps.downloadResultsSchema();
+      const data = currentSalesman ? this.outlets : ps.mapDownloadReadyStats(this.readyStats);
+      if (!currentSalesman) {
+        schema.columns.splice(0, 0, {
+          key: 'salesman',
+          title: 'ТП',
+          width: 30,
+        });
+      }
+      return {
+        schema,
+        data,
+      };
+    },
+
   },
 
   created() {
@@ -224,6 +261,7 @@ export default {
   },
 
   components: {
+    DownloadExcelButton,
     // PerfectShopAside,
     PerfectShopStatsList,
     SalesmanOutletsList,
@@ -266,6 +304,10 @@ h3.salesman {
 .month-select {
   width: 100%;
   margin-bottom: $margin-top;
+}
+
+.download-excel-button {
+  margin-left: $padding;
 }
 
 </style>

@@ -1,6 +1,7 @@
 import groupBy from 'lodash/groupBy';
 import map from 'lodash/map';
 import filter from 'lodash/filter';
+import flatten from 'lodash/flatten';
 
 
 export function assortmentByBlock(assortments) {
@@ -66,5 +67,44 @@ export function ruleName(rule) {
 export function perfectShopLevels() {
 
   return ['BRONZE', 'SILVER', 'GOLD'];
+
+}
+
+export function downloadResultsSchema() {
+  return {
+    columns: [{
+      key: 'name',
+      title: 'Контрагент',
+      width: 40,
+    }, {
+      key: 'address',
+      title: 'Адрес',
+      width: 60,
+    }, {
+      key: 'level',
+      title: 'Уровень',
+      width: 12,
+    }, {
+      key: 'blocksProgress',
+      title: 'Блоки',
+      width: 12,
+    }, {
+      key: 'assortmentsProgress',
+      title: 'Ассортимент',
+      width: 12,
+    }],
+  };
+}
+
+export function mapDownloadReadyStats(readyStats) {
+
+  const salesmen = flatten(map(readyStats, 'items'));
+
+  const res = map(salesmen, stat => map(stat.outlets, outlet => ({
+    salesman: stat.name,
+    ...outlet,
+  })));
+
+  return flatten(res);
 
 }
