@@ -1,9 +1,8 @@
+import { createNamespacedHelpers } from 'vuex';
+import { HAS_AUTHORING } from '@/vuex/campaigns/getters';
+
+const { mapGetters } = createNamespacedHelpers('campaigns');
+
 export default {
-  computed: {
-    hasAuthoring() {
-      return this.$hasAuthRole('actions')
-        || this.$hasAuthRole('tester')
-        || this.$hasAuthRole('admin');
-    },
-  },
+  computed: mapGetters({ hasAuthoring: HAS_AUTHORING }),
 };

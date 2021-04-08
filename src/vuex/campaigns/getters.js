@@ -1,9 +1,11 @@
 import * as svc from '@/services/campaigns';
 import filter from 'lodash/filter';
+import { currentMonth } from '@/lib/dates';
 
 export const BUSY = 'BUSY';
 export const ERROR = 'ERROR';
 export const SELECTED_MONTH = 'selectedMonth';
+export const IS_MONTH_CLOSED = 'isMonthClosed';
 export const SEARCH_TEXT = 'searchText';
 export const CAMPAIGNS = 'campaigns';
 
@@ -17,6 +19,7 @@ export const FILTERED_CAMPAIGNS = 'filteredCampaigns';
 export const CAMPAIGN_VIEW_LAYOUT = 'CAMPAIGN_VIEW_LAYOUT';
 
 export const SHOW_PICTURES = 'SHOW_PICTURES';
+export const HAS_AUTHORING = 'hasAuthoring';
 
 
 export default {
@@ -45,6 +48,10 @@ export default {
     return state[SELECTED_MONTH];
   },
 
+  [IS_MONTH_CLOSED](state, getters) {
+    return currentMonth() > getters[SELECTED_MONTH];
+  },
+
   [SEARCH_TEXT](state) {
     return state[SEARCH_TEXT];
   },
@@ -57,7 +64,10 @@ export default {
     return svc.getCampaigns(state[CAMPAIGNS]);
   },
 
-  hasAuthoring(state, getters, rootState, rootGetters) {
+  [HAS_AUTHORING](state, getters, rootState, rootGetters) {
+    if (getters[IS_MONTH_CLOSED]) {
+      return false;
+    }
     const $hasAuthRole = rootGetters['auth/HAS_ROLE'];
     return $hasAuthRole('actions')
       || $hasAuthRole('tester')
