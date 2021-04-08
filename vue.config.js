@@ -69,6 +69,10 @@ module.exports = {
         //   // '^/ims/dr50': '',
         // },
       },
+      '/xlsx': {
+        // target: 'http://localhost:3300',
+        target: 'https://m.sistemium.com',
+      },
     },
   },
 };
