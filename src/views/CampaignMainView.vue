@@ -10,7 +10,7 @@ campaign-view(
   template(v-slot:buttons)
 
     campaign-workflow(
-      :disabled="busy"
+      :disabled="busy || isMonthClosed"
       :processing="currentCampaign.processing"
       @transition="onWorkflowTransition"
     )
@@ -22,6 +22,7 @@ campaign-view(
           @click="onPasteAction"
           icon="el-icon-suitcase"
           size="mini" circle
+          :disabled="busy || isMonthClosed"
         )
     el-button.show-pictures(
       :type="showPictures ? 'primary' : 'default'"
@@ -35,8 +36,8 @@ campaign-view(
       icon="el-icon-copy-document"
       size="mini" circle
     )
-    button-edit(@click="onEditCampaign")
-    button-add(@click="onAddAction")
+    button-edit(@click="onEditCampaign" :disabled="isMonthClosed")
+    button-add(@click="onAddAction" :disabled="isMonthClosed")
 
   template(v-slot:footer)
     campaigns-picture-gallery(
@@ -44,7 +45,7 @@ campaign-view(
       :new-image-properties="{ campaignId: currentCampaign.id }"
       carousel-type=""
       :show-empty="false"
-      :has-authoring="hasAuthoring"
+      :has-authoring="!isMonthClosed"
     )
 
     router-view
@@ -99,6 +100,7 @@ export default {
       busy: g.BUSY,
       searchText: g.SEARCH_TEXT,
       showPictures: g.SHOW_PICTURES,
+      isMonthClosed: g.IS_MONTH_CLOSED,
     }),
     currentCampaign() {
       return Campaign.reactiveGet(this.campaignId);

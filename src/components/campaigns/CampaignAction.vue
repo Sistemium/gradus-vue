@@ -15,13 +15,14 @@
               @click="onEditPicturesClick()"
               icon="el-icon-picture-outline"
               size="mini" circle
+              :disabled="isMonthClosed"
             )
             el-button(
               @click="copyAction(action)"
               icon="el-icon-copy-document"
               size="mini" circle
             )
-            button-edit.edit(@click="onEditClick")
+            button-edit.edit(@click="onEditClick" :disabled="isMonthClosed")
       th.required(v-for="req in requirements" :class="req.cls") {{ req.title }}
       th.discount(
         v-for="discountHeader in discountHeaders" :key="discountHeader.cls"
@@ -118,7 +119,7 @@ import ActionPictures from '@/components/actions/ActionPictures.vue';
 import ActionHistoryView from '@/components/actions/ActionHistoryView.vue';
 import actionBase from '@/components/actions/actionBase';
 import { COPY_ACTION } from '@/vuex/campaigns/actions';
-import { SHOW_PICTURES } from '@/vuex/campaigns/getters';
+import { SHOW_PICTURES, IS_MONTH_CLOSED } from '@/vuex/campaigns/getters';
 
 const { mapActions, mapGetters } = createNamespacedHelpers('campaigns');
 
@@ -151,6 +152,7 @@ export default {
   computed: {
     ...mapGetters({
       showPicturesGlobal: SHOW_PICTURES,
+      isMonthClosed: IS_MONTH_CLOSED,
     }),
     pictureSize() {
       return this.withPictures ? 'small' : 'thumbnail';

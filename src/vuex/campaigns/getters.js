@@ -65,9 +65,6 @@ export default {
   },
 
   [HAS_AUTHORING](state, getters, rootState, rootGetters) {
-    if (getters[IS_MONTH_CLOSED]) {
-      return false;
-    }
     const $hasAuthRole = rootGetters['auth/HAS_ROLE'];
     return $hasAuthRole('actions')
       || $hasAuthRole('tester')

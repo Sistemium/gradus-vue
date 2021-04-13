@@ -18,6 +18,7 @@ el-container.campaigns(
           @click="onPasteCampaign"
           icon="el-icon-suitcase"
           size="mini" circle
+          :disabled="isMonthClosed"
         )
 
     el-button.add-campaign(
@@ -25,6 +26,7 @@ el-container.campaigns(
       :round="true"
       size="small"
       v-if="hasAuthoring"
+      :disabled="isMonthClosed"
     )
       i.el-icon-document-add
       span Добавить акцию
@@ -151,6 +153,7 @@ export default {
       campaignCopy: getters.CAMPAIGN_COPY,
       filteredCampaigns: getters.FILTERED_CAMPAIGNS,
       searchText: getters.SEARCH_TEXT,
+      isMonthClosed: getters.IS_MONTH_CLOSED,
     }),
 
     showPriorities() {
