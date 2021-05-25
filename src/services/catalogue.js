@@ -73,8 +73,8 @@ export async function setArticleAvatar(article, picture) {
   const { id: pictureId = null } = picture || {};
 
   debug('setArticleAvatar', articleId, pictureId);
+  await Article.update(article, { avatarPictureId: pictureId });
   Vue.set(article, 'avatarPictureId', pictureId);
-  return Article.safeSave(article, true);
 
 }
 
