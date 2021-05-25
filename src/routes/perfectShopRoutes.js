@@ -9,7 +9,7 @@ export default [
     children: [{
       path: ':monthId',
       name: 'PerfectShop',
-      component: () => import('../views/RoutePass'),
+      component: () => import('../views/RoutePass.vue'),
       children: [{
         name: 'PerfectShopStatsDialog',
         path: ':statId',
