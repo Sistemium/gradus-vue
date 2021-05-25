@@ -5,6 +5,7 @@ import RelationCache from '@/lib/RelationCache';
 // import ArticlePicture from './ArticlePicture';
 
 const relationCache = new RelationCache({});
+const sameArticlesNotSelf = a => a.id !== a.articleSameId;
 
 const Article = new Model({
 
@@ -18,7 +19,7 @@ const Article = new Model({
     type: 'object',
     properties: {
       parent: relationCache.one('parent', 'articleGroupId'),
-      sameArticles: relationCache.many('articleSameId'),
+      sameArticles: relationCache.many('articleSameId', 'id', sameArticlesNotSelf),
       avatarPicture: relationCache.one('avatarPicture', 'avatarPictureId'),
     },
   },

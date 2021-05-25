@@ -54,14 +54,18 @@ export default class RelationCache {
     };
   }
 
-  many(name, fk = name, prop = 'id') {
+  many(name, fk = name, prop = 'id', filterFn) {
     const cache = this;
     return {
       type: 'array',
       configurable: true,
       enumerable: false,
       get() {
-        return cache.getMany(name, fk, this[prop]);
+        const res = cache.getMany(name, fk, this[prop]);
+        if (res && res.length && filterFn) {
+          return res.filter(filterFn);
+        }
+        return res;
       },
     };
   }

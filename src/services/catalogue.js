@@ -226,7 +226,7 @@ export function setSameArticle(article, sameArticles) {
  */
 
 export function groupedArticles(articles) {
-  return filter(articles, a => !a.articleSameId);
+  return filter(articles, a => !a.articleSameId || a.articleSameId === a.id);
 }
 
 function filterArticles(articles, filters) {
