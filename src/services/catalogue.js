@@ -122,7 +122,8 @@ export function articlesByGroupID(articleGroup, filters) {
 
 export function articleGroupsBySearch(search) {
 
-  const articles = filterArticles(Article.filter({ articleSameId: null }), search);
+  const notSame = Article.getAll().filter(a => !a.articleSameId || a.id === a.articleSameId);
+  const articles = filterArticles(notSame, search);
   debug('articleGroupsBySearch:articles', articles.length);
 
   const groupIds = uniq(map(articles, 'articleGroupId'));
