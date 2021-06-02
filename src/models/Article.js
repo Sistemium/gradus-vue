@@ -21,6 +21,7 @@ const Article = new Model({
       parent: relationCache.one('parent', 'articleGroupId'),
       sameArticles: relationCache.many('articleSameId', 'id', sameArticlesNotSelf),
       avatarPicture: relationCache.one('avatarPicture', 'avatarPictureId'),
+      avatarPictureId: String,
     },
   },
 
