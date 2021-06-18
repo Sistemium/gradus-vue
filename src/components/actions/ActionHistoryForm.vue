@@ -16,6 +16,12 @@ el-form.action-history-form(
       autosize
     )
 
+  el-form-item.style(label="Стиль" prop="style")
+    el-radio-group(v-model="history.style")
+      el-radio(:label="null") Обычный
+      el-radio(label="warning") Внимание
+      el-radio(label="info") Инфо
+
   el-form-item.comment-is-not-necessary(v-if="showNotNecessary()")
     el-checkbox(v-model="isNotNecessaryComment") Описание не требуется, изменения незначительны
 

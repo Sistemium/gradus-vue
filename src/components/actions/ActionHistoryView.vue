@@ -3,8 +3,9 @@
 .action-history-view(v-if="sortedHistory.length")
   .title
     span История изменений
-  .action-history(v-for="entry in sortedHistory" :key="entry.id")
+  .action-history(v-for="entry in sortedHistory" :key="entry.id" :class="entry.style")
     .cts() {{ entry.cts | ruDateTime }}
+    i(v-if="entry.style" :class="`el-icon-${entry.style}`")
     .comment() {{ entry.commentText || 'Незначительные изменения' }}
 
 </template>
@@ -43,6 +44,23 @@ export default {
 .action-history {
   padding: $padding;
   display: flex;
+  align-items: center;
+
+  &.info i {
+    color: $green;
+  }
+
+  &.warning i {
+    color: $red;
+  }
+
+  i {
+    margin-right: $padding;
+  }
+
+  i + .comment {
+    //font-weight: 500;
+  }
 
   .cts {
     min-width: 140px;

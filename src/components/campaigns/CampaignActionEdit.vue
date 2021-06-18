@@ -207,6 +207,7 @@ export default {
       model: null,
       actionHistoryEntry: {
         commentText: '',
+        style: null,
       },
       editOption: null,
       campaignActionRules: {
