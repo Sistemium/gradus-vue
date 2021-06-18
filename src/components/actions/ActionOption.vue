@@ -2,7 +2,7 @@
 
 .action-option-complex(:class="{ grid: isGrid, 'no-ranges': !showRanges }")
 
-  .self(v-if="hasSelfRow")
+  .self(v-if="hasSelfRow" :class="{ 'has-name': hasName }")
     .name(v-if="name") {{ name }}
     .range(v-for="range in ranges") {{ range.name }}
 
@@ -75,6 +75,10 @@ export default {
     ActionRequired,
   },
   computed: {
+
+    hasName() {
+      return !!this.name && this.showConditions && !this.action.discountMatrix;
+    },
 
     name() {
       const { action } = this;
@@ -242,8 +246,8 @@ $col-mid-print: 59px;
   }
 }
 
-.option {
-  // align-items: stretch;
+.self.has-name {
+  background: $gray-border-color;
 }
 
 .self, .action-option-complex > .comment {
