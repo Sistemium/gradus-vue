@@ -3,6 +3,7 @@
 el-dialog.campaign-dialog(
   top="4vh"
   :title="title"
+  width="70%"
   :before-close="closeDialog"
   :visible.sync="visible"
   :append-to-body="true"
@@ -44,19 +45,23 @@ el-dialog.campaign-dialog(
     el-form-item(label="Комментарий" prop="commentText")
       el-input(v-model="newCampaign.commentText" type="textarea" :autosize="{ minRows: 2 }")
 
+
     .switches
       el-switch(v-model="newCampaign.oneTime" inactive-text="Единовременная")
       el-switch(v-model="newCampaign.repeatable" inactive-text="Многократная")
       el-switch(v-model="newCampaign.needPhoto" inactive-text="Фото-отчет")
 
-    el-form-item.territory
+    el-form-item.territory(label="Территориальные условия")
       el-input(
         v-model="newCampaign.territory"
         placeholder="ограничение по территории"
         :clearable="true"
+        type="textarea"
+        :autosize="{ minRows: 2 }"
       )
-        template(slot="prepend")
-          i.el-icon-location
+
+    label.mini.el-form-item__label Прочие условия
+    comments-edit(v-model="newCampaign.comments" size="mini")
 
     .other(v-if="actions || pictures")
       el-form-item
@@ -81,11 +86,13 @@ el-dialog.campaign-dialog(
 import CampaignGroupSelect from '@/components/campaigns/CampaignGroupSelect.vue';
 import CampaignPrioritySelect from '@/components/campaigns/CampaignPrioritySelect.vue';
 import { campaignGroups } from '@/services/campaigns';
+import CommentsEdit from '@/components/CommentsEdit.vue';
 
 export default {
 
   name: 'CampaignDialog',
   components: {
+    CommentsEdit,
     CampaignPrioritySelect,
     CampaignGroupSelect,
   },
@@ -235,6 +242,10 @@ export default {
 
 .switches {
   @extend %switches;
+}
+
+.comments-edit {
+  margin-bottom: 18px;
 }
 
 </style>
