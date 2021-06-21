@@ -13,7 +13,7 @@
             i(:class="campaign.processing === 'draft' ? 'el-icon-unlock' : 'el-icon-s-management'")
             a(@click="campaignClick(campaign)")
               span {{ campaign.name }}
-            button-edit(@click="onEditCampaign(campaign)" v-if="hasAuthoring")
+            //button-edit(@click="onEditCampaign(campaign)" v-if="hasAuthoring")
           .fields
             .oneTime(v-if="campaign.oneTime")
               i.el-icon-circle-check
@@ -168,7 +168,7 @@ export default {
 .name {
 
   //white-space: nowrap;
-  padding: $margin-top 0;
+  padding: 0;
   font-size: x-large;
   font-weight: 500;
   position: sticky;
@@ -217,11 +217,19 @@ export default {
   > * + * {
     margin-top: 0;
   }
+
+  > * {
+    margin-bottom: $padding;
+  }
 }
 
 table {
   border-spacing: 0;
   width: 100%;
+}
+
+thead td {
+  padding: $margin-top 0;
 }
 
 tr + tr > td {
