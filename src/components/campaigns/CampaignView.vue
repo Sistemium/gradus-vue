@@ -17,6 +17,9 @@
     .comment-text(v-if="campaign.commentText")
       i.el-icon-info
       span {{ campaign.commentText }}
+
+    comments-view(:comments="campaign.comments")
+
     .oneTime(v-if="campaign.oneTime")
       i.el-icon-circle-check
       span Единовременная
@@ -55,6 +58,7 @@ import Action from '@/models/Action';
 import CampaignAction from '@/components/campaigns/CampaignAction.vue';
 import CampaignGroupSelect from '@/components/campaigns/CampaignGroupSelect.vue';
 import campaignsAuth from '@/components/campaigns/campaignsAuth';
+import CommentsView from '@/components/CommentsView.vue';
 
 const NAME = 'CampaignView';
 
@@ -95,6 +99,7 @@ export default {
 
   name: NAME,
   components: {
+    CommentsView,
     CampaignGroupSelect,
     CampaignAction,
   },
