@@ -2,9 +2,14 @@
 
 .action-option-complex(:class="{ grid: isGrid, 'no-ranges': !showRanges }")
 
-  .self(v-if="hasSelfRow" :class="{ 'has-name': hasName }")
+  .option-name(v-if="!hasName && name")
     .name(v-if="name") {{ name }}
+
+  .self(v-if="hasSelfRow" :class="{ 'has-name': hasName }")
+    .name(v-if="hasName") {{ name }}
     .range(v-for="range in ranges") {{ range.name }}
+
+  .name-after(v-if="hasName")
 
   template(v-if="showConditions")
     .action-required(
@@ -246,8 +251,17 @@ $col-mid-print: 59px;
   }
 }
 
-.self.has-name {
+.option-name, .self.has-name {
   background: $gray-border-color;
+}
+
+.name-after {
+  grid-column: 2 / span 5;
+  background: white;
+}
+
+.option-name {
+  padding: $padding;
 }
 
 .self, .action-option-complex > .comment {
