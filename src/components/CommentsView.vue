@@ -1,6 +1,6 @@
 <template lang="pug">
 
-.comments-view(v-if="comments")
+.comments-view(v-if="comments && comments.length")
   .comment(v-for="(comment, idx) in comments" :key="idx")
     i.el-icon-info
     styled-comment(:text="comment.text")
