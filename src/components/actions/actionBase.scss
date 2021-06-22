@@ -57,3 +57,16 @@ td {
     //font-size: larger;
   }
 }
+
+.footer {
+
+  .territory {
+    &, .el-icon-location {
+      color: white;
+    }
+    background: $red;
+    padding: 3px 6px;
+    border-radius: $border-radius;
+  }
+
+}
